@@ -32,6 +32,7 @@ function harness(
     releasePage: vi.fn(),
     prepareStage: vi.fn(async () => {}),
     progress: vi.fn(),
+    recordPageTiming: vi.fn(),
     isFatal: (error) => error instanceof TypeError,
     execute: vi.fn(execute ?? (async (_stage, _chapter, page) => page)),
     save: vi.fn(async (_chapter, before, after) => {
@@ -66,6 +67,26 @@ function harness(
 }
 
 describe("Hayai page workflow commits", () => {
+  it("records page wall-clock timing only after the final stage save", async () => {
+    const h = harness(["ocr", "translate"]);
+    const calls: string[] = [];
+    h.port.save = vi.fn(async (_chapter, before, after) => {
+      calls.push(
+        `save:${after.pageWorkflow?.steps.translate ? "translate" : "ocr"}`,
+      );
+    });
+    h.port.recordPageTiming = vi.fn((_chapter, page, totalMs, status) => {
+      calls.push(`timing:${status}`);
+      expect(page.id).toBe(h.page().id);
+      expect(totalMs).toBeGreaterThanOrEqual(0);
+    });
+
+    await executePageWorkflow(h.input, h.port);
+
+    expect(calls).toEqual(["save:ocr", "save:translate", "timing:completed"]);
+    expect(h.port.recordPageTiming).toHaveBeenCalledTimes(1);
+  });
+
   it("keeps processing other pages after a page-local failure", async () => {
     const h = harness(
       ["translate", "review"],

@@ -60,6 +60,7 @@ export async function translateWorkflowPage(
         chapter.pages.map((item, index) => [item.id, index]),
       ),
       decodeImage: context.decodeImage,
+      timing: context.timing,
     },
     context.dependencies,
   );

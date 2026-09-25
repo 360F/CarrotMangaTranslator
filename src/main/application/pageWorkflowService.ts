@@ -15,6 +15,7 @@ import {
   PAGE_WORKFLOW_STAGES,
   type PageWorkflowStage,
 } from "../../shared/pageWorkflowStages";
+import { performance } from "node:perf_hooks";
 
 export type PageWorkflowExecutionPort = {
   restoreCompletedStage?: (
@@ -40,6 +41,12 @@ export type PageWorkflowExecutionPort = {
     page: MangaPage,
   ) => Promise<MangaPage>;
   progress: (stage: PageWorkflowStage, page: MangaPage) => void;
+  recordPageTiming?: (
+    chapter: ChapterSnapshot,
+    page: MangaPage,
+    totalMs: number,
+    status: "completed" | "failed",
+  ) => void;
   isFatal: (error: unknown) => boolean;
 };
 export type PageWorkflowExecution = {
@@ -94,9 +101,11 @@ async function executeWorkflowChapter(
       await port.acquirePage(selection.chapterId, id);
       acquired.push(id);
     }
-    for (const stage of PAGE_WORKFLOW_STAGES.filter((id) =>
+    const stages = PAGE_WORKFLOW_STAGES.filter((id) =>
       input.plan.stages.includes(id),
-    )) {
+    );
+    const pageStartedAt = new Map<string, number>();
+    for (const stage of stages) {
       input.signal.throwIfAborted();
       const chapter = await port.readChapter(selection.chapterId);
       const pageIds = chapter.pages
@@ -112,6 +121,8 @@ async function executeWorkflowChapter(
         chapter,
         pageIds,
         stage,
+        pageStartedAt,
+        stage === stages.at(-1),
       );
       issues.push(...stageIssues);
     }
@@ -143,10 +154,13 @@ async function executeWorkflowPage(
   chapter: ChapterSnapshot,
   pageId: string,
   stage: PageWorkflowStage,
+  pageStartedAt: Map<string, number>,
+  finalStage: boolean,
 ): Promise<PageWorkflowIssue | undefined> {
   const current = await port.readChapter(chapter.id);
   const before = current.pages.find((page) => page.id === pageId);
   if (!before) throw new Error("작업 대상 페이지가 사라졌습니다.");
+  const startedAt = resolvePageStart(pageStartedAt, pageId);
   const receipt = workflowReceipt(input, before);
   if (
     workflowStageComplete(
@@ -174,6 +188,7 @@ async function executeWorkflowPage(
       before,
       failWorkflowReceipt(receipt, before, partial, stage, message),
     );
+    recordPageTiming(port, chapter, partial, startedAt, "failed");
     return { chapterId: chapter.id, pageId, stage, message };
   }
   await port.save(
@@ -187,6 +202,35 @@ async function executeWorkflowPage(
       input.configurationKeys?.[stage],
     ),
   );
+  recordCompletedPageTiming(port, chapter, after, startedAt, finalStage);
+}
+
+function resolvePageStart(starts: Map<string, number>, pageId: string): number {
+  const existing = starts.get(pageId);
+  if (existing !== undefined) return existing;
+  const startedAt = performance.now();
+  starts.set(pageId, startedAt);
+  return startedAt;
+}
+
+function recordCompletedPageTiming(
+  port: PageWorkflowExecutionPort,
+  chapter: ChapterSnapshot,
+  page: MangaPage,
+  startedAt: number,
+  finalStage: boolean,
+): void {
+  if (finalStage) recordPageTiming(port, chapter, page, startedAt, "completed");
+}
+
+function recordPageTiming(
+  port: PageWorkflowExecutionPort,
+  chapter: ChapterSnapshot,
+  page: MangaPage,
+  startedAt: number,
+  status: "completed" | "failed",
+): void {
+  port.recordPageTiming?.(chapter, page, performance.now() - startedAt, status);
 }
 
 async function executeWorkflowPages(
@@ -195,6 +239,8 @@ async function executeWorkflowPages(
   chapter: ChapterSnapshot,
   pageIds: string[],
   stage: PageWorkflowStage,
+  pageStartedAt: Map<string, number>,
+  finalStage: boolean,
 ) {
   const issues: PageWorkflowIssue[] = [];
   for (const pageId of pageIds) {
@@ -205,6 +251,8 @@ async function executeWorkflowPages(
       chapter,
       pageId,
       stage,
+      pageStartedAt,
+      finalStage,
     );
     if (issue) issues.push(issue);
   }

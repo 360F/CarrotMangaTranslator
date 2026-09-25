@@ -23,6 +23,7 @@ import type { AppPaths } from "../appPaths";
 type PageWorkflowJobContext = TranslationJobContext & { appPaths: AppPaths };
 import type { AppSettings } from "../../shared/settingsTypes";
 import type { JobEvent } from "../../shared/jobTypes";
+import { createPageProcessingTimingCollector } from "../pipeline/pageProcessingTiming";
 
 export async function startPageWorkflowJob(
   context: PageWorkflowJobContext,
@@ -100,6 +101,7 @@ async function runWorkflowJob({
   preflight: ReturnType<typeof preflightPageWorkflow>;
 }) {
   const dependencies = workflowDependencies(context.appPaths, settings);
+  const timing = createWorkflowTiming(run, chapters);
   const runtime = createPageWorkflowRuntime({
     runId: run.id,
     ...run.request,
@@ -111,6 +113,7 @@ async function runWorkflowJob({
     dependencies,
     runPaths: (chapterId) => getRunPaths(chapterId, run.id),
     decodeImage: context.decodeImage,
+    timing,
   });
   lifetime.registerResourceCleanup(runtime.dispose);
   try {
@@ -157,6 +160,21 @@ async function runWorkflowJob({
   } finally {
     await runtime.dispose();
   }
+}
+
+function createWorkflowTiming(
+  run: WorkflowRun,
+  chapters: Awaited<ReturnType<typeof openChapter>>[],
+) {
+  const pageIds = chapters.flatMap((chapter) => {
+    const selected = run.request.selection.find(
+      (selection) => selection.chapterId === chapter.id,
+    )?.pageIds;
+    return chapter.pages
+      .filter((page) => selected?.includes(page.id))
+      .map((page) => page.id);
+  });
+  return createPageProcessingTimingCollector(run.id, pageIds);
 }
 
 function emitWorkflowCompletion(

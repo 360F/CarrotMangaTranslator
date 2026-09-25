@@ -13,6 +13,7 @@ import { runBubbleLayoutPostprocess } from "../inpainting/bubbleLayoutRunner";
 import { applyInpaintingLayoutStates } from "../inpainting/inpaintingLayoutState";
 import { applyNaturalTextLayout } from "../../shared/naturalTextLayout";
 import type { PageWorkflowRuntimeContext } from "./pageWorkflowRuntimeTypes";
+import { measurePageProcessingStage } from "../pipeline/pageProcessingTiming";
 
 function workflowBubbleRunner(context: PageWorkflowRuntimeContext) {
   return createProductionBubbleLayoutRunner({
@@ -31,7 +32,7 @@ export async function eraseWorkflowPage(
 ): Promise<MangaPage> {
   const targets = workflowTargetBlocks(page, "erase", context.plan);
   if (!targets.length) return page;
-  const lease = await acquireWorkflowErasure(context);
+  const lease = await acquireTimedWorkflowErasure(context, page.id);
   try {
     const blockIds = targets.map((block) => block.id);
     const prepass =
@@ -46,25 +47,30 @@ export async function eraseWorkflowPage(
             signal: context.signal,
           })
         : { page };
-    const result = await inpaintPatternPage(prepass.page, {
-      blockIds,
-      signal: context.signal,
-      inpaintingEngine: lease.engine,
-      decodeFallback: context.decodeImage,
-      preserveExistingInpainting: true,
-      ...("bubbleLayoutConstraintBlockIds" in prepass
-        ? {
-            bubbleLayoutConstraintBlockIds:
-              prepass.bubbleLayoutConstraintBlockIds,
-          }
-        : {}),
-      ...("sharedInpaintGroupIdsByBlock" in prepass
-        ? { sharedInpaintGroupIdsByBlock: prepass.sharedInpaintGroupIdsByBlock }
-        : {}),
-      ...("typographySegmentation" in prepass
-        ? { typographySegmentation: prepass.typographySegmentation }
-        : {}),
-    });
+    const inpaint = () =>
+      inpaintPatternPage(prepass.page, {
+        blockIds,
+        signal: context.signal,
+        inpaintingEngine: lease.engine,
+        decodeFallback: context.decodeImage,
+        preserveExistingInpainting: true,
+        ...("bubbleLayoutConstraintBlockIds" in prepass
+          ? {
+              bubbleLayoutConstraintBlockIds:
+                prepass.bubbleLayoutConstraintBlockIds,
+            }
+          : {}),
+        ...("sharedInpaintGroupIdsByBlock" in prepass
+          ? {
+              sharedInpaintGroupIdsByBlock:
+                prepass.sharedInpaintGroupIdsByBlock,
+            }
+          : {}),
+        ...("typographySegmentation" in prepass
+          ? { typographySegmentation: prepass.typographySegmentation }
+          : {}),
+      });
+    const result = await measureWorkflowInpainting(context, page.id, inpaint);
     const erased = new Set(result.erasedBlockIds);
     const output =
       "restoreLayout" in prepass && prepass.restoreLayout
@@ -90,6 +96,27 @@ export async function eraseWorkflowPage(
   } finally {
     await lease.release();
   }
+}
+
+function acquireTimedWorkflowErasure(
+  context: PageWorkflowRuntimeContext,
+  pageId: string,
+) {
+  return context.timing
+    ? measurePageProcessingStage(context.timing, pageId, "preparing", () =>
+        acquireWorkflowErasure(context),
+      )
+    : acquireWorkflowErasure(context);
+}
+
+function measureWorkflowInpainting<T>(
+  context: PageWorkflowRuntimeContext,
+  pageId: string,
+  run: () => Promise<T>,
+): Promise<T> {
+  return context.timing
+    ? measurePageProcessingStage(context.timing, pageId, "inpainting", run)
+    : run();
 }
 
 export async function layoutWorkflowPage(

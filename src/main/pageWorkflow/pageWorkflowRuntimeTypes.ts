@@ -8,6 +8,7 @@ import type { AppPaths } from "../appPaths";
 import type { ChapterRunPaths } from "../library";
 import type { WholePagePipelineDependencies } from "../pipeline/wholePagePipelinePorts";
 import type { ImageDecodeFallback } from "../regionCrop";
+import type { PageProcessingTimingCollector } from "../pipeline/pageProcessingTiming";
 
 export type PageWorkflowRuntimeContext = {
   previousStoryPages?: import("../../shared/workContextTypes").PageStoryMemory[];
@@ -21,4 +22,6 @@ export type PageWorkflowRuntimeContext = {
   dependencies: WholePagePipelineDependencies;
   runPaths: (chapterId: string) => Promise<ChapterRunPaths>;
   decodeImage: ImageDecodeFallback;
+  /** Shared page timing collector for production workflow profiling. */
+  timing?: PageProcessingTimingCollector;
 };

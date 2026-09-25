@@ -10,6 +10,7 @@ import { applyWorkflowRuleStage } from "./pageWorkflowRuleExecution";
 import type { PageWorkflowRuntimeContext } from "./pageWorkflowRuntimeTypes";
 import type { PageWorkflowContextCommit } from "../application/pageWorkflowContextCommit";
 import { savePageWorkflowResult } from "../library";
+import { measurePageProcessingStage } from "../pipeline/pageProcessingTiming";
 
 export function createPageWorkflowRuntime(context: PageWorkflowRuntimeContext) {
   const typography = createWorkflowTypography(context);
@@ -57,20 +58,86 @@ export function createPageWorkflowRuntime(context: PageWorkflowRuntimeContext) {
     ): Promise<MangaPage> => {
       pending = {};
       if (stage === "detect" || stage === "ocr")
-        return executeWorkflowRecognition(context, chapter, page, stage);
+        return measureWorkflowStage(context, page.id, "ocr", () =>
+          executeWorkflowRecognition(context, chapter, page, stage),
+        );
       if (!page.blocks.length) return page;
       if (stage === "translate")
         return translateWorkflowPage(context, chapter, page);
-      if (stage === "typography") return typography.apply(page);
+      if (stage === "typography")
+        return measureWorkflowStage(context, page.id, "typography", () =>
+          typography.apply(page),
+        );
       if (stage === "erase") return eraseWorkflowPage(context, page);
-      if (stage === "layout") return layoutWorkflowPage(context, page);
+      if (stage === "layout")
+        return measureWorkflowStage(context, page.id, "typography", () =>
+          layoutWorkflowPage(context, page),
+        );
       return applyWorkflowRuleStage(context, chapter, page, stage);
     },
+    recordPageTiming: (
+      chapter: ChapterSnapshot,
+      page: MangaPage,
+      totalMs: number,
+      status: "completed" | "failed",
+    ) => recordWorkflowPageTiming(context, chapter, page, totalMs, status),
     dispose: () =>
       (disposal ??= Promise.resolve().then(() =>
         context.dependencies.fontMatching.pageInference?.dispose?.(),
       )),
   };
+}
+
+function recordWorkflowPageTiming(
+  context: PageWorkflowRuntimeContext,
+  chapter: ChapterSnapshot,
+  page: MangaPage,
+  totalMs: number,
+  status: "completed" | "failed",
+): void {
+  const stages = context.timing?.getStages(page.id) ?? {};
+  context.dependencies.diagnostics.info("page-timing", {
+    runId: context.runId,
+    chapterId: chapter.id,
+    pageId: page.id,
+    pageIndex: chapter.pages.findIndex((entry) => entry.id === page.id),
+    status,
+    preparingMs: stages.preparing ?? 0,
+    ocrMs: stages.ocr ?? 0,
+    translationMs: stages.translation ?? 0,
+    inpaintingMs: stages.inpainting ?? 0,
+    typographyMs: stages.typography ?? 0,
+    totalMs: Math.max(0, Math.round(totalMs)),
+    ...resolveFluxTimingBackend(context),
+  });
+}
+
+function resolveFluxTimingBackend(context: PageWorkflowRuntimeContext): {
+  inpaintingBackend?: string;
+} {
+  if (
+    !context.plan.stages.includes("erase") ||
+    context.plan.erasureEngine === "codex" ||
+    (context.settings.inpainting?.model ?? "flux-klein") !== "flux-klein"
+  ) {
+    return {};
+  }
+  return {
+    inpaintingBackend:
+      context.settings.inpainting?.fluxBackend ??
+      (process.platform === "darwin" ? "metal-native" : "cuda-native"),
+  };
+}
+
+function measureWorkflowStage<T>(
+  context: PageWorkflowRuntimeContext,
+  pageId: string,
+  stage: "ocr" | "typography",
+  run: () => Promise<T>,
+): Promise<T> {
+  return context.timing
+    ? measurePageProcessingStage(context.timing, pageId, stage, run)
+    : run();
 }
 
 async function executeWorkflowRecognition(
