@@ -2121,6 +2121,10 @@
       "keyMaxAttempts": "每个密钥的最大尝试次数",
       "retryDelaySeconds": "重试等待时间（秒）",
       "retryDescription": "失败时使用下一个密钥重试。",
+      "parallelAcceleration": {
+        "label": "并行加速［实验性］",
+        "description": "当翻译模型在独立设备上运行时，同时执行翻译和原文擦除。"
+      },
       "advanced": {
         "title": "高级API设置",
         "description": "留空：服务商默认值",

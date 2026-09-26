@@ -16,6 +16,8 @@ import {
   type PageWorkflowStage,
 } from "../../shared/pageWorkflowStages";
 import { performance } from "node:perf_hooks";
+import { experimentalParallelAccelerationIssue } from "../../shared/pageWorkflowPolicy";
+import { executeExperimentalParallelChapter } from "./pageWorkflowExperimentalParallel";
 
 export type PageWorkflowExecutionPort = {
   restoreCompletedStage?: (
@@ -105,6 +107,25 @@ async function executeWorkflowChapter(
       input.plan.stages.includes(id),
     );
     const pageStartedAt = new Map<string, number>();
+    if (shouldUseExperimentalParallelPipeline(input.plan)) {
+      issues.push(
+        ...(await executeExperimentalParallelChapter({
+          input,
+          port,
+          chapterId: selection.chapterId,
+          acquired,
+          stages,
+          pageStartedAt,
+          eligiblePageIds,
+          executePages: executeWorkflowPages,
+          executeStage: executeSingleWorkflowStage,
+          resolvePageStart,
+          recordCompletedPageTiming,
+          recordPageTiming,
+        })),
+      );
+      return issues;
+    }
     for (const stage of stages) {
       input.signal.throwIfAborted();
       const chapter = await port.readChapter(selection.chapterId);
@@ -144,6 +165,71 @@ async function executeWorkflowChapter(
   } finally {
     for (const id of acquired) port.releasePage(selection.chapterId, id);
   }
+}
+
+function shouldUseExperimentalParallelPipeline(
+  plan: PageWorkflowPlan,
+): boolean {
+  return (
+    plan.experimentalParallelAcceleration &&
+    experimentalParallelAccelerationIssue(plan) === undefined
+  );
+}
+
+async function executeSingleWorkflowStage(
+  input: PageWorkflowExecution,
+  port: PageWorkflowExecutionPort,
+  chapterId: string,
+  acquired: string[],
+  stage: PageWorkflowStage,
+  pageStartedAt: Map<string, number>,
+  finalStage: boolean,
+  previousIssues: PageWorkflowIssue[],
+): Promise<PageWorkflowIssue[]> {
+  input.signal.throwIfAborted();
+  const chapter = await port.readChapter(chapterId);
+  const pageIds = eligiblePageIds(chapter, acquired, previousIssues, stage);
+  const pendingPageIds = pageIds.filter((pageId) => {
+    const page = chapter.pages.find((candidate) => candidate.id === pageId);
+    return Boolean(
+      page &&
+      !workflowStageComplete(
+        workflowReceipt(input, page),
+        page,
+        stage,
+        input.configurationKeys?.[stage],
+      ),
+    );
+  });
+  await port.prepareStage(
+    stage,
+    chapter,
+    stage === "ocr" ? pendingPageIds : pageIds,
+  );
+  return executeWorkflowPages(
+    input,
+    port,
+    chapter,
+    pageIds,
+    stage,
+    pageStartedAt,
+    finalStage,
+  );
+}
+
+function eligiblePageIds(
+  chapter: ChapterSnapshot,
+  acquired: string[],
+  issues: PageWorkflowIssue[],
+  stage: PageWorkflowStage,
+): string[] {
+  return chapter.pages
+    .map((page) => page.id)
+    .filter(
+      (pageId) =>
+        acquired.includes(pageId) &&
+        !hasFailedDependency(issues, pageId, stage),
+    );
 }
 
 function hasFailedDependency(

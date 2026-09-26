@@ -300,6 +300,10 @@ function normalizeApiProviderProfile(
   return {
     baseUrl: resolveOpenAiCompatibleBaseUrl(source.baseUrl, fallback.baseUrl),
     model: resolveNonEmptyString(source.model, fallback.model),
+    experimentalParallelAcceleration:
+      typeof source.experimentalParallelAcceleration === "boolean"
+        ? source.experimentalParallelAcceleration
+        : (fallback.experimentalParallelAcceleration ?? false),
     ...optionalApiKey(apiKey),
     ...normalizeVertexAuthSettings(source),
     keyMaxAttempts: Math.round(

@@ -93,6 +93,7 @@ export type SettingsFormValues = {
   apiProvider: ApiProviderPresetId;
   apiProfiles: Partial<Record<ApiProviderPresetId, ApiProfileFormValues>>;
   apiModel: string;
+  apiExperimentalParallelAcceleration: boolean;
   apiKey: string;
   apiKeyCount: number;
   apiVertexAuthMode: import("../../../../shared/apiProviderPresets").VertexAuthMode;

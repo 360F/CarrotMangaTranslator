@@ -15,6 +15,8 @@ import {
 import { resolveBlockDisplayText } from "../src/shared/blockDisplayText";
 import { makePage, makeChapter } from "./helpers/workspacePointerFixtures";
 import type { MangaPage } from "../src/shared/libraryTypes";
+import { withTranslationResourceHint } from "../src/main/pageWorkflow/pageWorkflowResourceHints";
+import { resolveDefaultAppSettings } from "../src/main/appSettings";
 
 function harness(
   stages: PageWorkflowStage[],
@@ -67,6 +69,68 @@ function harness(
 }
 
 describe("Hayai page workflow commits", () => {
+  it("overlaps experimental erase compute with serial translation and rebases its commit", async () => {
+    let releaseTranslation!: () => void;
+    const translationGate = new Promise<void>((resolve) => {
+      releaseTranslation = resolve;
+    });
+    let eraseStarted!: () => void;
+    const eraseStart = new Promise<void>((resolve) => {
+      eraseStarted = resolve;
+    });
+    const h = harness(["translate", "erase"], async (stage, _chapter, page) => {
+      if (stage === "erase") {
+        eraseStarted();
+        await translationGate;
+        return { ...page, inpaintedImagePath: "early-clean.png" };
+      }
+      await eraseStart;
+      releaseTranslation();
+      return {
+        ...page,
+        blocks: page.blocks.map((block) => ({
+          ...block,
+          translatedText: "serial translation",
+        })),
+      };
+    });
+    h.input.plan = {
+      ...createPageWorkflowPlan(["translate", "erase"]),
+      experimentalParallelAcceleration: true,
+    };
+
+    const result = await executePageWorkflow(h.input, h.port);
+
+    expect(result.status).toBe("completed");
+    expect(h.page().blocks[0].translatedText).toBe("serial translation");
+    expect(h.page().inpaintedImagePath).toBe("early-clean.png");
+    expect(h.page().pageWorkflow?.steps.translate?.status).toBe("completed");
+    expect(h.page().pageWorkflow?.steps.erase?.status).toBe("completed");
+  });
+  it("does not commit either lane after experimental cancellation", async () => {
+    const h = harness(["translate", "erase"], async (stage, _chapter, page) => {
+      if (stage === "erase") h.abort.abort();
+      return stage === "erase"
+        ? { ...page, inpaintedImagePath: "discarded.png" }
+        : {
+            ...page,
+            blocks: page.blocks.map((block) => ({
+              ...block,
+              translatedText: "discarded translation",
+            })),
+          };
+    });
+    h.input.plan = {
+      ...createPageWorkflowPlan(["translate", "erase"]),
+      experimentalParallelAcceleration: true,
+    };
+
+    expect((await executePageWorkflow(h.input, h.port)).status).toBe(
+      "cancelled",
+    );
+    expect(h.port.save).not.toHaveBeenCalled();
+    expect(h.page().inpaintedImagePath).toBeUndefined();
+  });
   it("records page wall-clock timing only after the final stage save", async () => {
     const h = harness(["ocr", "translate"]);
     const calls: string[] = [];
@@ -334,6 +398,51 @@ describe("Hayai page workflow commits", () => {
 });
 
 describe("page workflow input and preservation", () => {
+  it("takes the experimental opt-in from the active translation API settings", () => {
+    const settings = resolveDefaultAppSettings();
+    settings.modelProvider = "openai-api";
+    settings.api.experimentalParallelAcceleration = true;
+    const request = {
+      plan: createPageWorkflowPlan(["translate", "erase"]),
+      selection: [{ chapterId: "chapter-1", pageIds: ["page-1"] }],
+    };
+
+    expect(
+      withTranslationResourceHint(request, settings).plan
+        .experimentalParallelAcceleration,
+    ).toBe(true);
+    settings.modelProvider = "gemma";
+    expect(
+      withTranslationResourceHint(
+        {
+          ...request,
+          plan: { ...request.plan, experimentalParallelAcceleration: true },
+        },
+        settings,
+      ).plan.experimentalParallelAcceleration,
+    ).toBe(false);
+  });
+  it("rejects experimental overlap when format rules can affect erase", () => {
+    const page = makePage();
+    const chapter = makeChapter(page);
+    const plan = {
+      ...createPageWorkflowPlan(["translate", "erase"]),
+      stages: ["translate", "format-rules", "erase"] as PageWorkflowStage[],
+      experimentalParallelAcceleration: true,
+      rules: { "format-rules": { kind: "scheme" as const, id: "format" } },
+    };
+    const result = preflightPageWorkflow(
+      {
+        plan,
+        selection: [{ chapterId: chapter.id, pageIds: [page.id] }],
+      },
+      [chapter],
+    );
+    expect(result.issues).toContainEqual({
+      chapterId: "",
+      message: "서식 규칙이 선택된 작업에서는 병렬 가속을 사용할 수 없습니다.",
+    });
+  });
   it("blocks translation without source but allows detection plus erasure", () => {
     const page = { ...makePage(), blocks: [] };
     const chapter = makeChapter(page);

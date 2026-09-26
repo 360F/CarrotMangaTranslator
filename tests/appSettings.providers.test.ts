@@ -180,6 +180,7 @@ describeWindows("app settings helpers: model providers", () => {
       api: {
         baseUrl: "http://127.0.0.1:1234/v1",
         model: "local-vision-model",
+        experimentalParallelAcceleration: false,
         apiKey: "sk-test",
         keyMaxAttempts: defaults.api.keyMaxAttempts,
         retryDelaySeconds: defaults.api.retryDelaySeconds,
@@ -195,6 +196,7 @@ describeWindows("app settings helpers: model providers", () => {
           custom: {
             baseUrl: "http://127.0.0.1:1234/v1",
             model: "local-vision-model",
+            experimentalParallelAcceleration: false,
             apiKey: "sk-test",
             keyMaxAttempts: defaults.api.keyMaxAttempts,
             retryDelaySeconds: defaults.api.retryDelaySeconds,
@@ -281,6 +283,7 @@ describeWindows("app settings helpers: model providers", () => {
         api: {
           baseUrl: "https://openrouter.ai/api/v1",
           model: "vision/model",
+          experimentalParallelAcceleration: true,
           temperature: null,
           topP: null,
           topK: 2048,
@@ -293,6 +296,7 @@ describeWindows("app settings helpers: model providers", () => {
     );
 
     expect(stored.api.temperature).toBeNull();
+    expect(stored.api.experimentalParallelAcceleration).toBe(true);
     expect(stored.api.topP).toBeNull();
     expect(stored.api.topK).toBe(1000);
     expect(stored.api.reasoningEffort).toBe("minimal");

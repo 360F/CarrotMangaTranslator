@@ -60,6 +60,29 @@ describe("remote model settings form", () => {
     expect(createSettingsFormValues(saved).apiRequestIntervalSeconds).toBe("5");
     expect(initialSettings.api.requestIntervalSeconds).toBe(0);
   });
+  it("round-trips the parallel acceleration hint with its API provider profile", () => {
+    const initialSettings = resolveDefaultAppSettings({});
+    const values = {
+      ...createSettingsFormValues(initialSettings),
+      modelProvider: "openai-api" as const,
+      apiExperimentalParallelAcceleration: true,
+    };
+    const saved = buildSettingsFromDraft({
+      values,
+      draft: resolveSettingsDraft(values),
+      initialSettings,
+      keybindings: {},
+      blockFormatDefaults: DEFAULT_BLOCK_FORMAT_DEFAULTS,
+    });
+
+    expect(saved.api.experimentalParallelAcceleration).toBe(true);
+    expect(saved.api.profiles?.[saved.api.provider ?? "custom"]).toMatchObject({
+      experimentalParallelAcceleration: true,
+    });
+    expect(
+      createSettingsFormValues(saved).apiExperimentalParallelAcceleration,
+    ).toBe(true);
+  });
   it("keeps the masked API key count for display without saving the metadata", () => {
     const initialSettings = resolveDefaultAppSettings();
     initialSettings.api.apiKey = SETTINGS_SECRET_PRESERVE_SENTINEL;

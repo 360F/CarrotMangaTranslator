@@ -124,6 +124,9 @@ export function preflightPageWorkflow(
     counts: [],
     pageCount: 0,
   };
+  const accelerationIssue = experimentalParallelAccelerationIssue(request.plan);
+  if (accelerationIssue)
+    result.issues.push({ chapterId: "", message: accelerationIssue });
   const pages = collectWorkflowPages(request, chapters, result);
   result.pageCount = pages.length;
   for (const stage of PAGE_WORKFLOW_STAGES.filter((id) =>
@@ -144,6 +147,19 @@ export function preflightPageWorkflow(
     result.counts.push(count);
   }
   return result;
+}
+
+export function experimentalParallelAccelerationIssue(
+  plan: PageWorkflowPlan,
+): string | undefined {
+  if (!plan.experimentalParallelAcceleration) return undefined;
+  if (plan.erasureEngine !== "local")
+    return "병렬 가속은 로컬 Flux 지우기에서만 사용할 수 있습니다.";
+  if (!plan.stages.includes("translate") || !plan.stages.includes("erase"))
+    return "병렬 가속에는 번역과 글자 지우기 단계가 모두 필요합니다.";
+  if (plan.stages.includes("format-rules"))
+    return "서식 규칙이 선택된 작업에서는 병렬 가속을 사용할 수 없습니다.";
+  return undefined;
 }
 
 function workflowPrerequisiteIssue(

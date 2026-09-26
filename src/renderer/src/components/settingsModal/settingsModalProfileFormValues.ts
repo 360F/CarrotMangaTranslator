@@ -32,6 +32,7 @@ import {
 export type ApiProfileFormValues = {
   apiBaseUrl: string;
   apiModel: string;
+  apiExperimentalParallelAcceleration: boolean;
   apiKey: string;
   apiKeyCount: number;
   apiVertexAuthMode: VertexAuthMode;
@@ -118,6 +119,8 @@ function createApiProfileFormValues(
   return {
     apiBaseUrl: profile.baseUrl,
     apiModel: profile.model,
+    apiExperimentalParallelAcceleration:
+      profile.experimentalParallelAcceleration ?? false,
     apiKey: profile.apiKey ?? "",
     apiKeyCount: profile.apiKeyCount ?? 0,
     apiVertexAuthMode: resolveVertexAuthMode(profile, provider),
@@ -162,6 +165,7 @@ export function createDefaultApiProfileFormValues(
       resolveApiProviderBaseUrl({ provider }) ??
       (provider === "google-vertex" ? "" : DEFAULT_API_BASE_URL),
     apiModel: model,
+    apiExperimentalParallelAcceleration: false,
     apiKey: "",
     apiKeyCount: 0,
     apiVertexAuthMode:

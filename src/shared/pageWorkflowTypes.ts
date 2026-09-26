@@ -40,6 +40,7 @@ export const PageWorkflowPlanSchema = z
     autoSize: z.boolean().default(true),
     bubbleLayout: z.boolean().default(true),
     naturalLayout: z.boolean().default(false),
+    experimentalParallelAcceleration: z.boolean().default(false),
     erasureEngine: z.enum(["local", "codex"]).default("local"),
   })
   .strict()

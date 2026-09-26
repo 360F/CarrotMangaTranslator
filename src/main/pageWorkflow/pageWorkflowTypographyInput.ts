@@ -68,7 +68,7 @@ function workflowOcrHints(page: MangaPage) {
   };
 }
 
-function workflowOverlayItems(page: MangaPage): OverlayItem[] {
+export function workflowOverlayItems(page: MangaPage): OverlayItem[] {
   const items: OverlayItem[] = page.blocks.map((block, index) => ({
     id: index + 1,
     candidateIds: [index + 1],

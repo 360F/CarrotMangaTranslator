@@ -81,6 +81,7 @@ type BuildSettingsFromFormInput = {
   apiProvider: ApiProviderPresetId;
   apiProfiles: AppSettings["api"]["profiles"];
   apiModel: string;
+  apiExperimentalParallelAcceleration: boolean;
   apiKey: string;
   apiVertexAuthMode: import("../../../shared/apiProviderPresets").VertexAuthMode;
   apiVertexServiceAccountPath: string;
@@ -225,6 +226,7 @@ function buildApiSettings(input: BuildSettingsFromFormInput) {
   const activeProfile = {
     baseUrl: input.apiBaseUrl || input.initialSettings.api.baseUrl,
     model: input.apiModel || input.initialSettings.api.model,
+    experimentalParallelAcceleration: input.apiExperimentalParallelAcceleration,
     ...(input.apiKey ? { apiKey: input.apiKey } : {}),
     vertexAuthMode: input.apiVertexAuthMode,
     ...(input.apiVertexServiceAccountPath

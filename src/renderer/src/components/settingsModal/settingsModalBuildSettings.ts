@@ -74,10 +74,32 @@ export function buildSettingsFromDraft({
     codexImageModel: values.codexImageModel,
     codexImageGenerationModel: values.codexImageGenerationModel,
     ...buildInternetResearchFields(draft, values),
+    ...buildTranslationApiFields(draft, values, initialSettings),
+    ocrDevice: values.ocrDevice,
+    ocrPipeline: values.ocrPipeline,
+    ocrGpuBackend: values.ocrGpuBackend,
+    ocrQualityMode: values.ocrQualityMode,
+    inpaintingModel: values.inpaintingModel,
+    fluxBackend: values.fluxBackend,
+    allowUnsafeLowMemoryFlux: values.allowUnsafeLowMemoryFlux,
+    bubbleLayoutPaddingRatio: values.bubbleLayoutPaddingRatio,
+    maxTokens: draft.parsedMaxTokens,
+    ctx: draft.parsedContextTokens,
+  });
+}
+
+function buildTranslationApiFields(
+  draft: SettingsDraft,
+  values: SettingsFormValues,
+  initialSettings: AppSettings,
+) {
+  return {
     apiBaseUrl: draft.normalizedApiBaseUrl ?? initialSettings.api.baseUrl,
     apiProvider: values.apiProvider,
     apiProfiles: buildApiProfiles(values, initialSettings),
     apiModel: draft.trimmedApiModel,
+    apiExperimentalParallelAcceleration:
+      values.apiExperimentalParallelAcceleration,
     apiKey: draft.trimmedApiKey,
     apiVertexAuthMode: values.apiVertexAuthMode,
     apiVertexServiceAccountPath: draft.trimmedApiVertexServiceAccountPath,
@@ -90,17 +112,7 @@ export function buildSettingsFromDraft({
     apiReasoningEffort: values.apiReasoningEffort || null,
     apiExtraBodyJson: values.apiExtraBodyJson.trim(),
     apiCustomHeadersJson: values.apiCustomHeadersJson.trim(),
-    ocrDevice: values.ocrDevice,
-    ocrPipeline: values.ocrPipeline,
-    ocrGpuBackend: values.ocrGpuBackend,
-    ocrQualityMode: values.ocrQualityMode,
-    inpaintingModel: values.inpaintingModel,
-    fluxBackend: values.fluxBackend,
-    allowUnsafeLowMemoryFlux: values.allowUnsafeLowMemoryFlux,
-    bubbleLayoutPaddingRatio: values.bubbleLayoutPaddingRatio,
-    maxTokens: draft.parsedMaxTokens,
-    ctx: draft.parsedContextTokens,
-  });
+  };
 }
 
 function buildInternetResearchFields(
@@ -162,6 +174,8 @@ function parseApiProfile(
   return {
     baseUrl,
     model,
+    experimentalParallelAcceleration:
+      profile.apiExperimentalParallelAcceleration,
     ...(apiKey ? { apiKey } : {}),
     vertexAuthMode: profile.apiVertexAuthMode,
     ...(profile.apiVertexServiceAccountPath.trim()

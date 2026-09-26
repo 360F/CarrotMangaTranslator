@@ -34,6 +34,7 @@ export const ApiProviderProfileSettingsSchema = z
   .object({
     baseUrl: OpenAiCompatibleBaseUrlSchema,
     model: z.string().min(1).max(200),
+    experimentalParallelAcceleration: z.boolean().optional(),
     apiKey: z.string().max(MAX_API_KEYS_TEXT_LENGTH).optional(),
     apiKeyCount: z.number().int().min(0).max(MAX_API_KEYS).optional(),
     vertexAuthMode: z.enum(["access-token", "service-account"]).optional(),

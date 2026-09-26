@@ -2121,6 +2121,10 @@
       "keyMaxAttempts": "キーごとの最大試行回数",
       "retryDelaySeconds": "再試行の待機時間（秒）",
       "retryDescription": "失敗時は次のキーで再試行します。",
+      "parallelAcceleration": {
+        "label": "並列高速化［実験的］",
+        "description": "翻訳モデルが別のデバイスで動作する場合、翻訳と原文消去を同時に処理します。"
+      },
       "advanced": {
         "title": "API詳細設定",
         "description": "空欄：提供元の既定値",

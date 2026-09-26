@@ -24,6 +24,7 @@ type PageWorkflowJobContext = TranslationJobContext & { appPaths: AppPaths };
 import type { AppSettings } from "../../shared/settingsTypes";
 import type { JobEvent } from "../../shared/jobTypes";
 import { createPageProcessingTimingCollector } from "../pipeline/pageProcessingTiming";
+import { withTranslationResourceHint } from "../pageWorkflow/pageWorkflowResourceHints";
 
 export async function startPageWorkflowJob(
   context: PageWorkflowJobContext,
@@ -32,7 +33,10 @@ export async function startPageWorkflowJob(
 ): Promise<PageWorkflowResult> {
   if (settings.ocr.pipeline !== "hayai")
     throw new Error("페이지 작업은 HayaiOCR에서만 실행할 수 있습니다.");
-  const run = await preparePageWorkflowRun(context.appPaths.dataRoot, request);
+  const run = await preparePageWorkflowRun(
+    context.appPaths.dataRoot,
+    withTranslationResourceHint(request, settings),
+  );
   const chapters = await Promise.all(
     run.request.selection.map((s) => openChapter(s.chapterId)),
   );

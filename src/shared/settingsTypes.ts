@@ -119,6 +119,8 @@ type CodexSettings = {
 export type ApiProviderProfileSettings = {
   baseUrl: string;
   model: string;
+  /** The translation API does not contend with the local image compute device. */
+  experimentalParallelAcceleration?: boolean;
   /** Newline-delimited keys. A single legacy key remains valid. */
   apiKey?: string;
   /** Renderer-only count supplied when saved keys are masked. Never persisted. */

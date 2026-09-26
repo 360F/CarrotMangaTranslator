@@ -8,6 +8,7 @@ import { ApiProviderConnectionFields } from "./ApiProviderConnectionFields";
 import { SettingsNumberField } from "./SettingsNumberField";
 import { Field } from "../ui/Field";
 import { Select } from "../ui/Select";
+import { CheckboxField } from "../ui/CheckboxField";
 
 export type ApiSettingsFieldsProps = Pick<
   EngineSettingsPanelProps,
@@ -23,6 +24,7 @@ export type ApiSettingsFieldsProps = Pick<
   | "apiRetryDelaySeconds"
   | "apiRequestIntervalSeconds"
   | "apiModel"
+  | "apiExperimentalParallelAcceleration"
   | "apiReasoningEffort"
   | "apiTemperature"
   | "apiTopK"
@@ -40,6 +42,7 @@ export type ApiSettingsFieldsProps = Pick<
   | "setApiRetryDelaySeconds"
   | "setApiRequestIntervalSeconds"
   | "setApiModel"
+  | "setApiExperimentalParallelAcceleration"
   | "setApiReasoningEffort"
   | "setApiTemperature"
   | "setApiTopK"
@@ -53,8 +56,36 @@ export function ApiSettingsFields(
   return (
     <>
       <ApiProviderConnectionFields {...props} />
+      <ParallelAccelerationField {...props} />
       <ApiAdvancedRequestFields {...props} />
     </>
+  );
+}
+
+function ParallelAccelerationField({
+  apiExperimentalParallelAcceleration,
+  clearTestState,
+  controlsBusy,
+  setApiExperimentalParallelAcceleration,
+}: ApiSettingsFieldsProps): React.JSX.Element {
+  const { t } = useTranslation("components");
+  const descriptionId = React.useId();
+  return (
+    <section className="settings-subsection">
+      <CheckboxField
+        ariaDescribedBy={descriptionId}
+        checked={apiExperimentalParallelAcceleration}
+        disabled={controlsBusy}
+        label={t("settings.api.parallelAcceleration.label")}
+        onCheckedChange={(checked) => {
+          clearTestState();
+          setApiExperimentalParallelAcceleration(checked);
+        }}
+      />
+      <p id={descriptionId} className="muted-line modal-note">
+        {t("settings.api.parallelAcceleration.description")}
+      </p>
+    </section>
   );
 }
 

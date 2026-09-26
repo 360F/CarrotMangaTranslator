@@ -42,6 +42,7 @@ export function resolveDefaultApiSettings(
       env.MANGA_TRANSLATOR_API_MODEL,
       DEFAULT_API_MODEL,
     ),
+    experimentalParallelAcceleration: false,
     keyMaxAttempts: Math.round(
       resolveNumberRange(
         env.MANGA_TRANSLATOR_API_KEY_MAX_ATTEMPTS,

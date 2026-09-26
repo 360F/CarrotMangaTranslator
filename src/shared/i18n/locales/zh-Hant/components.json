@@ -2121,6 +2121,10 @@
       "keyMaxAttempts": "每個金鑰的最大嘗試次數",
       "retryDelaySeconds": "重試等待時間（秒）",
       "retryDescription": "失敗時使用下一個金鑰重試。",
+      "parallelAcceleration": {
+        "label": "平行加速［實驗性］",
+        "description": "當翻譯模型在獨立裝置上執行時，同時進行翻譯與原文移除。"
+      },
       "advanced": {
         "title": "進階 API 設定",
         "description": "留空：服務商預設值",

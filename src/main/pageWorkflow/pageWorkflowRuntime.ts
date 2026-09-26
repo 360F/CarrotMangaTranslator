@@ -18,11 +18,16 @@ import type { PageWorkflowContextCommit } from "../application/pageWorkflowConte
 import { savePageWorkflowResult } from "../library";
 import { measurePageProcessingStage } from "../pipeline/pageProcessingTiming";
 import type { OcrBboxResult } from "../pipeline/types";
+import {
+  prepareSourceErasePage,
+  type PreparedSourceErasePage,
+} from "./sourceEraseScale";
 
 export function createPageWorkflowRuntime(context: PageWorkflowRuntimeContext) {
   const typography = createWorkflowTypography(context);
   let pending: PageWorkflowContextCommit = {};
   let preparedOcr = new Map<string, PreparedWorkflowOcrPage>();
+  let preparedSourceErase = new Map<string, PreparedSourceErasePage>();
   let disposal: Promise<void> | undefined;
   context.dependencies.pageContext = {
     saveChapterStoryMemory: async (memory) => {
@@ -35,12 +40,8 @@ export function createPageWorkflowRuntime(context: PageWorkflowRuntimeContext) {
     },
   };
   return {
-    restoreCompletedStage: async (
-      stage: PageWorkflowStage,
-      page: MangaPage,
-    ) => {
-      if (stage === "typography") await typography.apply(page);
-    },
+    restoreCompletedStage: (stage: PageWorkflowStage, page: MangaPage) =>
+      restoreCompletedStage(typography, stage, page),
     save: async (chapterId: string, before: MangaPage, after: MangaPage) => {
       const commit =
         after.pageWorkflow?.steps.translate?.status === "completed"
@@ -62,20 +63,29 @@ export function createPageWorkflowRuntime(context: PageWorkflowRuntimeContext) {
         chapter,
         pageIds,
       );
+      preparedSourceErase = await prepareSourceErasePages(
+        context,
+        preparedSourceErase,
+        stage,
+        chapter,
+        pageIds,
+      );
     },
     execute: (
       stage: PageWorkflowStage,
       chapter: ChapterSnapshot,
       page: MangaPage,
     ) => {
-      pending = {};
+      if (shouldResetPending(context, stage)) pending = {};
       return executeWorkflowStage(
         context,
         typography,
         preparedOcr,
         stage,
         chapter,
-        page,
+        stage === "erase"
+          ? (preparedSourceErase.get(page.id)?.page ?? page)
+          : page,
       );
     },
     recordPageTiming: (
@@ -89,6 +99,42 @@ export function createPageWorkflowRuntime(context: PageWorkflowRuntimeContext) {
         context.dependencies.fontMatching.pageInference?.dispose?.(),
       )),
   };
+}
+
+function shouldResetPending(
+  context: PageWorkflowRuntimeContext,
+  stage: PageWorkflowStage,
+): boolean {
+  return (
+    !context.plan.experimentalParallelAcceleration || stage === "translate"
+  );
+}
+
+async function restoreCompletedStage(
+  typography: ReturnType<typeof createWorkflowTypography>,
+  stage: PageWorkflowStage,
+  page: MangaPage,
+): Promise<void> {
+  if (stage === "typography") await typography.apply(page);
+}
+
+async function prepareSourceErasePages(
+  context: PageWorkflowRuntimeContext,
+  current: Map<string, PreparedSourceErasePage>,
+  stage: PageWorkflowStage,
+  chapter: ChapterSnapshot,
+  pageIds: string[],
+): Promise<Map<string, PreparedSourceErasePage>> {
+  if (stage !== "erase" || !context.plan.experimentalParallelAcceleration)
+    return current;
+  const prepared = new Map<string, PreparedSourceErasePage>();
+  for (const pageId of pageIds) {
+    context.signal.throwIfAborted();
+    const page = chapter.pages.find((candidate) => candidate.id === pageId);
+    if (page)
+      prepared.set(pageId, await prepareSourceErasePage(page, context.signal));
+  }
+  return prepared;
 }
 
 async function executeWorkflowStage(

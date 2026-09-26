@@ -215,6 +215,10 @@ function createApiFormSetters(
     setApiProvider: createApiProviderDispatch(setValues),
     setApiBaseUrl: createFormFieldDispatch(setValues, "apiBaseUrl"),
     setApiModel: createFormFieldDispatch(setValues, "apiModel"),
+    setApiExperimentalParallelAcceleration: createFormFieldDispatch(
+      setValues,
+      "apiExperimentalParallelAcceleration",
+    ),
     setApiKey: createFormFieldDispatch(setValues, "apiKey"),
     setApiVertexAuthMode: createFormFieldDispatch(
       setValues,
@@ -370,6 +374,8 @@ function readActiveApiProfile(
   return {
     apiBaseUrl: values.apiBaseUrl,
     apiModel: values.apiModel,
+    apiExperimentalParallelAcceleration:
+      values.apiExperimentalParallelAcceleration,
     apiKey: values.apiKey,
     apiKeyCount: values.apiKeyCount,
     apiVertexAuthMode: values.apiVertexAuthMode,

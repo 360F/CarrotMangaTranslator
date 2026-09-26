@@ -2121,6 +2121,10 @@
       "keyMaxAttempts": "Maximum attempts per key",
       "retryDelaySeconds": "Retry delay (seconds)",
       "retryDescription": "On failure, retry with the next key.",
+      "parallelAcceleration": {
+        "label": "Parallel acceleration [Experimental]",
+        "description": "Run translation and source-text removal concurrently when the translation model uses a separate device."
+      },
       "advanced": {
         "title": "Advanced API settings",
         "description": "Blank: provider default",

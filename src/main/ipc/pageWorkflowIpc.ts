@@ -11,6 +11,7 @@ import { readPageWorkflowRun } from "../pageWorkflowRunStore";
 import { startPageWorkflowJob } from "../jobs/pageWorkflowJob";
 import { trustedHandleContract } from "./trustedIpc";
 import type { IpcContext } from "./context";
+import { withTranslationResourceHint } from "../pageWorkflow/pageWorkflowResourceHints";
 
 export function registerPageWorkflowIpc(context: IpcContext): void {
   trustedHandleContract(
@@ -23,7 +24,10 @@ export function registerPageWorkflowIpc(context: IpcContext): void {
             request.resumeRunId,
           )
         : null;
-      const resolved = previous?.request ?? request;
+      const resolved = withTranslationResourceHint(
+        previous?.request ?? request,
+        await getAppSettings(context.appPaths),
+      );
       const chapters = await Promise.all(
         resolved.selection.map((s) => openChapter(s.chapterId)),
       );

@@ -23,6 +23,7 @@ export type EngineSettingsPanelProps = {
   apiRetryDelaySeconds: string;
   apiRequestIntervalSeconds: string;
   apiModel: string;
+  apiExperimentalParallelAcceleration: boolean;
   apiTemperature: string;
   apiTopP: string;
   apiTopK: string;
@@ -99,6 +100,9 @@ export type EngineSettingsPanelProps = {
   setApiRetryDelaySeconds: React.Dispatch<React.SetStateAction<string>>;
   setApiRequestIntervalSeconds: React.Dispatch<React.SetStateAction<string>>;
   setApiModel: React.Dispatch<React.SetStateAction<string>>;
+  setApiExperimentalParallelAcceleration: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   setApiReasoningEffort: React.Dispatch<
     React.SetStateAction<ApiReasoningEffort | "">
   >;
