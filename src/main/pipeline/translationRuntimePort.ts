@@ -25,6 +25,9 @@ export type TranslationRuntimePort = {
   collectPreparedHayaiHints?: (
     options: TranslationOptions,
   ) => Promise<OcrBboxResult>;
+  collectPreparedHayaiHintsBatch?: (
+    options: TranslationOptions[],
+  ) => Promise<OcrBboxResult[]>;
   isModelCached: (options: TranslationOptions) => boolean;
   startEndpointSession: (
     options: TranslationOptions,
@@ -139,6 +142,13 @@ export function createTranslationRuntimePort({
       await hayaiRegionPrepass.releaseDetectorResources("prepared-hayai-ocr");
       return runtime.simplePage.collectOcrBboxHints(options);
     },
+    collectPreparedHayaiHintsBatch: (optionsList) =>
+      collectPreparedHayaiHintsBatch({
+        gpuMemory,
+        hayaiRegionPrepass,
+        runtime,
+        optionsList,
+      }),
     collectOcrHints: (options) =>
       collectOcrHints({
         gpuMemory,
@@ -177,6 +187,31 @@ export function createTranslationRuntimePort({
   };
 }
 
+async function collectPreparedHayaiHintsBatch({
+  gpuMemory,
+  hayaiRegionPrepass,
+  runtime,
+  optionsList,
+}: {
+  gpuMemory: GpuMemoryCoordinator;
+  hayaiRegionPrepass: HayaiOcrRegionPrepassPort;
+  runtime: RuntimeModules;
+  optionsList: TranslationOptions[];
+}): Promise<OcrBboxResult[]> {
+  assertUniformOcrBatchProfile(optionsList);
+  if (
+    optionsList.some(
+      (options) =>
+        !isHayaiOcrPipeline(options.ocrPipeline) || !options.ocrBboxRegionsPath,
+    )
+  )
+    throw new Error("HayaiOCR fixed-region batch input is required.");
+  await releaseGpuBeforeOcr(gpuMemory, optionsList);
+  await hayaiRegionPrepass.releaseDetectorResources("prepared-hayai-ocr-batch");
+  return runtime.simplePage.collectOcrBboxHintsBatch
+    ? runtime.simplePage.collectOcrBboxHintsBatch(optionsList)
+    : collectSequentialOcr(runtime, optionsList);
+}
 async function collectOcrHints({
   gpuMemory,
   groupingEvidence,

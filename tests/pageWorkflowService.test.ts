@@ -184,6 +184,36 @@ describe("Hayai page workflow commits", () => {
       vi.mocked(h.port.execute).mock.calls.map(([stage]) => stage),
     ).toEqual(["translate"]);
   });
+  it("excludes completed receipt pages from stage preparation", async () => {
+    const h = harness(["ocr"]);
+    await executePageWorkflow(h.input, h.port);
+    vi.mocked(h.port.prepareStage).mockClear();
+
+    await executePageWorkflow(h.input, h.port);
+
+    expect(h.port.prepareStage).toHaveBeenCalledWith(
+      "ocr",
+      expect.anything(),
+      [],
+    );
+    expect(h.port.execute).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not execute or save pages when stage preparation fails", async () => {
+    const h = harness(["ocr"]);
+    vi.mocked(h.port.prepareStage).mockRejectedValue(
+      new Error("batch OCR failed"),
+    );
+
+    const result = await executePageWorkflow(h.input, h.port);
+
+    expect(result.status).toBe("failed");
+    expect(result.issues).toEqual([
+      { chapterId: "", message: "batch OCR failed" },
+    ]);
+    expect(h.port.execute).not.toHaveBeenCalled();
+    expect(h.port.save).not.toHaveBeenCalled();
+  });
   it("executes fixed order and does not repeat edits after downstream changes and restart", async () => {
     const h = harness(
       ["format-rules", "ocr", "translate"],

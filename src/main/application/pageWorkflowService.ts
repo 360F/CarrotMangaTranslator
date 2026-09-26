@@ -114,7 +114,21 @@ async function executeWorkflowChapter(
           (id) =>
             acquired.includes(id) && !hasFailedDependency(issues, id, stage),
         );
-      await port.prepareStage(stage, chapter, pageIds);
+      const pendingPageIds = pageIds.filter((pageId) => {
+        const page = chapter.pages.find((candidate) => candidate.id === pageId);
+        if (!page) return false;
+        return !workflowStageComplete(
+          workflowReceipt(input, page),
+          page,
+          stage,
+          input.configurationKeys?.[stage],
+        );
+      });
+      await port.prepareStage(
+        stage,
+        chapter,
+        stage === "ocr" ? pendingPageIds : pageIds,
+      );
       const stageIssues = await executeWorkflowPages(
         input,
         port,

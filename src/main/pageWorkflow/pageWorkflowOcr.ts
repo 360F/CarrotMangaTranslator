@@ -5,6 +5,7 @@ import { WorkflowRecognitionSegmentSchema } from "../../shared/pageWorkflowBlock
 import { join } from "node:path";
 import type { MangaPage } from "../../shared/libraryTypes";
 import type { PageWorkflowPlan } from "../../shared/pageWorkflowTypes";
+import { createPageRevision } from "../../shared/pageRevision";
 import { pixelsToBbox } from "../../shared/bboxNormalization";
 import {
   workflowRegionKey,
@@ -16,6 +17,7 @@ import { prepareHayaiRegions } from "../textDetection/hayaiRegionPrepass";
 import type { HayaiRegionManifest } from "../textDetection/hayaiRegionGeometry";
 import type { TranslationOptions } from "../appSettings";
 import type { TranslationRuntimePort } from "../pipeline/translationRuntimePort";
+import type { OcrBboxResult } from "../pipeline/types";
 import { buildKeepBlocksOcrResult } from "../pipeline/keepBlocksResult";
 
 export async function detectWorkflowBlocks(
@@ -89,24 +91,45 @@ export async function detectWorkflowBlocks(
   };
 }
 
-export async function readWorkflowSource(
+export type PreparedWorkflowOcrInput = {
+  inputKey: string;
+  options: TranslationOptions;
+  pageId: string;
+  pageRevision: string;
+  targetBlockIds: string[];
+};
+
+export async function prepareWorkflowOcrInput(
   page: MangaPage,
   options: TranslationOptions,
   plan: PageWorkflowPlan,
-  runtime: TranslationRuntimePort,
-): Promise<MangaPage> {
+): Promise<PreparedWorkflowOcrInput | null> {
   const targets = workflowTargetBlocks(page, "ocr", plan);
-  if (!targets.length) return page;
-  if (!runtime.collectPreparedHayaiHints)
-    throw new Error("HayaiOCR 고정 영역 판독을 사용할 수 없습니다.");
+  if (!targets.length) return null;
   const manifest = manifestForBlocks(page, targets);
   await mkdir(options.outputDir, { recursive: true });
   const path = join(options.outputDir, "workflow-regions.json");
   await writeFile(path, JSON.stringify(manifest), "utf8");
-  const result = await runtime.collectPreparedHayaiHints({
-    ...options,
-    ocrBboxRegionsPath: path,
-  });
+  return {
+    inputKey: workflowStageKey(page, "ocr"),
+    options: { ...options, ocrBboxRegionsPath: path },
+    pageId: page.id,
+    pageRevision: createPageRevision(page),
+    targetBlockIds: targets.map((block) => block.id),
+  };
+}
+
+export function applyWorkflowOcrResult(
+  page: MangaPage,
+  prepared: PreparedWorkflowOcrInput,
+  result: OcrBboxResult,
+): MangaPage {
+  if (
+    page.id !== prepared.pageId ||
+    createPageRevision(page) !== prepared.pageRevision ||
+    workflowStageKey(page, "ocr") !== prepared.inputKey
+  )
+    throw new Error("The page changed after HayaiOCR batch preparation.");
   const hints = z
     .array(
       z.object({
@@ -120,10 +143,13 @@ export async function readWorkflowSource(
     .parse(result.hints);
   const byId = new Map(hints.map((hint) => [hint.id, hint]));
   const recognized = new Map(
-    targets.map((block, index) => [block.id, byId.get(index + 1)]),
+    prepared.targetBlockIds.map((blockId, index) => [
+      blockId,
+      byId.get(index + 1),
+    ]),
   );
-  if (targets.some((block) => !recognized.get(block.id)))
-    throw new Error("일부 블록의 OCR 결과가 누락되었습니다.");
+  if (prepared.targetBlockIds.some((blockId) => !recognized.get(blockId)))
+    throw new Error("A dialogue block is missing its OCR result.");
   return {
     ...page,
     blocks: page.blocks.map((block) => {
@@ -143,6 +169,20 @@ export async function readWorkflowSource(
       };
     }),
   };
+}
+
+export async function readWorkflowSource(
+  page: MangaPage,
+  options: TranslationOptions,
+  plan: PageWorkflowPlan,
+  runtime: TranslationRuntimePort,
+): Promise<MangaPage> {
+  const prepared = await prepareWorkflowOcrInput(page, options, plan);
+  if (!prepared) return page;
+  if (!runtime.collectPreparedHayaiHints)
+    throw new Error("HayaiOCR fixed-region recognition is unavailable.");
+  const result = await runtime.collectPreparedHayaiHints(prepared.options);
+  return applyWorkflowOcrResult(page, prepared, result);
 }
 
 function manifestForBlocks(

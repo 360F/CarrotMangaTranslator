@@ -220,6 +220,36 @@ describe("translationRuntimePort GPU OCR preparation", () => {
     expect(calls).toEqual(["dispose", "ocr-batch"]);
   });
 
+  it("batches already prepared Hayai manifests without running detection", async () => {
+    const { port, prepareDetectorRegions, releaseDetectorResources, calls } =
+      createPortWithStubs();
+    const options = [
+      makeOcrOptions({
+        ocrPipeline: "hayai",
+        ocrBboxProvider: "hayai-regions",
+        ocrBboxRegionsPath: "C:/runs/page-1/workflow-regions.json",
+      }),
+      makeOcrOptions({
+        imagePath: "C:/pages/page-2.png",
+        outputDir: "C:/runs/page-2",
+        ocrPipeline: "hayai",
+        ocrBboxProvider: "hayai-regions",
+        ocrBboxRegionsPath: "C:/runs/page-2/workflow-regions.json",
+      }),
+    ];
+
+    await port.collectPreparedHayaiHintsBatch?.(options);
+
+    expect(prepareDetectorRegions).not.toHaveBeenCalled();
+    expect(releaseDetectorResources).toHaveBeenCalledWith(
+      "prepared-hayai-ocr-batch",
+    );
+    expect(calls).toEqual([
+      "dispose",
+      "detector-release:prepared-hayai-ocr-batch",
+      "ocr-batch",
+    ]);
+  });
   it("runs every detector page, releases it, runs HayaiOCR, then waits for OCR closure before Gemma", async () => {
     const {
       port,

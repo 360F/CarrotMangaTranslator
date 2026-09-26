@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { readFile } from "node:fs/promises";
 import {
   detectWorkflowBlocks,
+  prepareWorkflowOcrInput,
   readWorkflowSource,
 } from "../src/main/pageWorkflow/pageWorkflowOcr";
 import {
@@ -29,6 +30,7 @@ import {
   workflowStageKey,
 } from "../src/shared/pageWorkflowPolicy";
 import type { PageWorkflowRuntimeContext } from "../src/main/pageWorkflow/pageWorkflowRuntimeTypes";
+import { createPageWorkflowRuntime } from "../src/main/pageWorkflow/pageWorkflowRuntime";
 import { makePage, makeChapter } from "./helpers/workspacePointerFixtures";
 import {
   basePipelineOptions,
@@ -132,6 +134,102 @@ describe("independent Hayai workflow adapters", () => {
     expect(estimateSourceFontSizeForItem(raster, after)).toEqual(estimate);
   });
 
+  it("batches prepared workflow manifests once and maps results by page", async () => {
+    const f = await fixture();
+    const second = {
+      ...structuredClone(f.page),
+      id: "page-2",
+      imagePath: "C:/pages/page-2.png",
+      name: "Page 2",
+    };
+    const chapter = { ...makeChapter(f.page), pages: [f.page, second] };
+    const single = vi.fn();
+    const batch = vi.fn(
+      async (
+        optionsList: import("../src/main/appSettings").TranslationOptions[],
+      ) =>
+        Promise.all(
+          optionsList.map(async (options, index) => {
+            const regionsPath = options.ocrBboxRegionsPath;
+            if (!regionsPath)
+              throw new Error("Expected workflow regions path.");
+            const manifest = JSON.parse(await readFile(regionsPath, "utf8"));
+            expect(manifest.effectRegions).toEqual([]);
+            return {
+              diagnostics: [],
+              hints: [{ id: 1, ocrText: `page ${index + 1}` }],
+              noTextDetected: false,
+              textEvidenceCount: 1,
+            };
+          }),
+        ),
+    );
+    const runtime = createPageWorkflowRuntime({
+      ...f.context,
+      dependencies: {
+        ...f.context.dependencies,
+        runtime: {
+          ...f.context.dependencies.runtime,
+          collectPreparedHayaiHints: single,
+          collectPreparedHayaiHintsBatch: batch,
+        },
+      },
+    });
+
+    await runtime.prepareStage(
+      "ocr",
+      chapter,
+      chapter.pages.map((page) => page.id),
+    );
+    await expect(
+      runtime.execute("ocr", chapter, {
+        ...chapter.pages[0],
+        blocks: chapter.pages[0].blocks.map((block) => ({
+          ...block,
+          translatedText: "changed after preparation",
+        })),
+      }),
+    ).rejects.toThrow("changed after HayaiOCR batch preparation");
+    const results = await Promise.all(
+      chapter.pages.map((page) => runtime.execute("ocr", chapter, page)),
+    );
+
+    expect(batch).toHaveBeenCalledOnce();
+    expect(batch.mock.calls[0][0]).toHaveLength(2);
+    expect(single).not.toHaveBeenCalled();
+    expect(results.map((page) => page.blocks[0].sourceText)).toEqual([
+      "page 1",
+      "page 2",
+    ]);
+  });
+  it("preserves recognition boxes and excludes effects in workflow manifests", async () => {
+    const f = await fixture();
+    const block = f.page.blocks[0];
+    block.workflowOrigin = {
+      geometryKey: workflowRegionKey(f.page, block),
+      recognitionBboxes: [
+        [100, 100, 200, 200],
+        [200, 100, 300, 200],
+      ],
+      initialFontSize: block.fontSizePx,
+      initialFontFamily: block.fontFamily,
+    };
+
+    const prepared = await prepareWorkflowOcrInput(
+      f.page,
+      f.options,
+      f.context.plan,
+    );
+    if (!prepared) throw new Error("Expected a prepared OCR input.");
+    const regionsPath = prepared.options.ocrBboxRegionsPath;
+    if (!regionsPath) throw new Error("Expected workflow regions path.");
+    const manifest = JSON.parse(await readFile(regionsPath, "utf8"));
+
+    expect(manifest.dialogueRegions[0].recognitionBboxes).toEqual(
+      block.workflowOrigin.recognitionBboxes,
+    );
+    expect(manifest.effectRegions).toEqual([]);
+  });
   it("reads only missing source at existing geometry without translation or detection", async () => {
     const f = await fixture();
     f.page.inpaintedImagePath = "saved-clean.png";
