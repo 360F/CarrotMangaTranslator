@@ -2,7 +2,10 @@ import type {
   PageWorkflowRequest,
   PageWorkflowResult,
 } from "../../shared/pageWorkflowTypes";
-import { PAGE_WORKFLOW_STAGE_LABELS } from "../../shared/pageWorkflowStages";
+import {
+  workflowCompletionEvent,
+  workflowStageProgressEvent,
+} from "./pageWorkflowJobEvents";
 import { preflightPageWorkflow } from "../../shared/pageWorkflowPolicy";
 import { executePageWorkflow } from "../application/pageWorkflowService";
 import { getRunPaths, openChapter } from "../library";
@@ -131,7 +134,10 @@ async function runWorkflowJob({
         [{ kind: "work-context", scope: chapter.workId, access: "write" }],
       );
     let current = 0;
-    const total = preflight.pageCount * run.request.plan.stages.length;
+    // progressCurrent/progressTotal count page×stage work units for the bar;
+    // pageTotal is the real selected page count for page-count UI.
+    const pageTotal = preflight.pageCount;
+    const total = pageTotal * run.request.plan.stages.length;
     const result = await executePageWorkflow(
       {
         runId: run.id,
@@ -148,18 +154,16 @@ async function runWorkflowJob({
           releaseJobPage(context.jobs, run.id, chapterId, pageId),
         isFatal: isNonRetriableRuntimeError,
         progress: (stage, page) =>
-          emit({
-            id: run.id,
-            kind: "gemma-analysis",
-            status: "running",
-            phase: "model_requesting",
-            progressText: `${PAGE_WORKFLOW_STAGE_LABELS[stage]} · ${page.name}`,
-            progressCurrent: current++,
-            progressTotal: total,
-          }),
+          emit(
+            workflowStageProgressEvent(run.id, stage, page.name, {
+              current: current++,
+              total,
+              pageTotal,
+            }),
+          ),
       },
     );
-    emitWorkflowCompletion(emit, run.id, result, total);
+    emit(workflowCompletionEvent(run.id, result, { total, pageTotal }));
     return result;
   } finally {
     await runtime.dispose();
@@ -179,23 +183,6 @@ function createWorkflowTiming(
       .map((page) => page.id);
   });
   return createPageProcessingTimingCollector(run.id, pageIds);
-}
-
-function emitWorkflowCompletion(
-  emit: (event: JobEvent) => void,
-  id: string,
-  result: PageWorkflowResult,
-  total: number,
-) {
-  emit({
-    id,
-    kind: "gemma-analysis",
-    status: result.status === "partial" ? "failed" : result.status,
-    phase: "done",
-    progressText: result.issues[0]?.message ?? "페이지 작업 완료",
-    progressCurrent: total,
-    progressTotal: total,
-  });
 }
 
 async function runWorkflowJobSafely(

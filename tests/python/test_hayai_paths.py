@@ -23,7 +23,8 @@ def load_file_pipeline():
     functions = {
         "main", "parse_args", "runtime_path", "read_batch_items",
         "normalize_batch_item", "read_json", "emit_progress", "process_page",
-        "require_regions",
+        "require_regions", "first_pass_boxes", "retry_boxes", "recognize_work",
+        "with_ocr_health", "ocr_subdivision_mode",
     }
     nodes = [ast.ImportFrom(module="__future__", names=[ast.alias(name="annotations")], level=0)]
     nodes.extend(node for node in tree.body if (

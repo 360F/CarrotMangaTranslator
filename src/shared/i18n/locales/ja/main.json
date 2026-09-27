@@ -255,6 +255,7 @@
     },
     "errors": {
       "bboxMissing": "{{page}}：バウンディングボックス結果を作成できませんでした。",
+      "ocrCheck": "{{page}}：OCR CHECK — HayaiOCRが{{count}}個のブロックで生成上限に達し、復元できませんでした。原文を確認してから再実行してください。",
       "responseParse": "{{page}}：モデル応答を構造化形式として解析できませんでした。preview={{preview}} cause={{cause}}"
     }
   },

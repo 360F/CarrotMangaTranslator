@@ -255,6 +255,7 @@
     },
     "errors": {
       "bboxMissing": "{{page}}: Could not produce bounding-box results.",
+      "ocrCheck": "{{page}}: OCR CHECK — HayaiOCR exhausted its generation budget on {{count}} block(s) and could not recover them. Check the source text and run again.",
       "responseParse": "{{page}}: Could not parse the model response as structured data. preview={{preview}} cause={{cause}}"
     }
   },

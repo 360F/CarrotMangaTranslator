@@ -66,6 +66,7 @@ export async function prepareKeepBlockHints({
     keepPageCount: keepPages.length,
     pageCount,
   });
+  const failedBlocks = new Map<string, Set<number>>();
   const ocrTexts = await collectKeepBlocksOcrTexts({
     runtime,
     baseOptions,
@@ -75,13 +76,49 @@ export async function prepareKeepBlockHints({
     jobId,
     signal,
     decodeImage,
+    failedBlocks,
   });
   return new Map(
     keepPages.map((page) => [
       page.id,
-      buildKeepBlocksOcrResult(page, ocrTexts.get(page.id)),
+      withFailedKeepBlockReads(
+        buildKeepBlocksOcrResult(page, ocrTexts.get(page.id)),
+        failedBlocks.get(page.id),
+      ),
     ]),
   );
+}
+
+/** Carries the Hayai runner's failed verdict onto the kept block's hint. */
+export function withFailedKeepBlockReads(
+  result: OcrBboxResult,
+  failedBlockIndexes: ReadonlySet<number> | undefined,
+): OcrBboxResult {
+  if (!failedBlockIndexes?.size) return result;
+  return {
+    ...result,
+    hints: result.hints.map((hint, index) =>
+      failedBlockIndexes.has(index)
+        ? { ...(hint as object), ocrHealth: { status: "failed" } }
+        : hint,
+    ),
+  };
+}
+
+/**
+ * Crop OCR text for one kept block. `null` means the Hayai runner already
+ * judged a read in this crop unrecoverable, so none of it may become source.
+ */
+export function readKeepBlockCropText(
+  hints: unknown[],
+  sourceLanguage?: string,
+): string | null {
+  const failed = hints.some(
+    (hint) =>
+      (hint as { ocrHealth?: { status?: unknown } } | null)?.ocrHealth
+        ?.status === "failed",
+  );
+  return failed ? null : joinCropOcrTexts(hints, sourceLanguage);
 }
 
 /**
@@ -97,6 +134,7 @@ async function collectKeepBlocksOcrTexts({
   jobId,
   signal,
   decodeImage,
+  failedBlocks,
 }: {
   runtime: TranslationRuntimePort;
   baseOptions: TranslationOptions;
@@ -106,6 +144,7 @@ async function collectKeepBlocksOcrTexts({
   jobId: string;
   signal: AbortSignal;
   decodeImage?: PipelineOptions["decodeImage"];
+  failedBlocks: Map<string, Set<number>>;
 }): Promise<KeepBlocksOcrTexts> {
   const texts: KeepBlocksOcrTexts = new Map(
     pages.map((page) => [page.id, page.blocks.map(() => undefined)]),
@@ -130,11 +169,14 @@ async function collectKeepBlocksOcrTexts({
   throwIfAborted(signal);
   for (const [index, crop] of crops.entries()) {
     const hints = results[index]?.hints;
-    const text = joinCropOcrTexts(
+    const text = readKeepBlockCropText(
       Array.isArray(hints) ? hints : [],
       baseOptions.sourceLanguage,
     );
-    if (text) {
+    if (text === null) {
+      const failed = failedBlocks.get(crop.pageId) ?? new Set<number>();
+      failedBlocks.set(crop.pageId, failed.add(crop.blockIndex));
+    } else if (text) {
       texts.get(crop.pageId)?.splice(crop.blockIndex, 1, text);
     }
   }

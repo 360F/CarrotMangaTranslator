@@ -93,7 +93,10 @@ export function failWorkflowReceipt(
 ): MangaPage {
   return {
     ...after,
-    ...(stage === "translate"
+    // An OCR failure (e.g. OCR CHECK) makes the page untranslatable in this
+    // run, so the page list must show the same terminal state as a failed
+    // translation instead of leaving the page waiting.
+    ...(stage === "translate" || stage === "ocr"
       ? { analysisStatus: "failed" as const, lastError: message }
       : {}),
     pageWorkflow: {

@@ -179,6 +179,7 @@ function normalizeCandidate(
     imageWidth,
     imageHeight,
   );
+  copyOcrHealth(hint, record);
   copyPreassignedGroupMetadata(hint, record);
   copyPaddleGroupEvidence(hint, record);
   copyReviewPartitionMetadata(hint, record);
@@ -192,6 +193,29 @@ function normalizeCandidate(
     `OCR candidate ${String(record.id ?? "?")}`,
   );
   return hint;
+}
+
+/**
+ * Preserve the Hayai runner's own recognition verdict (subdivided, recovered or
+ * failed) so every entry point can keep a failed read out of translation.
+ * @param {OcrHint} hint
+ * @param {JsonRecord} record
+ */
+function copyOcrHealth(hint, record) {
+  const health = asRecord(record.ocrHealth);
+  const status = String(health.status ?? "");
+  if (!["subdivided", "recovered", "failed"].includes(status)) return;
+  hint.ocrHealth = {
+    status,
+    ...(typeof health.reason === "string" ? { reason: health.reason } : {}),
+    ...(typeof health.strategy === "string"
+      ? { strategy: health.strategy }
+      : {}),
+    ...(Number.isInteger(health.segments) ? { segments: health.segments } : {}),
+    ...(typeof health.regionId === "string"
+      ? { regionId: health.regionId }
+      : {}),
+  };
 }
 
 /**

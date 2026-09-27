@@ -255,6 +255,7 @@
     },
     "errors": {
       "bboxMissing": "{{page}}：无法生成边界框结果。",
+      "ocrCheck": "{{page}}：OCR CHECK — HayaiOCR 在 {{count}} 个区块上耗尽生成上限且无法恢复。请检查原文后重新运行。",
       "responseParse": "{{page}}：无法将模型响应解析为结构化格式。preview={{preview}} cause={{cause}}"
     }
   },

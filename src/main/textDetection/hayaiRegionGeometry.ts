@@ -3,6 +3,10 @@ import type {
   ComicPageDetection,
   ComicPageDetectionResult,
 } from "../bubbleLayout/contracts";
+import {
+  planHayaiOcrSubdivision,
+  type HayaiOcrSubdivision,
+} from "./hayaiOcrSubdivision";
 
 const HAYAI_REGION_SCHEMA = "hayai-dialogue-effect-separated-v1" as const;
 
@@ -15,6 +19,7 @@ type HayaiRegion = {
   bbox: PixelBox;
   detectorConfidence: number;
   recognitionBboxes?: PixelBox[];
+  ocrSubdivision?: HayaiOcrSubdivision;
   sourceDetectionIds: string[];
 };
 
@@ -170,6 +175,19 @@ export function buildHayaiRegionManifest(
     dialogue,
     TEXT_FRAGMENT_REJOIN_ENABLED ? dialogueResult.fragmentPairs : [],
   );
+  // OCR-only crops; region geometry, grouping and ownership stay unchanged.
+  const grid = detections[0];
+  for (const region of dialogue) {
+    if (!grid || region.recognitionBboxes.length > 1) continue;
+    region.ocrSubdivision = planHayaiOcrSubdivision({
+      bbox: region.bbox,
+      masks: region.sourceMasks,
+      maskWidth: grid.maskWidth,
+      maskHeight: grid.maskHeight,
+      pageWidth: result.imageWidth,
+      pageHeight: result.imageHeight,
+    });
+  }
   const effectRectification = rectifyOverlaps(
     effectResult.regions,
     result.imageWidth,
@@ -1773,6 +1791,19 @@ function finalizeRegions(
               (box) =>
                 box.map((value) => Math.round(value * 1000) / 1000) as PixelBox,
             ),
+          }
+        : {}),
+      ...(region.ocrSubdivision
+        ? {
+            ocrSubdivision: {
+              mode: region.ocrSubdivision.mode,
+              bboxes: region.ocrSubdivision.bboxes.map(
+                (box) =>
+                  box.map(
+                    (value) => Math.round(value * 1000) / 1000,
+                  ) as PixelBox,
+              ),
+            },
           }
         : {}),
       sourceDetectionIds: region.sourceDetectionIds,

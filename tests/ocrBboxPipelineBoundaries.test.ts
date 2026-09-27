@@ -118,6 +118,50 @@ describe("OCR bbox pipeline boundaries", () => {
     expect(escaped[0]).not.toHaveProperty("recognitionSegments");
   });
 
+  it("keeps the Hayai runner's recognition verdict and drops unknown ones", () => {
+    const item = (id: number, ocrHealth: unknown) => ({
+      id,
+      label: "text",
+      x1: 100 * id,
+      y1: 100,
+      x2: 100 * id + 50,
+      y2: 300,
+      ocrText: "ペラペラ",
+      ocrHealth,
+    });
+    const hints = hintsRuntime.normalizeOcrBboxHintPayload(
+      {
+        coordinateSpace: "pixels",
+        width: 1000,
+        height: 1000,
+        items: [
+          item(1, {
+            status: "failed",
+            reason: "generation-budget-exhausted",
+            strategy: "retry-subdivision",
+            segments: 8,
+            regionId: "D001",
+            extra: "dropped",
+          }),
+          item(2, { status: "healthy" }),
+          item(3, undefined),
+        ],
+      },
+      { imageWidth: 1000, imageHeight: 1000, sourceLanguage: "ja" },
+    );
+    expect(hints.map((hint) => hint.ocrHealth)).toEqual([
+      {
+        status: "failed",
+        reason: "generation-budget-exhausted",
+        strategy: "retry-subdivision",
+        segments: 8,
+        regionId: "D001",
+      },
+      undefined,
+      undefined,
+    ]);
+  });
+
   it("caps normalized candidates at the public 80-hint boundary", () => {
     const items = Array.from({ length: 85 }, (_, index) => ({
       x: index * 4,

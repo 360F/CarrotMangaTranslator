@@ -10,6 +10,7 @@ import {
   executePageWorkflow,
   type PageWorkflowExecutionPort,
 } from "../src/main/application/pageWorkflowService";
+import { PageWorkflowPartialFailure } from "../src/main/application/pageWorkflowPartialFailure";
 import { runWholePagePipeline } from "../src/main/wholePagePipeline";
 import { buildKeepBlocksOcrResult } from "../src/main/pipeline/keepBlocksResult";
 import { workflowConfigurationKeys } from "../src/main/pageWorkflow/pageWorkflowConfiguration";
@@ -229,6 +230,117 @@ describe("independent Hayai workflow adapters", () => {
       block.workflowOrigin.recognitionBboxes,
     );
     expect(manifest.effectRegions).toEqual([]);
+  });
+  it("passes OCR subdivision crops clipped to the rounded manifest bbox", async () => {
+    const f = await fixture();
+    const block = f.page.blocks[0];
+    block.workflowOrigin = {
+      geometryKey: workflowRegionKey(f.page, block),
+      ocrSubdivision: {
+        mode: "preemptive",
+        bboxes: [
+          [199.5, 99.6, 300.4, 200.3],
+          [99.7, 99.6, 199.5, 200.3],
+        ],
+      },
+      initialFontSize: block.fontSizePx,
+    };
+
+    const prepared = await prepareWorkflowOcrInput(
+      f.page,
+      f.options,
+      f.context.plan,
+    );
+    const regionsPath = prepared?.options.ocrBboxRegionsPath;
+    if (!regionsPath) throw new Error("Expected workflow regions path.");
+    const manifest = JSON.parse(await readFile(regionsPath, "utf8"));
+
+    expect(manifest.dialogueRegions[0].bbox).toEqual([100, 100, 300, 200]);
+    expect(manifest.dialogueRegions[0].ocrSubdivision).toEqual({
+      mode: "preemptive",
+      bboxes: [
+        [199.5, 100, 300, 200],
+        [100, 100, 199.5, 200],
+      ],
+    });
+    expect(manifest.dialogueRegions[0].recognitionBboxes).toBeUndefined();
+  });
+  it("keeps unrecovered degenerate OCR out of source text and translation", async () => {
+    const f = await fixture();
+    const block = f.page.blocks[0];
+    block.workflowOrigin = {
+      geometryKey: workflowRegionKey(f.page, block),
+      initialFontSize: block.fontSizePx,
+    };
+    const loop = "ペラ".repeat(64);
+    const error = await readWorkflowSource(f.page, f.options, f.context.plan, {
+      ...f.dependencies.runtime,
+      collectPreparedHayaiHints: async () => ({
+        diagnostics: [],
+        hints: [
+          {
+            id: 1,
+            ocrText: loop,
+            ocrHealth: {
+              status: "failed",
+              reason: "generation-budget-exhausted",
+              strategy: "retry-subdivision",
+            },
+          },
+        ],
+      }),
+    }).catch((reason: unknown) => reason);
+
+    expect(error).toBeInstanceOf(PageWorkflowPartialFailure);
+    if (!(error instanceof PageWorkflowPartialFailure)) return;
+    expect(error.message).toContain("OCR CHECK");
+    expect(error.page.blocks[0].sourceText).toBe("");
+    expect(error.page.blocks[0].workflowOrigin?.ocrFailure).toEqual({
+      reason: "generation-budget-exhausted",
+      strategy: "retry-subdivision",
+      rawText: loop,
+    });
+    f.context.plan = {
+      ...createPageWorkflowPlan(["translate"]),
+      cumulative: false,
+    };
+    const request = vi.spyOn(f.dependencies.runtime, "requestTranslation");
+    await expect(
+      translateWorkflowPage(f.context, makeChapter(error.page), error.page),
+    ).rejects.toThrow("원문이 비어 있는 블록");
+    expect(request).not.toHaveBeenCalled();
+  });
+  it("uses recovered subdivision OCR as ordinary source text", async () => {
+    const f = await fixture();
+    const block = f.page.blocks[0];
+    block.workflowOrigin = {
+      geometryKey: workflowRegionKey(f.page, block),
+      ocrFailure: {
+        reason: "generation-budget-exhausted",
+        strategy: "none",
+        rawText: "ペラペラ",
+      },
+      initialFontSize: block.fontSizePx,
+    };
+    const output = await readWorkflowSource(f.page, f.options, f.context.plan, {
+      ...f.dependencies.runtime,
+      collectPreparedHayaiHints: async () => ({
+        diagnostics: [],
+        hints: [
+          {
+            id: 1,
+            ocrText: "右の列左の列",
+            ocrHealth: {
+              status: "recovered",
+              strategy: "retry-subdivision",
+              segments: 2,
+            },
+          },
+        ],
+      }),
+    });
+    expect(output.blocks[0].sourceText).toBe("右の列左の列");
+    expect(output.blocks[0].workflowOrigin?.ocrFailure).toBeUndefined();
   });
   it("reads only missing source at existing geometry without translation or detection", async () => {
     const f = await fixture();

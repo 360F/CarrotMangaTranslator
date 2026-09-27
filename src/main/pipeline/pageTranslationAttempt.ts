@@ -25,6 +25,27 @@ import {
   type PageProcessingTimingCollector,
 } from "./pageProcessingTiming";
 import { buildFontContinuityMetadata } from "./wholePageFontContinuity";
+import { tMain } from "./localization";
+
+// The Hayai runner already decided these reads are unrecoverable. Like the
+// page workflow's OCR CHECK, the page stops before any translation request.
+function assertNoFailedHayaiOcr(
+  page: MangaPage,
+  pageOptions: TranslationOptions,
+): void {
+  const hints: unknown[] = Array.isArray(pageOptions.ocrBboxHints)
+    ? pageOptions.ocrBboxHints
+    : [];
+  const failed = hints.filter(
+    (hint) =>
+      (hint as { ocrHealth?: { status?: unknown } } | null)?.ocrHealth
+        ?.status === "failed",
+  ).length;
+  if (failed)
+    throw new Error(
+      tMain("translation.errors.ocrCheck", { page: page.name, count: failed }),
+    );
+}
 
 export async function preparePageTranslationAttempt({
   jobId,
@@ -41,6 +62,7 @@ export async function preparePageTranslationAttempt({
   server: ModelEndpointHandle;
   timing: PageProcessingTimingCollector;
 }): Promise<PreparedPageBuildResult> {
+  assertNoFailedHayaiOcr(page, pageOptions);
   return measurePageProcessingStage(
     timing,
     page.id,

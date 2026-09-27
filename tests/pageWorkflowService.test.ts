@@ -174,6 +174,74 @@ describe("Hayai page workflow commits", () => {
     ]);
     expect(h.port.releasePage).toHaveBeenCalledTimes(2);
   });
+  it.each([
+    { label: "serial", parallel: false },
+    { label: "experimental parallel", parallel: true },
+  ])(
+    "keeps an OCR CHECK page terminally failed in a $label multi-page run",
+    async ({ parallel }) => {
+      const check = "OCR CHECK: 1개 블록의 원문 인식이 실패했습니다";
+      const h = harness(
+        ["ocr", "translate", "erase", "review"],
+        async (stage, _chapter, page) => {
+          if (stage === "ocr" && page.id !== "second")
+            throw new PageWorkflowPartialFailure(check, {
+              ...page,
+              blocks: page.blocks.map((block) => ({
+                ...block,
+                sourceText: "",
+              })),
+            });
+          if (stage === "erase")
+            return { ...page, inpaintedImagePath: "clean.png" };
+          return page;
+        },
+      );
+      h.addPage({ ...makePage(), id: "second" });
+      h.input.plan = {
+        ...createPageWorkflowPlan(["ocr", "translate", "erase", "review"]),
+        experimentalParallelAcceleration: parallel,
+      };
+
+      const result = await executePageWorkflow(h.input, h.port);
+
+      expect(result.status).toBe("partial");
+      expect(result.issues).toEqual([
+        expect.objectContaining({ pageId: h.page().id, stage: "ocr" }),
+      ]);
+      const calls = vi
+        .mocked(h.port.execute)
+        .mock.calls.map(([stage, , page]) => `${stage}:${page.id}`);
+      expect(calls).not.toContain(`translate:${h.page().id}`);
+      expect(calls).toContain("translate:second");
+      expect(calls).toContain("review:second");
+      // Erasure is independent of OCR, yet the page stays failed at the end.
+      expect(h.page().inpaintedImagePath).toBe("clean.png");
+      expect(h.page()).toMatchObject({
+        analysisStatus: "failed",
+        lastError: check,
+      });
+      expect(h.page().pageWorkflow?.steps.ocr?.status).toBe("failed");
+      const second = (await h.port.readChapter("")).pages[1];
+      expect(second.analysisStatus).not.toBe("failed");
+    },
+  );
+  it("marks a single-page OCR CHECK failure the same way", async () => {
+    const h = harness(["ocr", "translate"], async (stage, _chapter, page) => {
+      if (stage === "ocr")
+        throw new PageWorkflowPartialFailure("OCR CHECK: 실패", page);
+      return page;
+    });
+    const result = await executePageWorkflow(h.input, h.port);
+    expect(result.status).toBe("partial");
+    expect(h.page()).toMatchObject({
+      analysisStatus: "failed",
+      lastError: "OCR CHECK: 실패",
+    });
+    expect(
+      vi.mocked(h.port.execute).mock.calls.map(([stage]) => stage),
+    ).toEqual(["ocr"]);
+  });
   it("continues independent erasure when translation fails and skips dependent text stages", async () => {
     const h = harness(
       ["translate", "typography", "erase", "layout"],

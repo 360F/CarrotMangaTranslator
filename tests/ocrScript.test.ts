@@ -7,7 +7,11 @@ const pythonProcessTimeoutMs =
 const testTimeoutMs = pythonProcessTimeoutMs + 30_000;
 
 describe("OCR Python scripts", () => {
-  it.each(["test_paddleocr_bboxes.py", "test_hayai_paths.py"])(
+  it.each([
+    "test_paddleocr_bboxes.py",
+    "test_hayai_paths.py",
+    "test_hayai_ocr_recovery.py",
+  ])(
     "%s passes its dependency-free Python behavior suite",
     (suite) => {
       const testFile = join(process.cwd(), "tests", "python", suite);

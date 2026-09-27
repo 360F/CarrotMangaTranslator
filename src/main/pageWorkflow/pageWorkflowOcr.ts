@@ -19,6 +19,7 @@ import type { TranslationOptions } from "../appSettings";
 import type { TranslationRuntimePort } from "../pipeline/translationRuntimePort";
 import type { OcrBboxResult } from "../pipeline/types";
 import { buildKeepBlocksOcrResult } from "../pipeline/keepBlocksResult";
+import { PageWorkflowPartialFailure } from "../application/pageWorkflowPartialFailure";
 
 export async function detectWorkflowBlocks(
   page: MangaPage,
@@ -56,6 +57,7 @@ export async function detectWorkflowBlocks(
       workflowOrigin: {
         geometryKey: workflowRegionKey(page, block),
         recognitionBboxes: region.recognitionBboxes,
+        ocrSubdivision: region.ocrSubdivision,
         initialFontSize: block.fontSizePx,
         initialFontFamily: block.fontFamily,
         initialFontStyle: {
@@ -138,6 +140,14 @@ export function applyWorkflowOcrResult(
         recognitionSegments: z
           .array(WorkflowRecognitionSegmentSchema)
           .optional(),
+        ocrHealth: z
+          .object({
+            status: z.string(),
+            strategy: z
+              .enum(["none", "preemptive-subdivision", "retry-subdivision"])
+              .optional(),
+          })
+          .optional(),
       }),
     )
     .parse(result.hints);
@@ -150,25 +160,44 @@ export function applyWorkflowOcrResult(
   );
   if (prepared.targetBlockIds.some((blockId) => !recognized.get(blockId)))
     throw new Error("A dialogue block is missing its OCR result.");
-  return {
+  const next: MangaPage = {
     ...page,
     blocks: page.blocks.map((block) => {
       const hint = recognized.get(block.id);
       if (!hint) return block;
+      const failed = hint.ocrHealth?.status === "failed";
+      // A degenerate read is kept only as review evidence, never as source
+      // text, so translation cannot receive it as ordinary dialogue.
       return {
         ...block,
-        sourceText: hint.ocrText,
+        sourceText: failed ? "" : hint.ocrText,
         ...(block.workflowOrigin
           ? {
               workflowOrigin: {
                 ...block.workflowOrigin,
                 recognitionSegments: hint.recognitionSegments,
+                ocrFailure: failed
+                  ? {
+                      reason: "generation-budget-exhausted" as const,
+                      strategy: hint.ocrHealth?.strategy ?? "none",
+                      rawText: hint.ocrText.slice(0, 20000),
+                    }
+                  : undefined,
               },
             }
           : {}),
       };
     }),
   };
+  const failures = prepared.targetBlockIds.filter(
+    (blockId) => recognized.get(blockId)?.ocrHealth?.status === "failed",
+  );
+  if (failures.length)
+    throw new PageWorkflowPartialFailure(
+      `OCR CHECK: ${failures.length}개 블록의 원문 인식이 실패했습니다(HayaiOCR 생성 한도 소진). 원문을 직접 확인해 입력한 뒤 이어서 실행하세요.`,
+      next,
+    );
+  return next;
 }
 
 export async function readWorkflowSource(
@@ -215,6 +244,15 @@ function manifestForBlocks(
         block.workflowOrigin?.geometryKey === workflowRegionKey(page, block)
           ? block.workflowOrigin.recognitionBboxes
           : undefined,
+      ocrSubdivision:
+        block.workflowOrigin?.geometryKey === workflowRegionKey(page, block)
+          ? clipOcrSubdivision(block.workflowOrigin.ocrSubdivision, [
+              hints[index].x1,
+              hints[index].y1,
+              hints[index].x2,
+              hints[index].y2,
+            ])
+          : undefined,
     })),
     effectRegions: [],
     diagnostics: {
@@ -228,6 +266,27 @@ function manifestForBlocks(
       rejectedEffectCount: 0,
     },
   };
+}
+
+// The block bbox round-trips through normalized coordinates, so the stored
+// crops are clipped to the manifest bbox that Hayai validates them against.
+function clipOcrSubdivision(
+  subdivision: HayaiRegionManifest["dialogueRegions"][number]["ocrSubdivision"],
+  [left, top, right, bottom]: [number, number, number, number],
+): HayaiRegionManifest["dialogueRegions"][number]["ocrSubdivision"] {
+  if (!subdivision) return undefined;
+  const bboxes = subdivision.bboxes.map(
+    ([x1, y1, x2, y2]) =>
+      [
+        Math.max(left, x1),
+        Math.max(top, y1),
+        Math.min(right, x2),
+        Math.min(bottom, y2),
+      ] as [number, number, number, number],
+  );
+  return bboxes.every(([x1, y1, x2, y2]) => x2 > x1 && y2 > y1)
+    ? { mode: subdivision.mode, bboxes }
+    : undefined;
 }
 
 function normalizedRegion(

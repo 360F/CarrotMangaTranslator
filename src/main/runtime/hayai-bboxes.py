@@ -326,29 +326,73 @@ def process_page(
         raise RuntimeError("HayaiOCR region dimensions do not match the source image.")
     dialogue = require_regions(manifest.get("dialogueRegions"), "dialogue")
     effects = require_regions(manifest.get("effectRegions"), "effect")
-    work: list[dict[str, Any]] = []
-    for region in [*dialogue, *effects]:
-        boxes = list(region.get("recognitionBboxes") or [region["bbox"]])
-        for segment_index, box in enumerate(boxes):
-            work.append({
-                "regionId": str(region["regionId"]),
-                "segmentIndex": segment_index,
-                "bbox": box,
-            })
-    recognized_parts: dict[str, list[tuple[int, str]]] = {}
-    for offset in range(0, len(work), batch_size):
-        batch = work[offset : offset + batch_size]
-        crops = [crop_region(image, item["bbox"]) for item in batch]
-        texts = recognize_batch_resilient(
-            model, tokenizer, processor, device, crops,
-            max_new_tokens=max_new_tokens,
+    def recognize(regions_and_boxes: list[tuple[dict[str, Any], list[Any]]]):
+        return recognize_work(
+            image, regions_and_boxes,
+            model=model, tokenizer=tokenizer, processor=processor, device=device,
+            batch_size=batch_size, max_new_tokens=max_new_tokens,
             max_num_patches=max_num_patches,
         )
-        for item, text in zip(batch, texts):
-            region_id = str(item["regionId"])
-            recognized_parts.setdefault(region_id, []).append(
-                (int(item["segmentIndex"]), normalize_text(text))
+
+    first_boxes = {
+        str(region["regionId"]): first_pass_boxes(region)
+        for region in [*dialogue, *effects]
+    }
+    recognized_parts, exhausted = recognize([
+        (region, first_boxes[str(region["regionId"])]) for region in [*dialogue, *effects]
+    ])
+    # A generation that spends the whole token budget without EOS is the one
+    # catastrophic Hayai signal this runner acts on. Only regions that were
+    # read whole get one subdivision retry; there is no further fallback.
+    health: dict[str, dict[str, Any]] = {
+        str(region["regionId"]): {
+            "status": "subdivided",
+            "strategy": "preemptive-subdivision",
+            "segments": len(first_boxes[str(region["regionId"])]),
+        }
+        for region in dialogue
+        if ocr_subdivision_mode(region) == "preemptive"
+    }
+    retry = [
+        (region, retry_boxes(region)) for region in dialogue
+        if str(region["regionId"]) in exhausted and retry_boxes(region)
+    ]
+    if retry:
+        retry_parts, retry_exhausted = recognize(retry)
+        for region, boxes in retry:
+            region_id = str(region["regionId"])
+            if region_id in retry_exhausted:
+                continue
+            recognized_parts[region_id] = retry_parts[region_id]
+            exhausted.discard(region_id)
+            health[region_id] = {
+                "status": "recovered",
+                "strategy": "retry-subdivision",
+                "segments": len(boxes),
+            }
+    for region in dialogue:
+        region_id = str(region["regionId"])
+        if region_id in exhausted:
+            subdivided = retry_boxes(region) or (
+                first_boxes[region_id] if ocr_subdivision_mode(region) == "preemptive" else []
             )
+            health[region_id] = {
+                "status": "failed",
+                "reason": "generation-budget-exhausted",
+                "strategy": (
+                    "retry-subdivision" if retry_boxes(region)
+                    else "preemptive-subdivision" if subdivided
+                    else "none"
+                ),
+                **({"segments": len(subdivided)} if subdivided else {}),
+            }
+    for region_id, entry in health.items():
+        entry["regionId"] = region_id
+        print(
+            f"[hayai-ocr] OCR {entry['status']}: region {region_id}, "
+            f"{entry['strategy']}, {entry.get('segments', 1)} crop(s)",
+            file=sys.stderr,
+        )
     recognized = {
         region_id: normalize_text("".join(
             text for _index, text in sorted(parts, key=lambda value: value[0])
@@ -356,10 +400,13 @@ def process_page(
         for region_id, parts in recognized_parts.items()
     }
     hints = [
-        dialogue_hint(
-            region,
-            recognized.get(str(region["regionId"]), ""),
-            recognized_parts.get(str(region["regionId"]), []),
+        with_ocr_health(
+            dialogue_hint(
+                region,
+                recognized.get(str(region["regionId"]), ""),
+                recognized_parts.get(str(region["regionId"]), []),
+            ),
+            health.get(str(region["regionId"])),
         )
         for region in dialogue
     ]
@@ -383,6 +430,73 @@ def process_page(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return payload
+
+
+def ocr_subdivision_mode(region: Mapping[str, Any]) -> str | None:
+    subdivision = region.get("ocrSubdivision")
+    return str(subdivision["mode"]) if isinstance(subdivision, Mapping) else None
+
+
+def first_pass_boxes(region: Mapping[str, Any]) -> list[Any]:
+    boxes = list(region.get("recognitionBboxes") or [region["bbox"]])
+    if len(boxes) == 1 and ocr_subdivision_mode(region) == "preemptive":
+        return list(region["ocrSubdivision"]["bboxes"])
+    return boxes
+
+
+def retry_boxes(region: Mapping[str, Any]) -> list[Any]:
+    if region.get("recognitionBboxes") or ocr_subdivision_mode(region) != "retry":
+        return []
+    return list(region["ocrSubdivision"]["bboxes"])
+
+
+def recognize_work(
+    image: Image.Image,
+    regions_and_boxes: Sequence[tuple[Mapping[str, Any], Sequence[Any]]],
+    *,
+    model: Any,
+    tokenizer: Any,
+    processor: Any,
+    device: torch.device,
+    batch_size: int,
+    max_new_tokens: int,
+    max_num_patches: int,
+) -> tuple[dict[str, list[tuple[int, str]]], set[str]]:
+    work: list[dict[str, Any]] = []
+    for region, boxes in regions_and_boxes:
+        for segment_index, box in enumerate(boxes):
+            work.append({
+                "regionId": str(region["regionId"]),
+                "segmentIndex": segment_index,
+                "bbox": box,
+            })
+    recognized_parts: dict[str, list[tuple[int, str]]] = {}
+    exhausted: set[str] = set()
+    for offset in range(0, len(work), batch_size):
+        batch = work[offset : offset + batch_size]
+        crops = [crop_region(image, item["bbox"]) for item in batch]
+        outputs = recognize_batch_resilient(
+            model, tokenizer, processor, device, crops,
+            max_new_tokens=max_new_tokens,
+            max_num_patches=max_num_patches,
+        )
+        for item, (text, generated_tokens) in zip(batch, outputs):
+            region_id = str(item["regionId"])
+            recognized_parts.setdefault(region_id, []).append(
+                (int(item["segmentIndex"]), normalize_text(text))
+            )
+            if generated_tokens is not None and generated_tokens >= max_new_tokens:
+                exhausted.add(region_id)
+    return recognized_parts, exhausted
+
+
+def with_ocr_health(
+    hint: dict[str, Any],
+    health: Mapping[str, Any] | None,
+) -> dict[str, Any]:
+    if health:
+        hint["ocrHealth"] = dict(health)
+    return hint
 
 
 def require_regions(value: object, kind: str) -> list[dict[str, Any]]:
@@ -412,8 +526,27 @@ def require_regions(value: object, kind: str) -> list[dict[str, Any]]:
                     "HayaiOCR dialogue recognition segment escapes its logical bbox."
                 )
             normalized["recognitionBboxes"] = segments
+        subdivision = raw.get("ocrSubdivision")
+        if subdivision is not None:
+            normalized["ocrSubdivision"] = require_ocr_subdivision(subdivision, kind, box)
         output.append(normalized)
     return output
+
+
+def require_ocr_subdivision(value: object, kind: str, box: Sequence[float]) -> dict[str, Any]:
+    boxes = value.get("bboxes") if isinstance(value, dict) else None
+    mode = value.get("mode") if isinstance(value, dict) else None
+    if (
+        kind != "dialogue"
+        or mode not in ("preemptive", "retry")
+        or not isinstance(boxes, list)
+        or not 2 <= len(boxes) <= 8
+    ):
+        raise RuntimeError("Invalid HayaiOCR dialogue OCR subdivision.")
+    segments = [require_box(segment, "dialogue OCR subdivision bbox") for segment in boxes]
+    if any(not box_contains(box, segment) for segment in segments):
+        raise RuntimeError("HayaiOCR dialogue OCR subdivision escapes its logical bbox.")
+    return {"mode": mode, "bboxes": segments}
 
 
 def require_box(value: object, label: str) -> list[float]:
@@ -461,7 +594,7 @@ def recognize_batch_resilient(
     *,
     max_new_tokens: int,
     max_num_patches: int,
-) -> list[str]:
+) -> list[tuple[str, int | None]]:
     try:
         return recognize_batch(
             model,
@@ -523,7 +656,7 @@ def recognize_batch(
     *,
     max_new_tokens: int,
     max_num_patches: int,
-) -> list[str]:
+) -> list[tuple[str, int | None]]:
     if not crops:
         return []
     inputs = processor(
@@ -531,6 +664,7 @@ def recognize_batch(
         max_num_patches=max_num_patches,
         return_tensors="pt",
     ).to(device)
+    counter = GenerationLengthRecorder(tokenizer)
     # Match the model author's reference path. Autocasting the published F32
     # checkpoint caused greedy decoding to collapse into repeated CJK tokens.
     with torch.inference_mode():
@@ -538,12 +672,35 @@ def recognize_batch(
             pixel_values=inputs["pixel_values"],
             pixel_attention_mask=inputs["pixel_attention_mask"],
             spatial_shapes=inputs["spatial_shapes"],
-            tokenizer=tokenizer,
+            tokenizer=counter,
             max_new_tokens=max_new_tokens,
             num_beams=1,
             repetition_penalty=1.0,
         )
-    return [str(value) for value in texts]
+    lengths: list[int | None] = (
+        list(counter.lengths) if len(counter.lengths) == len(texts) else [None] * len(texts)
+    )
+    return [(str(value), length) for value, length in zip(texts, lengths)]
+
+
+class GenerationLengthRecorder:
+    """Forward the tokenizer while recording each generated sequence length.
+
+    The pinned Hayai `generate` decodes each sequence once after dropping EOS
+    and padding, so a length equal to `max_new_tokens` means no EOS was
+    produced. An unexpected call count leaves every length unknown.
+    """
+
+    def __init__(self, tokenizer: Any) -> None:
+        self._tokenizer = tokenizer
+        self.lengths: list[int] = []
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._tokenizer, name)
+
+    def decode(self, token_ids: Sequence[int], *args: Any, **kwargs: Any) -> str:
+        self.lengths.append(len(token_ids))
+        return self._tokenizer.decode(token_ids, *args, **kwargs)
 
 
 def dialogue_hint(
