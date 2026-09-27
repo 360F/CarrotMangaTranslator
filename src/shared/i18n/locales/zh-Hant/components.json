@@ -1662,12 +1662,12 @@
       "chapterCount": "{{count}}章",
       "toggleChapter": "{{title}}的結果自動儲存",
       "translationJson": {
-        "enable": "將翻譯資料儲存為 JSON",
-        "description": "對已開啟自動儲存的話，每次儲存翻譯時都會在結果資料夾中產生 translation.json（按頁面與文字區塊記錄原文與譯文）。"
+        "enable": "匯出翻譯資料（JSON·CSV）",
+        "description": "每次儲存翻譯時，都會將按頁面與文字區塊編號的原文與譯文寫入預設輸出資料夾中的 <輸入名稱>/translation.json 與 translation.csv。若該資料夾無法使用，則寫入已開啟自動儲存的話的結果資料夾。"
       },
       "defaultDirectories": {
         "enable": "使用自訂預設路徑",
-        "description": "設定輸入選擇器的起始資料夾與新自動儲存位置的預設上層資料夾。不會移動現有專案或連線。",
+        "description": "指定輸入選擇視窗的起始位置，以及儲存 Rover 翻譯匯出（translation.json·translation.csv）的資料夾。自動儲存位置與現有專案不會改變。",
         "input": "預設輸入資料夾",
         "output": "預設輸出資料夾",
         "placeholder": "選擇資料夾或輸入絕對路徑",

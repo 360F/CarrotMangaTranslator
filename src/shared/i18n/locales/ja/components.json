@@ -1662,12 +1662,12 @@
       "chapterCount": "{{count}}話",
       "toggleChapter": "{{title}}の結果を自動保存",
       "translationJson": {
-        "enable": "翻訳データをJSONで保存",
-        "description": "自動保存が有効な話で翻訳が保存されるたびに、結果フォルダーへ translation.json(ページ・ブロックごとの原文と訳文)を作成します。"
+        "enable": "翻訳データを書き出す(JSON・CSV)",
+        "description": "翻訳が保存されるたびに、既定の出力フォルダーの<入力名>/へ translation.json と translation.csv(ページ・ブロック番号ごとの原文と訳文)を保存します。出力フォルダーを使えない場合は、自動保存が有効な話の結果フォルダーに保存します。"
       },
       "defaultDirectories": {
         "enable": "カスタム既定パスを使用",
-        "description": "入力選択画面の開始位置と、新しい自動保存先の既定の親フォルダーを指定します。既存のプロジェクトや接続先は移動しません。",
+        "description": "入力選択画面の開始位置と、Rover翻訳エクスポート(translation.json・translation.csv)の保存先フォルダーを指定します。自動保存先と既存のプロジェクトは変更されません。",
         "input": "既定の入力フォルダー",
         "output": "既定の出力フォルダー",
         "placeholder": "フォルダーを選択するか絶対パスを入力してください",

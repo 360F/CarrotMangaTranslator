@@ -88,25 +88,6 @@ afterEach(async () => {
 });
 
 describe("LinkedWorkspaceSyncService", () => {
-  it("applies a Rover parent only to new managed destinations", async () => {
-    const firstParent = await makeTempDir("first-output");
-    let outputParent = firstParent;
-    const configured = await makeConnectedService(
-      "managed",
-      undefined,
-      undefined,
-      "source",
-      async () => outputParent,
-    );
-    expect(configured.root.startsWith(firstParent)).toBe(true);
-    outputParent = await makeTempDir("second-output");
-    const connectionId =
-      configured.service.getStatus(CHAPTER_ID).connectionId ?? "";
-    const reconnected = await configured.service.resetToManaged(connectionId);
-    expect(reconnected.rootPath).toBe(configured.root);
-    await configured.service.dispose();
-  });
-
   for (const mode of ["connect", "update"] as const) {
     it.each(["source", "png", "jpeg", "webp"] as const)(
       `keeps mixed-extension same-stem pages distinct after ${mode} to %s`,
@@ -951,7 +932,6 @@ async function makeConnectedService(
   sourceContent: (page: MangaPage) => string | Uint8Array = (page) =>
     page.id === PAGE_ID ? "source" : `source-${page.name}`,
   format: RasterExportFormat = "source",
-  resolveManagedOutputParent?: () => Promise<string | null>,
 ): Promise<{
   dataRoot: string;
   root: string;
@@ -964,7 +944,7 @@ async function makeConnectedService(
     await writeFile(internalImagePath, sourceContent(page));
     page.imagePath = internalImagePath;
   }
-  const service = createService(dataRoot, resolveManagedOutputParent);
+  const service = createService(dataRoot);
   await service.initialize();
   const preferredManagedRoot = join(dataRoot, "results", "테스트 작품", "1화");
   await prepareManagedRoot?.(preferredManagedRoot);
@@ -983,10 +963,7 @@ async function makeConnectedService(
   return { dataRoot, root, service };
 }
 
-function createService(
-  dataRoot: string,
-  resolveManagedOutputParent?: () => Promise<string | null>,
-): LinkedWorkspaceSyncService {
+function createService(dataRoot: string): LinkedWorkspaceSyncService {
   return new LinkedWorkspaceSyncService({
     dataRoot,
     jobs: {
@@ -1002,7 +979,6 @@ function createService(
       openChapter: async () => requireChapter(),
       updatePagesAfterInpainting: boundary.updatePagesAfterInpainting,
       createPageExportRenderSession: boundary.createSession,
-      ...(resolveManagedOutputParent ? { resolveManagedOutputParent } : {}),
     },
   });
 }

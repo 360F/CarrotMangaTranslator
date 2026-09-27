@@ -1,6 +1,9 @@
 import type { AppSettings } from "../../shared/settingsTypes";
 import { normalizeComputeGpuIndex } from "../../shared/gpuSettings";
-import { resolveTranslationLanguageSettings } from "../../shared/translationLanguages";
+import {
+  resolveSourceReadingDirection,
+  resolveTranslationLanguageSettings,
+} from "../../shared/translationLanguages";
 import type {
   TranslationOptionPaths,
   TranslationOptions,
@@ -13,6 +16,13 @@ import {
 } from "./translationGemmaOptions";
 import { resolveOcrTranslationOptions } from "./translationOcrOptions";
 import { filterPackagedRuntimeEnv } from "./translationRuntimeEnv";
+
+/** The block reading direction implied by the configured source language. */
+export function resolveSettingsSourceReadingDirection(
+  settings: AppSettings,
+): "ltr" | "rtl" {
+  return resolveSourceReadingDirection(settings.translation?.sourceLanguage);
+}
 
 export function buildBaseTranslationOptions({
   jobId,

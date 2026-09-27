@@ -33,7 +33,8 @@ export async function resolveImportDialogDefaultPathFromSettings(
   return configured ?? getRecentDialogDirectory(dataRoot, recentPathKey);
 }
 
-export async function resolveManagedOutputParent(
+/** Rover export root; Carrot's linked auto-save destinations do not use it. */
+export async function resolveRoverOutputRoot(
   paths: AppPaths = getAppPaths(),
 ): Promise<string | null> {
   return resolveAvailableRoverDefaultDirectory(

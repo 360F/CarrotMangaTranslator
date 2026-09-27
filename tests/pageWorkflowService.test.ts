@@ -490,6 +490,74 @@ describe("page workflow input and preservation", () => {
       ).plan.experimentalParallelAcceleration,
     ).toBe(false);
   });
+  it("runs an ineligible plan serially while the parallel setting stays on", async () => {
+    const settings = resolveDefaultAppSettings();
+    settings.modelProvider = "openai-api";
+    settings.api.experimentalParallelAcceleration = true;
+    const eligible = withTranslationResourceHint(
+      {
+        plan: createPageWorkflowPlan(["detect", "ocr", "translate", "erase"]),
+        selection: [{ chapterId: "chapter-1", pageIds: ["page-1"] }],
+      },
+      settings,
+    );
+    expect(eligible.plan.experimentalParallelAcceleration).toBe(true);
+    const ineligiblePlans = [
+      createPageWorkflowPlan(["detect", "ocr", "translate"]),
+      {
+        ...createPageWorkflowPlan(["translate", "erase"]),
+        stages: ["translate", "format-rules", "erase"] as PageWorkflowStage[],
+        rules: { "format-rules": { kind: "scheme" as const, id: "format" } },
+      },
+    ];
+    for (const plan of ineligiblePlans) {
+      const resolved = withTranslationResourceHint(
+        {
+          plan,
+          selection: [{ chapterId: "chapter-1", pageIds: ["page-1"] }],
+        },
+        settings,
+      );
+      expect(resolved.plan.experimentalParallelAcceleration).toBe(false);
+    }
+    expect(settings.api.experimentalParallelAcceleration).toBe(true);
+
+    const stages: PageWorkflowStage[] = ["detect", "ocr", "translate"];
+    const h = harness(stages, async (stage, _chapter, page) =>
+      stage === "translate"
+        ? {
+            ...page,
+            blocks: page.blocks.map((block) => ({
+              ...block,
+              translatedText: "serial translation",
+            })),
+          }
+        : page,
+    );
+    h.input.plan = withTranslationResourceHint(
+      { plan: { ...createPageWorkflowPlan(stages), stages }, selection: [] },
+      settings,
+    ).plan;
+    const page = h.page();
+    const chapter = makeChapter(page);
+    expect(
+      preflightPageWorkflow(
+        {
+          plan: h.input.plan,
+          selection: [{ chapterId: chapter.id, pageIds: [page.id] }],
+        },
+        [chapter],
+      ).issues,
+    ).toEqual([]);
+
+    const result = await executePageWorkflow(h.input, h.port);
+
+    expect(result.status).toBe("completed");
+    expect(h.page().blocks[0].translatedText).toBe("serial translation");
+    expect(
+      vi.mocked(h.port.execute).mock.calls.map(([stage]) => stage),
+    ).toEqual(["detect", "ocr", "translate"]);
+  });
   it("rejects experimental overlap when format rules can affect erase", () => {
     const page = makePage();
     const chapter = makeChapter(page);

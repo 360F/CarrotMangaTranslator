@@ -7,10 +7,15 @@ import { createPageExportRenderSession } from "../pageExport";
 import { installLinkedWorkspaceSaveNotifier } from "./linkedWorkspaceNotifications";
 import { LinkedWorkspaceSyncService } from "./linkedWorkspaceSyncService";
 import {
-  resolveManagedOutputParent,
+  resolveRoverOutputRoot,
   resolveTranslationJsonExportEnabled,
 } from "../roverDefaultDirectories";
-import { createTranslationJsonExporter } from "./linkedWorkspaceTranslationJson";
+import { getAppSettings } from "../settingsStore";
+import { resolveSettingsSourceReadingDirection } from "../settings/translationOptions";
+import {
+  createTranslationJsonExporter,
+  resolveTranslationJsonContext,
+} from "./linkedWorkspaceTranslationJson";
 
 export function createLinkedWorkspaceRuntime(options: {
   dataRoot: string;
@@ -26,13 +31,26 @@ export function createLinkedWorkspaceRuntime(options: {
       openChapter,
       updatePagesAfterInpainting,
       createPageExportRenderSession,
-      resolveManagedOutputParent: () => resolveManagedOutputParent(),
     },
   });
   const translationJson = createTranslationJsonExporter({
+    dataRoot: options.dataRoot,
     isEnabled: () => resolveTranslationJsonExportEnabled(),
+    resolveOutputRoot: () => resolveRoverOutputRoot(),
     getStatus: (chapterId) => service.getStatus(chapterId),
+    listStatuses: () => service.listStatuses(),
     openChapter: (chapterId) => openChapter(chapterId),
+    resolveContext: async (chapter) => {
+      const [library, settings] = await Promise.all([
+        listLibrary(),
+        getAppSettings(),
+      ]);
+      return resolveTranslationJsonContext(
+        chapter,
+        library,
+        resolveSettingsSourceReadingDirection(settings),
+      );
+    },
     reportError: options.reportError,
   });
   return {

@@ -16645,6 +16645,28 @@
         "pct": 100
       }
     },
+    "src/shared/reviewTable.ts": {
+      "lines": {
+        "covered": 66,
+        "total": 70,
+        "pct": 94.28
+      },
+      "statements": {
+        "covered": 70,
+        "total": 74,
+        "pct": 94.59
+      },
+      "functions": {
+        "covered": 21,
+        "total": 21,
+        "pct": 100
+      },
+      "branches": {
+        "covered": 54,
+        "total": 64,
+        "pct": 84.37
+      }
+    },
     "src/shared/richTextMarkup.ts": {
       "lines": {
         "covered": 183,

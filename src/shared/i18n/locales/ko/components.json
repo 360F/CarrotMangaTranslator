@@ -1655,12 +1655,12 @@
     },
     "results": {
       "translationJson": {
-        "enable": "번역 데이터 JSON 저장",
-        "description": "자동 저장이 켜진 화에서 번역이 저장될 때마다 결과물 폴더에 translation.json(페이지·블록별 원문과 번역문)을 만듭니다."
+        "enable": "번역 데이터 내보내기 (JSON·CSV)",
+        "description": "번역이 저장될 때마다 기본 출력 폴더의 <원본 이름>/ 폴더에 translation.json과 translation.csv(페이지·블록 번호별 원문과 번역문)를 저장합니다. 기본 출력 폴더를 쓸 수 없으면 자동 저장이 켜진 화의 결과물 폴더에 저장합니다."
       },
       "defaultDirectories": {
         "enable": "사용자 지정 기본 경로 사용",
-        "description": "입력 선택 창의 시작 위치와 새 자동 저장 위치의 기본 상위 폴더를 지정합니다. 기존 프로젝트와 연결 위치는 이동하지 않습니다.",
+        "description": "입력 선택 창의 시작 위치와 Rover 번역 내보내기(translation.json·translation.csv)를 저장할 폴더를 지정합니다. 결과물 자동 저장 위치와 기존 프로젝트는 바뀌지 않습니다.",
         "input": "기본 입력 폴더",
         "output": "기본 출력 폴더",
         "placeholder": "폴더를 선택하거나 절대 경로를 입력하세요",

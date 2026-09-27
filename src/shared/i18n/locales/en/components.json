@@ -1655,12 +1655,12 @@
     },
     "results": {
       "translationJson": {
-        "enable": "Save translation data as JSON",
-        "description": "For chapters with automatic save on, writes translation.json (source and translated text per page and block) to the result folder whenever a translation is saved."
+        "enable": "Export translation data (JSON and CSV)",
+        "description": "Whenever a translation is saved, writes translation.json and translation.csv (source and translated text numbered by page and block) to <input name>/ in the default output folder. If that folder is unavailable, they are written to the result folder of chapters with automatic save on."
       },
       "defaultDirectories": {
         "enable": "Use custom default paths",
-        "description": "Set the starting folder for input pickers and the default parent for new automatic-save destinations. Existing projects and connections are not moved.",
+        "description": "Set the starting folder for input pickers and the folder that receives Rover translation exports (translation.json and translation.csv). Automatic-save destinations and existing projects are not changed.",
         "input": "Default input folder",
         "output": "Default output folder",
         "placeholder": "Choose a folder or enter an absolute path",

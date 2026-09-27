@@ -14,6 +14,8 @@ import type { MangaPage } from "../src/shared/libraryTypes";
 import type { PageWorkflowStage } from "../src/shared/pageWorkflowStages";
 import { createPageWorkflowPlan } from "../src/shared/pageWorkflowTypes";
 import { DEFAULT_RASTER_EXPORT_SETTINGS } from "../src/shared/linkedWorkspaceTypes";
+import { resolveDefaultAppSettings } from "../src/main/appSettings";
+import { withTranslationResourceHint } from "../src/main/pageWorkflow/pageWorkflowResourceHints";
 import { makeBlock, makePage } from "./helpers/workspacePointerFixtures";
 
 vi.mock("electron", () => ({
@@ -25,6 +27,9 @@ const ONE_PIXEL_PNG = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
   "base64",
 );
+const WORK_NAME = "미정 작품";
+const INPUT_NAME =
+  "アグネスタキオンさんご夫妻がお隣に引っ越してきました_yanyo_yanyanyo1";
 const roots: string[] = [];
 const cleanups: Array<() => unknown> = [];
 
@@ -42,14 +47,14 @@ async function tempDir(label: string): Promise<string> {
   return root;
 }
 
-/** A persisted chapter with two imported pages and no blocks yet. */
+/** A persisted four-page folder import with no blocks yet. */
 async function writeLibrary(libraryDir: string) {
   const workId = randomUUID();
   const chapterId = randomUUID();
   const directory = join(libraryDir, "works", workId, "chapters", chapterId);
   await mkdir(directory, { recursive: true });
   const pages = await Promise.all(
-    [1, 2].map(async (index) => {
+    [1, 2, 3, 4].map(async (index) => {
       const imagePath = join(directory, `00${index}.png`);
       await writeFile(imagePath, ONE_PIXEL_PNG);
       const { dataUrl: _dataUrl, ...page } = {
@@ -69,8 +74,8 @@ async function writeLibrary(libraryDir: string) {
     JSON.stringify({
       id: chapterId,
       workId,
-      title: "1화",
-      sourceKind: "images",
+      title: INPUT_NAME,
+      sourceKind: "folder",
       status: "idle",
       pageOrder: pages.map((page) => page.id),
       pages,
@@ -86,8 +91,9 @@ async function writeLibrary(libraryDir: string) {
     join(libraryDir, "works", workId, "work.json"),
     JSON.stringify({
       id: workId,
-      title: "테스트 작품",
+      title: WORK_NAME,
       chapterOrder: [chapterId],
+      readingDirection: "rtl",
       createdAt: timestamp,
       updatedAt: timestamp,
     }),
@@ -97,18 +103,20 @@ async function writeLibrary(libraryDir: string) {
 
 /** Deterministic stand-ins for Koharu detection, Hayai OCR and Gemma. */
 function executeStage(stage: PageWorkflowStage, page: MangaPage): MangaPage {
-  if (stage === "detect")
-    return {
-      ...page,
-      blocks: ["a", "b"].map((suffix) =>
-        makeBlock(false, {
-          id: `${page.id}-detect-block-${suffix}`,
-          sourceText: "",
-          translatedText: "",
-        }),
-      ),
-      blockOrder: [`${page.id}-detect-block-a`, `${page.id}-detect-block-b`],
-    };
+  if (stage === "detect") {
+    const blocks = [
+      ["right", 700],
+      ["left", 100],
+    ].map(([suffix, x]) =>
+      makeBlock(false, {
+        id: `${page.id}-detect-block-${suffix}`,
+        bbox: { x: Number(x), y: 100, w: 150, h: 100 },
+        sourceText: "",
+        translatedText: "",
+      }),
+    );
+    return { ...page, blocks, blockOrder: blocks.map((block) => block.id) };
+  }
   if (stage === "ocr")
     return {
       ...page,
@@ -129,13 +137,16 @@ function executeStage(stage: PageWorkflowStage, page: MangaPage): MangaPage {
   throw new Error(`unexpected workflow stage: ${stage}`);
 }
 
-async function setup(
-  enabled: boolean,
-  prepareManagedRoot?: (root: string, chapterId: string) => Promise<void>,
-) {
+async function setup({
+  enabled,
+  roverOutput,
+}: {
+  enabled: boolean;
+  roverOutput: boolean;
+}) {
   const dataRoot = await tempDir("data");
   const libraryDir = join(dataRoot, "library");
-  const outputParent = await tempDir("output");
+  const outputRoot = await tempDir("rover-output");
   vi.resetModules();
   vi.doMock("../src/main/appPaths", () => ({
     getAppPaths: () => ({
@@ -147,15 +158,18 @@ async function setup(
   const ids = await writeLibrary(libraryDir);
   const { openChapter, listLibrary } =
     await import("../src/main/library/libraryReadFacade");
-  const { savePageWorkflowResult, updatePagesAfterInpainting } =
-    await import("../src/main/library/libraryMutationFacade");
+  const {
+    savePageWorkflowResult,
+    savePagesBlocks,
+    updatePagesAfterInpainting,
+  } = await import("../src/main/library/libraryMutationFacade");
   const { executePageWorkflow } =
     await import("../src/main/application/pageWorkflowService");
   const { LinkedWorkspaceSyncService } =
     await import("../src/main/linkedWorkspace/linkedWorkspaceSyncService");
   const { createLinkedWorkspaceSaveNotifier } =
     await import("../src/main/linkedWorkspace/linkedWorkspaceRuntime");
-  const { createTranslationJsonExporter } =
+  const { createTranslationJsonExporter, resolveTranslationJsonContext } =
     await import("../src/main/linkedWorkspace/linkedWorkspaceTranslationJson");
   const { installLinkedWorkspaceSaveNotifier } =
     await import("../src/main/linkedWorkspace/linkedWorkspaceNotifications");
@@ -164,6 +178,7 @@ async function setup(
     throw new Error("the translate-only workflow must not need a render");
   });
   const reportError = vi.fn();
+  // Carrot's linked auto-save stays connected to its own managed destination.
   const service = new LinkedWorkspaceSyncService({
     dataRoot,
     jobs: { hasActive: false } as never,
@@ -175,15 +190,10 @@ async function setup(
       openChapter,
       updatePagesAfterInpainting,
       createPageExportRenderSession: createRenderSession as never,
-      resolveManagedOutputParent: async () => outputParent,
     },
   });
   await service.initialize();
   cleanups.push(() => service.dispose());
-  await prepareManagedRoot?.(
-    join(outputParent, "테스트 작품", "1화"),
-    ids.chapterId,
-  );
   await service.connect({
     workId: ids.workId,
     chapterId: ids.chapterId,
@@ -191,36 +201,46 @@ async function setup(
     enqueueExistingPages: false,
   });
   const exporter = createTranslationJsonExporter({
+    dataRoot,
     isEnabled: async () => enabled,
+    resolveOutputRoot: async () => (roverOutput ? outputRoot : null),
     getStatus: (chapterId) => service.getStatus(chapterId),
+    listStatuses: () => service.listStatuses(),
     openChapter: (chapterId) => openChapter(chapterId),
+    resolveContext: async (chapter) =>
+      resolveTranslationJsonContext(chapter, await listLibrary(), "rtl"),
     reportError,
   });
   const exports: Promise<void>[] = [];
-  const trackedExporter = {
-    sync: (chapterId: string) => {
-      const pending = exporter.sync(chapterId);
-      exports.push(pending);
-      return pending;
-    },
-  };
   cleanups.push(
     installLinkedWorkspaceSaveNotifier(
-      createLinkedWorkspaceSaveNotifier(service, trackedExporter),
+      createLinkedWorkspaceSaveNotifier(service, {
+        sync: (chapterId: string) => {
+          const pending = exporter.sync(chapterId);
+          exports.push(pending);
+          return pending;
+        },
+      }),
       reportError,
     ),
   );
 
+  // The parallel preference is on; this plan cannot overlap stages.
+  const settings = resolveDefaultAppSettings();
+  settings.modelProvider = "openai-api";
+  settings.api.experimentalParallelAcceleration = true;
   const stages: PageWorkflowStage[] = ["detect", "ocr", "translate"];
+  const request = withTranslationResourceHint(
+    {
+      plan: { ...createPageWorkflowPlan(stages), stages },
+      selection: [{ chapterId: ids.chapterId, pageIds: ids.pageIds }],
+    },
+    settings,
+  );
   const executed: PageWorkflowStage[] = [];
   const run = async () => {
     const result = await executePageWorkflow(
-      {
-        runId: randomUUID(),
-        plan: { ...createPageWorkflowPlan(stages), stages },
-        selection: [{ chapterId: ids.chapterId, pageIds: ids.pageIds }],
-        signal: new AbortController().signal,
-      },
+      { ...request, runId: randomUUID(), signal: new AbortController().signal },
       {
         readChapter: (chapterId) => openChapter(chapterId),
         acquirePage: async (chapterId, pageId) => {
@@ -243,28 +263,32 @@ async function setup(
     await Promise.all(exports);
     return result;
   };
-  const expectedRoot = join(outputParent, "테스트 작품", "1화");
   return {
     ...ids,
     createRenderSession,
     executed,
-    expectedRoot,
     exports,
+    linkedRoot: service.getStatus(ids.chapterId).rootPath ?? "",
     openChapter,
+    outputRoot,
     reportError,
+    request,
     run,
-    service,
+    savePagesBlocks,
+    settings,
   };
 }
 
 describe("translation.json workflow acceptance", () => {
-  it("exports after Detect + OCR + Translation without typography, erase, layout or a result image", async () => {
-    const f = await setup(true);
-    expect(f.service.getStatus(f.chapterId).rootPath).toBe(f.expectedRoot);
+  it("exports numbered text into the Rover Output after Detect + OCR + Translation only", async () => {
+    const f = await setup({ enabled: true, roverOutput: true });
+    expect(f.request.plan.experimentalParallelAcceleration).toBe(false);
 
     const result = await f.run();
 
     expect(result.status).toBe("completed");
+    expect(result.issues).toEqual([]);
+    expect(f.settings.api.experimentalParallelAcceleration).toBe(true);
     expect(new Set(f.executed)).toEqual(
       new Set(["detect", "ocr", "translate"]),
     );
@@ -276,38 +300,65 @@ describe("translation.json workflow acceptance", () => {
       expect(page.pageWorkflow?.steps.layout).toBeUndefined();
       expect(page.inpaintedImagePath).toBeUndefined();
     }
+    expect(await readdir(f.outputRoot)).toEqual([INPUT_NAME]);
+    expect((await readdir(join(f.outputRoot, INPUT_NAME))).sort()).toEqual([
+      "translation.csv",
+      "translation.json",
+    ]);
     const saved = JSON.parse(
-      await readFile(join(f.expectedRoot, "translation.json"), "utf8"),
+      await readFile(
+        join(f.outputRoot, INPUT_NAME, "translation.json"),
+        "utf8",
+      ),
     );
     expect(saved).toEqual({
-      schemaVersion: 1,
-      workId: f.workId,
-      chapterId: f.chapterId,
-      pages: chapter.pages.map((page) => ({
-        pageId: page.id,
-        blocks: page.blocks.map((block) => ({
-          blockId: block.id,
-          sourceText: `原文 ${block.id}`,
-          translatedText: `번역 ${block.id}`,
+      schemaVersion: 2,
+      workName: WORK_NAME,
+      inputName: INPUT_NAME,
+      pages: f.pageIds.map((pageId, index) => ({
+        page: index + 1,
+        blocks: ["right", "left"].map((suffix, blockIndex) => ({
+          block: blockIndex + 1,
+          sourceText: `原文 ${pageId}-detect-block-${suffix}`,
+          translatedText: `번역 ${pageId}-detect-block-${suffix}`,
         })),
       })),
     });
-    expect(saved.pages.map((page: { pageId: string }) => page.pageId)).toEqual(
-      f.pageIds,
+    const csv = await readFile(
+      join(f.outputRoot, INPUT_NAME, "translation.csv"),
+      "utf8",
     );
+    expect(csv).toBe(
+      [
+        "﻿page,block,sourceText,translatedText",
+        ...saved.pages.flatMap(
+          (page: { page: number; blocks: (typeof saved.pages)[0]["blocks"] }) =>
+            page.blocks.map(
+              (entry: {
+                block: number;
+                sourceText: string;
+                translatedText: string;
+              }) =>
+                `${page.page},${entry.block},${entry.sourceText},${entry.translatedText}`,
+            ),
+        ),
+        "",
+      ].join("\r\n"),
+    );
+    // Carrot's linked destination keeps its own managed location.
+    expect(f.linkedRoot).toContain(join("results", WORK_NAME, INPUT_NAME));
+    expect(f.linkedRoot.startsWith(f.outputRoot)).toBe(false);
+    expect(await readdir(f.linkedRoot)).not.toContain("translation.json");
+    expect(await readdir(f.linkedRoot)).not.toContain("translation.csv");
     expect(f.createRenderSession).not.toHaveBeenCalled();
-    expect(await readdir(f.expectedRoot)).not.toContain("result");
     expect(f.reportError).not.toHaveBeenCalled();
   });
 
   it("refreshes translatedText when a translation is edited later", async () => {
-    const f = await setup(true);
+    const f = await setup({ enabled: true, roverOutput: true });
     await f.run();
-    const { savePagesBlocks } =
-      await import("../src/main/library/libraryMutationFacade");
-    const chapter = await f.openChapter(f.chapterId);
-    const page = chapter.pages[0];
-    await savePagesBlocks({
+    const page = (await f.openChapter(f.chapterId)).pages[0];
+    await f.savePagesBlocks({
       chapterId: f.chapterId,
       pages: [
         {
@@ -323,43 +374,36 @@ describe("translation.json workflow acceptance", () => {
     });
     await Promise.all(f.exports);
     const saved = JSON.parse(
-      await readFile(join(f.expectedRoot, "translation.json"), "utf8"),
+      await readFile(
+        join(f.outputRoot, INPUT_NAME, "translation.json"),
+        "utf8",
+      ),
     );
     expect(saved.pages[0].blocks[0]).toEqual({
-      blockId: page.blocks[0].id,
+      block: 1,
       sourceText: `原文 ${page.blocks[0].id}`,
       translatedText: "직접 고친 번역",
     });
   });
 
-  it("keeps the existing output untouched when the option is off", async () => {
-    const f = await setup(false);
+  it("falls back to the linked auto-save destination without a Rover Output", async () => {
+    const f = await setup({ enabled: true, roverOutput: false });
     expect((await f.run()).status).toBe("completed");
-    await expect(
-      readFile(join(f.expectedRoot, "translation.json"), "utf8"),
-    ).rejects.toMatchObject({ code: "ENOENT" });
-    expect(f.reportError).not.toHaveBeenCalled();
+    expect(await readdir(f.outputRoot)).toEqual([]);
+    const saved = JSON.parse(
+      await readFile(join(f.linkedRoot, "translation.json"), "utf8"),
+    );
+    expect(saved.inputName).toBe(INPUT_NAME);
+    expect(saved.pages).toHaveLength(4);
+    expect(await readdir(f.linkedRoot)).toContain("translation.csv");
   });
 
-  it.each([
-    ["its own chapter", true, ""],
-    ["another chapter", false, " (2)"],
-  ])(
-    "treats a managed folder's translation.json owned by %s accordingly",
-    async (_label, ownedByChapter, suffix) => {
-      const f = await setup(true, async (root, chapterId) => {
-        await mkdir(root, { recursive: true });
-        await writeFile(
-          join(root, "translation.json"),
-          JSON.stringify({
-            schemaVersion: 1,
-            chapterId: ownedByChapter ? chapterId : randomUUID(),
-          }),
-        );
-      });
-      expect(f.service.getStatus(f.chapterId).rootPath).toBe(
-        `${f.expectedRoot}${suffix}`,
-      );
-    },
-  );
+  it("keeps every output untouched when the option is off", async () => {
+    const f = await setup({ enabled: false, roverOutput: true });
+    expect((await f.run()).status).toBe("completed");
+    expect(await readdir(f.outputRoot)).toEqual([]);
+    expect(await readdir(f.linkedRoot)).not.toContain("translation.json");
+    expect(await readdir(f.linkedRoot)).not.toContain("translation.csv");
+    expect(f.reportError).not.toHaveBeenCalled();
+  });
 });

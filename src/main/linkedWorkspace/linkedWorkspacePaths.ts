@@ -56,6 +56,19 @@ export function resolvePathInside(
   return target;
 }
 
+/** One directory name derived from a user-visible title. */
+export function safeResultPathSegment(value: string, fallback: string): string {
+  const normalized = value
+    .trim()
+    .replace(/[<>:"/\\|?*\x00-\x1f]/g, "_")
+    .replace(/[. ]+$/g, "")
+    .slice(0, 80);
+  const safe = normalized || fallback;
+  return /^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])$/i.test(safe)
+    ? `_${safe}`
+    : safe;
+}
+
 export function resolveLinkedResultPath({
   rootPath,
   sourceRelativePath,

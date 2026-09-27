@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { readFile, readdir, stat } from "node:fs/promises";
+import { readdir, stat } from "node:fs/promises";
+import { join } from "node:path";
 import { once } from "node:events";
 import type { MangaPage } from "../../shared/libraryTypes";
 import type { LinkedWorkspaceRecordV1 } from "../../shared/linkedWorkspaceTypes";
@@ -8,7 +9,11 @@ import {
   buildLinkedMirrorFileName,
   resolvePathInside,
 } from "./linkedWorkspacePaths";
-import { writeJsonFile } from "../libraryStore/storage";
+import {
+  readJsonFile,
+  writeJsonFile,
+  writeTextFileAtomically,
+} from "../libraryStore/storage";
 
 export type FileFingerprint = {
   size: number;
@@ -142,38 +147,65 @@ export async function writeLinkedWorkspaceMirror({
   );
 }
 
-export const TRANSLATION_JSON_FILE_NAME = "translation.json";
+const TRANSLATION_JSON_FILE_NAME = "translation.json";
+const TRANSLATION_CSV_FILE_NAME = "translation.csv";
+const ROVER_EXPORT_FOLDERS_FILE_NAME = "rover-translation-exports.json";
 
-/** The chapter that owns an existing translation.json, or null if none. */
-export async function readTranslationJsonChapterId(
-  rootPath: string,
-): Promise<string | null> {
-  try {
-    const document = JSON.parse(
-      await readFile(
-        resolvePathInside(rootPath, TRANSLATION_JSON_FILE_NAME),
-        "utf8",
-      ),
-    ) as unknown;
-    return document &&
-      typeof document === "object" &&
-      "chapterId" in document &&
-      typeof document.chapterId === "string"
-      ? document.chapterId
-      : null;
-  } catch (error) {
-    if (isMissingFileError(error) || error instanceof SyntaxError) return null;
-    throw error;
-  }
-}
+/** The folder a chapter owns below one Rover export root. */
+export type RoverExportFolder = {
+  rootPath: string;
+  chapterId: string;
+  folder: string;
+};
 
 export async function writeTranslationJsonFile(
-  rootPath: string,
+  directory: string,
   document: unknown,
 ): Promise<void> {
-  await writeJsonFile(
-    resolvePathInside(rootPath, TRANSLATION_JSON_FILE_NAME),
-    document,
+  await writeJsonFile(join(directory, TRANSLATION_JSON_FILE_NAME), document);
+}
+
+export async function writeTranslationCsvFile(
+  directory: string,
+  csv: string,
+): Promise<void> {
+  await writeTextFileAtomically(
+    join(directory, TRANSLATION_CSV_FILE_NAME),
+    csv,
+  );
+}
+
+export async function readRoverExportFolders(
+  dataRoot: string,
+): Promise<RoverExportFolder[]> {
+  const value = await readJsonFile<unknown>(
+    join(dataRoot, ROVER_EXPORT_FOLDERS_FILE_NAME),
+    null,
+  );
+  const folders =
+    value && typeof value === "object" && "folders" in value
+      ? value.folders
+      : [];
+  return Array.isArray(folders) ? folders.filter(isRoverExportFolder) : [];
+}
+
+export async function writeRoverExportFolders(
+  dataRoot: string,
+  folders: RoverExportFolder[],
+): Promise<void> {
+  await writeJsonFile(join(dataRoot, ROVER_EXPORT_FOLDERS_FILE_NAME), {
+    schemaVersion: 1,
+    folders,
+  });
+}
+
+function isRoverExportFolder(value: unknown): value is RoverExportFolder {
+  if (!value || typeof value !== "object") return false;
+  const entry = value as Record<string, unknown>;
+  return (
+    typeof entry.rootPath === "string" &&
+    typeof entry.chapterId === "string" &&
+    typeof entry.folder === "string"
   );
 }
 

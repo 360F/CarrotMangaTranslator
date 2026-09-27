@@ -94,7 +94,7 @@ export function parseReviewTable(
   });
 }
 
-function escapeDelimitedCell(value: string, delimiter: string): string {
+export function escapeDelimitedCell(value: string, delimiter: string): string {
   if (
     value.includes('"') ||
     value.includes("\r") ||

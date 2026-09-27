@@ -1662,12 +1662,12 @@
       "chapterCount": "{{count}}章",
       "toggleChapter": "{{title}}的结果自动保存",
       "translationJson": {
-        "enable": "将翻译数据保存为 JSON",
-        "description": "对已开启自动保存的话，每次保存翻译时都会在结果文件夹中生成 translation.json（按页面和文本块记录原文与译文）。"
+        "enable": "导出翻译数据（JSON·CSV）",
+        "description": "每次保存翻译时，都会将按页面和文本块编号的原文与译文写入默认输出文件夹中的 <输入名称>/translation.json 和 translation.csv。若该文件夹不可用，则写入已开启自动保存的话的结果文件夹。"
       },
       "defaultDirectories": {
         "enable": "使用自定义默认路径",
-        "description": "设置输入选择器的起始文件夹和新自动保存位置的默认父文件夹。不会移动现有项目或连接。",
+        "description": "指定输入选择窗口的起始位置，以及保存 Rover 翻译导出（translation.json·translation.csv）的文件夹。自动保存位置和现有项目不会改变。",
         "input": "默认输入文件夹",
         "output": "默认输出文件夹",
         "placeholder": "选择文件夹或输入绝对路径",

@@ -39,6 +39,7 @@ import {
   resolveLinkedPngArtifactPath,
   resolveLinkedResultPath,
   resolvePathInside,
+  safeResultPathSegment,
   writeBinaryFileAtomically,
 } from "./linkedWorkspacePaths";
 import {
@@ -47,7 +48,6 @@ import {
   fingerprintFile,
   type LinkedMirrorArtifact,
   type LinkedMirrorChapter,
-  readTranslationJsonChapterId,
   writeLinkedWorkspaceMirror,
 } from "./linkedWorkspaceFiles";
 import { LinkedWorkspaceStore } from "./linkedWorkspaceStore";
@@ -87,7 +87,6 @@ type ServiceDependencies = {
   openChapter: typeof openChapter;
   updatePagesAfterInpainting: typeof updatePagesAfterInpainting;
   createPageExportRenderSession: typeof createPageExportRenderSession;
-  resolveManagedOutputParent?: () => Promise<string | null>;
 };
 
 type DrainWaiter = {
@@ -532,10 +531,9 @@ export class LinkedWorkspaceSyncService {
       "새 작품";
     const workDirectory = safeResultPathSegment(workTitle, "작품");
     const chapterDirectory = safeResultPathSegment(chapter.title, "화");
-    const configuredParent =
-      (await this.dependencies.resolveManagedOutputParent?.()) ?? null;
     const preferred = join(
-      configuredParent ?? join(this.options.dataRoot, "results"),
+      this.options.dataRoot,
+      "results",
       workDirectory,
       chapterDirectory,
     );
@@ -2201,9 +2199,6 @@ async function inspectManagedDestination(
       throw error;
     }
   }
-  // Translation JSON is written before the first render publishes a mirror.
-  if ((await readTranslationJsonChapterId(rootPath)) === chapterId)
-    return "owned";
   return "occupied";
 }
 
@@ -2248,18 +2243,6 @@ async function fingerprintFileIfPresent(
     }
     throw error;
   }
-}
-
-function safeResultPathSegment(value: string, fallback: string): string {
-  const normalized = value
-    .trim()
-    .replace(/[<>:"/\\|?*\x00-\x1f]/g, "_")
-    .replace(/[. ]+$/g, "")
-    .slice(0, 80);
-  const safe = normalized || fallback;
-  return /^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])$/i.test(safe)
-    ? `_${safe}`
-    : safe;
 }
 
 function hasStemCollision(
