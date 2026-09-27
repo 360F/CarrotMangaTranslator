@@ -86,6 +86,7 @@ type ServiceDependencies = {
   openChapter: typeof openChapter;
   updatePagesAfterInpainting: typeof updatePagesAfterInpainting;
   createPageExportRenderSession: typeof createPageExportRenderSession;
+  resolveManagedOutputParent?: () => Promise<string | null>;
 };
 
 type DrainWaiter = {
@@ -530,9 +531,10 @@ export class LinkedWorkspaceSyncService {
       "새 작품";
     const workDirectory = safeResultPathSegment(workTitle, "작품");
     const chapterDirectory = safeResultPathSegment(chapter.title, "화");
+    const configuredParent =
+      (await this.dependencies.resolveManagedOutputParent?.()) ?? null;
     const preferred = join(
-      this.options.dataRoot,
-      "results",
+      configuredParent ?? join(this.options.dataRoot, "results"),
       workDirectory,
       chapterDirectory,
     );

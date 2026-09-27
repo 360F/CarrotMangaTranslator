@@ -36,6 +36,9 @@ import type {
 } from "../../../shared/blockStylePresets";
 
 type BuildSettingsFromFormInput = {
+  roverDefaultDirectoriesEnabled: boolean;
+  roverInputDirectory: string;
+  roverOutputDirectory: string;
   initialSettings: AppSettings;
   graphicsGpuPreference: GraphicsGpuPreference;
   computeGpuIndex: number | null;
@@ -160,11 +163,7 @@ export function buildSettingsFromForm(
     },
     api: buildApiSettings(input),
     ocr: buildOcrSettings(input),
-    ui: {
-      ...input.initialSettings.ui,
-      locale: input.uiLocale,
-      wheelZoomSensitivityPercent: input.wheelZoomSensitivityPercent,
-    },
+    ui: buildUiSettings(input),
     inpainting: {
       ...input.initialSettings.inpainting,
       model: input.inpaintingModel,
@@ -183,6 +182,21 @@ export function buildSettingsFromForm(
     generationLimits: input.generationLimits,
     maxTokens: input.maxTokens,
     ctx: input.ctx,
+  };
+}
+
+function buildUiSettings(input: BuildSettingsFromFormInput) {
+  const inputDirectory = input.roverInputDirectory.trim();
+  const outputDirectory = input.roverOutputDirectory.trim();
+  return {
+    ...input.initialSettings.ui,
+    roverDefaultDirectories: {
+      enabled: input.roverDefaultDirectoriesEnabled,
+      ...(inputDirectory ? { inputDirectory } : {}),
+      ...(outputDirectory ? { outputDirectory } : {}),
+    },
+    locale: input.uiLocale,
+    wheelZoomSensitivityPercent: input.wheelZoomSensitivityPercent,
   };
 }
 

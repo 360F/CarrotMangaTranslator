@@ -1661,6 +1661,14 @@
       "noSearchResults": "条件に一致する作品・話がありません。",
       "chapterCount": "{{count}}話",
       "toggleChapter": "{{title}}の結果を自動保存",
+      "defaultDirectories": {
+        "enable": "カスタム既定パスを使用",
+        "description": "入力選択画面の開始位置と、新しい自動保存先の既定の親フォルダーを指定します。既存のプロジェクトや接続先は移動しません。",
+        "input": "既定の入力フォルダー",
+        "output": "既定の出力フォルダー",
+        "placeholder": "フォルダーを選択するか絶対パスを入力してください",
+        "browse": "参照"
+      },
       "defaultLocationReady": "既定の結果フォルダーに保存",
       "defaultLocation": "既定の結果フォルダー",
       "customLocation": "指定フォルダー",

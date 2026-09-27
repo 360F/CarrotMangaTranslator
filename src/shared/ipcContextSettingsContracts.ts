@@ -361,6 +361,15 @@ export const settingsIpcContracts = {
     args: z.tuple([]),
     result: localPathResult.nullable(),
   }),
+  pickDefaultDirectory: defineIpcContract<
+    [initialPath: string | undefined],
+    string | null
+  >({
+    apiKey: "pickDefaultDirectory",
+    channel: "settings:pick-default-directory",
+    args: z.tuple([localPathResult.optional()]),
+    result: localPathResult.nullable(),
+  }),
   pickVertexServiceAccountFile: defineIpcContract<
     [],
     VertexServiceAccountPickResult | null

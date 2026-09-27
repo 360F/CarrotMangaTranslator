@@ -7,10 +7,10 @@ import type {
   PreparedImportPreview,
 } from "../../shared/importTypes";
 import {
-  getRecentDialogDirectory,
   recentDialogPathKeys,
   type RecentDialogLocation,
 } from "../recentDialogPaths";
+import { resolveImportDialogDefaultPath } from "../roverDefaultDirectories";
 import type { IpcContext } from "./context";
 import {
   createImportPreviewSession,
@@ -47,8 +47,8 @@ function registerArchiveImportPreviewIpc(
     async (): Promise<ImportPreviewSession | null> => {
       const options = {
         title: tMain("dialogs.openArchive"),
-        defaultPath: getRecentDialogDirectory(
-          context.appPaths.dataRoot,
+        defaultPath: await resolveImportDialogDefaultPath(
+          context.appPaths,
           recentDialogPathKeys.archiveImport,
         ),
         properties: ["openFile"],
@@ -93,8 +93,8 @@ function registerPdfImportPreviewIpc(
     async (): Promise<ImportPreviewSession | null> => {
       const options = {
         title: tMain("dialogs.openPdf"),
-        defaultPath: getRecentDialogDirectory(
-          context.appPaths.dataRoot,
+        defaultPath: await resolveImportDialogDefaultPath(
+          context.appPaths,
           recentDialogPathKeys.pdfImport,
         ),
         properties: ["openFile"],
@@ -131,8 +131,8 @@ function registerArchiveFolderImportPreviewIpc(
     async (): Promise<ImportPreviewSession | null> => {
       const options = {
         title: tMain("dialogs.batchImport"),
-        defaultPath: getRecentDialogDirectory(
-          context.appPaths.dataRoot,
+        defaultPath: await resolveImportDialogDefaultPath(
+          context.appPaths,
           recentDialogPathKeys.archiveFolderImport,
         ),
         properties: ["openDirectory"],

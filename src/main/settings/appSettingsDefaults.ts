@@ -262,6 +262,7 @@ function resolveDefaultUiSettings(
   env: NodeJS.ProcessEnv,
 ): NonNullable<AppSettings["ui"]> {
   return {
+    roverDefaultDirectories: { enabled: false },
     locale: normalizeUiLocale(
       env.MANGA_TRANSLATOR_UI_LOCALE,
       DEFAULT_UI_LOCALE,

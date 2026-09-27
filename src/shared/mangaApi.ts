@@ -373,6 +373,7 @@ export type MangaApi = {
   saveSettings: (settings: AppSettings) => Promise<AppSettings>;
   resetSettings: () => Promise<AppSettings>;
   pickLocalModelFile: () => Promise<LocalModelPickResult | null>;
+  pickDefaultDirectory: (initialPath?: string) => Promise<string | null>;
   pickLocalMmprojFile: () => Promise<string | null>;
   pickVertexServiceAccountFile: () => Promise<VertexServiceAccountPickResult | null>;
   openAmdHipSdkDownload: () => Promise<unknown>;

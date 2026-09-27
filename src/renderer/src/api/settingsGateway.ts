@@ -18,6 +18,7 @@ export const settingsGateway = createMangaDomainGateway("Settings", [
   "openVertexSetupPage",
   "openReleasesPage",
   "pickLocalMmprojFile",
+  "pickDefaultDirectory",
   "pickLocalModelFile",
   "pickVertexServiceAccountFile",
   "resetSettings",

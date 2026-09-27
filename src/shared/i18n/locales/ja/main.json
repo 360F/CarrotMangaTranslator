@@ -1,5 +1,6 @@
 {
   "settings": {
+    "defaultDirectoryDialogTitle": "既定のフォルダーを選択",
     "localModelDialogTitle": "ローカルGGUFモデルを選択",
     "mmprojDialogTitle": "mmprojファイルを選択",
     "vertexServiceAccountDialogTitle": "VertexサービスアカウントJSONを選択",

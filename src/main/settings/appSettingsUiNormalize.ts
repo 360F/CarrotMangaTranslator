@@ -31,6 +31,9 @@ export function normalizeUiSettings(
     ...normalizePageWorkflowUi(data),
     ...resolveCodexTypesettingPreferences(data.codexTypesettingPreferences),
     locale: normalizeUiLocale(data.locale, base.locale),
+    roverDefaultDirectories: resolveRoverDefaultDirectories(
+      data.roverDefaultDirectories,
+    ),
     inpaintingGuideHidden: resolveBoolean(
       data.inpaintingGuideHidden,
       base.inpaintingGuideHidden ?? false,
@@ -83,6 +86,28 @@ export function normalizeUiSettings(
     ),
     ...(blockModeDefault ? { blockModeDefault } : {}),
   };
+}
+
+function resolveRoverDefaultDirectories(
+  value: unknown,
+): NonNullable<AppSettings["ui"]>["roverDefaultDirectories"] {
+  const data =
+    typeof value === "object" && value !== null && !Array.isArray(value)
+      ? (value as Record<string, unknown>)
+      : {};
+  const inputDirectory = normalizeOptionalDirectory(data.inputDirectory);
+  const outputDirectory = normalizeOptionalDirectory(data.outputDirectory);
+  return {
+    enabled: data.enabled === true,
+    ...(inputDirectory ? { inputDirectory } : {}),
+    ...(outputDirectory ? { outputDirectory } : {}),
+  };
+}
+
+function normalizeOptionalDirectory(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const directory = value.trim();
+  return directory || undefined;
 }
 
 function resolveCodexTypesettingPreferences(value: unknown) {

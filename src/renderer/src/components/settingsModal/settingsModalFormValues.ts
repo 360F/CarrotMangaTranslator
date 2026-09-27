@@ -48,6 +48,9 @@ import {
 import type { ApiProviderPresetId } from "../../../../shared/apiProviderPresets";
 
 export type SettingsFormValues = {
+  roverDefaultDirectoriesEnabled: boolean;
+  roverInputDirectory: string;
+  roverOutputDirectory: string;
   uiLocale: UiLocale;
   wheelZoomSensitivityPercent: WheelZoomSensitivityPercent;
   graphicsGpuPreference: GraphicsGpuPreference;
@@ -179,6 +182,9 @@ function resolveGeneralFormValues(
   settings: AppSettings,
 ): Pick<
   SettingsFormValues,
+  | "roverDefaultDirectoriesEnabled"
+  | "roverInputDirectory"
+  | "roverOutputDirectory"
   | "uiLocale"
   | "wheelZoomSensitivityPercent"
   | "modelProvider"
@@ -186,6 +192,7 @@ function resolveGeneralFormValues(
   | "targetLanguage"
 > {
   return {
+    ...resolveRoverDefaultDirectoryFormValues(settings),
     uiLocale: normalizeUiLocale(settings.ui?.locale, DEFAULT_UI_LOCALE),
     wheelZoomSensitivityPercent: settings.ui?.wheelZoomSensitivityPercent ?? 1,
     modelProvider: settings.modelProvider,
@@ -197,6 +204,22 @@ function resolveGeneralFormValues(
       settings.translation?.targetLanguage,
       DEFAULT_TARGET_LANGUAGE,
     ),
+  };
+}
+
+function resolveRoverDefaultDirectoryFormValues(
+  settings: AppSettings,
+): Pick<
+  SettingsFormValues,
+  | "roverDefaultDirectoriesEnabled"
+  | "roverInputDirectory"
+  | "roverOutputDirectory"
+> {
+  const configured = settings.ui?.roverDefaultDirectories;
+  return {
+    roverDefaultDirectoriesEnabled: configured?.enabled === true,
+    roverInputDirectory: configured?.inputDirectory ?? "",
+    roverOutputDirectory: configured?.outputDirectory ?? "",
   };
 }
 

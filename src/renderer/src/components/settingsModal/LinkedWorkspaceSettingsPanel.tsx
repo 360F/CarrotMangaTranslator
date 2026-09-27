@@ -10,12 +10,35 @@ import { useLinkedWorkspaceSettingsOperations } from "../../hooks/useLinkedWorks
 import { useLinkedWorkspaceStatuses } from "../../hooks/useLinkedWorkspaceStatuses";
 import { LinkedWorkspaceChapterRow } from "./LinkedWorkspaceChapterRow";
 import { LinkedWorkspaceFolderRoles } from "../LinkedWorkspaceFolderRoles";
+import { settingsGateway } from "../../api/settingsGateway";
+import { Button } from "../ui/Button";
+import { CheckboxField } from "../ui/CheckboxField";
+import { TextField } from "../ui/Field";
+
+const ignoreBooleanChange = (_value: boolean): void => undefined;
+const ignoreStringChange = (_value: string): void => undefined;
+
+type LinkedWorkspaceSettingsPanelProps = {
+  disabled?: boolean;
+  enabled?: boolean;
+  inputDirectory?: string;
+  library: LibraryIndex;
+  onEnabledChange?: (enabled: boolean) => void;
+  onInputDirectoryChange?: (directory: string) => void;
+  onOutputDirectoryChange?: (directory: string) => void;
+  outputDirectory?: string;
+};
 
 export function LinkedWorkspaceSettingsPanel({
+  disabled = false,
+  enabled = false,
+  inputDirectory = "",
   library,
-}: {
-  library: LibraryIndex;
-}): React.JSX.Element {
+  onEnabledChange = ignoreBooleanChange,
+  onInputDirectoryChange = ignoreStringChange,
+  onOutputDirectoryChange = ignoreStringChange,
+  outputDirectory = "",
+}: LinkedWorkspaceSettingsPanelProps): React.JSX.Element {
   const { i18n, t } = useTranslation("components");
   const [searchQuery, setSearchQuery] = React.useState("");
   const deferredSearchQuery = React.useDeferredValue(searchQuery);
@@ -27,20 +50,28 @@ export function LinkedWorkspaceSettingsPanel({
     () => library.works.flatMap((work) => work.chapterOrder),
     [library.works],
   );
-  const visibleLibrary = React.useMemo(
-    () =>
-      sortLibraryIndex(
-        filterLibraryIndex(library, deferredSearchQuery),
-        sort,
-        i18n.resolvedLanguage ?? i18n.language,
-      ),
-    [deferredSearchQuery, i18n.language, i18n.resolvedLanguage, library, sort],
+  const visibleLibrary = useVisibleLibrary(
+    library,
+    deferredSearchQuery,
+    sort,
+    i18n.resolvedLanguage ?? i18n.language,
   );
   const { loading, refresh, statuses } = useLinkedWorkspaceStatuses(chapterIds);
   const { busyChapterIds, errors, run } =
     useLinkedWorkspaceSettingsOperations(refresh);
   return (
     <div className="linked-workspace-settings" aria-busy={loading}>
+      <DefaultDirectoriesSection
+        {...{
+          disabled,
+          enabled,
+          inputDirectory,
+          outputDirectory,
+          onEnabledChange,
+          onInputDirectoryChange,
+          onOutputDirectoryChange,
+        }}
+      />
       <LinkedWorkspaceFolderRoles />
       <div className="linked-workspace-settings-toolbar">
         <label
@@ -73,6 +104,106 @@ export function LinkedWorkspaceSettingsPanel({
       </div>
     </div>
   );
+}
+
+function useVisibleLibrary(
+  library: LibraryIndex,
+  searchQuery: string,
+  sort: LibrarySort,
+  locale: string,
+): LibraryIndex {
+  return React.useMemo(
+    () =>
+      sortLibraryIndex(filterLibraryIndex(library, searchQuery), sort, locale),
+    [library, locale, searchQuery, sort],
+  );
+}
+
+function DefaultDirectoriesSection({
+  disabled,
+  enabled,
+  inputDirectory,
+  onEnabledChange,
+  onInputDirectoryChange,
+  onOutputDirectoryChange,
+  outputDirectory,
+}: {
+  disabled: boolean;
+  enabled: boolean;
+  inputDirectory: string;
+  onEnabledChange: (enabled: boolean) => void;
+  onInputDirectoryChange: (directory: string) => void;
+  onOutputDirectoryChange: (directory: string) => void;
+  outputDirectory: string;
+}): React.JSX.Element {
+  const { t } = useTranslation("components");
+  const fieldsDisabled = disabled || !enabled;
+  return (
+    <section className="rover-default-directories">
+      <CheckboxField
+        variant="switch"
+        checked={enabled}
+        disabled={disabled}
+        label={t("settings.results.defaultDirectories.enable")}
+        onCheckedChange={onEnabledChange}
+      />
+      <p>{t("settings.results.defaultDirectories.description")}</p>
+      <DefaultDirectoryField
+        disabled={fieldsDisabled}
+        label={t("settings.results.defaultDirectories.input")}
+        value={inputDirectory}
+        onChange={onInputDirectoryChange}
+      />
+      <DefaultDirectoryField
+        disabled={fieldsDisabled}
+        label={t("settings.results.defaultDirectories.output")}
+        value={outputDirectory}
+        onChange={onOutputDirectoryChange}
+      />
+    </section>
+  );
+}
+
+function DefaultDirectoryField({
+  disabled,
+  label,
+  onChange,
+  value,
+}: {
+  disabled: boolean;
+  label: string;
+  onChange: (directory: string) => void;
+  value: string;
+}): React.JSX.Element {
+  const { t } = useTranslation("components");
+  return (
+    <div className="rover-default-directory-row">
+      <TextField
+        label={label}
+        disabled={disabled}
+        value={value}
+        placeholder={t("settings.results.defaultDirectories.placeholder")}
+        onChange={(event) => onChange(event.currentTarget.value)}
+      />
+      <Button
+        disabled={disabled}
+        size="sm"
+        onClick={() => void chooseDefaultDirectory(value, onChange)}
+      >
+        {t("settings.results.defaultDirectories.browse")}
+      </Button>
+    </div>
+  );
+}
+
+async function chooseDefaultDirectory(
+  currentPath: string,
+  onChange: (directory: string) => void,
+): Promise<void> {
+  const selected = await settingsGateway.pickDefaultDirectory(
+    currentPath.trim() || undefined,
+  );
+  if (selected) onChange(selected);
 }
 
 function LinkedWorkspaceWorkList({

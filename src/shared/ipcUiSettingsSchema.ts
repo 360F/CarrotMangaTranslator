@@ -8,6 +8,14 @@ import { SUPPORTED_UI_LOCALES } from "./uiLocales";
 import { codexTypesettingPreferencesSchema } from "./codexTypesettingSchemas";
 export const UiSettingsSchema = z
   .object({
+    roverDefaultDirectories: z
+      .object({
+        enabled: z.boolean(),
+        inputDirectory: z.string().max(4096).optional(),
+        outputDirectory: z.string().max(4096).optional(),
+      })
+      .strict()
+      .optional(),
     locale: z.enum(SUPPORTED_UI_LOCALES).optional(),
     hayaiTranslationUi: z.enum(["classic", "workflow"]).optional(),
     pageWorkflowDefault: PageWorkflowPlanSchema.optional(),

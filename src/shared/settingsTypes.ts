@@ -174,6 +174,11 @@ type OcrSettings = {
 };
 
 export type UiSettings = {
+  roverDefaultDirectories?: {
+    enabled: boolean;
+    inputDirectory?: string;
+    outputDirectory?: string;
+  };
   hayaiTranslationUi?: "classic" | "workflow";
   pageWorkflowDefault?: import("./pageWorkflowTypes").PageWorkflowPlan;
   pageWorkflowPresets?: import("./pageWorkflowTypes").PageWorkflowPreset[];

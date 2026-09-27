@@ -1,4 +1,5 @@
 import React from "react";
+import { createRoverDefaultDirectoryFormSetters } from "./roverDefaultDirectoryFormSetters";
 import type { AppSettings } from "../../../../shared/settingsTypes";
 import {
   createSettingsFormValues,
@@ -78,6 +79,7 @@ function useSettingsFormSetters(
 ): SettingsFormSetters {
   return React.useMemo(
     () => ({
+      ...createRoverDefaultDirectoryFormSetters(setValues),
       setUiLocale: createFormFieldDispatch(setValues, "uiLocale"),
       setWheelZoomSensitivityPercent: createFormFieldDispatch(
         setValues,

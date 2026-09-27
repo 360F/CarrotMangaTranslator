@@ -6,6 +6,7 @@ import { updatePagesAfterInpainting } from "../library/libraryMutationFacade";
 import { createPageExportRenderSession } from "../pageExport";
 import { installLinkedWorkspaceSaveNotifier } from "./linkedWorkspaceNotifications";
 import { LinkedWorkspaceSyncService } from "./linkedWorkspaceSyncService";
+import { resolveManagedOutputParent } from "../roverDefaultDirectories";
 
 export function createLinkedWorkspaceRuntime(options: {
   dataRoot: string;
@@ -21,6 +22,7 @@ export function createLinkedWorkspaceRuntime(options: {
       openChapter,
       updatePagesAfterInpainting,
       createPageExportRenderSession,
+      resolveManagedOutputParent: () => resolveManagedOutputParent(),
     },
   });
   return {

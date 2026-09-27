@@ -34,6 +34,10 @@ export type SettingsModalViewProps = {
   researchPanelProps: React.ComponentProps<
     typeof InternetResearchSettingsPanel
   >;
+  resultsPanelProps: Omit<
+    React.ComponentProps<typeof LinkedWorkspaceSettingsPanel>,
+    "library"
+  >;
   hardwarePanelProps: React.ComponentProps<typeof HardwareSettingsPanel>;
   library?: LibraryIndex;
   formatPanelTitle: string;
@@ -67,6 +71,7 @@ export function SettingsModalView({
   generalPanelProps,
   enginePanelProps,
   researchPanelProps,
+  resultsPanelProps,
   hardwarePanelProps,
   library,
   formatPanelTitle,
@@ -121,6 +126,7 @@ export function SettingsModalView({
           generalPanelProps={generalPanelProps}
           enginePanelProps={enginePanelProps}
           researchPanelProps={researchPanelProps}
+          resultsPanelProps={resultsPanelProps}
           hardwarePanelProps={hardwarePanelProps}
           library={library}
           formatPanelTitle={formatPanelTitle}
@@ -140,6 +146,7 @@ function SettingsModalTabPanel({
   generalPanelProps,
   enginePanelProps,
   researchPanelProps,
+  resultsPanelProps,
   hardwarePanelProps,
   library,
   formatPanelTitle,
@@ -153,6 +160,7 @@ function SettingsModalTabPanel({
   | "generalPanelProps"
   | "enginePanelProps"
   | "researchPanelProps"
+  | "resultsPanelProps"
   | "hardwarePanelProps"
   | "library"
   | "formatPanelTitle"
@@ -184,6 +192,7 @@ function SettingsModalTabPanel({
         navigation={navigation}
         enginePanelProps={enginePanelProps}
         researchPanelProps={researchPanelProps}
+        resultsPanelProps={resultsPanelProps}
         formatPanelProps={formatPanelProps}
         generalPanelProps={generalPanelProps}
         hardwarePanelProps={hardwarePanelProps}
@@ -201,6 +210,7 @@ type SettingsModalTabContentProps = Pick<
   | "activeTab"
   | "enginePanelProps"
   | "researchPanelProps"
+  | "resultsPanelProps"
   | "formatPanelProps"
   | "generalPanelProps"
   | "hardwarePanelProps"
@@ -215,6 +225,7 @@ function SettingsModalTabContent({
   navigation,
   enginePanelProps,
   researchPanelProps,
+  resultsPanelProps,
   formatPanelProps,
   generalPanelProps,
   hardwarePanelProps,
@@ -231,7 +242,9 @@ function SettingsModalTabContent({
     return <ShortcutsSettingsPanel {...shortcutsPanelProps} />;
   if (activeTab === "test") return <TestSettingsPanel {...testPanelProps} />;
   if (activeTab === "results") {
-    return library ? <LinkedWorkspaceSettingsPanel library={library} /> : null;
+    return library ? (
+      <LinkedWorkspaceSettingsPanel {...resultsPanelProps} library={library} />
+    ) : null;
   }
   if (activeTab !== "engine") return null;
   return (

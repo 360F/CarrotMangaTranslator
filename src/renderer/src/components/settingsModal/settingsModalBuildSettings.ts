@@ -40,6 +40,9 @@ export function buildSettingsFromDraft({
   values: SettingsFormValues;
 }): AppSettings {
   return buildSettingsFromForm({
+    roverDefaultDirectoriesEnabled: values.roverDefaultDirectoriesEnabled,
+    roverInputDirectory: values.roverInputDirectory,
+    roverOutputDirectory: values.roverOutputDirectory,
     initialSettings,
     graphicsGpuPreference: values.graphicsGpuPreference,
     computeGpuIndex: values.computeGpuIndex,

@@ -92,6 +92,7 @@ export function buildSettingsModalViewProps({
       submit,
       test,
     }),
+    resultsPanelProps: buildResultsPanelProps(controlsBusy, form),
     hardwarePanelProps: buildHardwarePanelProps({
       controlsBusy,
       form,
@@ -120,6 +121,21 @@ export function buildSettingsModalViewProps({
       testState: test.testState,
     },
     validationProps: buildValidationProps(form.values, draft, t),
+  };
+}
+
+function buildResultsPanelProps(
+  controlsBusy: boolean,
+  form: ReturnType<typeof useSettingsFormState>,
+): SettingsModalViewProps["resultsPanelProps"] {
+  return {
+    disabled: controlsBusy,
+    enabled: form.values.roverDefaultDirectoriesEnabled,
+    inputDirectory: form.values.roverInputDirectory,
+    outputDirectory: form.values.roverOutputDirectory,
+    onEnabledChange: form.setters.setRoverDefaultDirectoriesEnabled,
+    onInputDirectoryChange: form.setters.setRoverInputDirectory,
+    onOutputDirectoryChange: form.setters.setRoverOutputDirectory,
   };
 }
 

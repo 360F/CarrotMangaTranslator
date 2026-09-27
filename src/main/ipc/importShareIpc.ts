@@ -21,11 +21,11 @@ import {
   previewWorkShareImport,
 } from "../library";
 import {
-  getRecentDialogDirectory,
   getRecentDialogFileDefaultPath,
   recentDialogPathKeys,
   rememberRecentDialogFile,
 } from "../recentDialogPaths";
+import { resolveImportDialogDefaultPath } from "../roverDefaultDirectories";
 import type { IpcContext } from "./context";
 import { registerImportPreviewIpc } from "./importPreviewIpc";
 import { tMain } from "./localization";
@@ -146,8 +146,8 @@ function registerPreviewWorkShareIpc(
     async (): Promise<WorkShareImportPreview | null> => {
       const options = {
         title: tMain("dialogs.openShare"),
-        defaultPath: getRecentDialogDirectory(
-          context.appPaths.dataRoot,
+        defaultPath: await resolveImportDialogDefaultPath(
+          context.appPaths,
           recentDialogPathKeys.workShareImport,
         ),
         properties: ["openFile"],

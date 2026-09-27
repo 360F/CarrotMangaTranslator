@@ -1,6 +1,6 @@
 import { dialog, type OpenDialogOptions } from "electron";
 import { existsSync, readdirSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, isAbsolute, join } from "node:path";
 import type { LocalModelPickResult } from "../../shared/jobTypes";
 import {
   getRecentDialogDirectory,
@@ -15,6 +15,11 @@ import { trustedHandleContract } from "./trustedIpc";
 import { settingsIpcContracts } from "../../shared/ipcContextSettingsContracts";
 
 export function registerSettingsFilePickers(context: IpcContext): void {
+  trustedHandleContract(
+    context,
+    settingsIpcContracts.pickDefaultDirectory,
+    async (_event, initialPath) => pickDefaultDirectory(context, initialPath),
+  );
   trustedHandleContract(
     context,
     settingsIpcContracts.pickLocalModelFile,
@@ -35,6 +40,24 @@ export function registerSettingsFilePickers(context: IpcContext): void {
     settingsIpcContracts.pickVertexServiceAccountFile,
     async () => pickVertexServiceAccountFile(context),
   );
+}
+
+async function pickDefaultDirectory(
+  context: IpcContext,
+  initialPath?: string,
+): Promise<string | null> {
+  const options = {
+    title: tMain("settings.defaultDirectoryDialogTitle"),
+    ...(initialPath && isAbsolute(initialPath)
+      ? { defaultPath: initialPath }
+      : {}),
+    properties: ["openDirectory", "createDirectory"],
+  } satisfies OpenDialogOptions;
+  const window = context.getMainWindow();
+  const result = window
+    ? await dialog.showOpenDialog(window, options)
+    : await dialog.showOpenDialog(options);
+  return result.canceled ? null : (result.filePaths[0] ?? null);
 }
 
 async function pickLocalModelFile(

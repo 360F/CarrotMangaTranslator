@@ -1661,6 +1661,14 @@
       "noSearchResults": "沒有符合條件的作品或章節。",
       "chapterCount": "{{count}}章",
       "toggleChapter": "{{title}}的結果自動儲存",
+      "defaultDirectories": {
+        "enable": "使用自訂預設路徑",
+        "description": "設定輸入選擇器的起始資料夾與新自動儲存位置的預設上層資料夾。不會移動現有專案或連線。",
+        "input": "預設輸入資料夾",
+        "output": "預設輸出資料夾",
+        "placeholder": "選擇資料夾或輸入絕對路徑",
+        "browse": "瀏覽"
+      },
       "defaultLocationReady": "儲存到預設結果資料夾",
       "defaultLocation": "預設結果資料夾",
       "customLocation": "自訂資料夾",

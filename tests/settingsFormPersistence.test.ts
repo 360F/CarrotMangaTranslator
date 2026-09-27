@@ -12,6 +12,37 @@ import { normalizeVertexAuthSettings } from "../src/main/settings/vertexAuthSett
 import { SETTINGS_SECRET_PRESERVE_SENTINEL } from "../src/shared/settingsSecrets";
 import { createDefaultApiProfileFormValues } from "../src/renderer/src/components/settingsModal/settingsModalProfileFormValues";
 
+describe("Rover default directory settings form", () => {
+  it("defaults off and round-trips both remembered directories", () => {
+    const initialSettings = resolveDefaultAppSettings();
+    expect(createSettingsFormValues(initialSettings)).toMatchObject({
+      roverDefaultDirectoriesEnabled: false,
+      roverInputDirectory: "",
+      roverOutputDirectory: "",
+    });
+    const values = {
+      ...createSettingsFormValues(initialSettings),
+      roverDefaultDirectoriesEnabled: true,
+      roverInputDirectory: "D:\\Manga\\Input",
+      roverOutputDirectory: "E:\\Manga\\Output",
+    };
+    const result = buildSettingsFromDraft({
+      values,
+      draft: resolveSettingsDraft(values),
+      initialSettings,
+      keybindings: {},
+      blockFormatDefaults: DEFAULT_BLOCK_FORMAT_DEFAULTS,
+    });
+
+    expect(result.ui?.roverDefaultDirectories).toEqual({
+      enabled: true,
+      inputDirectory: "D:\\Manga\\Input",
+      outputDirectory: "E:\\Manga\\Output",
+    });
+    expect(createSettingsFormValues(result)).toMatchObject(values);
+  });
+});
+
 describe("remote model settings form", () => {
   it("defaults image generation to low and persists it independently from text reasoning", () => {
     const initialSettings = resolveDefaultAppSettings({});

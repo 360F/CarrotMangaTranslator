@@ -27,6 +27,7 @@ const connect = vi.fn();
 const reconnect = vi.fn();
 const resetLocation = vi.fn();
 const viewResults = vi.fn();
+const pickDefaultDirectory = vi.fn();
 
 beforeEach(() => {
   listStatuses.mockResolvedValue([
@@ -53,6 +54,7 @@ beforeEach(() => {
   reconnect.mockResolvedValue(undefined);
   resetLocation.mockResolvedValue(undefined);
   viewResults.mockResolvedValue({ status: "opened", syncedPages: 0 });
+  pickDefaultDirectory.mockResolvedValue(undefined);
   window.mangaApi = createTestMangaGatewayStub({
     listLinkedWorkspaceStatuses: listStatuses,
     onLinkedWorkspaceStatusChanged: () => () => undefined,
@@ -61,6 +63,7 @@ beforeEach(() => {
     reconnectLinkedWorkspace: reconnect,
     resetLinkedWorkspaceLocation: resetLocation,
     viewLinkedResults: viewResults,
+    pickDefaultDirectory,
   });
 });
 
@@ -71,6 +74,54 @@ afterEach(() => {
 });
 
 describe("LinkedWorkspaceSettingsPanel", () => {
+  it("keeps default-directory fields disabled until the Rover opt-in is enabled", async () => {
+    const onEnabledChange = vi.fn();
+    const { container } = render(
+      <LinkedWorkspaceSettingsPanel
+        library={makeLibrary()}
+        inputDirectory="D:/Manga/Input"
+        outputDirectory="E:/Manga/Output"
+        onEnabledChange={onEnabledChange}
+      />,
+    );
+
+    const inputs = container.querySelectorAll(
+      ".rover-default-directories input[type='text']",
+    );
+    expect(inputs).toHaveLength(2);
+    expect((inputs[0] as HTMLInputElement).disabled).toBe(true);
+    expect((inputs[1] as HTMLInputElement).disabled).toBe(true);
+    const toggle = container.querySelector(
+      ".rover-default-directories button[role='switch']",
+    );
+    expect(toggle).toBeTruthy();
+    fireEvent.click(toggle as HTMLButtonElement);
+    expect(onEnabledChange).toHaveBeenCalledWith(true);
+  });
+
+  it("uses the existing settings picker and preserves the current path as its initial directory", async () => {
+    const onInputDirectoryChange = vi.fn();
+    pickDefaultDirectory.mockResolvedValueOnce("D:/Chosen/Input");
+    const { container } = render(
+      <LinkedWorkspaceSettingsPanel
+        enabled
+        library={makeLibrary()}
+        inputDirectory="D:/Manga/Input"
+        onInputDirectoryChange={onInputDirectoryChange}
+      />,
+    );
+
+    const browse = container.querySelector(
+      ".rover-default-directory-row button",
+    );
+    expect(browse).toBeTruthy();
+    fireEvent.click(browse as HTMLButtonElement);
+    await waitFor(() =>
+      expect(pickDefaultDirectory).toHaveBeenCalledWith("D:/Manga/Input"),
+    );
+    expect(onInputDirectoryChange).toHaveBeenCalledWith("D:/Chosen/Input");
+  });
+
   it("treats an empty bridge status response as no linked chapters", async () => {
     Reflect.apply(listStatuses.mockResolvedValueOnce, listStatuses, [null]);
 

@@ -1654,6 +1654,14 @@
       }
     },
     "results": {
+      "defaultDirectories": {
+        "enable": "Use custom default paths",
+        "description": "Set the starting folder for input pickers and the default parent for new automatic-save destinations. Existing projects and connections are not moved.",
+        "input": "Default input folder",
+        "output": "Default output folder",
+        "placeholder": "Choose a folder or enter an absolute path",
+        "browse": "Browse"
+      },
       "description": "Set automatic result saving by work and chapter.",
       "empty": "There are no library works to manage.",
       "searchLabel": "Search automatic result saving",

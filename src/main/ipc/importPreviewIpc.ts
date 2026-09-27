@@ -14,11 +14,11 @@ import type {
 } from "../../shared/importTypes";
 import type { DroppedImportSource } from "../library/libraryImportDrop";
 import {
-  getRecentDialogDirectory,
   recentDialogPathKeys,
   rememberRecentDialogLocation,
   type RecentDialogLocation,
 } from "../recentDialogPaths";
+import { resolveImportDialogDefaultPath } from "../roverDefaultDirectories";
 import { connectImportedChapters } from "./linkedWorkspaceImport";
 import type { IpcContext } from "./context";
 import { tMain } from "./localization";
@@ -66,8 +66,8 @@ function registerImageImportPreviewIpc(
     async (): Promise<ImportPreviewSession | null> => {
       const options = {
         title: tMain("dialogs.openImages"),
-        defaultPath: getRecentDialogDirectory(
-          context.appPaths.dataRoot,
+        defaultPath: await resolveImportDialogDefaultPath(
+          context.appPaths,
           recentDialogPathKeys.imageImport,
         ),
         properties: ["openFile", "multiSelections"],
@@ -131,8 +131,8 @@ function registerFolderImportPreviewIpc(
     async (): Promise<ImportPreviewSession | null> => {
       const options = {
         title: tMain("dialogs.openImageFolder"),
-        defaultPath: getRecentDialogDirectory(
-          context.appPaths.dataRoot,
+        defaultPath: await resolveImportDialogDefaultPath(
+          context.appPaths,
           recentDialogPathKeys.imageFolderImport,
         ),
         properties: ["openDirectory"],
