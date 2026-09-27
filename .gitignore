@@ -95,3 +95,4 @@ recent-dialog-paths.json
 
 # Private local AI development notes (local only; public docs live in docs/)
 /rover_dev_notes/
+rover-translation-exports.json
