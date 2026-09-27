@@ -50,6 +50,8 @@ export function validateOverlayItemsAgainstReferences(
   const accepted: OverlayItem[] = [];
   const reasons: Record<string, number> = {};
   let remappedCount = 0;
+  const itemIds = items.map((item) => item.id).filter(Number.isInteger);
+  let nextFreeId = Math.max(0, ...candidateIds, ...itemIds) + 1;
 
   for (const item of items) {
     const decision = options.regionCropMode
@@ -60,6 +62,7 @@ export function validateOverlayItemsAgainstReferences(
           candidateBoxes,
           candidateIds,
           options,
+          () => nextFreeId++,
         );
     if (decision.reason) {
       reasons[decision.reason] = (reasons[decision.reason] ?? 0) + 1;
@@ -180,18 +183,20 @@ type OverlayDropDecision = {
 };
 
 function resolveOverlayDropReason(
-  item: OverlayItem,
+  rawItem: OverlayItem,
   accepted: OverlayItem[],
   candidateBoxes: CandidateReferenceBox[],
   candidateIds: Set<number>,
   options: OverlayValidationOptions,
+  nextId: () => number,
 ): OverlayDropDecision {
-  if (isFragmentNoise(item, options.sourceLanguage)) {
+  if (isFragmentNoise(rawItem, options.sourceLanguage)) {
     return { reason: "fragment_noise" };
   }
-  if (isMergedUiListBlock(item)) {
+  if (isMergedUiListBlock(rawItem)) {
     return { reason: "merged_ui_list" };
   }
+  const item = releaseMisplacedClaim(rawItem, candidateBoxes, nextId);
   if (accepted.some((candidate) => candidate.id === item.id)) {
     return { reason: "duplicate_id" };
   }
@@ -317,6 +322,19 @@ function isNewIdOverlappingCandidate(
       bboxContainmentRatio(item.bbox, candidate.bbox) > 0.5
     );
   });
+}
+
+// A renumbered page can reuse a candidate id for text elsewhere; that record
+// is not the candidate's answer and goes through the new-id remap rules.
+function releaseMisplacedClaim(
+  item: OverlayItem,
+  candidateBoxes: CandidateReferenceBox[],
+  nextId: () => number,
+): OverlayItem {
+  const claimed = candidateBoxes.find((candidate) => candidate.id === item.id);
+  if (!claimed || areBboxesNear(item.bbox, claimed.bbox)) return item;
+  if (isNewIdOverlappingCandidate(item, [claimed])) return item;
+  return { ...item, id: nextId() };
 }
 
 function isDuplicatePhysicalText(

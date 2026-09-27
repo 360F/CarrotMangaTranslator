@@ -4633,6 +4633,28 @@
         "pct": 80.55
       }
     },
+    "src/main/pipeline/overlayItemReferences.ts": {
+      "lines": {
+        "covered": 107,
+        "total": 128,
+        "pct": 83.59
+      },
+      "statements": {
+        "covered": 110,
+        "total": 131,
+        "pct": 83.96
+      },
+      "functions": {
+        "covered": 24,
+        "total": 25,
+        "pct": 96
+      },
+      "branches": {
+        "covered": 100,
+        "total": 134,
+        "pct": 74.62
+      }
+    },
     "src/main/pipeline/overlayItems.ts": {
       "lines": {
         "covered": 77,
