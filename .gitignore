@@ -92,3 +92,6 @@ recent-dialog-paths.json
 /migration-ui.json
 /manual-redaction-drafts/
 /manual-redaction-workspaces.json
+
+# Private local AI development notes (local only; public docs live in docs/)
+/rover_dev_notes/
