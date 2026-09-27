@@ -51,6 +51,7 @@ export type SettingsFormValues = {
   roverDefaultDirectoriesEnabled: boolean;
   roverInputDirectory: string;
   roverOutputDirectory: string;
+  roverTranslationJsonExport: boolean;
   uiLocale: UiLocale;
   wheelZoomSensitivityPercent: WheelZoomSensitivityPercent;
   graphicsGpuPreference: GraphicsGpuPreference;
@@ -185,6 +186,7 @@ function resolveGeneralFormValues(
   | "roverDefaultDirectoriesEnabled"
   | "roverInputDirectory"
   | "roverOutputDirectory"
+  | "roverTranslationJsonExport"
   | "uiLocale"
   | "wheelZoomSensitivityPercent"
   | "modelProvider"
@@ -214,12 +216,15 @@ function resolveRoverDefaultDirectoryFormValues(
   | "roverDefaultDirectoriesEnabled"
   | "roverInputDirectory"
   | "roverOutputDirectory"
+  | "roverTranslationJsonExport"
 > {
   const configured = settings.ui?.roverDefaultDirectories;
   return {
     roverDefaultDirectoriesEnabled: configured?.enabled === true,
     roverInputDirectory: configured?.inputDirectory ?? "",
     roverOutputDirectory: configured?.outputDirectory ?? "",
+    roverTranslationJsonExport:
+      settings.ui?.roverTranslationJsonExport === true,
   };
 }
 

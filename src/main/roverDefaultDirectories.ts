@@ -42,6 +42,12 @@ export async function resolveManagedOutputParent(
   );
 }
 
+export async function resolveTranslationJsonExportEnabled(
+  paths: AppPaths = getAppPaths(),
+): Promise<boolean> {
+  return (await getAppSettings(paths)).ui?.roverTranslationJsonExport === true;
+}
+
 export async function resolveAvailableRoverDefaultDirectory(
   settings: AppSettings,
   kind: DefaultDirectoryKind,

@@ -26,18 +26,15 @@ type LinkedWorkspaceSettingsPanelProps = {
   onEnabledChange?: (enabled: boolean) => void;
   onInputDirectoryChange?: (directory: string) => void;
   onOutputDirectoryChange?: (directory: string) => void;
+  onTranslationJsonExportChange?: (enabled: boolean) => void;
   outputDirectory?: string;
+  translationJsonExport?: boolean;
 };
 
 export function LinkedWorkspaceSettingsPanel({
   disabled = false,
-  enabled = false,
-  inputDirectory = "",
   library,
-  onEnabledChange = ignoreBooleanChange,
-  onInputDirectoryChange = ignoreStringChange,
-  onOutputDirectoryChange = ignoreStringChange,
-  outputDirectory = "",
+  ...roverSettings
 }: LinkedWorkspaceSettingsPanelProps): React.JSX.Element {
   const { i18n, t } = useTranslation("components");
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -61,17 +58,7 @@ export function LinkedWorkspaceSettingsPanel({
     useLinkedWorkspaceSettingsOperations(refresh);
   return (
     <div className="linked-workspace-settings" aria-busy={loading}>
-      <DefaultDirectoriesSection
-        {...{
-          disabled,
-          enabled,
-          inputDirectory,
-          outputDirectory,
-          onEnabledChange,
-          onInputDirectoryChange,
-          onOutputDirectoryChange,
-        }}
-      />
+      <RoverResultSettings disabled={disabled} {...roverSettings} />
       <LinkedWorkspaceFolderRoles />
       <div className="linked-workspace-settings-toolbar">
         <label
@@ -103,6 +90,41 @@ export function LinkedWorkspaceSettingsPanel({
         />
       </div>
     </div>
+  );
+}
+
+function RoverResultSettings({
+  disabled,
+  enabled = false,
+  inputDirectory = "",
+  onEnabledChange = ignoreBooleanChange,
+  onInputDirectoryChange = ignoreStringChange,
+  onOutputDirectoryChange = ignoreStringChange,
+  onTranslationJsonExportChange = ignoreBooleanChange,
+  outputDirectory = "",
+  translationJsonExport = false,
+}: Omit<LinkedWorkspaceSettingsPanelProps, "library"> & {
+  disabled: boolean;
+}): React.JSX.Element {
+  return (
+    <>
+      <DefaultDirectoriesSection
+        {...{
+          disabled,
+          enabled,
+          inputDirectory,
+          outputDirectory,
+          onEnabledChange,
+          onInputDirectoryChange,
+          onOutputDirectoryChange,
+        }}
+      />
+      <TranslationJsonExportSection
+        checked={translationJsonExport}
+        disabled={disabled}
+        onCheckedChange={onTranslationJsonExportChange}
+      />
+    </>
   );
 }
 
@@ -160,6 +182,29 @@ function DefaultDirectoriesSection({
         value={outputDirectory}
         onChange={onOutputDirectoryChange}
       />
+    </section>
+  );
+}
+
+function TranslationJsonExportSection({
+  checked,
+  disabled,
+  onCheckedChange,
+}: {
+  checked: boolean;
+  disabled: boolean;
+  onCheckedChange: (enabled: boolean) => void;
+}): React.JSX.Element {
+  const { t } = useTranslation("components");
+  return (
+    <section className="rover-translation-json-export">
+      <CheckboxField
+        checked={checked}
+        disabled={disabled}
+        label={t("settings.results.translationJson.enable")}
+        onCheckedChange={onCheckedChange}
+      />
+      <p>{t("settings.results.translationJson.description")}</p>
     </section>
   );
 }

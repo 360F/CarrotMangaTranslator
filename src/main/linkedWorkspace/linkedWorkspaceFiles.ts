@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { readdir, stat } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import { once } from "node:events";
 import type { MangaPage } from "../../shared/libraryTypes";
 import type { LinkedWorkspaceRecordV1 } from "../../shared/linkedWorkspaceTypes";
@@ -139,6 +139,41 @@ export async function writeLinkedWorkspaceMirror({
       chapters,
     },
     beforeCommit,
+  );
+}
+
+export const TRANSLATION_JSON_FILE_NAME = "translation.json";
+
+/** The chapter that owns an existing translation.json, or null if none. */
+export async function readTranslationJsonChapterId(
+  rootPath: string,
+): Promise<string | null> {
+  try {
+    const document = JSON.parse(
+      await readFile(
+        resolvePathInside(rootPath, TRANSLATION_JSON_FILE_NAME),
+        "utf8",
+      ),
+    ) as unknown;
+    return document &&
+      typeof document === "object" &&
+      "chapterId" in document &&
+      typeof document.chapterId === "string"
+      ? document.chapterId
+      : null;
+  } catch (error) {
+    if (isMissingFileError(error) || error instanceof SyntaxError) return null;
+    throw error;
+  }
+}
+
+export async function writeTranslationJsonFile(
+  rootPath: string,
+  document: unknown,
+): Promise<void> {
+  await writeJsonFile(
+    resolvePathInside(rootPath, TRANSLATION_JSON_FILE_NAME),
+    document,
   );
 }
 

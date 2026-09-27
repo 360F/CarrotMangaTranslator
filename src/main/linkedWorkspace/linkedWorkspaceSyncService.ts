@@ -47,6 +47,7 @@ import {
   fingerprintFile,
   type LinkedMirrorArtifact,
   type LinkedMirrorChapter,
+  readTranslationJsonChapterId,
   writeLinkedWorkspaceMirror,
 } from "./linkedWorkspaceFiles";
 import { LinkedWorkspaceStore } from "./linkedWorkspaceStore";
@@ -2200,6 +2201,9 @@ async function inspectManagedDestination(
       throw error;
     }
   }
+  // Translation JSON is written before the first render publishes a mirror.
+  if ((await readTranslationJsonChapterId(rootPath)) === chapterId)
+    return "owned";
   return "occupied";
 }
 

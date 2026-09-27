@@ -99,6 +99,36 @@ describe("LinkedWorkspaceSettingsPanel", () => {
     expect(onEnabledChange).toHaveBeenCalledWith(true);
   });
 
+  it("offers the translation JSON opt-in off by default and reports changes", async () => {
+    const onTranslationJsonExportChange = vi.fn();
+    const { container, rerender } = render(
+      <LinkedWorkspaceSettingsPanel
+        library={makeLibrary()}
+        onTranslationJsonExportChange={onTranslationJsonExportChange}
+      />,
+    );
+    const section = container.querySelector(".rover-translation-json-export");
+    const checkbox = section?.querySelector<HTMLInputElement>(
+      "input[type='checkbox']",
+    );
+    expect(checkbox?.checked).toBe(false);
+    fireEvent.click(checkbox as HTMLInputElement);
+    expect(onTranslationJsonExportChange).toHaveBeenCalledWith(true);
+
+    rerender(
+      <LinkedWorkspaceSettingsPanel
+        library={makeLibrary()}
+        translationJsonExport
+        disabled
+      />,
+    );
+    const updated = container.querySelector<HTMLInputElement>(
+      ".rover-translation-json-export input[type='checkbox']",
+    );
+    expect(updated?.checked).toBe(true);
+    expect(updated?.disabled).toBe(true);
+  });
+
   it("uses the existing settings picker and preserves the current path as its initial directory", async () => {
     const onInputDirectoryChange = vi.fn();
     pickDefaultDirectory.mockResolvedValueOnce("D:/Chosen/Input");

@@ -3,6 +3,8 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { resolveDefaultAppSettings } from "../src/main/appSettings";
+import { normalizeUiSettings } from "../src/main/settings/appSettingsUiNormalize";
+import { UiSettingsSchema } from "../src/shared/ipcUiSettingsSchema";
 import {
   resolveAvailableRoverDefaultDirectory,
   resolveImportDialogDefaultPathFromSettings,
@@ -119,6 +121,27 @@ describe("Rover default directories", () => {
         recentDialogPathKeys.archiveImport,
       ),
     ).resolves.toBe(recent);
+  });
+});
+
+describe("Rover translation JSON export setting", () => {
+  it("is off by default and only an explicit true turns it on", () => {
+    const defaults = resolveDefaultAppSettings();
+    expect(defaults.ui?.roverTranslationJsonExport).toBe(false);
+    expect(normalizeUiSettings({}, defaults).roverTranslationJsonExport).toBe(
+      false,
+    );
+    expect(
+      normalizeUiSettings({ roverTranslationJsonExport: "true" }, defaults)
+        .roverTranslationJsonExport,
+    ).toBe(false);
+    expect(
+      normalizeUiSettings({ roverTranslationJsonExport: true }, defaults)
+        .roverTranslationJsonExport,
+    ).toBe(true);
+    expect(
+      UiSettingsSchema.safeParse({ roverTranslationJsonExport: true }).success,
+    ).toBe(true);
   });
 });
 

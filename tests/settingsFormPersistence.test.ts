@@ -43,6 +43,30 @@ describe("Rover default directory settings form", () => {
   });
 });
 
+describe("Rover translation JSON export settings form", () => {
+  it("defaults off and round-trips the opt-in", () => {
+    const initialSettings = resolveDefaultAppSettings();
+    expect(
+      createSettingsFormValues(initialSettings).roverTranslationJsonExport,
+    ).toBe(false);
+    const values = {
+      ...createSettingsFormValues(initialSettings),
+      roverTranslationJsonExport: true,
+    };
+    const result = buildSettingsFromDraft({
+      values,
+      draft: resolveSettingsDraft(values),
+      initialSettings,
+      keybindings: {},
+      blockFormatDefaults: DEFAULT_BLOCK_FORMAT_DEFAULTS,
+    });
+
+    expect(result.ui?.roverTranslationJsonExport).toBe(true);
+    expect(result.ui?.roverDefaultDirectories).toEqual({ enabled: false });
+    expect(createSettingsFormValues(result)).toMatchObject(values);
+  });
+});
+
 describe("remote model settings form", () => {
   it("defaults image generation to low and persists it independently from text reasoning", () => {
     const initialSettings = resolveDefaultAppSettings({});

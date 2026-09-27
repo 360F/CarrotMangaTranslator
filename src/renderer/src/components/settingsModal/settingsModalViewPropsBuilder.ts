@@ -133,6 +133,8 @@ function buildResultsPanelProps(
     enabled: form.values.roverDefaultDirectoriesEnabled,
     inputDirectory: form.values.roverInputDirectory,
     outputDirectory: form.values.roverOutputDirectory,
+    translationJsonExport: form.values.roverTranslationJsonExport,
+    onTranslationJsonExportChange: form.setters.setRoverTranslationJsonExport,
     onEnabledChange: form.setters.setRoverDefaultDirectoriesEnabled,
     onInputDirectoryChange: form.setters.setRoverInputDirectory,
     onOutputDirectoryChange: form.setters.setRoverOutputDirectory,

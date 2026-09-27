@@ -1661,6 +1661,10 @@
       "noSearchResults": "没有符合条件的作品或章节。",
       "chapterCount": "{{count}}章",
       "toggleChapter": "{{title}}的结果自动保存",
+      "translationJson": {
+        "enable": "将翻译数据保存为 JSON",
+        "description": "对已开启自动保存的话，每次保存翻译时都会在结果文件夹中生成 translation.json（按页面和文本块记录原文与译文）。"
+      },
       "defaultDirectories": {
         "enable": "使用自定义默认路径",
         "description": "设置输入选择器的起始文件夹和新自动保存位置的默认父文件夹。不会移动现有项目或连接。",

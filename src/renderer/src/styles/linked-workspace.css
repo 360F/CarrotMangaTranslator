@@ -24,7 +24,8 @@
   gap: 12px;
 }
 
-.rover-default-directories {
+.rover-default-directories,
+.rover-translation-json-export {
   display: grid;
   min-width: 0;
   gap: 10px;
@@ -34,7 +35,8 @@
   background: color-mix(in srgb, var(--bg-sunken) 72%, transparent);
 }
 
-.rover-default-directories > p {
+.rover-default-directories > p,
+.rover-translation-json-export > p {
   margin: 0;
   color: var(--text-dim);
   font-size: var(--font-xs);

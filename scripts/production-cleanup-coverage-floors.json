@@ -20739,6 +20739,28 @@
         "pct": 54.54
       }
     },
+    "src/main/linkedWorkspace/linkedWorkspaceTranslationJson.ts": {
+      "lines": {
+        "covered": 26,
+        "total": 27,
+        "pct": 96.29
+      },
+      "statements": {
+        "covered": 31,
+        "total": 32,
+        "pct": 96.87
+      },
+      "functions": {
+        "covered": 11,
+        "total": 11,
+        "pct": 100
+      },
+      "branches": {
+        "covered": 21,
+        "total": 22,
+        "pct": 95.45
+      }
+    },
     "src/main/ollamaModelLifecycle.ts": {
       "lines": {
         "covered": 21,

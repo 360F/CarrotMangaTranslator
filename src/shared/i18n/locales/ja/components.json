@@ -1661,6 +1661,10 @@
       "noSearchResults": "条件に一致する作品・話がありません。",
       "chapterCount": "{{count}}話",
       "toggleChapter": "{{title}}の結果を自動保存",
+      "translationJson": {
+        "enable": "翻訳データをJSONで保存",
+        "description": "自動保存が有効な話で翻訳が保存されるたびに、結果フォルダーへ translation.json(ページ・ブロックごとの原文と訳文)を作成します。"
+      },
       "defaultDirectories": {
         "enable": "カスタム既定パスを使用",
         "description": "入力選択画面の開始位置と、新しい自動保存先の既定の親フォルダーを指定します。既存のプロジェクトや接続先は移動しません。",

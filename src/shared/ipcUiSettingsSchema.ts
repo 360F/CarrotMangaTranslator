@@ -16,6 +16,7 @@ export const UiSettingsSchema = z
       })
       .strict()
       .optional(),
+    roverTranslationJsonExport: z.boolean().optional(),
     locale: z.enum(SUPPORTED_UI_LOCALES).optional(),
     hayaiTranslationUi: z.enum(["classic", "workflow"]).optional(),
     pageWorkflowDefault: PageWorkflowPlanSchema.optional(),

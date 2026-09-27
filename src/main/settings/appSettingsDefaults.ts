@@ -263,6 +263,7 @@ function resolveDefaultUiSettings(
 ): NonNullable<AppSettings["ui"]> {
   return {
     roverDefaultDirectories: { enabled: false },
+    roverTranslationJsonExport: false,
     locale: normalizeUiLocale(
       env.MANGA_TRANSLATOR_UI_LOCALE,
       DEFAULT_UI_LOCALE,

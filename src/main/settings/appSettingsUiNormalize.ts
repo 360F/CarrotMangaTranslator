@@ -31,9 +31,7 @@ export function normalizeUiSettings(
     ...normalizePageWorkflowUi(data),
     ...resolveCodexTypesettingPreferences(data.codexTypesettingPreferences),
     locale: normalizeUiLocale(data.locale, base.locale),
-    roverDefaultDirectories: resolveRoverDefaultDirectories(
-      data.roverDefaultDirectories,
-    ),
+    ...resolveRoverUiSettings(data),
     inpaintingGuideHidden: resolveBoolean(
       data.inpaintingGuideHidden,
       base.inpaintingGuideHidden ?? false,
@@ -85,6 +83,20 @@ export function normalizeUiSettings(
       base.wheelZoomSensitivityPercent,
     ),
     ...(blockModeDefault ? { blockModeDefault } : {}),
+  };
+}
+
+function resolveRoverUiSettings(
+  data: Record<string, unknown>,
+): Pick<
+  NonNullable<AppSettings["ui"]>,
+  "roverDefaultDirectories" | "roverTranslationJsonExport"
+> {
+  return {
+    roverDefaultDirectories: resolveRoverDefaultDirectories(
+      data.roverDefaultDirectories,
+    ),
+    roverTranslationJsonExport: data.roverTranslationJsonExport === true,
   };
 }
 

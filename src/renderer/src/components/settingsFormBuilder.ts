@@ -39,6 +39,7 @@ type BuildSettingsFromFormInput = {
   roverDefaultDirectoriesEnabled: boolean;
   roverInputDirectory: string;
   roverOutputDirectory: string;
+  roverTranslationJsonExport: boolean;
   initialSettings: AppSettings;
   graphicsGpuPreference: GraphicsGpuPreference;
   computeGpuIndex: number | null;
@@ -195,6 +196,7 @@ function buildUiSettings(input: BuildSettingsFromFormInput) {
       ...(inputDirectory ? { inputDirectory } : {}),
       ...(outputDirectory ? { outputDirectory } : {}),
     },
+    roverTranslationJsonExport: input.roverTranslationJsonExport,
     locale: input.uiLocale,
     wheelZoomSensitivityPercent: input.wheelZoomSensitivityPercent,
   };

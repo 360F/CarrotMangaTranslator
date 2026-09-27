@@ -6,7 +6,11 @@ import { updatePagesAfterInpainting } from "../library/libraryMutationFacade";
 import { createPageExportRenderSession } from "../pageExport";
 import { installLinkedWorkspaceSaveNotifier } from "./linkedWorkspaceNotifications";
 import { LinkedWorkspaceSyncService } from "./linkedWorkspaceSyncService";
-import { resolveManagedOutputParent } from "../roverDefaultDirectories";
+import {
+  resolveManagedOutputParent,
+  resolveTranslationJsonExportEnabled,
+} from "../roverDefaultDirectories";
+import { createTranslationJsonExporter } from "./linkedWorkspaceTranslationJson";
 
 export function createLinkedWorkspaceRuntime(options: {
   dataRoot: string;
@@ -25,12 +29,30 @@ export function createLinkedWorkspaceRuntime(options: {
       resolveManagedOutputParent: () => resolveManagedOutputParent(),
     },
   });
+  const translationJson = createTranslationJsonExporter({
+    isEnabled: () => resolveTranslationJsonExportEnabled(),
+    getStatus: (chapterId) => service.getStatus(chapterId),
+    openChapter: (chapterId) => openChapter(chapterId),
+    reportError: options.reportError,
+  });
   return {
     service,
     installSaveNotifier: () =>
       installLinkedWorkspaceSaveNotifier(
-        (chapterId, pageIds) => service.notifyPagesSaved(chapterId, pageIds),
+        createLinkedWorkspaceSaveNotifier(service, translationJson),
         options.reportError,
       ),
+  };
+}
+
+/** The translation projection does not wait for the render queue. */
+export function createLinkedWorkspaceSaveNotifier(
+  service: Pick<LinkedWorkspaceSyncService, "notifyPagesSaved">,
+  translationJson: ReturnType<typeof createTranslationJsonExporter>,
+) {
+  return async (chapterId: string, pageIds: readonly string[]) => {
+    const exported = translationJson.sync(chapterId);
+    await service.notifyPagesSaved(chapterId, pageIds);
+    await exported;
   };
 }

@@ -43,6 +43,7 @@ export function buildSettingsFromDraft({
     roverDefaultDirectoriesEnabled: values.roverDefaultDirectoriesEnabled,
     roverInputDirectory: values.roverInputDirectory,
     roverOutputDirectory: values.roverOutputDirectory,
+    roverTranslationJsonExport: values.roverTranslationJsonExport,
     initialSettings,
     graphicsGpuPreference: values.graphicsGpuPreference,
     computeGpuIndex: values.computeGpuIndex,

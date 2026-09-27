@@ -7,6 +7,7 @@ type RoverDefaultDirectorySetters = Pick<
   | "setRoverDefaultDirectoriesEnabled"
   | "setRoverInputDirectory"
   | "setRoverOutputDirectory"
+  | "setRoverTranslationJsonExport"
 >;
 
 export function createRoverDefaultDirectoryFormSetters(
@@ -28,5 +29,6 @@ export function createRoverDefaultDirectoryFormSetters(
     setRoverDefaultDirectoriesEnabled: set("roverDefaultDirectoriesEnabled"),
     setRoverInputDirectory: set("roverInputDirectory"),
     setRoverOutputDirectory: set("roverOutputDirectory"),
+    setRoverTranslationJsonExport: set("roverTranslationJsonExport"),
   };
 }

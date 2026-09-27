@@ -179,6 +179,8 @@ export type UiSettings = {
     inputDirectory?: string;
     outputDirectory?: string;
   };
+  /** Write a read-only translation.json into linked auto-save destinations. */
+  roverTranslationJsonExport?: boolean;
   hayaiTranslationUi?: "classic" | "workflow";
   pageWorkflowDefault?: import("./pageWorkflowTypes").PageWorkflowPlan;
   pageWorkflowPresets?: import("./pageWorkflowTypes").PageWorkflowPreset[];

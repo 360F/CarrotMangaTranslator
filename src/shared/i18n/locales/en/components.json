@@ -1654,6 +1654,10 @@
       }
     },
     "results": {
+      "translationJson": {
+        "enable": "Save translation data as JSON",
+        "description": "For chapters with automatic save on, writes translation.json (source and translated text per page and block) to the result folder whenever a translation is saved."
+      },
       "defaultDirectories": {
         "enable": "Use custom default paths",
         "description": "Set the starting folder for input pickers and the default parent for new automatic-save destinations. Existing projects and connections are not moved.",

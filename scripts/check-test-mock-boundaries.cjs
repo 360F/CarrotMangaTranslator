@@ -46,6 +46,8 @@ const ALLOWED_INTERNAL_BOUNDARY_MOCKS = new Set([
   "tests/legacyShareTrashRecovery.test.ts::../src/main/appPaths",
   // Real page-stage commits and crash recovery use a temporary library, never user data.
   "tests/pageWorkflowPersistence.test.ts::../src/main/appPaths",
+  // Real workflow saves drive the linked save notifier and translation.json in a temporary library.
+  "tests/translationJsonWorkflowAcceptance.test.ts::../src/main/appPaths",
   "tests/libraryTransactionCore.test.ts::../src/main/appPaths",
   "tests/libraryTransactionCrashMatrix.test.ts::../src/main/appPaths",
   "tests/libraryTransactionPathSafety.test.ts::../src/main/appPaths",
