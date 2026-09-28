@@ -1,0 +1,4685 @@
+{
+  "version": 1,
+  "inspectedAt": "2026-09-27T13:50:38.527Z",
+  "runtime": {
+    "electron": "43.3.0",
+    "chrome": "150.0.7871.212",
+    "node": "24.18.1",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "cssFontFamily": "\"Malgun Gothic\", \"Apple SD Gothic Neo\", \"Segoe UI\", sans-serif",
+  "fixtureCount": 8,
+  "blockCount": 57,
+  "uniqueNonWhitespaceGlyphCount": 280,
+  "blocks": [
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-1",
+      "text": "옛날 옛적에 작은 영웅이 있었습니다.",
+      "fontSizePx": 19,
+      "bold": false,
+      "italic": false,
+      "textSha256": "ae092930965de6bc3a9496a3ef8b9218745c0dcb3b2f80c1dc1d1c982d8e4b4c",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 50,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-2",
+      "text": "작은 영웅의 가슴 속에는 『불꽃의 반짝임』이 잠들어 있었습니다.",
+      "fontSizePx": 38,
+      "bold": false,
+      "italic": false,
+      "textSha256": "f02b77fe7ec8244da80b19660a0a5b5495307d343c7146a528fab8abf8349ecf",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 89,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-3",
+      "text": "그 힘은 엄청나서 작은 영웅은 아직 제대로 다루지 못했습니다.",
+      "fontSizePx": 40,
+      "bold": false,
+      "italic": false,
+      "textSha256": "0d7aaf213e894a78518fc8e731c296251615132393bf8f57133945a02174b8f5",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 84,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-4",
+      "text": "비켜어어어",
+      "fontSizePx": 25,
+      "bold": false,
+      "italic": false,
+      "textSha256": "b534d12654e6cf6ab5cd7c81ff0a9893eb2837cb5f210d81eaa012f6519ad016",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 15,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-5",
+      "text": "앗!!",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "e95de3c50bb3bdd18ed80be7a217db9423027a0c928c5d538504833319493cbb",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 5,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-6",
+      "text": "브레이크가\n안 들어!!",
+      "fontSizePx": 25,
+      "bold": false,
+      "italic": false,
+      "textSha256": "7755957acef610066c3bce8b4d134211abf12035f14c09e85ecef2da8012f8e9",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 27,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-1",
+      "text": "어때?",
+      "fontSizePx": 19,
+      "bold": false,
+      "italic": false,
+      "textSha256": "edeb2f5af2ed63ea135630b894dbcab89a3214c0a428e56672d007202e1daff4",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 7,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-2",
+      "text": "불꽃의 발현 타이밍, 아드레날린 분비량, 근섬유의 이상 활성화, 그에 따른 신경 전달의 과잉 가속까지 전부 다시 조사했어",
+      "fontSizePx": 40,
+      "bold": false,
+      "italic": false,
+      "textSha256": "6a22698e6088c9c8f8820ee1852bb643b91a63d7c26529af9a05a7847be63c49",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 163,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-3",
+      "text": "발생, 그걸 억누르기 위해서, 선생님도 알고 있어. 네 내부에서 함께 분산시켜서, 반작용으로 분리시키는 건 아주 작은 불씨로 만드는 거야. 쉽게 타오르는 불꽃을 분해하고, 분해해서 아주 작은 조각으로 백 개로 나누는 식으로 말이야.",
+      "fontSizePx": 40,
+      "bold": false,
+      "italic": false,
+      "textSha256": "f3da28faa1d65b589a50e78c072efc04bbed0e11f50eacafe7a992658396bb6f",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 311,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-4",
+      "text": "그럼 결론은 하나야, 과학적인 요법을 거부한다면",
+      "fontSizePx": 22,
+      "bold": false,
+      "italic": false,
+      "textSha256": "677e78f3233750167cd61c94129561c1c8e8839fa51d3f7d614796c9af6c26eb",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 66,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-5",
+      "text": "싫어요.",
+      "fontSizePx": 13,
+      "bold": false,
+      "italic": false,
+      "textSha256": "a5f6345b803c9ec9da48b499665b80264cd18852c6f9cd7f566444349c4c87e2",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 10,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-6",
+      "text": "외부에서의 제어는 불가능해.",
+      "fontSizePx": 15,
+      "bold": false,
+      "italic": false,
+      "textSha256": "5bd72da063c053cbd95ab28de52a59ee74cce948140863bb956cda4aa7af7e39",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 39,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-7",
+      "text": "남은 선택지는 네 스스로 자기 제어를 확립하는 것뿐이야~",
+      "fontSizePx": 35,
+      "bold": false,
+      "italic": false,
+      "textSha256": "0c42c7a2ca8628e7a039cbb9758f1f6231ef88125ffb54b84aa569c31b3bf37e",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 77,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-8",
+      "text": "즉답이네!!",
+      "fontSizePx": 14,
+      "bold": false,
+      "italic": false,
+      "textSha256": "96595c30dfc33e637720b0f656934c669c9de14c20d30eee75f5c0a9c88775c2",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 14,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-1",
+      "text": "받아들여서 활용한다! 재미있잖아!! 그 과정이야말로 최고의 연구 재료가 될 거야!!",
+      "fontSizePx": 31,
+      "bold": false,
+      "italic": false,
+      "textSha256": "417fd1667e38806db812ae0fa3c27c6a2681cc3028e087d789ffe1bdcdcbd4c8",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 110,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-2",
+      "text": "푸하핫, 너는 정말 멋진 모르모트야!!",
+      "fontSizePx": 22,
+      "bold": false,
+      "italic": false,
+      "textSha256": "5d1a12653f912f18cd66ec962d04595f947b417443244a3953b885d34b83cc24",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 49,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-3",
+      "text": "모르모트...",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "6c2ec810b91b375e89066dcda2f92642535cb3850b690fa62c61c938d9d0d0a2",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 15,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-4",
+      "text": "최적의 코치진을 소개해 주지!!",
+      "fontSizePx": 15,
+      "bold": false,
+      "italic": false,
+      "textSha256": "426c661d909f5aad5687f314fd98e3095ad5c7f4b4b4c87576029659cf459e75",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 41,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-5",
+      "text": "나의 피실험자 네트워크...... 아니, 인맥으로",
+      "fontSizePx": 23,
+      "bold": false,
+      "italic": false,
+      "textSha256": "0b24d3d988349d43908ff7042fbcc878fc039cf8dbd95c3fa595f97da505d921",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 59,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-6",
+      "text": "맨해튼 카페",
+      "fontSizePx": 14,
+      "bold": false,
+      "italic": false,
+      "textSha256": "d0cc25a87b1bf4506260ada3e16f5f2b8ca299c0666934c761a1cff14b16f5d1",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 16,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-7",
+      "text": "하하핫, 점점 즐거워지는데!",
+      "fontSizePx": 20,
+      "bold": false,
+      "italic": false,
+      "textSha256": "d8edc5dc6263c6df867f4190271141fdd2a680898f95e26145e4d1d100dec504",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 37,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-8",
+      "text": "카페! 너도 좀 도와줘야겠어",
+      "fontSizePx": 25,
+      "bold": false,
+      "italic": false,
+      "textSha256": "74698e32eb3bdb9de6501788844f3b8b92d0ce6a4adf2b6262cb5a8c18183375",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 37,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-9",
+      "text": "왜 나까지...",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "d671caef5665a8f886359fdd038370f7582053f5dcab6a2884ad69b985dd3937",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 16,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-10",
+      "text": "잘... 부탁해...",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "14f7a82e52f0831b094b74e323f11d7e9195db424a19566a0c7e912a034e554d",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 19,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-1",
+      "text": "몰리고 있구나, 라이스 씨!!",
+      "fontSizePx": 21,
+      "bold": false,
+      "italic": false,
+      "textSha256": "fb72f36a9491dea3498206ecd17907cde90571827b94a942c38b9585ad351534",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 36,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-2",
+      "text": "하아... 하아...! 마, 아직... 달릴 수 있어요......!!",
+      "fontSizePx": 23,
+      "bold": false,
+      "italic": false,
+      "textSha256": "214d4df3c1eea54c9478a3fc179771359c156dfe68b83f9f0755f5b79bd231d1",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 64,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-4",
+      "text": "티엠 오페라 오",
+      "fontSizePx": 13,
+      "bold": false,
+      "italic": false,
+      "textSha256": "4d92e85096952e30f2336fedd5c043c742efca8421ebb6abc82e0a85196cdfa1",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 20,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-5",
+      "text": "포기하지 마!!",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "8e43a17a49cc0a21d2434ce40c053dbad9fcd7cbca03fdf4c7cd8e5647a06587",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 18,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-6",
+      "text": "다이아몬드 같은 이 반짝임을!!",
+      "fontSizePx": 40,
+      "bold": false,
+      "italic": false,
+      "textSha256": "7cc3cd7ff1ecd9bfba095b73f8f42c6df157969446f137583d781d629831bef0",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 41,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-7",
+      "text": "봐라! 나의 흐르는 땀을!!",
+      "fontSizePx": 40,
+      "bold": false,
+      "italic": false,
+      "textSha256": "97b23f19d277e0d12f1f9a676025afdbdfba4020e5c9a8001c61bbfe00bc074d",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 33,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-1",
+      "text": "오버히트... 아직 멀었군, 내일도 팍팍 가보자고!",
+      "fontSizePx": 23,
+      "bold": false,
+      "italic": false,
+      "textSha256": "0da707c98bacc591eec6661557e95e424f3eb98da213e00b849b4550fb88911e",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 64,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-2",
+      "text": "아니! 마지막 스퍼트 정말 멋졌어, 그 순간은 나보다 더 빛났다고!!",
+      "fontSizePx": 35,
+      "bold": false,
+      "italic": false,
+      "textSha256": "3a2937403a7e79dae0d3fc9ac085ad485119ba2b70c5166111ddad614e25a9e8",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 88,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-3",
+      "text": "불꽃이 타올라도 굴하지 않고 즐기고 있었구나",
+      "fontSizePx": 26,
+      "bold": false,
+      "italic": false,
+      "textSha256": "a67d47f23084c1f12a0466926db4fc4424cf2a2acda3f0fa35f93a4acfbfbf9c",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 62,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-4",
+      "text": "후후훗, 오늘은 이쯤 해둘까",
+      "fontSizePx": 24,
+      "bold": false,
+      "italic": false,
+      "textSha256": "4b2cda9a13cd586337dfb7fcbb472256dc7bb135fd319e15628d69ea65cb4588",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 37,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-5",
+      "text": "부탁하신 대로 냉각은 했습니다만...",
+      "fontSizePx": 22,
+      "bold": false,
+      "italic": false,
+      "textSha256": "29c6d59ce8170215244b3badbc1507c2714e36fbe34a6e63a9962a2b83902956",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 48,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-6",
+      "text": "라이스 씨",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "56179075ad5afaae24480c4dcfc789d8131c029788fb1981d7581428d02dfa74",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 13,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-7",
+      "text": "괜찮으세요...?",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "8c3abfc2e007f5b948acb131e66be41d462b99033e67fa55738dd5355a78b5d9",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 19,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-8",
+      "text": "게... 괜찮아... 엄청 편해졌어...",
+      "fontSizePx": 21,
+      "bold": false,
+      "italic": false,
+      "textSha256": "e300f2f3654c292ead0ed3549d9d41d4706a6c9ca383149ea297da148002e883",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 42,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-9",
+      "text": "그 세 사람의 특훈을 따라가다니 대단해요",
+      "fontSizePx": 26,
+      "bold": false,
+      "italic": false,
+      "textSha256": "4d0b4256cb5300e43b469a68519eebb88987bade70b0a92b0ab57291ab54a4d5",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 56,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-10",
+      "text": "다만... 너무 무리하면 오래 못 가요",
+      "fontSizePx": 28,
+      "bold": false,
+      "italic": false,
+      "textSha256": "3dec78398ff459323c11e2e64b70f406a4cf3b49c1e29e17f7ac9e45bd9cbce9",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 47,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-1",
+      "text": "브라이언! 서둘러 교내로 가서! 남아있는 학생들의 안부 확인과 구출을! 한 명도 남기지 마!!",
+      "fontSizePx": 40,
+      "bold": false,
+      "italic": false,
+      "textSha256": "3ad614162e1b48bbcb7df0d710d43ddaf96a0b230689f31fd55bc675b0e60670",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 122,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-2",
+      "text": "오페라 오! 피난 유도를 부탁해!! 혼란을 억제하고 안전한 곳으로 인도해!!",
+      "fontSizePx": 40,
+      "bold": false,
+      "italic": false,
+      "textSha256": "19a050d509490ba9a9b182fedc0211a75047eab7bf0455da9cce6607054aec9c",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 98,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-3",
+      "text": "나는 상황을 확인하고 현장을 지휘하겠다! 모두 피난 행동을 취해라!!",
+      "fontSizePx": 33,
+      "bold": false,
+      "italic": false,
+      "textSha256": "ef0a575f46ce0c25090406471328c82ae4ac092599aab5ced343d5bad42f68c3",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 92,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-4",
+      "text": "도대체 무슨 일일까요",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "bdb127c500f6fa03fffdc13ff1c7b77c5f04b5da27b43cf5a589db87a03054a3",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 29,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-5",
+      "text": "여기도 위험해요 우리도 피난해요",
+      "fontSizePx": 24,
+      "bold": false,
+      "italic": false,
+      "textSha256": "d368bac555c3f1f82b350032c248a84e7128899359c23ba72a36a14fb82deb69",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 45,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-6",
+      "text": "잠깐... 뭔가... 온다......",
+      "fontSizePx": 16,
+      "bold": false,
+      "italic": false,
+      "textSha256": "55853a4c402c71262b0e6d79b00613d0fd58cf3305f3acfad138cb52a1ca861c",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 32,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-1",
+      "text": "이렇게 된 것도 전부 네 탓 아니야?",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "197f663f938d9abde0745f6bffdf12fbd67dbb8de1a1e079e9dcdf68d4c4245a",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 46,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-2",
+      "text": "있잖아, 타키온",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "2737e9a74c8e90069d7b1983a50e8df8ee62368ef01b8c527e036f1959229f49",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 20,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-3",
+      "text": "작은 영웅은 넘쳐흐르는 '불꽃의 반짝임'을 제대로 다루지 못해 곤란해하고 있었습니다.",
+      "fontSizePx": 40,
+      "bold": false,
+      "italic": false,
+      "textSha256": "d86b87c7298b3dd30794b92ede3321fa1826bbf32f0b611020b9ccab9a2a231d",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 117,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-4",
+      "text": "하지만 수많은 동료를 만나 마침내 '불꽃의 반짝임'을 길들일 수 있게 되었습니다.",
+      "fontSizePx": 40,
+      "bold": false,
+      "italic": false,
+      "textSha256": "848cdc7ba0c44620d802948d0a7b6d5a1413a4352c4a5759240ec1f4e9ad5508",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 109,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-5",
+      "text": "친구가 불꽃에 휩싸여 날뛰던 때에도 작은 영웅은 도망치지 않고 친구를 구해냈습니다.",
+      "fontSizePx": 40,
+      "bold": false,
+      "italic": false,
+      "textSha256": "818af68c87378d352ea4185ded2d42f1922bc78fd42b133dec5e19ca0213cc85",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 116,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-6",
+      "text": "라이스 씨, 아침 연습 힘내세요!",
+      "fontSizePx": 21,
+      "bold": false,
+      "italic": false,
+      "textSha256": "017a9615c242971246bd7ee45b8c7f731f7c7a04cd48b234e48109f9e788712d",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 42,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-7",
+      "text": "응!",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "92df90459aaf782fab931ecb074ac53d106451bd39e6c8147bebeef9dbd76731",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 4,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-8",
+      "text": "작은 영웅은 성장하여, 훌륭한 영웅이 되었습니다.",
+      "fontSizePx": 28,
+      "bold": false,
+      "italic": false,
+      "textSha256": "6c9b983f2e620ba7a72787d55526da9571d2d36069db117f1b24304ed33ca5e1",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 67,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-9",
+      "text": "불꽃의 반짝임'은",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "2e7c4018bb3652d5f1b0295e81f41cc88f2a0819a70703444b47119c8d130cce",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 23,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247",
+      "pageName": "_0411.png",
+      "blockId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247-04210a99-da2f-4954-b8b5-3939c515d160-block-1",
+      "text": "지금 구해줄 테니까",
+      "fontSizePx": 35,
+      "bold": false,
+      "italic": false,
+      "textSha256": "3c94430aa679ce90b7bf8b84e2c03b83aa5145740c63bf7cb2212901de24e3cc",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 26,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "pageId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247",
+      "pageName": "_0411.png",
+      "blockId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247-04210a99-da2f-4954-b8b5-3939c515d160-block-2",
+      "text": "갈게",
+      "fontSizePx": 12,
+      "bold": false,
+      "italic": false,
+      "textSha256": "efb52f5ce543c0d52bdfc0f94a19e250af9093774bccef6dec63ff133c668404",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 6,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    }
+  ],
+  "glyphs": [
+    {
+      "character": "!",
+      "codePoint": "U+0021",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 1,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "'",
+      "codePoint": "U+0027",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 1,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": ",",
+      "codePoint": "U+002C",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 1,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": ".",
+      "codePoint": "U+002E",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 1,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "?",
+      "codePoint": "U+003F",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 1,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "~",
+      "codePoint": "U+007E",
+      "category": "symbols",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 1,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "『",
+      "codePoint": "U+300E",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "』",
+      "codePoint": "U+300F",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "가",
+      "codePoint": "U+AC00",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "각",
+      "codePoint": "U+AC01",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "간",
+      "codePoint": "U+AC04",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "갈",
+      "codePoint": "U+AC08",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "같",
+      "codePoint": "U+AC19",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "개",
+      "codePoint": "U+AC1C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "거",
+      "codePoint": "U+AC70",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "건",
+      "codePoint": "U+AC74",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "걸",
+      "codePoint": "U+AC78",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "것",
+      "codePoint": "U+AC83",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "게",
+      "codePoint": "U+AC8C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "겠",
+      "codePoint": "U+ACA0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "결",
+      "codePoint": "U+ACB0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "경",
+      "codePoint": "U+ACBD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "고",
+      "codePoint": "U+ACE0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "곤",
+      "codePoint": "U+ACE4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "곳",
+      "codePoint": "U+ACF3",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "과",
+      "codePoint": "U+ACFC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "괜",
+      "codePoint": "U+AD1C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "교",
+      "codePoint": "U+AD50",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "구",
+      "codePoint": "U+AD6C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "군",
+      "codePoint": "U+AD70",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "굴",
+      "codePoint": "U+AD74",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "그",
+      "codePoint": "U+ADF8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "근",
+      "codePoint": "U+ADFC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "금",
+      "codePoint": "U+AE08",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "기",
+      "codePoint": "U+AE30",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "길",
+      "codePoint": "U+AE38",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "까",
+      "codePoint": "U+AE4C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "깐",
+      "codePoint": "U+AE50",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "께",
+      "codePoint": "U+AED8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "꽃",
+      "codePoint": "U+AF43",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "나",
+      "codePoint": "U+B098",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "난",
+      "codePoint": "U+B09C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "날",
+      "codePoint": "U+B0A0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "남",
+      "codePoint": "U+B0A8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "났",
+      "codePoint": "U+B0AC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "내",
+      "codePoint": "U+B0B4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "냈",
+      "codePoint": "U+B0C8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "냉",
+      "codePoint": "U+B0C9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "너",
+      "codePoint": "U+B108",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "넘",
+      "codePoint": "U+B118",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "네",
+      "codePoint": "U+B124",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "누",
+      "codePoint": "U+B204",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "는",
+      "codePoint": "U+B294",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "늘",
+      "codePoint": "U+B298",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "능",
+      "codePoint": "U+B2A5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "니",
+      "codePoint": "U+B2C8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "님",
+      "codePoint": "U+B2D8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "다",
+      "codePoint": "U+B2E4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "단",
+      "codePoint": "U+B2E8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "달",
+      "codePoint": "U+B2EC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "답",
+      "codePoint": "U+B2F5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "대",
+      "codePoint": "U+B300",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "더",
+      "codePoint": "U+B354",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "던",
+      "codePoint": "U+B358",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "데",
+      "codePoint": "U+B370",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "도",
+      "codePoint": "U+B3C4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "동",
+      "codePoint": "U+B3D9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "되",
+      "codePoint": "U+B418",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "된",
+      "codePoint": "U+B41C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "될",
+      "codePoint": "U+B420",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "두",
+      "codePoint": "U+B450",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "둘",
+      "codePoint": "U+B458",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "드",
+      "codePoint": "U+B4DC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "들",
+      "codePoint": "U+B4E4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "따",
+      "codePoint": "U+B530",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "땀",
+      "codePoint": "U+B540",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "때",
+      "codePoint": "U+B54C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "뛰",
+      "codePoint": "U+B6F0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "라",
+      "codePoint": "U+B77C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "란",
+      "codePoint": "U+B780",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "람",
+      "codePoint": "U+B78C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "래",
+      "codePoint": "U+B798",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "량",
+      "codePoint": "U+B7C9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "러",
+      "codePoint": "U+B7EC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "럼",
+      "codePoint": "U+B7FC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "렇",
+      "codePoint": "U+B807",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "레",
+      "codePoint": "U+B808",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "로",
+      "codePoint": "U+B85C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "론",
+      "codePoint": "U+B860",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "료",
+      "codePoint": "U+B8CC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "루",
+      "codePoint": "U+B8E8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "륭",
+      "codePoint": "U+B96D",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 4,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "르",
+      "codePoint": "U+B974",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "른",
+      "codePoint": "U+B978",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "를",
+      "codePoint": "U+B97C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "리",
+      "codePoint": "U+B9AC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "린",
+      "codePoint": "U+B9B0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "릴",
+      "codePoint": "U+B9B4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "립",
+      "codePoint": "U+B9BD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "마",
+      "codePoint": "U+B9C8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "막",
+      "codePoint": "U+B9C9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "만",
+      "codePoint": "U+B9CC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "많",
+      "codePoint": "U+B9CE",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "말",
+      "codePoint": "U+B9D0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "망",
+      "codePoint": "U+B9DD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "맥",
+      "codePoint": "U+B9E5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "맨",
+      "codePoint": "U+B9E8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "멀",
+      "codePoint": "U+BA40",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "멋",
+      "codePoint": "U+BA4B",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "면",
+      "codePoint": "U+BA74",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "명",
+      "codePoint": "U+BA85",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "모",
+      "codePoint": "U+BAA8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "몬",
+      "codePoint": "U+BAAC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "몰",
+      "codePoint": "U+BAB0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "못",
+      "codePoint": "U+BABB",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "무",
+      "codePoint": "U+BB34",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "뭔",
+      "codePoint": "U+BB54",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "미",
+      "codePoint": "U+BBF8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "밍",
+      "codePoint": "U+BC0D",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "반",
+      "codePoint": "U+BC18",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "받",
+      "codePoint": "U+BC1B",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "발",
+      "codePoint": "U+BC1C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "백",
+      "codePoint": "U+BC31",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "버",
+      "codePoint": "U+BC84",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "법",
+      "codePoint": "U+BC95",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "보",
+      "codePoint": "U+BCF4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "봐",
+      "codePoint": "U+BD10",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "부",
+      "codePoint": "U+BD80",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "분",
+      "codePoint": "U+BD84",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "불",
+      "codePoint": "U+BD88",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "브",
+      "codePoint": "U+BE0C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "비",
+      "codePoint": "U+BE44",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "빛",
+      "codePoint": "U+BE5B",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "뿐",
+      "codePoint": "U+BFD0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "사",
+      "codePoint": "U+C0AC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "산",
+      "codePoint": "U+C0B0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "상",
+      "codePoint": "U+C0C1",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "생",
+      "codePoint": "U+C0DD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "서",
+      "codePoint": "U+C11C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "선",
+      "codePoint": "U+C120",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "섬",
+      "codePoint": "U+C12C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "성",
+      "codePoint": "U+C131",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "세",
+      "codePoint": "U+C138",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "소",
+      "codePoint": "U+C18C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "속",
+      "codePoint": "U+C18D",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "수",
+      "codePoint": "U+C218",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "순",
+      "codePoint": "U+C21C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "쉽",
+      "codePoint": "U+C27D",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "스",
+      "codePoint": "U+C2A4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "슨",
+      "codePoint": "U+C2A8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "슴",
+      "codePoint": "U+C2B4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "습",
+      "codePoint": "U+C2B5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "시",
+      "codePoint": "U+C2DC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "식",
+      "codePoint": "U+C2DD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "신",
+      "codePoint": "U+C2E0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "실",
+      "codePoint": "U+C2E4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "싫",
+      "codePoint": "U+C2EB",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "싸",
+      "codePoint": "U+C2F8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "씨",
+      "codePoint": "U+C528",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "아",
+      "codePoint": "U+C544",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "안",
+      "codePoint": "U+C548",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "않",
+      "codePoint": "U+C54A",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "알",
+      "codePoint": "U+C54C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "앗",
+      "codePoint": "U+C557",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "야",
+      "codePoint": "U+C57C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "어",
+      "codePoint": "U+C5B4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "억",
+      "codePoint": "U+C5B5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "언",
+      "codePoint": "U+C5B8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "엄",
+      "codePoint": "U+C5C4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "었",
+      "codePoint": "U+C5C8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "에",
+      "codePoint": "U+C5D0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "엠",
+      "codePoint": "U+C5E0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "여",
+      "codePoint": "U+C5EC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "연",
+      "codePoint": "U+C5F0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "영",
+      "codePoint": "U+C601",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "옛",
+      "codePoint": "U+C61B",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "오",
+      "codePoint": "U+C624",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "온",
+      "codePoint": "U+C628",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "올",
+      "codePoint": "U+C62C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "와",
+      "codePoint": "U+C640",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "왜",
+      "codePoint": "U+C65C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "외",
+      "codePoint": "U+C678",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "요",
+      "codePoint": "U+C694",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "용",
+      "codePoint": "U+C6A9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "우",
+      "codePoint": "U+C6B0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "웅",
+      "codePoint": "U+C6C5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "워",
+      "codePoint": "U+C6CC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "위",
+      "codePoint": "U+C704",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "유",
+      "codePoint": "U+C720",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "으",
+      "codePoint": "U+C73C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "은",
+      "codePoint": "U+C740",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "을",
+      "codePoint": "U+C744",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "응",
+      "codePoint": "U+C751",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "의",
+      "codePoint": "U+C758",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "이",
+      "codePoint": "U+C774",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "인",
+      "codePoint": "U+C778",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "일",
+      "codePoint": "U+C77C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "임",
+      "codePoint": "U+C784",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "있",
+      "codePoint": "U+C788",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "잉",
+      "codePoint": "U+C789",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "자",
+      "codePoint": "U+C790",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "작",
+      "codePoint": "U+C791",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "잖",
+      "codePoint": "U+C796",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "잘",
+      "codePoint": "U+C798",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "잠",
+      "codePoint": "U+C7A0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "장",
+      "codePoint": "U+C7A5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "재",
+      "codePoint": "U+C7AC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "적",
+      "codePoint": "U+C801",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "전",
+      "codePoint": "U+C804",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "점",
+      "codePoint": "U+C810",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "정",
+      "codePoint": "U+C815",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "제",
+      "codePoint": "U+C81C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "졌",
+      "codePoint": "U+C84C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "조",
+      "codePoint": "U+C870",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "좀",
+      "codePoint": "U+C880",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "주",
+      "codePoint": "U+C8FC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "줄",
+      "codePoint": "U+C904",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "줘",
+      "codePoint": "U+C918",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "즉",
+      "codePoint": "U+C989",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "즐",
+      "codePoint": "U+C990",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "지",
+      "codePoint": "U+C9C0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "직",
+      "codePoint": "U+C9C1",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "진",
+      "codePoint": "U+C9C4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "짝",
+      "codePoint": "U+C9DD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "쯤",
+      "codePoint": "U+CBE4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "찮",
+      "codePoint": "U+CC2E",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "청",
+      "codePoint": "U+CCAD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "체",
+      "codePoint": "U+CCB4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "쳐",
+      "codePoint": "U+CCD0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "최",
+      "codePoint": "U+CD5C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "출",
+      "codePoint": "U+CD9C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "취",
+      "codePoint": "U+CDE8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "치",
+      "codePoint": "U+CE58",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "친",
+      "codePoint": "U+CE5C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "침",
+      "codePoint": "U+CE68",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "카",
+      "codePoint": "U+CE74",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "켜",
+      "codePoint": "U+CF1C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "코",
+      "codePoint": "U+CF54",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "크",
+      "codePoint": "U+D06C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "키",
+      "codePoint": "U+D0A4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "타",
+      "codePoint": "U+D0C0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "탁",
+      "codePoint": "U+D0C1",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "탓",
+      "codePoint": "U+D0D3",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "택",
+      "codePoint": "U+D0DD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "테",
+      "codePoint": "U+D14C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "트",
+      "codePoint": "U+D2B8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "특",
+      "codePoint": "U+D2B9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "튼",
+      "codePoint": "U+D2BC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "티",
+      "codePoint": "U+D2F0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "팍",
+      "codePoint": "U+D30D",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "퍼",
+      "codePoint": "U+D37C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "페",
+      "codePoint": "U+D398",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "편",
+      "codePoint": "U+D3B8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "포",
+      "codePoint": "U+D3EC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "푸",
+      "codePoint": "U+D478",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "피",
+      "codePoint": "U+D53C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "하",
+      "codePoint": "U+D558",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "학",
+      "codePoint": "U+D559",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "한",
+      "codePoint": "U+D55C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "함",
+      "codePoint": "U+D568",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "핫",
+      "codePoint": "U+D56B",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "해",
+      "codePoint": "U+D574",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "했",
+      "codePoint": "U+D588",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "행",
+      "codePoint": "U+D589",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "험",
+      "codePoint": "U+D5D8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "현",
+      "codePoint": "U+D604",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "혼",
+      "codePoint": "U+D63C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "화",
+      "codePoint": "U+D654",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "확",
+      "codePoint": "U+D655",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "활",
+      "codePoint": "U+D65C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "황",
+      "codePoint": "U+D669",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "후",
+      "codePoint": "U+D6C4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "훈",
+      "codePoint": "U+D6C8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "훌",
+      "codePoint": "U+D6CC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "훗",
+      "codePoint": "U+D6D7",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "휘",
+      "codePoint": "U+D718",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "휩",
+      "codePoint": "U+D729",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "흐",
+      "codePoint": "U+D750",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "히",
+      "codePoint": "U+D788",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    },
+    {
+      "character": "힘",
+      "codePoint": "U+D798",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Malgun Gothic",
+          "glyphCount": 3,
+          "isCustomFont": false,
+          "postScriptName": "MalgunGothic"
+        }
+      ]
+    }
+  ]
+}

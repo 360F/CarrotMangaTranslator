@@ -1,0 +1,586 @@
+{
+    "version":  1,
+    "sourcePageId":  "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247",
+    "sourcePageName":  "_0411.png",
+    "width":  1280,
+    "height":  925,
+    "blockOrder":  [
+                       "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247-04210a99-da2f-4954-b8b5-3939c515d160-block-1",
+                       "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247-04210a99-da2f-4954-b8b5-3939c515d160-block-2"
+                   ],
+    "blocks":  [
+                   {
+                       "id":  "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247-04210a99-da2f-4954-b8b5-3939c515d160-block-1",
+                       "type":  "nonsolid",
+                       "textDisplayMode":  "translation-only",
+                       "bbox":  {
+                                    "x":  871.09375,
+                                    "y":  22.37189189189189,
+                                    "w":  111.97890625000007,
+                                    "h":  962.2
+                                },
+                       "renderBbox":  null,
+                       "bboxSpace":  "normalized_1000",
+                       "renderBboxSpace":  null,
+                       "bubbleLayout":  null,
+                       "translatedText":  "지금 구해줄 테니까",
+                       "renderDirection":  "horizontal",
+                       "rotationDeg":  0,
+                       "fontSizePx":  35,
+                       "fontSizeIntent":  null,
+                       "lineHeight":  1.18,
+                       "letterSpacing":  0,
+                       "fontWidthScale":  1,
+                       "wordBreak":  "keep-all-overflow",
+                       "textAlign":  "center",
+                       "textColor":  "#111111",
+                       "textOpacity":  1,
+                       "outlineColor":  "#ffffff",
+                       "outlineWidthPx":  null,
+                       "outlineWidthScale":  1,
+                       "outerOutlineColor":  null,
+                       "outerOutlineWidthPx":  null,
+                       "textEffect":  null,
+                       "textGlow":  null,
+                       "bold":  false,
+                       "fontWeight":  null,
+                       "italic":  false,
+                       "underline":  null,
+                       "strikethrough":  null,
+                       "emphasisMark":  null,
+                       "textBackgroundEnabled":  null,
+                       "textBackgroundColor":  null,
+                       "backgroundColor":  "#fef3c7",
+                       "opacity":  0.7,
+                       "autoFitText":  true,
+                       "perspectiveTransform":  null,
+                       "curveLayout":  null,
+                       "warpTransform":  null,
+                       "generatedLettering":  null
+                   },
+                   {
+                       "id":  "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247-04210a99-da2f-4954-b8b5-3939c515d160-block-2",
+                       "type":  "nonsolid",
+                       "textDisplayMode":  "translation-only",
+                       "bbox":  {
+                                    "x":  100.26015625,
+                                    "y":  741.1221621621622,
+                                    "w":  21.701562499999994,
+                                    "h":  83.72756756756755
+                                },
+                       "renderBbox":  {
+                                          "x":  89.484375,
+                                          "y":  717.9675675675675,
+                                          "w":  40.56249999999999,
+                                          "h":  144.6054054054054
+                                      },
+                       "bboxSpace":  "normalized_1000",
+                       "renderBboxSpace":  "normalized_1000",
+                       "bubbleLayout":  {
+                                            "version":  1,
+                                            "direction":  "horizontal",
+                                            "confidence":  0.9527495908151165,
+                                            "origin":  "detected",
+                                            "modelId":  "koharu-layout-rfdetr-seg-2xl-1152+mask-safe-inset-v1+ownership-partition-v1",
+                                            "sourceImageRevision":  "abac839f2fc5f8983453639151fdba07a446f516ab20ff79e26388d95b1ab4ab",
+                                            "insetRatio":  0.057781201848998466,
+                                            "regions":  [
+                                                            {
+                                                                "spans":  [
+                                                                              {
+                                                                                  "blockStart":  0,
+                                                                                  "blockEnd":  0.013157894736842072,
+                                                                                  "inlineStart":  0.33898305084745767,
+                                                                                  "inlineEnd":  0.44067796610169496
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.013157894736842072,
+                                                                                  "blockEnd":  0.026315789473684206,
+                                                                                  "inlineStart":  0.3220338983050848,
+                                                                                  "inlineEnd":  0.5254237288135595
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.026315789473684206,
+                                                                                  "blockEnd":  0.03947368421052634,
+                                                                                  "inlineStart":  0.30508474576271194,
+                                                                                  "inlineEnd":  0.576271186440678
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.03947368421052634,
+                                                                                  "blockEnd":  0.05263157894736841,
+                                                                                  "inlineStart":  0.288135593220339,
+                                                                                  "inlineEnd":  0.6271186440677966
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.05263157894736841,
+                                                                                  "blockEnd":  0.06578947368421048,
+                                                                                  "inlineStart":  0.27118644067796616,
+                                                                                  "inlineEnd":  0.6610169491525424
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.06578947368421048,
+                                                                                  "blockEnd":  0.07894736842105268,
+                                                                                  "inlineStart":  0.2542372881355932,
+                                                                                  "inlineEnd":  0.711864406779661
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.07894736842105268,
+                                                                                  "blockEnd":  0.09210526315789476,
+                                                                                  "inlineStart":  0.2372881355932204,
+                                                                                  "inlineEnd":  0.7627118644067796
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.09210526315789476,
+                                                                                  "blockEnd":  0.10526315789473682,
+                                                                                  "inlineStart":  0.22033898305084748,
+                                                                                  "inlineEnd":  0.8135593220338985
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.10526315789473682,
+                                                                                  "blockEnd":  0.11842105263157897,
+                                                                                  "inlineStart":  0.20338983050847462,
+                                                                                  "inlineEnd":  0.8474576271186441
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.11842105263157897,
+                                                                                  "blockEnd":  0.13157894736842105,
+                                                                                  "inlineStart":  0.18644067796610175,
+                                                                                  "inlineEnd":  0.8813559322033899
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.13157894736842105,
+                                                                                  "blockEnd":  0.14473684210526316,
+                                                                                  "inlineStart":  0.1694915254237288,
+                                                                                  "inlineEnd":  0.8983050847457628
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.14473684210526316,
+                                                                                  "blockEnd":  0.15789473684210525,
+                                                                                  "inlineStart":  0.152542372881356,
+                                                                                  "inlineEnd":  0.9152542372881357
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.15789473684210525,
+                                                                                  "blockEnd":  0.17105263157894737,
+                                                                                  "inlineStart":  0.152542372881356,
+                                                                                  "inlineEnd":  0.9322033898305085
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.17105263157894737,
+                                                                                  "blockEnd":  0.18421052631578952,
+                                                                                  "inlineStart":  0.13559322033898302,
+                                                                                  "inlineEnd":  0.9322033898305085
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.18421052631578952,
+                                                                                  "blockEnd":  0.19736842105263158,
+                                                                                  "inlineStart":  0.1186440677966102,
+                                                                                  "inlineEnd":  0.9491525423728814
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.19736842105263158,
+                                                                                  "blockEnd":  0.21052631578947373,
+                                                                                  "inlineStart":  0.10169491525423734,
+                                                                                  "inlineEnd":  0.9661016949152542
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.21052631578947373,
+                                                                                  "blockEnd":  0.22368421052631585,
+                                                                                  "inlineStart":  0.10169491525423734,
+                                                                                  "inlineEnd":  0.9661016949152542
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.22368421052631585,
+                                                                                  "blockEnd":  0.23684210526315785,
+                                                                                  "inlineStart":  0.0847457627118644,
+                                                                                  "inlineEnd":  0.9661016949152542
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.23684210526315785,
+                                                                                  "blockEnd":  0.25000000000000006,
+                                                                                  "inlineStart":  0.06779661016949154,
+                                                                                  "inlineEnd":  0.9661016949152542
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.25000000000000006,
+                                                                                  "blockEnd":  0.26315789473684215,
+                                                                                  "inlineStart":  0.06779661016949154,
+                                                                                  "inlineEnd":  0.9830508474576272
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.26315789473684215,
+                                                                                  "blockEnd":  0.2763157894736843,
+                                                                                  "inlineStart":  0.050847457627118606,
+                                                                                  "inlineEnd":  0.9830508474576272
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.2763157894736843,
+                                                                                  "blockEnd":  0.2894736842105264,
+                                                                                  "inlineStart":  0.050847457627118606,
+                                                                                  "inlineEnd":  0.9830508474576272
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.2894736842105264,
+                                                                                  "blockEnd":  0.3026315789473685,
+                                                                                  "inlineStart":  0.0338983050847458,
+                                                                                  "inlineEnd":  0.9830508474576272
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.3026315789473685,
+                                                                                  "blockEnd":  0.31578947368421056,
+                                                                                  "inlineStart":  0.0338983050847458,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.31578947368421056,
+                                                                                  "blockEnd":  0.3289473684210527,
+                                                                                  "inlineStart":  0.0338983050847458,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.3289473684210527,
+                                                                                  "blockEnd":  0.3421052631578948,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.3421052631578948,
+                                                                                  "blockEnd":  0.3552631578947369,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.3552631578947369,
+                                                                                  "blockEnd":  0.368421052631579,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.368421052631579,
+                                                                                  "blockEnd":  0.3815789473684211,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.3815789473684211,
+                                                                                  "blockEnd":  0.3947368421052632,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.3947368421052632,
+                                                                                  "blockEnd":  0.4078947368421053,
+                                                                                  "inlineStart":  0,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.4078947368421053,
+                                                                                  "blockEnd":  0.4210526315789474,
+                                                                                  "inlineStart":  0,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.4210526315789474,
+                                                                                  "blockEnd":  0.4342105263157896,
+                                                                                  "inlineStart":  0,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.4342105263157896,
+                                                                                  "blockEnd":  0.44736842105263164,
+                                                                                  "inlineStart":  0,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.44736842105263164,
+                                                                                  "blockEnd":  0.46052631578947373,
+                                                                                  "inlineStart":  0,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.46052631578947373,
+                                                                                  "blockEnd":  0.4736842105263158,
+                                                                                  "inlineStart":  0,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.4736842105263158,
+                                                                                  "blockEnd":  0.48684210526315796,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.48684210526315796,
+                                                                                  "blockEnd":  0.5000000000000001,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.5000000000000001,
+                                                                                  "blockEnd":  0.5131578947368423,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.5131578947368423,
+                                                                                  "blockEnd":  0.5263157894736842,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.5263157894736842,
+                                                                                  "blockEnd":  0.5394736842105264,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.5394736842105264,
+                                                                                  "blockEnd":  0.5526315789473686,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.5526315789473686,
+                                                                                  "blockEnd":  0.5657894736842105,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.5657894736842105,
+                                                                                  "blockEnd":  0.5789473684210527,
+                                                                                  "inlineStart":  0.016949152542372867,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.5789473684210527,
+                                                                                  "blockEnd":  0.5921052631578949,
+                                                                                  "inlineStart":  0.0338983050847458,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.5921052631578949,
+                                                                                  "blockEnd":  0.6052631578947368,
+                                                                                  "inlineStart":  0.0338983050847458,
+                                                                                  "inlineEnd":  1
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.6052631578947368,
+                                                                                  "blockEnd":  0.618421052631579,
+                                                                                  "inlineStart":  0.0338983050847458,
+                                                                                  "inlineEnd":  0.9830508474576272
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.618421052631579,
+                                                                                  "blockEnd":  0.631578947368421,
+                                                                                  "inlineStart":  0.0338983050847458,
+                                                                                  "inlineEnd":  0.9830508474576272
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.631578947368421,
+                                                                                  "blockEnd":  0.6447368421052632,
+                                                                                  "inlineStart":  0.050847457627118606,
+                                                                                  "inlineEnd":  0.9830508474576272
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.6447368421052632,
+                                                                                  "blockEnd":  0.6578947368421054,
+                                                                                  "inlineStart":  0.050847457627118606,
+                                                                                  "inlineEnd":  0.9830508474576272
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.6578947368421054,
+                                                                                  "blockEnd":  0.6710526315789473,
+                                                                                  "inlineStart":  0.06779661016949154,
+                                                                                  "inlineEnd":  0.9661016949152542
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.6710526315789473,
+                                                                                  "blockEnd":  0.6842105263157895,
+                                                                                  "inlineStart":  0.06779661016949154,
+                                                                                  "inlineEnd":  0.9661016949152542
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.6842105263157895,
+                                                                                  "blockEnd":  0.6973684210526317,
+                                                                                  "inlineStart":  0.0847457627118644,
+                                                                                  "inlineEnd":  0.9661016949152542
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.6973684210526317,
+                                                                                  "blockEnd":  0.7105263157894737,
+                                                                                  "inlineStart":  0.0847457627118644,
+                                                                                  "inlineEnd":  0.9661016949152542
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.7105263157894737,
+                                                                                  "blockEnd":  0.7236842105263158,
+                                                                                  "inlineStart":  0.10169491525423734,
+                                                                                  "inlineEnd":  0.9661016949152542
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.7236842105263158,
+                                                                                  "blockEnd":  0.7368421052631581,
+                                                                                  "inlineStart":  0.1186440677966102,
+                                                                                  "inlineEnd":  0.9491525423728814
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.7368421052631581,
+                                                                                  "blockEnd":  0.75,
+                                                                                  "inlineStart":  0.1186440677966102,
+                                                                                  "inlineEnd":  0.9491525423728814
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.75,
+                                                                                  "blockEnd":  0.7631578947368421,
+                                                                                  "inlineStart":  0.13559322033898302,
+                                                                                  "inlineEnd":  0.9322033898305085
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.7631578947368421,
+                                                                                  "blockEnd":  0.7763157894736842,
+                                                                                  "inlineStart":  0.13559322033898302,
+                                                                                  "inlineEnd":  0.9322033898305085
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.7763157894736842,
+                                                                                  "blockEnd":  0.7894736842105263,
+                                                                                  "inlineStart":  0.152542372881356,
+                                                                                  "inlineEnd":  0.9152542372881357
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.7894736842105263,
+                                                                                  "blockEnd":  0.8026315789473686,
+                                                                                  "inlineStart":  0.152542372881356,
+                                                                                  "inlineEnd":  0.8983050847457628
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.8026315789473686,
+                                                                                  "blockEnd":  0.8157894736842105,
+                                                                                  "inlineStart":  0.1694915254237288,
+                                                                                  "inlineEnd":  0.8813559322033899
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.8157894736842105,
+                                                                                  "blockEnd":  0.8289473684210527,
+                                                                                  "inlineStart":  0.18644067796610175,
+                                                                                  "inlineEnd":  0.8644067796610171
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.8289473684210527,
+                                                                                  "blockEnd":  0.8421052631578949,
+                                                                                  "inlineStart":  0.18644067796610175,
+                                                                                  "inlineEnd":  0.8474576271186441
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.8421052631578949,
+                                                                                  "blockEnd":  0.8552631578947368,
+                                                                                  "inlineStart":  0.20338983050847462,
+                                                                                  "inlineEnd":  0.8305084745762713
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.8552631578947368,
+                                                                                  "blockEnd":  0.868421052631579,
+                                                                                  "inlineStart":  0.22033898305084748,
+                                                                                  "inlineEnd":  0.8135593220338985
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.868421052631579,
+                                                                                  "blockEnd":  0.881578947368421,
+                                                                                  "inlineStart":  0.2372881355932204,
+                                                                                  "inlineEnd":  0.7966101694915256
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.881578947368421,
+                                                                                  "blockEnd":  0.8947368421052632,
+                                                                                  "inlineStart":  0.2542372881355932,
+                                                                                  "inlineEnd":  0.7627118644067796
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.8947368421052632,
+                                                                                  "blockEnd":  0.9078947368421054,
+                                                                                  "inlineStart":  0.27118644067796616,
+                                                                                  "inlineEnd":  0.745762711864407
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.9078947368421054,
+                                                                                  "blockEnd":  0.9210526315789473,
+                                                                                  "inlineStart":  0.27118644067796616,
+                                                                                  "inlineEnd":  0.711864406779661
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.9210526315789473,
+                                                                                  "blockEnd":  0.9342105263157895,
+                                                                                  "inlineStart":  0.30508474576271194,
+                                                                                  "inlineEnd":  0.6949152542372884
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.9342105263157895,
+                                                                                  "blockEnd":  0.9473684210526317,
+                                                                                  "inlineStart":  0.3220338983050848,
+                                                                                  "inlineEnd":  0.6779661016949152
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.9473684210526317,
+                                                                                  "blockEnd":  0.9605263157894737,
+                                                                                  "inlineStart":  0.33898305084745767,
+                                                                                  "inlineEnd":  0.6440677966101696
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.9605263157894737,
+                                                                                  "blockEnd":  0.9736842105263158,
+                                                                                  "inlineStart":  0.3728813559322034,
+                                                                                  "inlineEnd":  0.6271186440677966
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.9736842105263158,
+                                                                                  "blockEnd":  0.9868421052631581,
+                                                                                  "inlineStart":  0.38983050847457634,
+                                                                                  "inlineEnd":  0.5932203389830509
+                                                                              },
+                                                                              {
+                                                                                  "blockStart":  0.9868421052631581,
+                                                                                  "blockEnd":  1,
+                                                                                  "inlineStart":  0.42372881355932207,
+                                                                                  "inlineEnd":  0.576271186440678
+                                                                              }
+                                                                          ]
+                                                            }
+                                                        ]
+                                        },
+                       "translatedText":  "갈게",
+                       "renderDirection":  "horizontal",
+                       "rotationDeg":  0,
+                       "fontSizePx":  12,
+                       "fontSizeIntent":  "source-match",
+                       "lineHeight":  1.18,
+                       "letterSpacing":  0,
+                       "fontWidthScale":  1,
+                       "wordBreak":  "keep-all-overflow",
+                       "textAlign":  "center",
+                       "textColor":  "#111111",
+                       "textOpacity":  1,
+                       "outlineColor":  "#ffffff",
+                       "outlineWidthPx":  null,
+                       "outlineWidthScale":  1,
+                       "outerOutlineColor":  null,
+                       "outerOutlineWidthPx":  null,
+                       "textEffect":  null,
+                       "textGlow":  null,
+                       "bold":  false,
+                       "fontWeight":  null,
+                       "italic":  false,
+                       "underline":  null,
+                       "strikethrough":  null,
+                       "emphasisMark":  null,
+                       "textBackgroundEnabled":  null,
+                       "textBackgroundColor":  null,
+                       "backgroundColor":  "#fef3c7",
+                       "opacity":  0.7,
+                       "autoFitText":  false,
+                       "perspectiveTransform":  null,
+                       "curveLayout":  null,
+                       "warpTransform":  null,
+                       "generatedLettering":  null
+                   }
+               ]
+}

@@ -1,0 +1,325 @@
+{
+    "version":  2,
+    "revision":  "portable-font-reference-v2",
+    "derivedFrom":  {
+                        "path":  "RoverCMT/spikes/renderer-comparison/fixtures/manifest.json",
+                        "sha256":  "7e00585df4f504c7b2e831676426de1182fff053cebd81b3dd7cc231a486cb07",
+                        "version":  1
+                    },
+    "sourceChapter":  {
+                          "chapter":  "library/works/302a1e8a-7059-4644-8e23-ba0ef85f8d14/chapters/592a103c-0f9b-4416-bff5-8ec3a985600d/chapter.json",
+                          "chapterSha256":  "d100b63e889fdef89b6ac2a62e1ebb11a4e89bd6a53caa813cd4f8cfca5cde90",
+                          "pageCount":  49
+                      },
+    "fontAssets":  [
+                       {
+                           "id":  "benchmark-default-noto-sans-cjk-kr-regular-2.004",
+                           "role":  "default-dialogue",
+                           "family":  "Noto Sans CJK KR",
+                           "subfamily":  "Regular",
+                           "fullName":  "Noto Sans CJK KR",
+                           "postScriptName":  "NotoSansCJKkr-Regular",
+                           "version":  "2.004",
+                           "format":  "OTF",
+                           "path":  "RoverCMT/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf",
+                           "bytes":  16433112,
+                           "sha256":  "6bcb2a0703aa137e874fc2dffa85f6c21ba9a67fa329e81b8c801663af7e992a",
+                           "license":  {
+                                           "id":  "OFL-1.1",
+                                           "path":  "RoverCMT/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/LICENSE.txt",
+                                           "sha256":  "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+                                           "redistribution":  "permitted-with-license"
+                                       },
+                           "upstream":  {
+                                            "repository":  "https://github.com/notofonts/noto-cjk",
+                                            "release":  "Sans2.004",
+                                            "commit":  "523d033d6cb47f4a80c58a35753646f5c3608a78",
+                                            "sourcePath":  "Sans/OTF/Korean/NotoSansCJKkr-Regular.otf",
+                                            "sourceUrl":  "https://raw.githubusercontent.com/notofonts/noto-cjk/523d033d6cb47f4a80c58a35753646f5c3608a78/Sans/OTF/Korean/NotoSansCJKkr-Regular.otf"
+                                        }
+                       }
+                   ],
+    "fontRoles":  {
+                      "default-dialogue":  "benchmark-default-noto-sans-cjk-kr-regular-2.004"
+                  },
+    "referenceRenderer":  {
+                              "implementation":  "Carrot production PageArtwork/page-export runtime",
+                              "electron":  "43.3.0",
+                              "chromium":  "150.0.7871.212",
+                              "node":  "24.18.1",
+                              "platform":  "win32",
+                              "arch":  "x64",
+                              "hardwareAcceleration":  "disabled",
+                              "deviceScaleFactor":  1
+                          },
+    "verification":  {
+                         "render":  {
+                                        "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/render-verification.json",
+                                        "sha256":  "ef0708b5d4b680476e5918672a303559eb65241e079a3e7f3d0ee62edf983ad8",
+                                        "outputs":  8
+                                    },
+                         "font":  {
+                                      "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/font-verification.json",
+                                      "sha256":  "dba870348432a2eee90df8bbec3fd701b6e3c643d1db7b0246fddd473d9b2d30",
+                                      "blocks":  57,
+                                      "uniqueNonWhitespaceGlyphs":  280,
+                                      "unexpectedFallbacks":  0,
+                                      "isCustomFont":  true
+                                  }
+                     },
+    "fixtures":  [
+                     {
+                         "pageId":  "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+                         "sourcePage":  "_004.jpg",
+                         "features":  [
+                                          "typical-dialogue",
+                                          "explicit-newline",
+                                          "outline"
+                                      ],
+                         "pageSnapshot":  {
+                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/e311fd1f-0bf2-4fc1-99f5-646dc1be76c2.json",
+                                              "sha256":  "bb2e6e374b160ba58e54b18e08eb4c0751235fdd844ad69bbaa6e26fb0881a6f"
+                                          },
+                         "renderImage":  {
+                                             "kind":  "inpainted",
+                                             "path":  "library/works/302a1e8a-7059-4644-8e23-ba0ef85f8d14/chapters/592a103c-0f9b-4416-bff5-8ec3a985600d/inpainted/pattern-e738d5c9-c45c-46cd-bd7d-332eb6bdf50d.png",
+                                             "sha256":  "51f49f4b54b7e5cec01b2b8521069b8552e4db2f9998c1d65dc0de281277edc7",
+                                             "width":  1280,
+                                             "height":  1791
+                                         },
+                         "fontAssetIds":  [
+                                              "benchmark-default-noto-sans-cjk-kr-regular-2.004"
+                                          ],
+                         "reference":  {
+                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_004.png",
+                                           "format":  "PNG",
+                                           "width":  1280,
+                                           "height":  1791,
+                                           "bytes":  1775359,
+                                           "sha256":  "8f6661fd8b9d779fd5093fbe8b7c081ea730a2cdd8458c20b9cd58a9203293ee"
+                                       }
+                     },
+                     {
+                         "pageId":  "74d0a78f-93fe-4c24-97b9-25c09382784d",
+                         "sourcePage":  "_011.jpg",
+                         "features":  [
+                                          "longest-translated-block",
+                                          "wrapping-stress",
+                                          "outline"
+                                      ],
+                         "pageSnapshot":  {
+                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/74d0a78f-93fe-4c24-97b9-25c09382784d.json",
+                                              "sha256":  "9872035d0e8c95f664ea3a84d00c849121384a7402458491cc3f333afd726918"
+                                          },
+                         "renderImage":  {
+                                             "kind":  "inpainted",
+                                             "path":  "library/works/302a1e8a-7059-4644-8e23-ba0ef85f8d14/chapters/592a103c-0f9b-4416-bff5-8ec3a985600d/inpainted/pattern-8c19e895-17f9-44e4-93b1-693bc4aa15c6.png",
+                                             "sha256":  "e038738ac409c768ff576a1bf419f9ef800adff6e14f2864f500ee68de4dbcc9",
+                                             "width":  1280,
+                                             "height":  1791
+                                         },
+                         "fontAssetIds":  [
+                                              "benchmark-default-noto-sans-cjk-kr-regular-2.004"
+                                          ],
+                         "reference":  {
+                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_011.png",
+                                           "format":  "PNG",
+                                           "width":  1280,
+                                           "height":  1791,
+                                           "bytes":  1522150,
+                                           "sha256":  "8c053a62f279dbb7003a4e8ebeb9594cb6235ebba2de5b8ce907fd6ce52c4459"
+                                       }
+                     },
+                     {
+                         "pageId":  "50443352-6248-45ef-8d09-d9f99fe7ab59",
+                         "sourcePage":  "_012.jpg",
+                         "features":  [
+                                          "maximum-block-count",
+                                          "mixed-korean-latin-symbol",
+                                          "tight-fit-heuristic",
+                                          "outline"
+                                      ],
+                         "pageSnapshot":  {
+                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/50443352-6248-45ef-8d09-d9f99fe7ab59.json",
+                                              "sha256":  "97b683dd53a612ecda584a6983bbeef4fbcf2eb3d3eebafe04e91cbcbec9699f"
+                                          },
+                         "renderImage":  {
+                                             "kind":  "inpainted",
+                                             "path":  "library/works/302a1e8a-7059-4644-8e23-ba0ef85f8d14/chapters/592a103c-0f9b-4416-bff5-8ec3a985600d/inpainted/pattern-a7cf1d94-2b32-4094-a9ed-3a880c3d12d2.png",
+                                             "sha256":  "6852b0a0d42ac5c2426380c933d0369c4e2ddde2722e970bd113f6ab75718d2c",
+                                             "width":  1280,
+                                             "height":  1791
+                                         },
+                         "fontAssetIds":  [
+                                              "benchmark-default-noto-sans-cjk-kr-regular-2.004"
+                                          ],
+                         "reference":  {
+                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_012.png",
+                                           "format":  "PNG",
+                                           "width":  1280,
+                                           "height":  1791,
+                                           "bytes":  1550387,
+                                           "sha256":  "a159fee79178f2b15aee5667318eef09093f324fcc44f5387c0c1496da99514c"
+                                       }
+                     },
+                     {
+                         "pageId":  "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+                         "sourcePage":  "_015.jpg",
+                         "features":  [
+                                          "smallest-render-box",
+                                          "empty-translation-block",
+                                          "mixed-korean-latin-symbol",
+                                          "outline"
+                                      ],
+                         "pageSnapshot":  {
+                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/6b059220-b404-4d21-89b1-8a8ec7ee1635.json",
+                                              "sha256":  "161fd17086b5c886136d18ead3e67076383aababa08abbeb908dff6d9b766a00"
+                                          },
+                         "renderImage":  {
+                                             "kind":  "inpainted",
+                                             "path":  "library/works/302a1e8a-7059-4644-8e23-ba0ef85f8d14/chapters/592a103c-0f9b-4416-bff5-8ec3a985600d/inpainted/pattern-6d602788-3118-48ec-b9e6-5d628e48592a.png",
+                                             "sha256":  "ab14b1974b91b990f658bd1fd7e7e8b0d0cfb0108e2d02e592ecb1cb42c2b227",
+                                             "width":  1280,
+                                             "height":  1791
+                                         },
+                         "fontAssetIds":  [
+                                              "benchmark-default-noto-sans-cjk-kr-regular-2.004"
+                                          ],
+                         "reference":  {
+                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_015.png",
+                                           "format":  "PNG",
+                                           "width":  1280,
+                                           "height":  1791,
+                                           "bytes":  1690833,
+                                           "sha256":  "8f978b315df32e2d3a376586fc6e7f721a6d4a47d44881a5e2f2f6834a31420f"
+                                       }
+                     },
+                     {
+                         "pageId":  "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+                         "sourcePage":  "_018.jpg",
+                         "features":  [
+                                          "maximum-block-count",
+                                          "high-text-density",
+                                          "mixed-korean-latin-symbol",
+                                          "outline"
+                                      ],
+                         "pageSnapshot":  {
+                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/f8a2d41b-d26e-44ce-aaf4-8d0600c984fd.json",
+                                              "sha256":  "5b7ff8ccf459138938343ede21510243265c8fa3f037e2029fc64c49dc7f445d"
+                                          },
+                         "renderImage":  {
+                                             "kind":  "inpainted",
+                                             "path":  "library/works/302a1e8a-7059-4644-8e23-ba0ef85f8d14/chapters/592a103c-0f9b-4416-bff5-8ec3a985600d/inpainted/pattern-e3ae6841-a136-4430-97db-f0e27af8d5fe.png",
+                                             "sha256":  "f30b56ba9b44ea9e3f3c0d44c1aea9aa3ff2eebb82d80160eebcd313c418074c",
+                                             "width":  1280,
+                                             "height":  1791
+                                         },
+                         "fontAssetIds":  [
+                                              "benchmark-default-noto-sans-cjk-kr-regular-2.004"
+                                          ],
+                         "reference":  {
+                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_018.png",
+                                           "format":  "PNG",
+                                           "width":  1280,
+                                           "height":  1791,
+                                           "bytes":  1194181,
+                                           "sha256":  "aefa251a4a29d7f02809c63025901ed5daf8f888f8c2cb2795fa004b75bd162b"
+                                       }
+                     },
+                     {
+                         "pageId":  "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+                         "sourcePage":  "_029.jpg",
+                         "features":  [
+                                          "long-translated-text",
+                                          "tight-fit-heuristic",
+                                          "mixed-korean-latin-symbol",
+                                          "outline"
+                                      ],
+                         "pageSnapshot":  {
+                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/676ba29f-3ce3-4bf6-ae47-4ca34169ed3b.json",
+                                              "sha256":  "66c15269a282a8b89610f031b7442fa3c98536d9260deed4142d456858c9a23a"
+                                          },
+                         "renderImage":  {
+                                             "kind":  "inpainted",
+                                             "path":  "library/works/302a1e8a-7059-4644-8e23-ba0ef85f8d14/chapters/592a103c-0f9b-4416-bff5-8ec3a985600d/inpainted/pattern-45573b31-87aa-4d5c-9641-397995c8a22a.png",
+                                             "sha256":  "9f5ae65a6b3ed9f1aeb339f24532961c4711aa40e9e86782ab3121c03145733e",
+                                             "width":  1280,
+                                             "height":  1791
+                                         },
+                         "fontAssetIds":  [
+                                              "benchmark-default-noto-sans-cjk-kr-regular-2.004"
+                                          ],
+                         "reference":  {
+                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_029.png",
+                                           "format":  "PNG",
+                                           "width":  1280,
+                                           "height":  1791,
+                                           "bytes":  1612208,
+                                           "sha256":  "82dfaa095dc60c4b882986ca85dff317f441be290d85b412e8dd6f027fd99091"
+                                       }
+                     },
+                     {
+                         "pageId":  "678fcdee-4806-4a15-9228-9286f1abf92c",
+                         "sourcePage":  "_047.jpg",
+                         "features":  [
+                                          "many-blocks",
+                                          "very-small-render-box",
+                                          "mixed-korean-latin-symbol",
+                                          "outline"
+                                      ],
+                         "pageSnapshot":  {
+                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/678fcdee-4806-4a15-9228-9286f1abf92c.json",
+                                              "sha256":  "d3aadcc298e70c1fb61a241346095a712c2c1d06f5e8bdaf087a47b256631617"
+                                          },
+                         "renderImage":  {
+                                             "kind":  "inpainted",
+                                             "path":  "library/works/302a1e8a-7059-4644-8e23-ba0ef85f8d14/chapters/592a103c-0f9b-4416-bff5-8ec3a985600d/inpainted/pattern-c439bee9-fa11-47b9-ae94-769830a400a3.png",
+                                             "sha256":  "9279aabebbeb44d1c249f92b1812031da93b488f9efcdd14a0d5a9b16c512e6b",
+                                             "width":  1280,
+                                             "height":  1791
+                                         },
+                         "fontAssetIds":  [
+                                              "benchmark-default-noto-sans-cjk-kr-regular-2.004"
+                                          ],
+                         "reference":  {
+                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_047.png",
+                                           "format":  "PNG",
+                                           "width":  1280,
+                                           "height":  1791,
+                                           "bytes":  1324787,
+                                           "sha256":  "0bf4dda04b4447a5c01397c947f7df430ffba7f3352701d2fcafe5d6623c68bc"
+                                       }
+                     },
+                     {
+                         "pageId":  "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247",
+                         "sourcePage":  "_0411.png",
+                         "features":  [
+                                          "distinct-short-page-dimensions",
+                                          "confirmed-png-source-format",
+                                          "outline"
+                                      ],
+                         "pageSnapshot":  {
+                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/46fe6f58-2468-4e3b-9f9b-b8ce7dec4247.json",
+                                              "sha256":  "ca7795122a83a6948e65387d55550767feaafd16a0427c2cb992a8fcea1b9395"
+                                          },
+                         "renderImage":  {
+                                             "kind":  "inpainted",
+                                             "path":  "library/works/302a1e8a-7059-4644-8e23-ba0ef85f8d14/chapters/592a103c-0f9b-4416-bff5-8ec3a985600d/inpainted/pattern-f3d4c3ee-a177-4cf2-ac1e-f58cc34716c0.png",
+                                             "sha256":  "aaca60cfc1dba908ed31ced56667008b8ebd6127426f7fc943862755f9007e08",
+                                             "width":  1280,
+                                             "height":  925
+                                         },
+                         "fontAssetIds":  [
+                                              "benchmark-default-noto-sans-cjk-kr-regular-2.004"
+                                          ],
+                         "reference":  {
+                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_0411.png",
+                                           "format":  "PNG",
+                                           "width":  1280,
+                                           "height":  925,
+                                           "bytes":  1149475,
+                                           "sha256":  "53466eae52aa2c77243d9c7d147c2ed44ab0498340c3a2b2e53193054ff07e02"
+                                       }
+                     }
+                 ]
+}

@@ -1,0 +1,4519 @@
+{
+  "version": 1,
+  "revision": "portable-font-reference-v2",
+  "runtime": {
+    "electron": "43.3.0",
+    "chromium": "150.0.7871.212",
+    "node": "24.18.1",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "font": {
+    "familyName": "Noto Sans CJK KR",
+    "postScriptName": "NotoSansCJKkr-Regular",
+    "isCustomFont": true
+  },
+  "fixtureCount": 8,
+  "blockCount": 57,
+  "uniqueNonWhitespaceGlyphCount": 280,
+  "unexpectedFallbacks": 0,
+  "blocks": [
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-1",
+      "text": "옛날 옛적에 작은 영웅이 있었습니다.",
+      "fontSizePx": 19,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 50,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-2",
+      "text": "작은 영웅의 가슴 속에는 『불꽃의 반짝임』이 잠들어 있었습니다.",
+      "fontSizePx": 38,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 89,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-3",
+      "text": "그 힘은 엄청나서 작은 영웅은 아직 제대로 다루지 못했습니다.",
+      "fontSizePx": 40,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 84,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-4",
+      "text": "비켜어어어",
+      "fontSizePx": 25,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 15,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-5",
+      "text": "앗!!",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 5,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "pageName": "_004.jpg",
+      "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-6",
+      "text": "브레이크가\n안 들어!!",
+      "fontSizePx": 25,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 27,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-1",
+      "text": "어때?",
+      "fontSizePx": 19,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 7,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-2",
+      "text": "불꽃의 발현 타이밍, 아드레날린 분비량, 근섬유의 이상 활성화, 그에 따른 신경 전달의 과잉 가속까지 전부 다시 조사했어",
+      "fontSizePx": 40,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 163,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-3",
+      "text": "발생, 그걸 억누르기 위해서, 선생님도 알고 있어. 네 내부에서 함께 분산시켜서, 반작용으로 분리시키는 건 아주 작은 불씨로 만드는 거야. 쉽게 타오르는 불꽃을 분해하고, 분해해서 아주 작은 조각으로 백 개로 나누는 식으로 말이야.",
+      "fontSizePx": 40,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 311,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-4",
+      "text": "그럼 결론은 하나야, 과학적인 요법을 거부한다면",
+      "fontSizePx": 22,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 66,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-5",
+      "text": "싫어요.",
+      "fontSizePx": 13,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 10,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-6",
+      "text": "외부에서의 제어는 불가능해.",
+      "fontSizePx": 15,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 39,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-7",
+      "text": "남은 선택지는 네 스스로 자기 제어를 확립하는 것뿐이야~",
+      "fontSizePx": 35,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 77,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "pageName": "_011.jpg",
+      "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-8",
+      "text": "즉답이네!!",
+      "fontSizePx": 14,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 14,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-1",
+      "text": "받아들여서 활용한다! 재미있잖아!! 그 과정이야말로 최고의 연구 재료가 될 거야!!",
+      "fontSizePx": 31,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 110,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-2",
+      "text": "푸하핫, 너는 정말 멋진 모르모트야!!",
+      "fontSizePx": 22,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 49,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-3",
+      "text": "모르모트...",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 15,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-4",
+      "text": "최적의 코치진을 소개해 주지!!",
+      "fontSizePx": 15,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 41,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-5",
+      "text": "나의 피실험자 네트워크...... 아니, 인맥으로",
+      "fontSizePx": 23,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 59,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-6",
+      "text": "맨해튼 카페",
+      "fontSizePx": 14,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 16,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-7",
+      "text": "하하핫, 점점 즐거워지는데!",
+      "fontSizePx": 20,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 37,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-8",
+      "text": "카페! 너도 좀 도와줘야겠어",
+      "fontSizePx": 25,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 37,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-9",
+      "text": "왜 나까지...",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 16,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "pageName": "_012.jpg",
+      "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-10",
+      "text": "잘... 부탁해...",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 19,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-1",
+      "text": "몰리고 있구나, 라이스 씨!!",
+      "fontSizePx": 21,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 36,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-2",
+      "text": "하아... 하아...! 마, 아직... 달릴 수 있어요......!!",
+      "fontSizePx": 23,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 64,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-4",
+      "text": "티엠 오페라 오",
+      "fontSizePx": 13,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 20,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-5",
+      "text": "포기하지 마!!",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 18,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-6",
+      "text": "다이아몬드 같은 이 반짝임을!!",
+      "fontSizePx": 40,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 41,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "pageName": "_015.jpg",
+      "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-7",
+      "text": "봐라! 나의 흐르는 땀을!!",
+      "fontSizePx": 40,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 33,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-1",
+      "text": "오버히트... 아직 멀었군, 내일도 팍팍 가보자고!",
+      "fontSizePx": 23,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 64,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-2",
+      "text": "아니! 마지막 스퍼트 정말 멋졌어, 그 순간은 나보다 더 빛났다고!!",
+      "fontSizePx": 35,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 88,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-3",
+      "text": "불꽃이 타올라도 굴하지 않고 즐기고 있었구나",
+      "fontSizePx": 26,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 62,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-4",
+      "text": "후후훗, 오늘은 이쯤 해둘까",
+      "fontSizePx": 24,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 37,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-5",
+      "text": "부탁하신 대로 냉각은 했습니다만...",
+      "fontSizePx": 22,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 48,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-6",
+      "text": "라이스 씨",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 13,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-7",
+      "text": "괜찮으세요...?",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 19,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-8",
+      "text": "게... 괜찮아... 엄청 편해졌어...",
+      "fontSizePx": 21,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 42,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-9",
+      "text": "그 세 사람의 특훈을 따라가다니 대단해요",
+      "fontSizePx": 26,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 56,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "pageName": "_018.jpg",
+      "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-10",
+      "text": "다만... 너무 무리하면 오래 못 가요",
+      "fontSizePx": 28,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 47,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-1",
+      "text": "브라이언! 서둘러 교내로 가서! 남아있는 학생들의 안부 확인과 구출을! 한 명도 남기지 마!!",
+      "fontSizePx": 40,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 122,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-2",
+      "text": "오페라 오! 피난 유도를 부탁해!! 혼란을 억제하고 안전한 곳으로 인도해!!",
+      "fontSizePx": 40,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 98,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-3",
+      "text": "나는 상황을 확인하고 현장을 지휘하겠다! 모두 피난 행동을 취해라!!",
+      "fontSizePx": 33,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 92,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-4",
+      "text": "도대체 무슨 일일까요",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 29,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-5",
+      "text": "여기도 위험해요 우리도 피난해요",
+      "fontSizePx": 24,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 45,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "pageName": "_029.jpg",
+      "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-6",
+      "text": "잠깐... 뭔가... 온다......",
+      "fontSizePx": 16,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 32,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-1",
+      "text": "이렇게 된 것도 전부 네 탓 아니야?",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 46,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-2",
+      "text": "있잖아, 타키온",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 20,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-3",
+      "text": "작은 영웅은 넘쳐흐르는 '불꽃의 반짝임'을 제대로 다루지 못해 곤란해하고 있었습니다.",
+      "fontSizePx": 40,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 117,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-4",
+      "text": "하지만 수많은 동료를 만나 마침내 '불꽃의 반짝임'을 길들일 수 있게 되었습니다.",
+      "fontSizePx": 40,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 109,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-5",
+      "text": "친구가 불꽃에 휩싸여 날뛰던 때에도 작은 영웅은 도망치지 않고 친구를 구해냈습니다.",
+      "fontSizePx": 40,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 116,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-6",
+      "text": "라이스 씨, 아침 연습 힘내세요!",
+      "fontSizePx": 21,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 42,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-7",
+      "text": "응!",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 4,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-8",
+      "text": "작은 영웅은 성장하여, 훌륭한 영웅이 되었습니다.",
+      "fontSizePx": 28,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 67,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "pageName": "_047.jpg",
+      "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-9",
+      "text": "불꽃의 반짝임'은",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 23,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247",
+      "pageName": "_0411.png",
+      "blockId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247-04210a99-da2f-4954-b8b5-3939c515d160-block-1",
+      "text": "지금 구해줄 테니까",
+      "fontSizePx": 35,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 26,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247",
+      "pageName": "_0411.png",
+      "blockId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247-04210a99-da2f-4954-b8b5-3939c515d160-block-2",
+      "text": "갈게",
+      "fontSizePx": 12,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 6,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    }
+  ],
+  "glyphs": [
+    {
+      "character": "!",
+      "codePoint": "U+0021",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 1,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "'",
+      "codePoint": "U+0027",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 1,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": ",",
+      "codePoint": "U+002C",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 1,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": ".",
+      "codePoint": "U+002E",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 1,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "?",
+      "codePoint": "U+003F",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 1,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "~",
+      "codePoint": "U+007E",
+      "category": "symbols",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 1,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "『",
+      "codePoint": "U+300E",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "』",
+      "codePoint": "U+300F",
+      "category": "punctuation",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "가",
+      "codePoint": "U+AC00",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "각",
+      "codePoint": "U+AC01",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "간",
+      "codePoint": "U+AC04",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "갈",
+      "codePoint": "U+AC08",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "같",
+      "codePoint": "U+AC19",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "개",
+      "codePoint": "U+AC1C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "거",
+      "codePoint": "U+AC70",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "건",
+      "codePoint": "U+AC74",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "걸",
+      "codePoint": "U+AC78",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "것",
+      "codePoint": "U+AC83",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "게",
+      "codePoint": "U+AC8C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "겠",
+      "codePoint": "U+ACA0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "결",
+      "codePoint": "U+ACB0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "경",
+      "codePoint": "U+ACBD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "고",
+      "codePoint": "U+ACE0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "곤",
+      "codePoint": "U+ACE4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "곳",
+      "codePoint": "U+ACF3",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "과",
+      "codePoint": "U+ACFC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "괜",
+      "codePoint": "U+AD1C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "교",
+      "codePoint": "U+AD50",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "구",
+      "codePoint": "U+AD6C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "군",
+      "codePoint": "U+AD70",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "굴",
+      "codePoint": "U+AD74",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "그",
+      "codePoint": "U+ADF8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "근",
+      "codePoint": "U+ADFC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "금",
+      "codePoint": "U+AE08",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "기",
+      "codePoint": "U+AE30",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "길",
+      "codePoint": "U+AE38",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "까",
+      "codePoint": "U+AE4C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "깐",
+      "codePoint": "U+AE50",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "께",
+      "codePoint": "U+AED8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "꽃",
+      "codePoint": "U+AF43",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "나",
+      "codePoint": "U+B098",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "난",
+      "codePoint": "U+B09C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "날",
+      "codePoint": "U+B0A0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "남",
+      "codePoint": "U+B0A8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "났",
+      "codePoint": "U+B0AC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "내",
+      "codePoint": "U+B0B4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "냈",
+      "codePoint": "U+B0C8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "냉",
+      "codePoint": "U+B0C9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "너",
+      "codePoint": "U+B108",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "넘",
+      "codePoint": "U+B118",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "네",
+      "codePoint": "U+B124",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "누",
+      "codePoint": "U+B204",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "는",
+      "codePoint": "U+B294",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "늘",
+      "codePoint": "U+B298",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "능",
+      "codePoint": "U+B2A5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "니",
+      "codePoint": "U+B2C8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "님",
+      "codePoint": "U+B2D8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "다",
+      "codePoint": "U+B2E4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "단",
+      "codePoint": "U+B2E8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "달",
+      "codePoint": "U+B2EC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "답",
+      "codePoint": "U+B2F5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "대",
+      "codePoint": "U+B300",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "더",
+      "codePoint": "U+B354",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "던",
+      "codePoint": "U+B358",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "데",
+      "codePoint": "U+B370",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "도",
+      "codePoint": "U+B3C4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "동",
+      "codePoint": "U+B3D9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "되",
+      "codePoint": "U+B418",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "된",
+      "codePoint": "U+B41C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "될",
+      "codePoint": "U+B420",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "두",
+      "codePoint": "U+B450",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "둘",
+      "codePoint": "U+B458",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "드",
+      "codePoint": "U+B4DC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "들",
+      "codePoint": "U+B4E4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "따",
+      "codePoint": "U+B530",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "땀",
+      "codePoint": "U+B540",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "때",
+      "codePoint": "U+B54C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "뛰",
+      "codePoint": "U+B6F0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "라",
+      "codePoint": "U+B77C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "란",
+      "codePoint": "U+B780",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "람",
+      "codePoint": "U+B78C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "래",
+      "codePoint": "U+B798",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "량",
+      "codePoint": "U+B7C9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "러",
+      "codePoint": "U+B7EC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "럼",
+      "codePoint": "U+B7FC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "렇",
+      "codePoint": "U+B807",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "레",
+      "codePoint": "U+B808",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "로",
+      "codePoint": "U+B85C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "론",
+      "codePoint": "U+B860",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "료",
+      "codePoint": "U+B8CC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "루",
+      "codePoint": "U+B8E8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "륭",
+      "codePoint": "U+B96D",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 4,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "르",
+      "codePoint": "U+B974",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "른",
+      "codePoint": "U+B978",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "를",
+      "codePoint": "U+B97C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "리",
+      "codePoint": "U+B9AC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "린",
+      "codePoint": "U+B9B0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "릴",
+      "codePoint": "U+B9B4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "립",
+      "codePoint": "U+B9BD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "마",
+      "codePoint": "U+B9C8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "막",
+      "codePoint": "U+B9C9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "만",
+      "codePoint": "U+B9CC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "많",
+      "codePoint": "U+B9CE",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "말",
+      "codePoint": "U+B9D0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "망",
+      "codePoint": "U+B9DD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "맥",
+      "codePoint": "U+B9E5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "맨",
+      "codePoint": "U+B9E8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "멀",
+      "codePoint": "U+BA40",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "멋",
+      "codePoint": "U+BA4B",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "면",
+      "codePoint": "U+BA74",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "명",
+      "codePoint": "U+BA85",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "모",
+      "codePoint": "U+BAA8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "몬",
+      "codePoint": "U+BAAC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "몰",
+      "codePoint": "U+BAB0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "못",
+      "codePoint": "U+BABB",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "무",
+      "codePoint": "U+BB34",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "뭔",
+      "codePoint": "U+BB54",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "미",
+      "codePoint": "U+BBF8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "밍",
+      "codePoint": "U+BC0D",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "반",
+      "codePoint": "U+BC18",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "받",
+      "codePoint": "U+BC1B",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "발",
+      "codePoint": "U+BC1C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "백",
+      "codePoint": "U+BC31",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "버",
+      "codePoint": "U+BC84",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "법",
+      "codePoint": "U+BC95",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "보",
+      "codePoint": "U+BCF4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "봐",
+      "codePoint": "U+BD10",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "부",
+      "codePoint": "U+BD80",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "분",
+      "codePoint": "U+BD84",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "불",
+      "codePoint": "U+BD88",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "브",
+      "codePoint": "U+BE0C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "비",
+      "codePoint": "U+BE44",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "빛",
+      "codePoint": "U+BE5B",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "뿐",
+      "codePoint": "U+BFD0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "사",
+      "codePoint": "U+C0AC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "산",
+      "codePoint": "U+C0B0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "상",
+      "codePoint": "U+C0C1",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "생",
+      "codePoint": "U+C0DD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "서",
+      "codePoint": "U+C11C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "선",
+      "codePoint": "U+C120",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "섬",
+      "codePoint": "U+C12C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "성",
+      "codePoint": "U+C131",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "세",
+      "codePoint": "U+C138",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "소",
+      "codePoint": "U+C18C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "속",
+      "codePoint": "U+C18D",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "수",
+      "codePoint": "U+C218",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "순",
+      "codePoint": "U+C21C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "쉽",
+      "codePoint": "U+C27D",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "스",
+      "codePoint": "U+C2A4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "슨",
+      "codePoint": "U+C2A8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "슴",
+      "codePoint": "U+C2B4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "습",
+      "codePoint": "U+C2B5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "시",
+      "codePoint": "U+C2DC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "식",
+      "codePoint": "U+C2DD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "신",
+      "codePoint": "U+C2E0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "실",
+      "codePoint": "U+C2E4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "싫",
+      "codePoint": "U+C2EB",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "싸",
+      "codePoint": "U+C2F8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "씨",
+      "codePoint": "U+C528",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "아",
+      "codePoint": "U+C544",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "안",
+      "codePoint": "U+C548",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "않",
+      "codePoint": "U+C54A",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "알",
+      "codePoint": "U+C54C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "앗",
+      "codePoint": "U+C557",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "야",
+      "codePoint": "U+C57C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "어",
+      "codePoint": "U+C5B4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "억",
+      "codePoint": "U+C5B5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "언",
+      "codePoint": "U+C5B8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "엄",
+      "codePoint": "U+C5C4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "었",
+      "codePoint": "U+C5C8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "에",
+      "codePoint": "U+C5D0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "엠",
+      "codePoint": "U+C5E0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "여",
+      "codePoint": "U+C5EC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "연",
+      "codePoint": "U+C5F0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "영",
+      "codePoint": "U+C601",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "옛",
+      "codePoint": "U+C61B",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "오",
+      "codePoint": "U+C624",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "온",
+      "codePoint": "U+C628",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "올",
+      "codePoint": "U+C62C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "와",
+      "codePoint": "U+C640",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "왜",
+      "codePoint": "U+C65C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "외",
+      "codePoint": "U+C678",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "요",
+      "codePoint": "U+C694",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "용",
+      "codePoint": "U+C6A9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "우",
+      "codePoint": "U+C6B0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "웅",
+      "codePoint": "U+C6C5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "워",
+      "codePoint": "U+C6CC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "위",
+      "codePoint": "U+C704",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "유",
+      "codePoint": "U+C720",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "으",
+      "codePoint": "U+C73C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "은",
+      "codePoint": "U+C740",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "을",
+      "codePoint": "U+C744",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "응",
+      "codePoint": "U+C751",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "의",
+      "codePoint": "U+C758",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "이",
+      "codePoint": "U+C774",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "인",
+      "codePoint": "U+C778",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "일",
+      "codePoint": "U+C77C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "임",
+      "codePoint": "U+C784",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "있",
+      "codePoint": "U+C788",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "잉",
+      "codePoint": "U+C789",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "자",
+      "codePoint": "U+C790",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "작",
+      "codePoint": "U+C791",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "잖",
+      "codePoint": "U+C796",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "잘",
+      "codePoint": "U+C798",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "잠",
+      "codePoint": "U+C7A0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "장",
+      "codePoint": "U+C7A5",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "재",
+      "codePoint": "U+C7AC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "적",
+      "codePoint": "U+C801",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "전",
+      "codePoint": "U+C804",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "점",
+      "codePoint": "U+C810",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "정",
+      "codePoint": "U+C815",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "제",
+      "codePoint": "U+C81C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "졌",
+      "codePoint": "U+C84C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "조",
+      "codePoint": "U+C870",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "좀",
+      "codePoint": "U+C880",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "주",
+      "codePoint": "U+C8FC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "줄",
+      "codePoint": "U+C904",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "줘",
+      "codePoint": "U+C918",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "즉",
+      "codePoint": "U+C989",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "즐",
+      "codePoint": "U+C990",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "지",
+      "codePoint": "U+C9C0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "직",
+      "codePoint": "U+C9C1",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "진",
+      "codePoint": "U+C9C4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "짝",
+      "codePoint": "U+C9DD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "쯤",
+      "codePoint": "U+CBE4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "찮",
+      "codePoint": "U+CC2E",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "청",
+      "codePoint": "U+CCAD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 4,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "체",
+      "codePoint": "U+CCB4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "쳐",
+      "codePoint": "U+CCD0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "최",
+      "codePoint": "U+CD5C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "출",
+      "codePoint": "U+CD9C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "취",
+      "codePoint": "U+CDE8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "치",
+      "codePoint": "U+CE58",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "친",
+      "codePoint": "U+CE5C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "침",
+      "codePoint": "U+CE68",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "카",
+      "codePoint": "U+CE74",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "켜",
+      "codePoint": "U+CF1C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "코",
+      "codePoint": "U+CF54",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "크",
+      "codePoint": "U+D06C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "키",
+      "codePoint": "U+D0A4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "타",
+      "codePoint": "U+D0C0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "탁",
+      "codePoint": "U+D0C1",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "탓",
+      "codePoint": "U+D0D3",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "택",
+      "codePoint": "U+D0DD",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "테",
+      "codePoint": "U+D14C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "트",
+      "codePoint": "U+D2B8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "특",
+      "codePoint": "U+D2B9",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "튼",
+      "codePoint": "U+D2BC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "티",
+      "codePoint": "U+D2F0",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "팍",
+      "codePoint": "U+D30D",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "퍼",
+      "codePoint": "U+D37C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "페",
+      "codePoint": "U+D398",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "편",
+      "codePoint": "U+D3B8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "포",
+      "codePoint": "U+D3EC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "푸",
+      "codePoint": "U+D478",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "피",
+      "codePoint": "U+D53C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "하",
+      "codePoint": "U+D558",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "학",
+      "codePoint": "U+D559",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "한",
+      "codePoint": "U+D55C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "함",
+      "codePoint": "U+D568",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "핫",
+      "codePoint": "U+D56B",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "해",
+      "codePoint": "U+D574",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "했",
+      "codePoint": "U+D588",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "행",
+      "codePoint": "U+D589",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "험",
+      "codePoint": "U+D5D8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "현",
+      "codePoint": "U+D604",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "혼",
+      "codePoint": "U+D63C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "화",
+      "codePoint": "U+D654",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "확",
+      "codePoint": "U+D655",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "활",
+      "codePoint": "U+D65C",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "황",
+      "codePoint": "U+D669",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "후",
+      "codePoint": "U+D6C4",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "훈",
+      "codePoint": "U+D6C8",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "훌",
+      "codePoint": "U+D6CC",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "훗",
+      "codePoint": "U+D6D7",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "휘",
+      "codePoint": "U+D718",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "휩",
+      "codePoint": "U+D729",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "흐",
+      "codePoint": "U+D750",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "히",
+      "codePoint": "U+D788",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "character": "힘",
+      "codePoint": "U+D798",
+      "category": "korean",
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 3,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    }
+  ]
+}
