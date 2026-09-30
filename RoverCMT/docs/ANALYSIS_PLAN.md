@@ -16,13 +16,12 @@ upstream Linux 지원 여부를 조사했다.
 - 주요 OCR, detection, translation, inpainting runtime에는 Linux 실행 경로가 존재한다.
 - Carrot의 Windows/macOS 중심 packaging은 Core에서 분리해야 한다.
 - exact dependency/model/runtime 조합은 실제 smoke test가 필요하다.
-- Electron-free final rendering의 품질은 아직 검증되지 않았다.
+- Renderer comparison PNG는 생성됐으며 Electron-free final rendering의 시각 품질은 human review 대기다.
 - RoverCMT production migration은 아직 시작하지 않았다.
 
 상세 근거는 다음 문서에 기록한다.
 
 `docs/analysis/INITIAL_MIGRATION_ANALYSIS.md`
-
 
 ---
 
@@ -45,7 +44,6 @@ RoverCMT Core는 장기적으로 Electron에 종속되지 않는 것을 목표�
 
 1. Renderer Feasibility & Candidate Analysis
 2. Renderer Comparison Spike
-
 
 ---
 
@@ -83,7 +81,6 @@ RoverCMT Core는 장기적으로 Electron에 종속되지 않는 것을 목표�
 Carrot source에서 실제로 사용하지 않는 기능은
 단순히 가능성이 있다는 이유만으로 필수 요구사항으로 만들지 않는다.
 
-
 ### Candidate 조사
 
 Carrot의 실제 요구사항을 기준으로
@@ -111,7 +108,6 @@ Electron-free Linux/headless renderer 후보를 조사한다.
 기능적으로 부적합한 후보를 제거하고
 실제 comparison spike를 수행할 가치가 있는 후보만 2~3개로 좁힌다.
 
-
 ---
 
 ## 3. Renderer Comparison Spike
@@ -122,12 +118,10 @@ production RoverCMT와 분리된 작은 실험 환경을 만든다.
 목적은 renderer implementation 자체가 아니라
 시각 품질과 성능의 비교다.
 
-
 ### Reference
 
 현재 Carrot의 Electron/Chromium renderer output을
 reference로 사용한다.
-
 
 ### Input
 
@@ -136,7 +130,6 @@ reference로 사용한다.
 image/layout/translation/font 관련 데이터를 fixture로 사용한다.
 
 모든 renderer에는 가능한 한 동일한 입력을 전달한다.
-
 
 ### Test corpus
 
@@ -156,7 +149,6 @@ image/layout/translation/font 관련 데이터를 fixture로 사용한다.
 
 실제 Carrot 기능에서 사용하지 않는 case를
 억지로 benchmark에 추가하지 않는다.
-
 
 ### 비교 항목
 
@@ -187,7 +179,6 @@ pixel-perfect equality를 품질 기준으로 사용하지 않는다.
 
 anti-aliasing 또는 rasterization 차이는 허용한다.
 
-
 ### 성공 기준
 
 핵심 성공 기준은 다음이다.
@@ -200,7 +191,6 @@ Electron-free renderer가 현재 Carrot output보다
 
 comparison output을 사람이 직접 확인한다.
 
-
 ---
 
 ## 4. Renderer 검증 이후
@@ -212,7 +202,6 @@ renderer 방향을 결정하고
 
 그 이후 필요한 component를 작은 단위로 이식하면서
 각 runtime의 exact pin/config/ABI smoke test를 수행한다.
-
 
 ### 모든 후보가 품질 기준에 미달하는 경우
 
@@ -227,7 +216,6 @@ Electron 제거 자체를 억지로 진행하지 않는다.
 목표는 Electron 제거 자체가 아니라
 Linux에서 독립적으로 실행 가능한 Core와
 충분한 최종 출력 품질을 동시에 확보하는 것이다.
-
 
 ---
 
@@ -256,7 +244,6 @@ Smoke test에서는 전체 production pipeline을 만들지 않는다.
 upstream Linux 지원 여부를 다시 조사하는 것이 아니라
 RoverCMT에서 사용할 정확한 조합을 검증하는 것이 목적이다.
 
-
 ---
 
 ## 6. End-to-End 검증
@@ -281,12 +268,11 @@ RoverCMT에서 사용할 정확한 조합을 검증하는 것이 목적이다.
 - 번역 결과가 실용적인 품질인가
 - time-to-output이 실용적인가
 
-
 ---
 
 ## 7. 현재 단계에서 하지 않는 것
 
-Renderer candidate analysis 전에는 다음을 하지 않는다.
+Renderer 방향을 사람이 결정하기 전에는 다음을 하지 않는다.
 
 - RoverCMT production architecture 확정
 - production pipeline 구현
@@ -301,19 +287,19 @@ Renderer candidate analysis 전에는 다음을 하지 않는다.
 현재 목표는
 가장 중요한 미검증 품질 risk를 작은 실험으로 먼저 제거하는 것이다.
 
-
 ---
 
 ## 8. 바로 다음 작업
 
+Renderer feasibility/candidate analysis와 comparison spike 구현·측정은 완료됐다.
+결과는 `docs/analysis/RENDERER_COMPARISON_SPIKE.md`에 기록한다.
+
 다음 작업은:
 
-**Renderer Feasibility & Candidate Analysis**
+**Renderer Comparison Human Visual Review**
 
 이다.
 
-결과는 별도의 analysis 문서로 남긴다.
-
-이 분석이 끝나기 전에는
-renderer candidate를 확정하거나
-comparison implementation을 시작하지 않는다.
+`spikes/renderer-comparison/outputs/comparison-2026-09-30-v2/visual-comparison/index.html`에서
+reference와 candidate PNG를 직접 확인한 뒤 native renderer, browser fallback 또는
+추가 검증 방향을 결정한다. 그 전에는 renderer winner나 production architecture를 확정하지 않는다.

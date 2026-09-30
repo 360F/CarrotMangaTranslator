@@ -1,19 +1,44 @@
-# Renderer comparison fixtures
+# Renderer comparison spike
 
-This directory contains immutable metadata and normalized final-page snapshots for comparing Skia Canvas, node-canvas, and Playwright Chromium against current Carrot output. It contains no copied library images, reference exports, renderer implementation, or candidate output.
+This isolated harness compares Skia Canvas, node-canvas, and Playwright Chromium against immutable Carrot reference-v2 output. It is not RoverCMT production renderer code.
 
-- `fixtures/manifest.json` is the entry point. Paths to Carrot library inputs are repository-relative; reference export paths are absolute because those files are external and read-only.
-- `fixtures/pages/<page-id>.json` contains only final renderer-facing page and block state normalized from the authoritative final `chapter.json`.
-- Verify every recorded SHA-256 before a comparison run. A mismatch means the fixture is no longer the same fixture.
-- The current corpus uses Carrot's implicit default CSS font stack. Every fixture is marked `UNRESOLVED_SYSTEM_FALLBACK`; do not compare renderer typography until one exact font file is pinned and a new Chromium reference is produced with that same font.
-- Candidate output belongs in a separate future directory and must never overwrite the referenced Carrot output.
+## Authoritative input
 
-See `RoverCMT/docs/analysis/RENDERER_FIXTURE_CENSUS.md` for census, selection rationale, limitations, and readiness.
-## Portable font reference revision 2
+`fixtures/manifest-v2.json` is the only comparison input contract. It binds eight final-page snapshots, render images, lossless reference PNGs, and the exact portable font asset `NotoSansCJKkr-Regular.otf` 2.004 by SHA-256.
 
-`fixtures/manifest-v2.json` is the portable benchmark revision. It preserves the v1 page snapshots and render-image hashes, registers the replaceable font asset `benchmark-default-noto-sans-cjk-kr-regular-2.004`, and points to eight lossless PNGs in `reference-v2-noto-sans-cjk-kr-2.004/`.
+`fixtures/manifest.json` remains the Windows-local v1 diagnostic baseline and is read-only. Do not regenerate or substitute v1 references. Do not rerun OCR, translation, erase, typography, or font inference.
 
-- The exact asset is `assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf` from upstream tag `Sans2.004` / commit `523d033d6cb47f4a80c58a35753646f5c3608a78`.
-- Run `generate-reference-v2.cjs` only when creating a new immutable revision; it refuses to overwrite the existing v2 directory.
-- `inspect-portable-font-v2.cjs` verifies all fixture text and unique glyphs through Chromium CDP. The committed evidence is `reference-v2-noto-sans-cjk-kr-2.004/font-verification.json`.
-- v1 remains a Windows-local Malgun Gothic diagnostic baseline. Do not rewrite v1 or substitute its references in place.
+## Run
+
+From this directory:
+
+```powershell
+npm install
+$env:PLAYWRIGHT_BROWSERS_PATH = Join-Path (Get-Location) ".playwright-browsers"
+npx playwright install chromium
+npm test
+npm run compare -- --output <new-run-name>
+```
+
+The runner refuses to overwrite an existing output directory. Candidate output is written under `outputs/<run-name>/`; fixtures and references are never output targets.
+
+Useful focused options:
+
+```powershell
+npm run compare -- --output <new-run-name> --fixture _004.jpg
+npm run compare -- --output <new-run-name> --candidate skia-canvas
+```
+
+## Output contract
+
+Each successful fixture/backend produces a PNG, duration, dimensions, SHA-256, observed memory, layout evidence, runtime information, and font evidence. Candidate failure is fixture-local and does not stop other candidates.
+
+`run.json` contains the complete run. `visual-comparison/index.html` shows reference/candidate images and amplified diagnostic diffs. Pixel difference is never a pass/fail or winner criterion.
+
+The checked run described in `docs/analysis/RENDERER_COMPARISON_SPIKE.md` is `outputs/comparison-2026-09-30-v2/`.
+
+## Benchmark-only production reuse
+
+The native adapters share a bundle of Carrot's wrapping and bubble-slot algorithms while injecting backend-specific text metrics. Playwright loads the compiled production PageArtwork page-export runtime. Both are explicitly benchmark-only; RoverCMT production runtime does not import parent Carrot source.
+
+See the analysis report for exact versions, environment, timing, memory limitations, font loading, fixture differences, and remaining unknowns.
