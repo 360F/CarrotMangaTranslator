@@ -25,6 +25,7 @@ GUI 없이 Linux에서 독립 실행되는 Core로 옮기고, 이후 처리 시�
 | M1 현재 작업 목록 | [M1_LINUX_PORT/CURRENT.md](M1_LINUX_PORT/CURRENT.md) (끝에 "Suggested next step" 포함) |
 | M2–M5 | 정의와 future scope만 있다. 아직 active가 아니다 |
 | RoverCMT production code | 아직 없다. 지금까지는 분석(`docs/analysis/`)과 renderer spike(`spikes/renderer-comparison/`)만 있다 |
+| 확정된 주요 결정 | 2026-10-01: M1 호환 = Windows Carrot에서 output open/use(interoperability), 기존 Translation ↔ Erase 병렬 경로는 M1에서 이식, M1 renderer = Skia Canvas primary / Playwright Chromium fallback. 상세: [M1 CURRENT](M1_LINUX_PORT/CURRENT.md) 상단 표 |
 | 마지막 구조 갱신 | 2026-10-01 milestone 체계 도입 |
 
 ## 3. Milestones

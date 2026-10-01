@@ -17,6 +17,7 @@
 
 - 모든 commit마다 자동으로 돌리는 benchmark가 **아니다.** 사용자가 benchmark/test 실행을 요구할 때 실행한다.
 - 개발 중 unit/smoke/regression test는 코딩 에이전트가 자유롭게 만들 수 있다. 이들은 M2의 장기 기준 셋이 아니다.
+  - 예: M1 renderer의 Skia font capability 확인용 최소 fixture/smoke([M1-RENDER-001](../M1_LINUX_PORT/CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback))는 "Skia를 써도 되는가"를 확인하는 M1 작업이다. 사용자가 검토·승인하는 장기 Golden Sample과 benchmark는 M2다.
 - 장기 기준 Golden Sample과 benchmark contract는 **사용자가 승인**한다.
 - 승인된 base version은 임의로 수정하지 않는다. 변경이 필요하면 **새 version**을 만든다.
 - 사용자가 최종 contract로 확정하지 않은 세부사항(반복 횟수, 자동 품질 판정 등)은 IDEAS에 두고 CURRENT로 임의 승격하지 않는다.

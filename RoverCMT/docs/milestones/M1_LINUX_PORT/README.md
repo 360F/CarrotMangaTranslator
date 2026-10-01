@@ -23,18 +23,35 @@
 - 동작을 바꿔야 하는 열린 결정(analysis의 "Open Decisions")은 사용자에게 묻는다. 묻기 전 기본값은 "Carrot 현재 동작 보존"을 제안할 수 있지만 확정하지 않는다.
 - 이식 방식은 [MIGRATION_PRINCIPLES.md](../../MIGRATION_PRINCIPLES.md)를 따른다(parent source 직접 import 금지, 단계적 이식, 이해하지 못한 코드 임의 제거 금지).
 
-## 알려진 문서 간 긴장 (사용자 확인 필요)
+## Compatibility의 의미 (2026-10-01 확정)
 
-- [PROJECT_VISION.md](../../PROJECT_VISION.md) §5와 [AGENTS.md](../../../AGENTS.md)는 "Carrot과의 동작·기능·내부 구조 호환성은 목표가 아니다", "compatibility 포기"를 허용한다.
-- 반면 M1 요구사항은 "기존 Windows/Electron 결과와 같은 프로젝트에서 공유/호환 가능한 수준"을 요구한다.
-- 이 차이는 [M1-COMPAT-001](CURRENT.md#m1-compat-001--windowselectron-결과프로젝트-호환)에서 **호환 수준**을 정할 때 해결한다. 그 전까지 milestone 요구사항(더 최근의 사용자 결정)을 M1 범위로 취급하되, vision 문서는 수정하지 않았다.
+M1이 요구하는 "Windows Carrot과의 호환"은 **output interoperability**다.
+
+> RoverCMT가 생성한 프로젝트/결과물을 기존 Windows Carrot에서 열었을 때 정상적으로 불러오고 사용할 수 있으면 된다.
+
+요구하지 않는 것: 같은 내부 구현, 같은 runtime, 같은 renderer, byte-identical project representation, Electron과 pixel-identical 최종 raster.
+
+기존 원칙과의 관계:
+
+| 문서 | 원칙 | M1 compatibility와의 관계 |
+|---|---|---|
+| [PROJECT_VISION §2](../../PROJECT_VISION.md#2-carrotmangatranslator와의-관계), [§5](../../PROJECT_VISION.md#5-의도적인-trade-off) | Carrot의 모든 기능·내부 구조·workflow 유지는 목표가 아니다. 기존 workflow와 다른 결과, compatibility 포기를 받아들일 수 있다 | 충돌하지 않는다. M1은 구현·동작의 동일성이 아니라 **Carrot이 결과를 열 수 있는지**만 요구한다 |
+| [MIGRATION_PRINCIPLES §5 Behavior Compatibility](../../MIGRATION_PRINCIPLES.md#5-behavior-compatibility) | state model, file layout, persistence 정책 등은 바뀔 수 있다 | Rover 내부 저장 방식은 달라도 된다. Carrot이 열 수 있는 형태로 내보내면 된다 |
+| [AGENTS.md](../../../AGENTS.md) | 동작·기능·내부 구조 호환성은 목표가 아니다 | 같다. interoperability는 구현 호환이 아니라 데이터 교환 요구사항이다 |
+
+구체적인 item과 검증은 [M1-COMPAT-001](CURRENT.md#m1-compat-001--windows-carrot과의-output-interoperability)에 있다.
+
+## 2026-10-01 확정된 범위 결정
+
+- **Translation ↔ Erase 병렬 경로:** Windows Carrot에 이미 있는 기능이므로 M1에서 이식한다([M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식)). M3는 이를 출발점으로 더 넓은 pipelining을 검토한다.
+- **Renderer:** Skia Canvas primary, Playwright Chromium fallback/reference([M1-RENDER-001](CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback)).
 
 ## 범위 밖 (M1에서 하지 않음 — REJECTED가 아님)
 
-- pipeline 병렬화 → [M3](../M3_PIPELINING/README.md)
+- 기존 Carrot에 없던 새 pipelining/concurrency(page N/N+1 overlap, 추가 stage overlap 등) → [M3](../M3_PIPELINING/README.md). 기존 Translation ↔ Erase 병렬 경로는 M1 범위다.
 - stage별 속도 최적화 → [M4](../M4_OPTIMIZATION/README.md)
 - multi-file queue 등 새 기능 → [M5](../M5_FEATURES/README.md)
-- Carrot의 editor, manual review, PSD export, Codex 연동 등 초기 Core에서 제외 가능한 항목은 [INITIAL_MIGRATION_ANALYSIS §7](../../analysis/INITIAL_MIGRATION_ANALYSIS.md#7-초기-rovercmt에서-제외-가능한-항목)과 [CORE §16](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#16-what-not-to-migrate-초기)에 근거가 있다. 이를 제외할지는 M1-COMPAT-001의 호환 수준 결정과 함께 확인한다.
+- Carrot의 editor, manual review, PSD export, Codex 연동 등 초기 Core에서 제외 가능한 항목은 [INITIAL_MIGRATION_ANALYSIS §7](../../analysis/INITIAL_MIGRATION_ANALYSIS.md#7-초기-rovercmt에서-제외-가능한-항목)과 [CORE §16](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#16-what-not-to-migrate-초기)에 근거가 있다. 이를 제외할지는 사용자가 확인한다. M1-COMPAT-001 정의상 기준은 "RoverCMT 출력을 Windows Carrot에서 열어 사용할 수 있는가"다.
 
 ## 주요 근거 문서
 

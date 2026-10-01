@@ -3,6 +3,8 @@
 > **Current implementation planning and milestone tracking: [docs/milestones/README.md](milestones/README.md)**
 >
 > 이 문서는 milestone 도입 이전의 분석·검증 계획 기록이다. 분석 결과는 [`docs/analysis/`](analysis/)에 있고, 앞으로의 작업 계획과 상태는 milestone 문서에서 관리한다.
+>
+> 아래 §8의 "Renderer Comparison Human Visual Review"와 renderer 방향 결정은 2026-10-01 완료됐다(Skia Canvas primary, Playwright Chromium fallback). 현재 상태: [M1-RENDER-001](milestones/M1_LINUX_PORT/CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback).
 
 ## 현재 상태
 

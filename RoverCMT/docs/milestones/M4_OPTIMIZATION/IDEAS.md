@@ -262,22 +262,22 @@
 - **Related analysis:**
   - [INPAINTING §7 Long-run / Page-count Scaling Investigation](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#7-long-run--page-count-scaling-investigation) — 저장 I/O 분석.
   - [CORE §14 Candidate Persistence Strategies](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#14-candidate-persistence-strategies) — A/B/C 비교.
-- **Related items:** [M1-COMPAT-001](../M1_LINUX_PORT/CURRENT.md#m1-compat-001--windowselectron-결과프로젝트-호환)(Carrot 형식 호환을 요구하면 이 아이디어의 범위가 제한된다), [M1-PERSIST-001](../M1_LINUX_PORT/CURRENT.md#m1-persist-001--persistence와-data-contract-parity), [M3-STATE-001](../M3_PIPELINING/IDEAS.md#m3-state-001--공유-mutable-state-분리).
-- **Dependencies:** M1-COMPAT-001 결정, M2 benchmark(긴 sample).
+- **Related items:** [M1-COMPAT-001](../M1_LINUX_PORT/CURRENT.md#m1-compat-001--windows-carrot과의-output-interoperability)(정의 확정: 출력은 Windows Carrot에서 열 수 있어야 한다. 내부 저장 방식은 바꿀 수 있지만 Carrot이 여는 형식은 유지해야 한다), [M1-PERSIST-001](../M1_LINUX_PORT/CURRENT.md#m1-persist-001--persistence와-data-contract-parity), [M3-STATE-001](../M3_PIPELINING/IDEAS.md#m3-state-001--공유-mutable-state-분리).
+- **Dependencies:** M1-COMPAT-001(정의 확정, 2026-10-01), M2 benchmark(긴 sample).
 - **Decision / validation needed:** 저장 시간 계측(현재 로그로 원인 구분 불가). M1에서 persistence 전략을 정하면 이 item은 일부 불필요해질 수 있다.
-- **History:** 2026-10-01 생성.
+- **History:** 2026-10-01 생성. 2026-10-01 M1-COMPAT-001 정의 확정(Windows Carrot에서 open/use)에 맞춰 Related items·Dependencies 갱신.
 
 ## Renderer
 
 ### M4-RENDER-001 — 선택된 Linux renderer backend의 성능 최적화
 
 - **Status:** IDEA
-- **Summary:** M1에서 선택한 renderer backend의 cold start, page당 render 시간, memory를 줄인다. 기존 advanced rendering capability를 성급하게 삭제하지 않는다.
+- **Summary:** M1에서 구현한 renderer backend(결정: Skia Canvas primary, 필요 시 Playwright Chromium fallback)의 cold start, page당 render 시간, memory를 줄인다. 기존 advanced rendering capability를 성급하게 삭제하지 않는다.
 - **Why it matters:** v3 1회 관측에서 Skia Canvas eight-page total 4223.59 ms, Playwright Chromium 6628.41 ms였고, Playwright browser process tree는 333.3–446.1 MiB였다.
 - **Related analysis:**
   - [RENDERER_CONTRACT_ALIGNED_RECOMPARISON §13 Performance](../../analysis/RENDERER_CONTRACT_ALIGNED_RECOMPARISON.md#13-performance) — 성능·memory 관측.
   - [CORE §16 What NOT to Migrate](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#16-what-not-to-migrate-초기) — advanced renderer field는 현재 미사용이지만 schema를 optional로 남기라는 권장.
-- **Related items:** [M1-RENDER-001](../M1_LINUX_PORT/CURRENT.md#m1-render-001--electron-free-linux-renderer-선택과-구현)(Skia vs Chromium 선택은 M1이 primary).
-- **Dependencies:** M1-RENDER-001 결정.
+- **Related items:** [M1-RENDER-001](../M1_LINUX_PORT/CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback)(M1 결정: Skia Canvas primary, Playwright Chromium fallback/reference).
+- **Dependencies:** M1-RENDER-001의 Skia 구현(또는 fallback 시 Playwright).
 - **Decision / validation needed:** steady-state workload와 memory 측정 방법(RECOMPARISON §17 #6).
-- **History:** 2026-10-01 생성. 사용자 초안의 "Skia Canvas vs Chromium 성능/복잡도 검토"는 M1-RENDER-001의 backend 선택 과정으로 옮겼다.
+- **History:** 2026-10-01 생성. 사용자 초안의 "Skia Canvas vs Chromium 성능/복잡도 검토"는 M1-RENDER-001의 backend 선택 과정으로 옮겼다. 2026-10-01 M1 renderer 결정(Skia primary)에 맞춰 Summary·Dependencies 갱신.

@@ -4,6 +4,8 @@
 >
 > 2026-10-01부터 계획·active milestone·다음 작업·아이디어·폐기 결정의 source of truth는 milestone 문서다.
 > 이 문서는 milestone 도입 이전 분석 단계(Phase 0)의 상태 기록으로 보존한다. 아래 "바로 다음 작업"과 "이후 순서"는 그 시점의 기록이며, 최신 다음 작업은 [M1 CURRENT](milestones/M1_LINUX_PORT/CURRENT.md#suggested-next-step)에서 확인한다.
+>
+> 아래의 "human visual review 대기", "Renderer winner 미결정" 서술은 2026-10-01 사용자 결정으로 해소됐다(Skia Canvas primary, Playwright Chromium fallback). 현재 상태: [M1-RENDER-001](milestones/M1_LINUX_PORT/CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback).
 
 ## 현재 단계
 
