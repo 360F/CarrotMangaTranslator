@@ -22,7 +22,7 @@ M1과 기능/품질 차이를 가능한 한 만들지 않으면서, pipeline 병
 
 ## 출발점: 기존 Translation ↔ Erase 병렬 경로 (2026-10-01 결정)
 
-- Carrot에는 이미 병렬 경로가 있다: `experimentalParallelAcceleration`이 켜지고 조건이 맞으면 translation lane 전체와 erase lane 전체를 `Promise.allSettled`로 겹친다. 각 lane은 page 순차다. 근거: [INPAINTING §8 Experimental Translation / Erase Parallel Path](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#8-experimental-translation--erase-parallel-path).
+- Carrot에는 이미 병렬 경로가 있다(upstream이 아닌 reference fork 기능, 커밋 `c5cef4cf`): `experimentalParallelAcceleration`이 켜지고 조건이 맞으면 translation lane 전체와 erase lane 전체를 `Promise.allSettled`로 겹친다. 각 lane은 page 순차다. 근거: [INPAINTING §8 Experimental Translation / Erase Parallel Path](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#8-experimental-translation--erase-parallel-path).
 - 이 경로는 **기존 기능이므로 M1에서 이식한다**([M1-CORE-002](../M1_LINUX_PORT/CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식)). M3에서 처음 구현하는 기능이 아니다.
 - M3는 M1에서 이식된 이 경로를 출발점이자 baseline으로 삼고, 그보다 넓은 pipelining/concurrency를 검토한다.
   - page N과 page N+1 overlap, page-level / stage-level concurrency → [M3-SCHED-002](IDEAS.md#m3-sched-002--page-level--stage-level-concurrency-전략)

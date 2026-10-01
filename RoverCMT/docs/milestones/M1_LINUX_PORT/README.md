@@ -45,7 +45,7 @@ M1이 요구하는 "Windows Carrot과의 호환"은 **output interoperability**�
 
 ## 2026-10-01 확정된 범위 결정
 
-- **Translation ↔ Erase 병렬 경로:** Windows Carrot에 이미 있는 기능이므로 M1에서 이식한다([M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식)). M3는 이를 출발점으로 더 넓은 pipelining을 검토한다.
+- **Translation ↔ Erase 병렬 경로:** reference fork(`c5cef4cf`)에 이미 있는 기능이므로 M1에서 이식한다([M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식)). M3는 이를 출발점으로 더 넓은 pipelining을 검토한다.
 - **Renderer:** Skia Canvas primary, Playwright Chromium fallback/reference([M1-RENDER-001](CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback)).
 
 ## 범위 밖 (M1에서 하지 않음 — REJECTED가 아님)

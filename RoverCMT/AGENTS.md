@@ -17,13 +17,60 @@
 1. `docs/PROJECT_VISION.md`
 2. `docs/MIGRATION_PRINCIPLES.md`
 3. `docs/milestones/README.md` — 현재 계획과 active milestone
-4. `docs/CURRENT_STATUS.md` — milestone 도입 이전 분석 단계(Phase 0) 기록
-
-기존 CarrotMangaTranslator를 분석하는 작업이라면 추가로 다음 문서를 읽는다.
-
-5. `docs/ANALYSIS_PLAN.md`
 
 관련 분석 문서(`docs/analysis/`)는 milestone item의 Related analysis 링크를 따라 작업 범위에 맞게 읽는다.
+
+Phase 0 역사 기록(필요할 때만 읽는다. 앞으로의 계획은 여기서 관리하지 않는다):
+
+- `docs/CURRENT_STATUS.md` — milestone 도입 이전 분석 단계의 상태 기록
+- `docs/ANALYSIS_PLAN.md` — 같은 시기의 분석 계획. milestone item이 특정 section을 링크할 때 그 section만 읽는다
+
+---
+
+## Reference implementation
+
+RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"은 upstream이 아니라 **이 저장소 루트의 fork 소스(`fd461737`)와 그것을 빌드한 Windows 앱**을 뜻한다. [M1-COMPAT-001](docs/milestones/M1_LINUX_PORT/CURRENT.md#m1-compat-001--windows-carrot과의-output-interoperability)의 interop 검증 대상도 이 fork 빌드다. upstream 저장소를 기준으로 동작을 판단하지 않는다.
+
+- upstream: ucx0204/CarrotMangaTranslator v2.8.2 (`d20695df`)
+- reference: upstream v2.8.2 + 사용자 fork 커밋 11개(`a4c7e2ab` ~ `fd461737`). 루트 `src/`는 `fd461737` 이후 바뀌지 않았고, 모든 analysis 문서의 `src/...` 경로와 줄 번호는 `fd461737` 기준이다.
+- fork 전용 기능:
+
+  | 기능 | 커밋 |
+  |---|---|
+  | Translation ↔ Erase 병렬 경로 | `c5cef4cf` |
+  | Hayai OCR `ocrSubdivision`/`ocrHealth` 복구 | `cd7a336a` |
+  | batched Hayai OCR 복원 | `e8efcecf` |
+  | page workflow performance profiling | `a4c7e2ab` |
+  | 기본 입출력 디렉터리 | `15eae20f` |
+  | Rover Output: 번역 JSON/CSV export와 출력 경로 분리 | `314a5b91`, `a39aea0d`, `fd461737` |
+  | matching model id 후보 위치 확인 | `62ef80b0` |
+
+## 실행 환경
+
+- 주 개발·검증 환경은 **Rover PC**다: Windows 11 + WSL2 Ubuntu 26.04.1 LTS, NVIDIA RTX 5090(약 32GB), WSL/Docker GPU 동작 확인, `nvidia-smi` CUDA 13.4 표시. M1 최종 목표 구성은 이 머신의 WSL2다.
+- 모든 에이전트가 이 머신에서 실행된다고 가정하지 않는다. GPU가 없는 세션도 있다.
+- GPU가 필요한 검증(FLUX, Hayai CUDA 등)은 실행 시 GPU/runtime 가용성을 먼저 확인한다. 불가능하면 완료 처리하지 말고 Step Result에 "Rover PC에서 추가 검증 필요"로 남긴다.
+- 번역 endpoint는 환경마다 다를 수 있다(외부 번역기, 내장/로컬 서버 등). 확정된 방향은 "OpenAI-compatible endpoint를 설정으로 받는다"까지다. URL, model, API key, 환경변수 이름, live 호출 허용 여부는 M1 Step 4에서 정한다. credential은 repo에 넣지 않는다.
+- analysis의 run evidence는 예전 구성(로컬 RTX 5070 Ti에서 OCR/FLUX, Rover 5090에서 llama.cpp Gemma 번역 서버)에서 나왔다. 수치를 인용할 때 이 환경 차이를 감안한다.
+
+## 로컬 전용 데이터
+
+- **repo에 포함된 검증 데이터:** `spikes/renderer-comparison/`의 fixture(v1/v2/v3), Electron reference PNG, 고정 폰트뿐이다. spike `outputs/`(visual-comparison HTML 등)는 git 미추적 로컬 전용이다.
+- **로컬 Carrot data root(gitignore, repo 밖):** M1 Step 2~6의 비교 기준(`hayai-regions.json`, `ocr-bbox-hints.json`, 번역 `result.json`, `library/`, `page-workflows/`, `runs/`, `models/`, `ocr-runtime/`, `hf-cache/`)은 여기에 있다. analysis가 말하는 "두 data root"는 개발용 repo data root와 설치 앱 data root다.
+- 현재 위치는 Windows 로컬이다. 정확한 경로는 `사용자 확인 필요`(예전 노트의 개발 repo 경로 `D:\01_code\CarrotMangaTranslator`는 현재 값으로 확인되지 않았다). M1 진행 중 WSL에서 `/mnt/...`로 접근하도록 옮길 예정이다.
+- 환경변수 이름이나 config key를 미리 정하지 않는다. 데이터가 필요한 Step에서 위치를 사용자에게 확인한다. 이 데이터는 사용자 데이터이므로 정리·삭제 대상이 아니다.
+
+## Git 흐름
+
+- 개인 repo다. PR은 필수가 아니고 에이전트가 `main`에 직접 commit/push한다.
+- 흐름: 현재 HEAD/remote 확인 → fetch/pull → working tree clean 확인 → 작업 → validation → diff 검토 → commit → push → local/remote SHA 일치 확인.
+- 큰 실험이나 위험한 변경은 필요하면 별도 branch를 쓴다.
+- force push와 history rewrite는 사용자가 명시적으로 요청할 때만 한다.
+- remote: `origin` = https://github.com/360F/RoverCMT. `carrot-original`(ucx0204 원본)은 로컬 설정이라 새 clone에는 없다. 원본 정보는 루트 [README](../README.md)를 따른다.
+
+## CI / 테스트 정책
+
+자동 CI는 꺼져 있다(루트 `.github/workflows/check.yml`은 원본 Carrot 앱 검사이며 `workflow_dispatch` 전용). 테스트는 당분간 수동으로 실행하고, 에이전트를 통한 자동 실행은 M2 이후 다시 정한다. M2 Golden benchmark는 commit/push CI가 아니며 일반 unit/smoke/regression test와 구분한다. Rover 전용 build/test/lint 명령은 M1 Step 1에서 정해 이 섹션에 기록한다.
 
 ---
 
@@ -63,7 +110,7 @@ CarrotMangaTranslator와의 동작 호환성, 기능 호환성, 내부 구조 �
 - 기존 코드를 무조건 다시 작성하지도 않는다.
 - 검증된 핵심 로직은 가능한 한 재사용한다.
 - 불필요한 abstraction과 compatibility layer는 가져오지 않는다.
-- parent CarrotMangaTranslator source를 RoverCMT runtime dependency로 직접 import하지 않는다.
+- parent CarrotMangaTranslator source를 RoverCMT runtime dependency로 직접 import하지 않는다. 이제 parent는 같은 repo의 루트 소스다. RoverCMT 코드는 루트 `src/`를 import하거나 루트 `package.json` 의존성에 기대지 않는다.
 - 이식할 코드는 RoverCMT 내부의 독립적인 코드가 되어야 한다.
 - 기능 추가 전 현재 구조와 실제 call path를 확인한다.
 - 추측으로 기존 동작을 재구현하지 않는다.

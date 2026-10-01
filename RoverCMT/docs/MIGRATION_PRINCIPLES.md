@@ -46,8 +46,11 @@ import { something } from "../../src/...";
 Migration 중 기존 코드를 참고하거나 복사하여 이식하는 것은 허용하지만,
 이식된 코드는 RoverCMT 내부에서 독립적으로 build/test/run 가능해야 한다.
 
-최종적으로 parent CarrotMangaTranslator를 삭제해도
-RoverCMT가 정상적으로 동작하는 상태를 목표로 한다.
+현재 parent는 같은 repo 루트의 읽기 전용 reference source(`src/`, 루트 `package.json` 등)다.
+RoverCMT 코드는 루트 `src/`를 import하거나 루트 `package.json` 의존성에 기대지 않는다.
+
+최종적으로 루트 reference source를 제거해도
+RoverCMT가 정상적으로 동작하는 상태를 목표로 한다. 제거 시점은 사용자가 정한다([AGENTS.md](../../AGENTS.md#rovercmt-작업)).
 
 ---
 

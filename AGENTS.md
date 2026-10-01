@@ -2,12 +2,18 @@
 
 ## RoverCMT 작업
 
-이 저장소는 CarrotMangaTranslator에서 파생된 독립(standalone) RoverCMT 개발 저장소다. 개발 branch는 `main` 하나이고, 쓰기 가능한 remote는 `origin`(360F/CarrotMangaTranslator)이다. 원본 저장소는 참고용 remote `carrot-original`로만 둔다.
+이 저장소는 CarrotMangaTranslator에서 파생된 독립(standalone) RoverCMT 개발 저장소다. 개발 branch는 `main` 하나이고, 쓰기 가능한 remote는 `origin`(https://github.com/360F/RoverCMT)이다. 원본(ucx0204/CarrotMangaTranslator)을 가리키는 `carrot-original`은 일부 로컬 clone에만 있는 설정이며 새 clone에는 없다. 원본 정보는 [README](README.md)를 따른다.
+
+저장소 구조와 루트 소스 정책:
+
+- 루트의 Carrot 소스(`src/`, `tests/`, `package.json` 등)는 이식 기간의 **읽기 전용 reference**다. 기준 커밋은 fork `fd461737`(upstream v2.8.2 `d20695df` + fork 커밋)이며, 정의와 fork 전용 기능은 [`RoverCMT/AGENTS.md`](RoverCMT/AGENTS.md#reference-implementation)에 있다. RoverCMT 작업 중에는 수정하지 않는다.
+- RoverCMT 코드와 문서는 `RoverCMT/` 아래에만 둔다.
+- 최종적으로 repo에는 RoverCMT만 남지만, 루트 Carrot 소스는 **사용자가 명시적으로 제거를 결정할 때만** 제거한다. milestone 완료는 자동 제거 조건이 아니다. 제거 전에는 baseline 커밋에 태그를 남겨 analysis의 `src/...` 참조를 추적할 수 있게 한다(태그 이름은 그때 정한다).
 
 `RoverCMT/` 아래 작업(Linux 이식, 분석, milestone 계획)은 먼저 [`RoverCMT/AGENTS.md`](RoverCMT/AGENTS.md)를 읽고,
 현재 계획과 다음 작업은 [`RoverCMT/docs/milestones/README.md`](RoverCMT/docs/milestones/README.md)에서 확인한다.
 
-아래의 Carrot 원본 source 관련 규칙(데이터 보호, 코드·UI, 폰트 맞춤)은 reference source를 다룰 때 계속 적용한다.
+> 아래의 Carrot 앱 규칙(사용자 데이터 보호, 코드·UI, UI QA, 폰트 맞춤, 자산·앱 릴리스)은 reference source를 수정하지 않는 한 RoverCMT 작업에는 적용되지 않는다. 단, 데이터 보호 원칙은 로컬 Carrot data root를 다룰 때 계속 적용한다.
 
 ## 사용자 데이터 보호
 

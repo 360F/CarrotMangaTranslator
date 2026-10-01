@@ -3,13 +3,15 @@
 [M1 README](README.md) · [Planning index](../README.md)
 
 사용자가 M1에서 하기로 결정한 작업이다(2026-10-01 milestone 정의 기준). 각 item은 근거 analysis로 연결된다.
-진행 상태는 `Progress`로 표시한다. RoverCMT production code는 아직 없으므로 모두 `not started`이며, renderer만 분석·spike가 진행됐다.
+진행 상태는 `Progress`로 표시하며, 현재 값은 아래 Item 목록 표와 각 item의 `Progress` 필드를 따른다.
+"기존 Carrot"/"Windows Carrot"은 reference fork(`fd461737`)와 그 Windows 빌드를 뜻한다([RoverCMT/AGENTS.md](../../../AGENTS.md#reference-implementation)).
 
 **2026-10-01 사용자 확정 결정** (자세한 내용은 각 item):
 
 | 결정 | 내용 | 기록 위치 |
 |---|---|---|
 | M1 호환의 의미 | RoverCMT output을 기존 Windows Carrot에서 정상적으로 open/use할 수 있으면 된다(interoperability). byte/pixel identical, 같은 구현·runtime·renderer는 요구하지 않는다 | [M1-COMPAT-001](#m1-compat-001--windows-carrot과의-output-interoperability) |
+| Rover Output | fork 기능(번역 JSON/CSV export, 출력 경로 분리, 기본 입출력 디렉터리)이지만 **M1에서 기존 기능으로 이식**한다 | [M1-PERSIST-002](#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리) |
 | Translation ↔ Erase 병렬 경로 | 기존 Carrot 기능이므로 **M1에서 이식**한다. M3는 이를 출발점으로 추가 pipelining을 검토한다 | [M1-CORE-002](#m1-core-002--기존-translation--erase-병렬-실행-경로-이식) |
 | M1 renderer | **Skia Canvas primary, Playwright Chromium fallback/reference** | [M1-RENDER-001](#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback) |
 
@@ -25,6 +27,7 @@ Item 목록:
 | [M1-OBS-001](#m1-obs-001--stage-진행상황과-소요시간-실시간-표시) | Stage 진행상황과 소요시간 실시간 표시 | not started |
 | [M1-COMPAT-001](#m1-compat-001--windows-carrot과의-output-interoperability) | Windows Carrot과의 output interoperability | not started (정의 확정) |
 | [M1-PERSIST-001](#m1-persist-001--persistence와-data-contract-parity) | Persistence와 data contract parity | not started |
+| [M1-PERSIST-002](#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리) | Rover Output 이식(번역 JSON/CSV export, 출력 경로, 기본 입출력 디렉터리) | not started |
 | [M1-RUNTIME-001](#m1-runtime-001--linux-runtimemodel-의존성-교체적응) | Linux runtime/model 의존성 교체·적응 | not started |
 | [M1-DETECT-001](#m1-detect-001--koharu-layout-onnx-linux-runtime) | Koharu layout ONNX Linux runtime | not started |
 | [M1-OCR-001](#m1-ocr-001--hayaiocr-linux-runtime) | HayaiOCR Linux runtime | not started |
@@ -54,7 +57,7 @@ Item 목록:
 
 - **Status:** CURRENT
 - **Progress:** not started
-- **Summary:** Windows Carrot에 이미 있는 Translation ↔ Erase overlap 경로(`experimentalParallelAcceleration`)를 기존 기능의 일부로 보고 Linux port에 포함한다. 가능한 한 그대로 이식하고, Linux runtime/resource 차이로 같은 구현이 불가능하면 **기능적 동등성을 우선**하고 그 이유를 이 item의 History에 기록한다.
+- **Summary:** reference fork에 있는 Translation ↔ Erase overlap 경로(`experimentalParallelAcceleration`, fork 커밋 `c5cef4cf`. upstream v2.8.2에는 없다)를 기존 기능의 일부로 보고 Linux port에 포함한다. 가능한 한 그대로 이식하고, Linux runtime/resource 차이로 같은 구현이 불가능하면 **기능적 동등성을 우선**하고 그 이유를 이 item의 History에 기록한다.
 - **Why it matters:** M1의 목표는 기존 기능의 Linux 재현이다. 이 경로는 M3에서 처음 만드는 기능이 아니다. 사용자 full run 15개 중 9개가 이 경로로 실행됐다.
 - **Existing behavior (analysis 인용):**
   - 활성 조건: `modelProvider==="openai-api"`, `api.experimentalParallelAcceleration===true`, `erasureEngine==="local"`, plan에 translate와 erase가 모두 있고 `format-rules`가 없음. 조건이 맞지 않으면 순차 실행.
@@ -69,8 +72,8 @@ Item 목록:
   - [CORE §17 Open Decisions #3](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#17-open-decisions-for-user) — erase와 번역의 관계(번역 누락 block 처리) 선택지.
 - **Related items:** M1-CORE-001, M1-TRANS-001, M1-INPAINT-001, [M3-SCHED-001](../M3_PIPELINING/IDEAS.md#m3-sched-001--기존-translation--erase-병렬을-넘어선-추가-stage-overlap)(이 경로를 넘어선 추가 pipelining).
 - **Dependencies:** M1-TRANS-001, M1-INPAINT-001, M1-DETECT-001(bubble prepass).
-- **Decision / validation needed:** Linux에서 같은 구현이 어려운 부분이 생기면 기능적 동등성 판단과 이유 기록. 번역 누락 block의 erase 처리(CORE §17 #3)는 기존 동작 보존이 기본이며, 변경하려면 별도 사용자 결정이 필요하다.
-- **History:** 2026-10-01 생성. 사용자 결정: 기존 Translation ↔ Erase 병렬 경로는 기존 기능이므로 M1에서 이식하고, M3는 이를 출발점으로 추가 pipelining을 검토한다. 이전에 M3-SCHED-001의 "M1 이식 vs M3 재설계" 결정 항목이었던 부분이다.
+- **Decision / validation needed:** Linux에서 같은 구현이 어려운 부분이 생기면 기능적 동등성 판단과 이유 기록. 번역 누락 block의 erase 처리(CORE §17 #3)는 기존 동작 보존이 기본이며, 변경하려면 별도 사용자 결정이 필요하다. **장치 전제(미결정):** 이 경로는 번역 backend가 별도 장치에서 실행되는 상황을 전제로 만들어졌다. M1 대상 환경(Rover PC 5090 WSL2, [실행 환경](../../../AGENTS.md#실행-환경))에서는 번역과 FLUX/OCR이 같은 GPU를 쓸 수도 있다. 이 차이가 동작·자원에 주는 영향을 Step 8에서 검증 항목으로 확인한다. 지금 결정하지 않는다.
+- **History:** 2026-10-01 생성. 사용자 결정: 기존 Translation ↔ Erase 병렬 경로는 기존 기능이므로 M1에서 이식하고, M3는 이를 출발점으로 추가 pipelining을 검토한다. 이전에 M3-SCHED-001의 "M1 이식 vs M3 재설계" 결정 항목이었던 부분이다. 2026-10-01 reference fork 기능(`c5cef4cf`)임을 명시하고 장치 전제(별도 장치 vs 같은 GPU 공유)를 검증 항목으로 추가(user decision).
 
 ### M1-CONFIG-001 — Config/settings 파일 기반 설정
 
@@ -171,6 +174,23 @@ Item 목록:
 - **Decision / validation needed:** CORE §17 #5 persistence 전략. 요청별 work-context snapshot을 artifact로 남길지(TR-LLM §16.6).
 - **History:** 2026-10-01 생성. 2026-10-01 M1-COMPAT-001 정의 확정에 맞춰 의존 설명 갱신.
 
+### M1-PERSIST-002 — Rover Output 이식(번역 JSON/CSV export, 출력 경로, 기본 입출력 디렉터리)
+
+- **Status:** CURRENT
+- **Progress:** not started
+- **Summary:** reference fork의 Rover Output 기능을 Linux Core로 이식한다: 번역 결과의 JSON/CSV export(`translation.csv` 등), 출력 경로 분리(Rover output root), 기본 입력/출력 디렉터리. Carrot GUI settings/dialog 부분은 이식하지 않고 [M1-CONFIG-001](#m1-config-001--configsettings-파일-기반-설정)·[M1-CONFIG-002](#m1-config-002--inputoutput-경로-config화)의 config/CLI 인자로 받는다.
+- **Why it matters:** 사용자 결정으로 fork 기능이지만 M1에서 이식할 기존 기능으로 취급한다. upstream v2.8.2에는 없는 기능이므로 upstream 기준으로 판단하면 빠진다.
+- **Existing behavior (source 근거, `fd461737` 기준):**
+  - fork 커밋: `15eae20f`(기본 입출력 디렉터리), `314a5b91`(출력 경로와 번역 JSON export), `a39aea0d`(export·workflow 동작 정리), `fd461737`(export runtime state `rover-translation-exports.json` gitignore).
+  - source: `src/main/roverDefaultDirectories.ts`(`resolveRoverOutputRoot`, `resolveTranslationJsonExportEnabled` 등), `src/main/linkedWorkspace/linkedWorkspaceTranslationJson.ts`(`buildTranslationJson`, `serializeTranslationCsv`, `createTranslationJsonExporter`), `src/main/linkedWorkspace/linkedWorkspaceFiles.ts`(`writeTranslationCsvFile` 등), `src/main/linkedWorkspace/linkedWorkspaceRuntime.ts`, `src/main/linkedWorkspace/linkedWorkspacePaths.ts`, `src/main/settings/appSettingsDefaults.ts`, `src/main/settings/appSettingsUiNormalize.ts`.
+  - tests: `tests/linkedWorkspaceTranslationJson.test.ts`, `tests/translationJsonWorkflowAcceptance.test.ts`.
+- **Related analysis:**
+  - `Evidence: not yet analyzed`
+- **Related items:** M1-PERSIST-001, M1-CONFIG-002, M1-TRANS-001, M1-COMPAT-001.
+- **Dependencies:** M1-TRANS-001(번역 저장 상태에서 export가 트리거된다), M1-CONFIG-002(출력 경로).
+- **Decision / validation needed:** 구현 Step(기본안: Step 4 구현, Step 8 통합. [IMPLEMENTATION_PLAN D29](IMPLEMENTATION_PLAN.md#open-decision--validation-register)). export 트리거 시점과 파일 형식은 source trace로 확인해 기존 동작을 보존한다.
+- **History:** 2026-10-01 생성(user decision: fork 기능이지만 기존 기능으로 이식).
+
 ### M1-RUNTIME-001 — Linux runtime/model 의존성 교체·적응
 
 - **Status:** CURRENT
@@ -182,9 +202,9 @@ Item 목록:
   - [INITIAL_MIGRATION_ANALYSIS §8 현재 migration risk](../../analysis/INITIAL_MIGRATION_ANALYSIS.md#8-현재-migration-risk) — runtime availability와 packaging risk.
   - [ANALYSIS_PLAN §5 이후 Runtime Smoke Tests](../../ANALYSIS_PLAN.md#5-이후-runtime-smoke-tests) — runtime별 최소 smoke 기준.
 - **Related items:** M1-DETECT-001, M1-OCR-001, M1-TRANS-001, M1-INPAINT-001, M1-RENDER-001.
-- **Dependencies:** Linux 실행 환경(distro, GPU/driver).
+- **Dependencies:** Linux 실행 환경(distro, GPU/driver). 주 환경: Rover PC([RoverCMT/AGENTS.md 실행 환경](../../../AGENTS.md#실행-환경)).
 - **Decision / validation needed:** 배포 형태(venv/container/system package)와 GPU 필수 여부.
-- **History:** 2026-10-01 생성.
+- **History:** 2026-10-01 생성. 2026-10-01 Dependencies에 Rover PC 실행 환경 링크 추가(user decision).
 
 ### M1-DETECT-001 — Koharu layout ONNX Linux runtime
 

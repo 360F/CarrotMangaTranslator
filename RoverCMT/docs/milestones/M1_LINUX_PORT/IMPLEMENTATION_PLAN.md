@@ -47,7 +47,7 @@
 
 사용자가 "M1 Step N 진행해" 또는 "다음 Step 진행해"라고 하면:
 
-1. `git fetch` 후 local/remote HEAD와 `git status`를 확인한다. 다른 에이전트의 미커밋 변경은 건드리지 않는다.
+1. `git fetch` 후 local/remote HEAD와 `git status`를 확인한다. 다른 에이전트의 미커밋 변경은 건드리지 않는다. GPU가 필요한 Step(FLUX, Hayai CUDA 등)은 시작 전에 GPU/runtime 가용성을 확인하고, 불가능하면 [실행 환경 규칙](../../../AGENTS.md#실행-환경)대로 완료 처리하지 않고 "Rover PC에서 추가 검증 필요"로 남긴다.
 2. 이 문서의 [Progress](#progress)에서 대상 Step을 정한다. "다음 Step"은 Status가 `DONE`이 아닌 가장 작은 번호다. 단 **Step 1이 DONE이 된 직후에는 사용자가 결과를 확인하기 전까지 Step 2를 자동으로 시작하지 않는다.**
 3. 대상 Step의 Prerequisites가 모두 충족됐는지 확인한다. 아니면 `BLOCKED`로 표시하고 이유를 보고한다.
 4. Step의 Related M1 items → [CURRENT.md](CURRENT.md)의 해당 item → Related analysis section → Source areas 순서로 읽는다. 필요한 section만 읽는다.
@@ -161,10 +161,14 @@ Status: `NOT_STARTED` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 
 - Step scope 구현 완료
 - Step Validation 완료
-- 필요한 milestone 문서 갱신(이 문서의 Result와 Progress 표, CURRENT.md의 관련 item `Progress`)
+- 필요한 milestone 문서 갱신(이 문서의 Result, Progress 표, [현재 위치](#현재-위치) 표, CURRENT.md의 관련 item `Progress`)
 - commit 완료
 - push 완료
 - Result에 commit, validation 결과, known differences 기록
+
+Step 2~6 Validation의 비교 기준 데이터(기존 run artifact, `hayai-regions.json`, `ocr-bbox-hints.json`, `result.json` 등)는 repo가 아니라 로컬 Carrot data root에 있다([RoverCMT/AGENTS.md 로컬 전용 데이터](../../../AGENTS.md#로컬-전용-데이터), 위치 확인은 D31).
+
+Step `Result`의 `Progress notes`에는 `IN_PROGRESS`나 `BLOCKED`일 때 한 일, 남은 일, 사용자 답을 기다리는 질문, 작업 branch를 짧게 적는다. `DONE`이 되면 비우거나 요약만 남긴다.
 
 **M1 validation과 M2를 혼동하지 않는다.** M1에서는 구현용 unit/smoke/regression fixture와 test를 에이전트가 만들 수 있다. 사용자가 검토·승인하는 장기 Golden Sample과 benchmark는 [M2](../M2_TEST_SET/README.md)다.
 
@@ -202,6 +206,9 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 | D26 | 대표 실제 page로 최소 E2E | M1-CORE-001 | 8 | 해결 | 예(M1 완료 조건) | 아니오 |
 | D27 | reproducibility 수준(CORE §17 #10, CORE §10 L1–L3) | M1-PERSIST-001 | 1 기록 → 8 확인 | 기록 | 아니오 | — |
 | D28 | RENDERER_CANDIDATE_ANALYSIS §7 기각 후보를 사용자 REJECTED로 기록할지 | M1-RENDER-001 | 어느 Step과도 무관 | 사용자 확인 | **아니오** | 언제든 |
+| D29 | Rover Output 이식을 어느 Step에서 구현할지 | M1-PERSIST-002 | 4 구현 → 8 통합(기본안) | 기본안 유지. export는 번역 저장 상태에서 트리거되므로 translation persistence가 생기는 Step 4에서 export를 구현하고, 출력 경로·기본 입출력 디렉터리와 전체 output 흐름은 Step 8에서 통합 검증한다 | 아니오 | 아니오(M1 scope) |
+| D30 | 병렬 경로의 장치 전제: 번역 backend가 별도 장치에 있는 전제 vs 같은 GPU 공유 가능성 | M1-CORE-002 | 8 | 기록·검증(결정하지 않음) | 아니오 | GPU scheduling은 [M3-RUNTIME-001](../M3_PIPELINING/IDEAS.md#m3-runtime-001--pipelining을-위한-gpu-resource-scheduling) |
+| D31 | 로컬 Carrot data root 위치(비교 기준 데이터) | Step 2–6 Validation | 2 시작 전 | 사용자 확인 필요([로컬 전용 데이터](../../../AGENTS.md#로컬-전용-데이터)) | 예(Step 2–6 비교 검증의 전제) | 아니오 |
 
 ---
 
@@ -219,6 +226,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   7. persistence boundary(D4)와 D3을 만족하는 최소 output 구현
   8. 최소 code hierarchy와 dependency direction(D8): `CLI → Core public boundary → Pipeline/orchestration → Stage boundaries → runtime/provider implementations`
   9. dummy/no-op stage로 구성한 minimal pipeline을 Linux CLI로 실행하는 smoke
+  10. repository 배치와 개발 명령: Rover 코드는 `RoverCMT/` 아래에 둔다. Rover 전용 build/test/lint 명령을 정해 [RoverCMT/AGENTS.md CI / 테스트 정책](../../../AGENTS.md#ci--테스트-정책)에 기록한다. 루트 Carrot eslint·check가 `RoverCMT/` 코드를 검사하지 않도록 처리한다(루트 `src/`는 수정하지 않는다. 루트 ignore 설정 변경만 허용)
 - **Explicit non-goals:**
   - 실제 Detection/OCR/Translation/Inpainting/Renderer 구현
   - 전체 M1을 상상해 빈 interface/factory/file을 대량으로 만드는 것. 필요한 최소 skeleton만 만들고 Step 2부터 실제 stage를 붙이며 검증·확장한다
@@ -252,10 +260,12 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Completion criteria:**
   - D1 결과가 analysis 문서로 남고 M1-COMPAT-001에 링크됨
   - D2–D8 결정과 이유가 Result 또는 관련 CURRENT item에 기록됨(사용자 판단이 필요한 항목은 사용자 답을 받았거나 `BLOCKED` 사유가 명시됨)
+  - Rover 코드가 `RoverCMT/` 아래에 있고, Rover 전용 build/test/lint 명령이 RoverCMT/AGENTS.md에 기록되고, 루트 Carrot eslint·check가 `RoverCMT/` 코드를 검사하지 않음(루트 `src/` 무변경)
   - 위 Validation 통과, [DONE 조건](#step-status와-done-조건) 충족
   - **Checkpoint:** Step 1 완료 후 다음 Step으로 자동 진행하지 않는다. 이 architecture가 이후 모든 Step의 기반이므로 사용자/검토자가 결과를 확인한다.
 - **Result:**
   - Status: —
+  - Progress notes: —
   - Commit: —
   - Validation result: —
   - Known differences: —
@@ -274,7 +284,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - [DETECTION §1 Production Detection Flow](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#1-production-detection-flow-fact), [§3 Image Decode / Preprocessing](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#3-image-decode--preprocessing), [§5 Detection Postprocessing](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#5-detection-postprocessing-buildhayairegionmanifest), [§6 Block Creation and Defaults](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#6-block-creation-and-defaults), [§7 Recognition Geometry](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#7-recognition-geometry)
   - [DETECTION §12 Input Contract](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#12-detection-input-contract), [§13 Output Contract](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#13-detection-output-contract), [§22 Linux Runtime Smoke Test Plan](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#22-linux-runtime-smoke-test-plan-미실행), [§24 Recommended Migration Boundary](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#24-recommended-migration-boundary), [§25 Open Decisions](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#25-open-decisions-for-user)
 - **Source areas to inspect:** `src/main/textDetection/hayaiRegionPrepass.ts`, `src/main/textDetection/pageTextRegionDetector.ts`, `src/main/textDetection/hayaiRegionGeometry.ts`, `src/main/textDetection/hayaiOcrSubdivision.ts`, `src/main/bubbleLayout/detector.ts`, `src/main/pageWorkflow/pageWorkflowOcr.ts`(`detectWorkflowBlocks`).
-- **Open decisions to resolve:** D12(SFX 범위, 재실행 semantics, ONNX 구현 언어). 기록: D12 raw mask 보존·cache 범위, D9의 ONNX Runtime 배포 형태.
+- **Open decisions to resolve:** D31(로컬 data root 위치, 시작 전 사용자 확인), D12(SFX 범위, 재실행 semantics, ONNX 구현 언어). 기록: D12 raw mask 보존·cache 범위, D9의 ONNX Runtime 배포 형태.
 - **Architecture/coupling concerns:**
   - detection은 `blocks`를 통째로 교체하고 이후 stage 필드를 버린다([CORE §3 Page Data Lifecycle](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#3-page-data-lifecycle)).
   - 같은 Koharu model을 Step 5 layout과 Step 6 erase prepass도 쓴다. runtime을 이 세 용도가 공유할 수 있는 boundary로 둔다(결과 재사용은 M4).
@@ -284,6 +294,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Completion criteria:** DetectionResult가 Rover stage boundary를 통해 다음 stage(OCR)가 쓸 수 있는 상태로 저장됨. ONNX inference 성공만으로는 DONE이 아니다. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
   - Status: —
+  - Progress notes: —
   - Commit: —
   - Validation result: —
   - Known differences: —
@@ -308,6 +319,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Completion criteria:** OCR 결과가 block에 binding되어 Step 4 translation 입력으로 쓸 수 있음. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
   - Status: —
+  - Progress notes: —
   - Commit: —
   - Validation result: —
   - Known differences: —
@@ -320,14 +332,14 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Goal:** 현재 production translation semantics를 Linux Core로 이식한다.
 - **Scope:** OpenAI-compatible client, 현재 prompt/context 구성(원본 page 이미지 포함), OCR candidate/`sourceText` grounding, work context(glossary, characters, story memory, 이전 화 story pages), response parsing, block mapping/merge, retry/error 처리, 현재 memory commit semantics.
 - **Explicit non-goals:** [M4 Translation IDEAS](../M4_OPTIMIZATION/IDEAS.md#translation) 전부(prompt 축소, Previous pass 중복 제거, output schema 축소, page-context trailer 최적화, image resize/re-encode, cache-friendly ordering, VLM 단독 OCR, memory 재설계). managed llama-server, Codex provider, fixed-block/group review 경로([TRANSLATION_PIPELINE §16](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#16-recommended-migration-boundary)).
-- **Related M1 items:** [M1-TRANS-001](CURRENT.md#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식), [M1-PERSIST-001](CURRENT.md#m1-persist-001--persistence와-data-contract-parity)
+- **Related M1 items:** [M1-TRANS-001](CURRENT.md#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식), [M1-PERSIST-001](CURRENT.md#m1-persist-001--persistence와-data-contract-parity), [M1-PERSIST-002](CURRENT.md#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리)(번역 JSON/CSV export 구현, D29)
 - **Prerequisites:** Step 3 DONE(또는 기존 artifact의 `sourceText`로 단독 검증 가능).
 - **Related analysis:**
   - [TR-LLM §2 Actual Production Call Path](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#2-actual-production-call-path), [§3 Exact Request Anatomy](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#3-exact-request-anatomy), [§16 Minimal Linux Rover Translation Contract](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#16-minimal-linux-rover-translation-contract), [§18 Milestone 1 Blockers](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#18-milestone-1-blockers-if-any)
   - [TR-LLM §8 Glossary](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#8-glossary-lifecycle), [§9 Character](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#9-character-memory-lifecycle), [§10 Story Memory Lifecycle](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#10-story-memory-lifecycle)
   - [TRANSLATION_PIPELINE §4 Input Contract](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#4-translation-input-contract), [§5 Output Contract](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#5-translation-output-contract), [§6 Retry / Failure / Recovery](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#6-retry--failure--recovery), [§7 Ordering and Block Identity](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#7-ordering-and-block-identity), [§15 Runtime Smoke Test Plan](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#15-runtime-smoke-test-plan-미실행)
 - **Source areas to inspect:** `src/main/pageWorkflow/pageWorkflowTranslation.ts`, `src/main/wholePagePipeline.ts`(translate에 필요한 분기만), `src/main/pipeline/`(request options, retry, parse, keep-block mapping, `pageContextPersistence.ts`, `cumulativePageContext.ts`), `src/main/runtime/prompts/`, `src/main/runtime/parsing/`, `src/main/runtime/transport/translation-request.cjs`, `src/main/previousChapterContext.ts`.
-- **Open decisions to resolve:** D16. 기록: D14, D15(현재 동작 보존).
+- **Open decisions to resolve:** D16, D29(Rover Output export 구현). 번역 endpoint의 URL·model·API key·환경변수 이름·live 호출 허용 여부도 이 Step에서 정한다([실행 환경](../../../AGENTS.md#실행-환경)). 기록: D14, D15(현재 동작 보존).
 - **Architecture/coupling concerns:**
   - **순서 의존(M3에 중요):** page N+1 요청은 page N의 memory commit 이후 memory를 읽는다([TR-LLM §10.1](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#101-workflow의-저장-의미-fact)). 이 의존을 stage contract나 Result에 명시하고 [M3-TRANS-001](../M3_PIPELINING/IDEAS.md#m3-trans-001--translation-memory-순차-dependency-완화)과 연결한다.
   - translation은 page/block state와 work 단위 `style-guide.json`, chapter 단위 `story-memory.json`을 쓴다.
@@ -336,6 +348,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Completion criteria:** translated block과 memory 갱신이 Rover persistence boundary를 통해 저장되고 다음 page 요청에 반영됨. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
   - Status: —
+  - Progress notes: —
   - Commit: —
   - Validation result: —
   - Known differences: —
@@ -362,6 +375,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Completion criteria:** renderer가 쓸 typography/layout state가 Rover stage boundary로 저장되고, Step 6이 쓸 `fontSizePx`와 bubble layout 코드가 준비됨. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
   - Status: —
+  - Progress notes: —
   - Commit: —
   - Validation result: —
   - Known differences: —
@@ -389,6 +403,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Completion criteria:** erase 결과가 Rover stage boundary로 저장되고 layout·renderer가 쓸 수 있음. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
   - Status: —
+  - Progress notes: —
   - Commit: —
   - Validation result: —
   - Known differences: —
@@ -411,6 +426,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Completion criteria:** Linux에서 Rover pipeline 결과로 최종 page 이미지를 생성할 수 있고 capability smoke 결과가 기록됨. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
   - Status: —
+  - Progress notes: —
   - Commit: —
   - Validation result: —
   - Known differences: —
@@ -423,11 +439,11 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Goal:** 모든 M1 component를 실제 Linux pipeline으로 연결하고 M1 사용자 요구사항을 E2E로 검증한다.
 - **Scope:** full real pipeline 연결, stage 순서, persistence/output 통합, error 전파, progress/timing, 기존 Translation ↔ Erase 병렬 경로 이식([M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식)), 실제 output 생성, Windows Carrot interoperability.
 - **Explicit non-goals:** M3 수준의 새 pipelining(page N/N+1 overlap, 추가 stage overlap, page/stage concurrency). M2 Golden Sample/benchmark 구성. 성능 최적화.
-- **Related M1 items:** 모든 M1 CURRENT item. 특히 [M1-CORE-001](CURRENT.md#m1-core-001--linux-core-pipeline-port), [M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식), [M1-COMPAT-001](CURRENT.md#m1-compat-001--windows-carrot과의-output-interoperability)
+- **Related M1 items:** 모든 M1 CURRENT item. 특히 [M1-CORE-001](CURRENT.md#m1-core-001--linux-core-pipeline-port), [M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식), [M1-COMPAT-001](CURRENT.md#m1-compat-001--windows-carrot과의-output-interoperability), [M1-PERSIST-002](CURRENT.md#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리)(Rover Output 통합, D29)
 - **Prerequisites:** Step 1–7 DONE. Windows Carrot 설치본(interoperability 검증용).
 - **Related analysis:** [INPAINTING §8 Experimental Translation / Erase Parallel Path](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#8-experimental-translation--erase-parallel-path), [CORE §11 Failure Semantics](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#11-failure-semantics), [CORE §15 Minimal E2E Contract](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#15-minimal-e2e-contract), Step 1의 Carrot loader analysis(D1 결과).
 - **Source areas to inspect:** `src/main/application/pageWorkflowExperimentalParallel.ts`, `src/main/application/pageWorkflowService.ts`, `src/main/pageWorkflow/pageWorkflowRuntime.ts`(pending memory commit, `shouldResetPending`).
-- **Open decisions to resolve:** D11, D24, D25, D26. 확인: D5 확장, D9 최종 배포 형태, D10 import parity, D20, D27.
+- **Open decisions to resolve:** D11, D24, D25, D26, D29(Rover Output 통합), D30(병렬 경로 장치 전제 검증). 확인: D5 확장, D9 최종 배포 형태, D10 import parity, D20, D27.
 - **Architecture/coupling concerns:** 병렬 경로의 deferred erase commit, Koharu session 교차 재생성, memory commit 순서를 보존하고 Result에 기록한다. 이 경로의 scheduling 정책은 stage implementation이 아니라 orchestration 쪽에 둔다([A6](#a6-stage-implementation과-execution-policy를-분리하는-방향)). 남은 coupling은 [M3 IDEAS](../M3_PIPELINING/IDEAS.md)와 연결한다.
 - **Validation:**
   - 실제 chapter/page로 Linux E2E smoke(순차 경로와 병렬 경로 모두)
@@ -435,6 +451,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Completion criteria:** M1 CURRENT item 각각의 `Progress`와 완료 근거가 CURRENT.md에 기록되어 M1 completion을 판단할 수 있음. [DONE 조건](#step-status와-done-조건) 충족. M1 완료 선언과 다음 active milestone 결정은 사용자가 한다.
 - **Result:**
   - Status: —
+  - Progress notes: —
   - Commit: —
   - Validation result: —
   - Known differences: —
