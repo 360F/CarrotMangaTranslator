@@ -1,6 +1,8 @@
 # M1 — Linux Port
 
-**Status: ACTIVE** · [Planning index](../README.md) · [CURRENT](CURRENT.md) · [IDEAS](IDEAS.md) · [REJECTED](REJECTED.md)
+**Status: ACTIVE** · [Planning index](../README.md) · [CURRENT](CURRENT.md) · [IMPLEMENTATION_PLAN](IMPLEMENTATION_PLAN.md) · [IDEAS](IDEAS.md) · [REJECTED](REJECTED.md)
+
+> **구현 작업을 시작하거나 "다음 Step"을 찾을 때는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)를 읽는다.** Step 순서, architecture direction, Step별 열린 결정과 완료 기준이 있다. M1 item과 `Progress`의 source of truth는 [CURRENT.md](CURRENT.md)다.
 
 ## 목표
 

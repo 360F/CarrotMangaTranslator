@@ -7,6 +7,7 @@
 - 계획, 현재 active milestone, 다음 작업, 아이디어, 폐기 결정의 source of truth: [`docs/milestones/README.md`](docs/milestones/README.md)
 - 현재 프로젝트 상태나 다음 작업을 판단하기 전에 이 milestone 문서를 먼저 읽는다.
 - 아이디어 추가, 작업 시작, 작업 폐기, milestone 변경 전에도 그 문서의 규칙(§7–§8)을 먼저 읽는다.
+- M1 구현 작업("M1 Step N 진행해", "다음 Step 진행해")은 [`docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md`](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md)의 절차와 Architecture Direction을 따른다.
 - 이전 대화의 기억에 의존하지 않는다. repository의 현재 문서를 source of truth로 쓰고, 충돌하면 최신 상태를 확인하거나 사용자에게 묻는다.
 
 ## 작업 전 필수 문서

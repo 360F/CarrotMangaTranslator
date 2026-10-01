@@ -313,15 +313,6 @@ Item 목록:
 
 ## Suggested next step
 
-아래 순서는 analysis 문서들의 "Exact Next Step"을 모은 **제안**이다. 실제 순서는 사용자가 정한다.
+M1의 구현 순서와 다음 Step은 **[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)** 가 관리한다(2026-10-01부터). 현재 다음 Step은 [Step 1 — Core Architecture, Contracts & CLI Adapter](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter)다.
 
-완료된 결정(2026-10-01): M1-RENDER-001 방향(Skia primary / Playwright fallback), M1-COMPAT-001 정의(Windows Carrot에서 open/use), M1-CORE-002 범위(기존 병렬 경로를 M1에서 이식).
-
-1. **M1-RENDER-001 Skia Linux 검증** — 같은 Skia/font 버전의 Linux smoke, memory 측정, font capability validation. 근거: [RECOMPARISON §17](../../analysis/RENDERER_CONTRACT_ALIGNED_RECOMPARISON.md#17-unresolved-questions).
-2. **M1-COMPAT-001 Carrot loader 요구 조건 확인** — Windows Carrot이 project/chapter를 열 때 필요한 최소 필드(아직 미분석). persistence와 출력 경로 설계의 입력.
-3. **Runtime smoke(독립 실행 가능, 순서 무관)**
-   - Detection S0–S3: [DETECTION §26](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#26-exact-next-step)
-   - OCR S0–S4: [OCR §14](../../analysis/OCR_RUNTIME_MIGRATION_ANALYSIS.md#14-exact-next-step)
-   - Translation S4(저장 prompt 재전송): [TRANSLATION_PIPELINE §17](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#17-exact-next-step)
-   - Inpainting runner protocol smoke: [INPAINTING §18](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#18-exact-next-step)
-4. **M1-CONFIG/CLI/OBS 설계** 후 M1-CORE-001 최소 E2E.
+이전에 이 section에 있던 제안(Skia Linux 검증, Carrot loader 요구 조건 확인, runtime smoke, config/CLI/OBS 설계)은 IMPLEMENTATION_PLAN의 Step 1–8과 [Open decision / validation register](IMPLEMENTATION_PLAN.md#open-decision--validation-register)로 옮겼다.

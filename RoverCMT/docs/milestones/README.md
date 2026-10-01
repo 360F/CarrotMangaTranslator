@@ -22,7 +22,8 @@ GUI 없이 Linux에서 독립 실행되는 Core로 옮기고, 이후 처리 시�
 | 항목 | 값 |
 |---|---|
 | **Active milestone** | **M1 — Linux Port** |
-| M1 현재 작업 목록 | [M1_LINUX_PORT/CURRENT.md](M1_LINUX_PORT/CURRENT.md) (끝에 "Suggested next step" 포함) |
+| M1 현재 작업 목록 | [M1_LINUX_PORT/CURRENT.md](M1_LINUX_PORT/CURRENT.md) (item과 Progress의 source of truth) |
+| M1 구현 순서 / 다음 Step | [M1_LINUX_PORT/IMPLEMENTATION_PLAN.md](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md) |
 | M2–M5 | 정의와 future scope만 있다. 아직 active가 아니다 |
 | RoverCMT production code | 아직 없다. 지금까지는 분석(`docs/analysis/`)과 renderer spike(`spikes/renderer-comparison/`)만 있다 |
 | 확정된 주요 결정 | 2026-10-01: M1 호환 = Windows Carrot에서 output open/use(interoperability), 기존 Translation ↔ Erase 병렬 경로는 M1에서 이식, M1 renderer = Skia Canvas primary / Playwright Chromium fallback. 상세: [M1 CURRENT](M1_LINUX_PORT/CURRENT.md) 상단 표 |
@@ -73,14 +74,16 @@ GUI 없이 Linux에서 독립 실행되는 Core로 옮기고, 이후 처리 시�
 RoverCMT/AGENTS.md
   → docs/milestones/README.md   (이 문서: 전체 위치, 규칙)
     → 해당 milestone README     (목표, 범위, 원칙)
-      → CURRENT / IDEAS / REJECTED (item 단위)
-        → item의 Related analysis (필요한 section만)
-          → 필요한 경우 실제 source code
+      → (M1 구현 작업) IMPLEMENTATION_PLAN.md → 현재 Step
+        → CURRENT / IDEAS / REJECTED (item 단위; Step이 가리키는 item)
+          → item·Step의 Related analysis (필요한 section만)
+            → Step의 Source areas (실제 source code)
 ```
 
 | 하려는 일 | 먼저 읽을 것 |
 |---|---|
-| 다음 할 일 판단 | 이 문서 §2 → active milestone `CURRENT.md`의 Suggested next step |
+| 다음 할 일 판단 | 이 문서 §2 → active milestone README → `IMPLEMENTATION_PLAN.md`의 현재 위치·Progress(M1) |
+| "M1 Step N 진행해" / "다음 Step 진행해" | [M1 IMPLEMENTATION_PLAN의 How to use this plan](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#how-to-use-this-plan-agent) |
 | 특정 item 작업 시작 | item의 Related analysis와 Dependencies, 해당 milestone README의 원칙 |
 | 아이디어 추가·보완 | 이 문서 §7 |
 | 상태 변경·폐기 | 이 문서 §8 |
