@@ -2,8 +2,12 @@
 
 ## RoverCMT 작업
 
+이 저장소는 CarrotMangaTranslator에서 파생된 독립(standalone) RoverCMT 개발 저장소다. 개발 branch는 `main` 하나이고, 쓰기 가능한 remote는 `origin`(360F/CarrotMangaTranslator)이다. 원본 저장소는 참고용 remote `carrot-original`로만 둔다.
+
 `RoverCMT/` 아래 작업(Linux 이식, 분석, milestone 계획)은 먼저 [`RoverCMT/AGENTS.md`](RoverCMT/AGENTS.md)를 읽고,
 현재 계획과 다음 작업은 [`RoverCMT/docs/milestones/README.md`](RoverCMT/docs/milestones/README.md)에서 확인한다.
+
+아래의 Carrot 원본 source 관련 규칙(데이터 보호, 코드·UI, 폰트 맞춤)은 reference source를 다룰 때 계속 적용한다.
 
 ## 사용자 데이터 보호
 
@@ -41,6 +45,8 @@
 1,347개 direct visual label은 각각 evaluation-only/training-only이며 human gold가 아니다.
 
 ## GitHub 외부 자산 릴리스 표준
+
+> 원본 CarrotMangaTranslator의 자산 게시 절차다. 이 standalone 저장소에서 자산을 게시하려면 먼저 사용자 지시를 받는다. 아래 명령의 `origin`은 이제 360F 저장소를 가리킨다.
 
 모델, 런타임, 네이티브 도구, 대용량 리소스를 앱 릴리스와 별도 GitHub Release asset으로
 게시할 때 적용한다. 현재 자산의 정확한 태그·파일명·해시는 각 기능 인계 문서와 소비
@@ -96,6 +102,8 @@ gh release download $tag --repo $repo --dir <new-empty-verify-dir>
 문구만 보고 완료 처리하지 않는다.
 
 ## 안정 앱 버전 릴리스 표준
+
+> **이 standalone RoverCMT 저장소에는 적용하지 않는다.** 원본 CarrotMangaTranslator의 Windows/macOS 앱 릴리스 절차를 기록으로 남긴 것이다. 아래가 전제하는 `master` branch와 `Release`·`macOS Release` workflow는 이 저장소에서 제거됐다.
 
 Windows와 Apple Silicon macOS 정식 버전을 게시할 때 적용한다. 저장소의 현재 workflow가
 권위이며 수동으로 installer를 GitHub Release에 바로 올리지 않는다. 시작 전 기본 브랜치가
