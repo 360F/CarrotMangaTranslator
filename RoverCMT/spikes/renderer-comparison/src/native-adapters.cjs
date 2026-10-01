@@ -3,7 +3,11 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { performance } = require("node:perf_hooks");
-const { layoutNativeBlock } = require("../lib/shared-layout.cjs");
+const {
+  layoutNativeBlock,
+  resolveNativePageSourceFontFaceFallbacks,
+} = require("../lib/shared-layout.cjs");
+const { toProductionPageV3 } = require("./production-page.cjs");
 
 function packageVersion(packageRoot) {
   return JSON.parse(
@@ -46,6 +50,11 @@ async function createSkiaAdapter(contract) {
       ),
       engine: "Skia native binding",
       fontLibraryFamily: family,
+      inputContract:
+        contract.manifest.version === 3
+          ? "canonical frozen inputs-v3 via toProductionPageV3"
+          : "historical manifest-v2 snapshot",
+      readsSourceChapter: false,
     },
     font: fontMetadata(contract, {
       actualLoadedFont: family,
@@ -76,6 +85,7 @@ async function createSkiaAdapter(contract) {
         fixture,
         contract.font.family,
         probe,
+        contract.manifest.version === 3,
       );
       const png = await canvas.toBuffer("png");
       probe.sample();
@@ -157,6 +167,7 @@ async function createNodeCanvasAdapter(contract) {
         fixture,
         contract.font.family,
         probe,
+        contract.manifest.version === 3,
       );
       const png = canvas.toBuffer("image/png");
       probe.sample();
@@ -171,9 +182,19 @@ async function createNodeCanvasAdapter(contract) {
   };
 }
 
-function renderBlocks(context, fixture, fontFamily, probe) {
+function renderBlocks(context, fixture, fontFamily, probe, isV3) {
+  const page = isV3
+    ? toProductionPageV3(fixture.snapshot, fixture.imagePath)
+    : { blocks: fixture.snapshot.blocks };
+  const pageSize = {
+    width: fixture.snapshot.width,
+    height: fixture.snapshot.height,
+  };
+  const fallbacks = isV3
+    ? resolveNativePageSourceFontFaceFallbacks(page.blocks, pageSize)
+    : new Map();
   const layouts = [];
-  for (const block of fixture.snapshot.blocks) {
+  for (const block of page.blocks) {
     if (block.renderDirection !== "horizontal") {
       throw new Error(
         `Unsupported fixture direction ${block.renderDirection} in ${block.id}`,
@@ -181,18 +202,32 @@ function renderBlocks(context, fixture, fontFamily, probe) {
     }
     const layout = layoutNativeBlock(
       block,
-      { width: fixture.snapshot.width, height: fixture.snapshot.height },
+      pageSize,
       context,
       `"${fontFamily}"`,
+      fallbacks.get(block.id),
     );
     layouts.push({
       blockId: layout.blockId,
-      lines: layout.lines.map((line) => line.text),
+      lines: String(block.translatedText ?? "").trim()
+        ? layout.lines.map((line) => line.text)
+        : null,
       fontSizePx: layout.fontSizePx,
       innerWidth: layout.rect.width,
       innerHeight: layout.rect.height,
       overflow: layout.overflow,
       usedBubbleSlots: layout.usedBubbleSlots,
+      layoutPath: layout.layoutPath,
+      fitBounds: layout.fitBounds,
+      sourceMatch: layout.sourceMatch,
+      bubbleSlotUsage: {
+        used: layout.usedBubbleSlots,
+        lineSlots: layout.lines.map((line) => ({
+          availableWidth: line.availableWidth,
+          left: line.left,
+          top: line.top,
+        })),
+      },
     });
     drawLayout(context, block, layout, fontFamily);
     probe.sample();

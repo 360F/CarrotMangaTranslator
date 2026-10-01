@@ -5,7 +5,10 @@
   "description": "Isolated renderer comparison harness for immutable RoverCMT fixtures",
   "scripts": {
     "build": "esbuild src/shared-layout.ts --bundle --platform=node --format=cjs --target=node20 --outfile=lib/shared-layout.cjs",
+    "build:fixtures:v3": "node build-fixtures-v3.cjs",
     "compare": "npm run build && node src/run-comparison.cjs",
+    "compare:v3": "npm run build && node src/run-comparison.cjs --manifest fixtures/manifest-v3.json --candidates skia-canvas,playwright-chromium",
+    "reference:v3": "node generate-reference-v3-runner.cjs",
     "test": "npm run build && node --test test/*.test.cjs"
   },
   "dependencies": {

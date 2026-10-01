@@ -10,6 +10,15 @@ Skia Canvas/node-canvas/Playwright Chromium comparison harness 실행을 완료�
 RoverCMT production implementation은 아직 시작하지 않았다.
 Renderer winner와 production architecture도 아직 결정하지 않았다.
 
+## Contract-aligned v3 update
+
+The canonical v3 re-comparison is complete. Electron reference-v3, Skia, and Playwright consumed the same frozen page contract and exact portable font. Skia and Playwright rendered 8/8 fixtures; `_0411` now matches at 94px and eight lines in Electron, Skia, and Playwright. Remaining native differences are concentrated in several source-match blocks and require human visual review.
+
+Detailed evidence:
+
+- `docs/analysis/RENDERER_CONTRACT_ALIGNED_RECOMPARISON.md`
+- `spikes/renderer-comparison/outputs/comparison-2026-10-01-v3-contract-aligned/visual-comparison/index.html`
+
 ---
 
 ## 완료
@@ -63,9 +72,9 @@ readability와 packaging/runtime cost의 trade-off를 사람이 판단하는 것
 
 다음 artifact에서 reference, Skia, Playwright와 amplified diagnostic diff를 직접 확인한다.
 
-`spikes/renderer-comparison/outputs/comparison-2026-09-30-v2/visual-comparison/index.html`
+`spikes/renderer-comparison/outputs/comparison-2026-10-01-v3-contract-aligned/visual-comparison/index.html`
 
-특히 `_012`, `_018`, `_029`, `_0411`의 line wrapping, font size,
+특히 `_004`, `_011`, `_012`, `_047`의 line wrapping, font size,
 bubble fit, clipping과 readability를 검토한다.
 
 시각 검토 전에는 renderer를 확정하지 않는다. Skia가 실용적이면 다음 기술 검증은

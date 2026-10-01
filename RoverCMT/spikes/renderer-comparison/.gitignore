@@ -1,3 +1,7 @@
 node_modules/
 .playwright-browsers/
 lib/
+.reference-v3-electron-user-data*/
+reference-v3-contract-aligned.incomplete-*/
+reference-v3-contract-aligned.pre-wrapper-valid/
+fixtures/manifest-v3.pre-wrapper-valid.json

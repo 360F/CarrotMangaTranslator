@@ -1,0 +1,793 @@
+{
+  "version": 3,
+  "runtime": {
+    "electron": "43.3.0",
+    "chromium": "150.0.7871.212",
+    "node": "24.18.1",
+    "platform": "win32",
+    "arch": "x64",
+    "hardwareAcceleration": "disabled",
+    "deviceScaleFactor": 1
+  },
+  "pages": [
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "sourcePage": "_004.jpg",
+      "blocks": [
+        {
+          "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-1",
+          "lines": [
+            "옛날 옛적에",
+            "작은 영웅이",
+            "있었습니다."
+          ],
+          "fontSizePx": 28,
+          "innerWidth": 196.23999999999998,
+          "innerHeight": 284.23999999999995,
+          "overflow": false
+        },
+        {
+          "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-2",
+          "lines": [
+            "작은 영웅의",
+            "가슴 속에는",
+            "『불꽃의",
+            "반짝임』",
+            "이 잠들어",
+            "있었습니다."
+          ],
+          "fontSizePx": 30,
+          "innerWidth": 189.19999999999993,
+          "innerHeight": 275.43999999999994,
+          "overflow": false
+        },
+        {
+          "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-3",
+          "lines": [
+            "그 힘은",
+            "엄청나서 작은",
+            "영웅은 아직",
+            "제대로 다루지",
+            "못했습니다."
+          ],
+          "fontSizePx": 27,
+          "innerWidth": 190.07999999999998,
+          "innerHeight": 273.67999999999995,
+          "overflow": false
+        },
+        {
+          "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-4",
+          "lines": [
+            "비",
+            "켜어",
+            "어어"
+          ],
+          "fontSizePx": 52,
+          "innerWidth": 154,
+          "innerHeight": 346.71999999999997,
+          "overflow": false
+        },
+        {
+          "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-5",
+          "lines": [
+            "앗!!"
+          ],
+          "fontSizePx": 32,
+          "innerWidth": 93.28,
+          "innerHeight": 236.71999999999997,
+          "overflow": false
+        },
+        {
+          "blockId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2-df3a23e8-f533-4e9c-a0af-8512c86340fc-block-6",
+          "lines": [
+            "브레이",
+            "크가",
+            "안 ",
+            "들어!!"
+          ],
+          "fontSizePx": 45,
+          "innerWidth": 150.68,
+          "innerHeight": 348.47999999999996,
+          "overflow": false
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "sourcePage": "_011.jpg",
+      "blocks": [
+        {
+          "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-1",
+          "lines": [
+            "어때?"
+          ],
+          "fontSizePx": 60,
+          "innerWidth": 299.19999999999993,
+          "innerHeight": 412.71999999999997,
+          "overflow": false
+        },
+        {
+          "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-2",
+          "lines": [
+            "불꽃의 발현",
+            "타이밍, 아드레날린",
+            "분비량, 근섬유의",
+            "이상 활성화, 그에",
+            "따른 신경 전달의",
+            "과잉 가속까지 전부",
+            "다시 조사했어"
+          ],
+          "fontSizePx": 26,
+          "innerWidth": 229.67999999999995,
+          "innerHeight": 228.79999999999998,
+          "overflow": false
+        },
+        {
+          "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-3",
+          "lines": [
+            "발생, 그걸 억누르기 위해서,",
+            "선생님도 알고 있어. 네 내부에서",
+            "함께 분산시켜서, 반작용으로",
+            "분리시키는 건 아주 작은 불씨로",
+            "만드는 거야. 쉽게 타오르는 불꽃을",
+            "분해하고, 분해해서 아주 작은",
+            "조각으로 백 개로 나누는 식으로",
+            "말이야."
+          ],
+          "fontSizePx": 14,
+          "innerWidth": 214.444,
+          "innerHeight": 221.4369999999999,
+          "overflow": false
+        },
+        {
+          "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-4",
+          "lines": [
+            "그럼 결론은",
+            "하나야,",
+            "과학적인 요법을",
+            "거부한다면"
+          ],
+          "fontSizePx": 24,
+          "innerWidth": 171.59999999999997,
+          "innerHeight": 255.2,
+          "overflow": false
+        },
+        {
+          "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-5",
+          "lines": [
+            "싫어요."
+          ],
+          "fontSizePx": 35,
+          "innerWidth": 122.31999999999998,
+          "innerHeight": 258.71999999999997,
+          "overflow": false
+        },
+        {
+          "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-6",
+          "lines": [
+            "외부에서의",
+            "제어는",
+            "불가능해."
+          ],
+          "fontSizePx": 22,
+          "innerWidth": 118.79999999999998,
+          "innerHeight": 183.03999999999996,
+          "overflow": false
+        },
+        {
+          "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-7",
+          "lines": [
+            "남은 선택지는",
+            "네 스스로 자기",
+            "제어를 확립하는",
+            "것뿐이야~"
+          ],
+          "fontSizePx": 26,
+          "innerWidth": 190.07999999999998,
+          "innerHeight": 256.96,
+          "overflow": false
+        },
+        {
+          "blockId": "74d0a78f-93fe-4c24-97b9-25c09382784d-4d61691c-562a-4104-9f3c-5ce020f430af-block-8",
+          "lines": [
+            "즉답이네!!"
+          ],
+          "fontSizePx": 37,
+          "innerWidth": 162.79999999999998,
+          "innerHeight": 304.47999999999996,
+          "overflow": false
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "sourcePage": "_012.jpg",
+      "blocks": [
+        {
+          "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-1",
+          "lines": [
+            "받아들여서",
+            "활용한다!",
+            "재미있잖아!! 그",
+            "과정이야말로",
+            "최고의",
+            "연구 재료가",
+            "될 거야!!"
+          ],
+          "fontSizePx": 27,
+          "innerWidth": 197.99999999999997,
+          "innerHeight": 340.55999999999995,
+          "overflow": false
+        },
+        {
+          "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-2",
+          "lines": [
+            "푸하핫, 너는",
+            "정말 멋진",
+            "모르모트야!!"
+          ],
+          "fontSizePx": 23,
+          "innerWidth": 158.39999999999998,
+          "innerHeight": 312.4,
+          "overflow": false
+        },
+        {
+          "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-3",
+          "lines": [
+            "모",
+            "르",
+            "모",
+            "트..."
+          ],
+          "fontSizePx": 23,
+          "innerWidth": 48.39999999999999,
+          "innerHeight": 149.6,
+          "overflow": false
+        },
+        {
+          "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-4",
+          "lines": [
+            "최적의",
+            "코치진을",
+            "소개해 주지!!"
+          ],
+          "fontSizePx": 28,
+          "innerWidth": 176.87999999999994,
+          "innerHeight": 231.43999999999997,
+          "overflow": false
+        },
+        {
+          "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-5",
+          "lines": [
+            "나의 피실험자",
+            "네트워크......",
+            "아니, 인맥으로"
+          ],
+          "fontSizePx": 25,
+          "innerWidth": 184.79999999999995,
+          "innerHeight": 257.84,
+          "overflow": false
+        },
+        {
+          "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-6",
+          "lines": [
+            "맨",
+            "해",
+            "튼",
+            "카",
+            "페"
+          ],
+          "fontSizePx": 36,
+          "innerWidth": 36.959999999999994,
+          "innerHeight": 312.4,
+          "overflow": false
+        },
+        {
+          "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-7",
+          "lines": [
+            "하하핫, 점점",
+            "즐거워지는데!"
+          ],
+          "fontSizePx": 17,
+          "innerWidth": 113.51999999999998,
+          "innerHeight": 201.51999999999998,
+          "overflow": false
+        },
+        {
+          "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-8",
+          "lines": [
+            "카페! 너도 좀",
+            "도와줘야겠어"
+          ],
+          "fontSizePx": 32,
+          "innerWidth": 194.48000000000002,
+          "innerHeight": 258.71999999999997,
+          "overflow": false
+        },
+        {
+          "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-9",
+          "lines": [
+            "왜",
+            "나까지..."
+          ],
+          "fontSizePx": 18,
+          "innerWidth": 69.52,
+          "innerHeight": 194.48,
+          "overflow": false
+        },
+        {
+          "blockId": "50443352-6248-45ef-8d09-d9f99fe7ab59-7ca66db3-36d7-4686-afb3-7427bc6285b4-block-10",
+          "lines": [
+            "잘...",
+            "부탁해..."
+          ],
+          "fontSizePx": 18,
+          "innerWidth": 98.55999999999997,
+          "innerHeight": 171.59999999999997,
+          "overflow": false
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "sourcePage": "_015.jpg",
+      "blocks": [
+        {
+          "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-1",
+          "lines": [
+            "몰리고",
+            "있구나,",
+            "라이스 씨!!"
+          ],
+          "fontSizePx": 30,
+          "innerWidth": 157.51999999999998,
+          "innerHeight": 317.67999999999995,
+          "overflow": false
+        },
+        {
+          "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-2",
+          "lines": [
+            "하아... 하아...!",
+            "마, 아직... 달릴",
+            "수 있어요......!!"
+          ],
+          "fontSizePx": 27,
+          "innerWidth": 203.27999999999997,
+          "innerHeight": 288.64,
+          "overflow": false
+        },
+        {
+          "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-3",
+          "lines": null,
+          "fontSizePx": 12,
+          "innerWidth": 27.77800000000002,
+          "innerHeight": 41.09299999999996,
+          "overflow": false
+        },
+        {
+          "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-4",
+          "lines": [
+            "티",
+            "엠",
+            "오",
+            "페",
+            "라",
+            "오"
+          ],
+          "fontSizePx": 35,
+          "innerWidth": 41.35999999999999,
+          "innerHeight": 311.52,
+          "overflow": false
+        },
+        {
+          "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-5",
+          "lines": [
+            "포기하지 마!!"
+          ],
+          "fontSizePx": 28,
+          "innerWidth": 207.67999999999998,
+          "innerHeight": 324.71999999999997,
+          "overflow": false
+        },
+        {
+          "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-6",
+          "lines": [
+            "다이아몬드",
+            "같은 이",
+            "반짝임을!!"
+          ],
+          "fontSizePx": 40,
+          "innerWidth": 231.44,
+          "innerHeight": 323.84,
+          "overflow": false
+        },
+        {
+          "blockId": "6b059220-b404-4d21-89b1-8a8ec7ee1635-8aab9b56-c8a8-455f-89f5-77ff294c2d78-block-7",
+          "lines": [
+            "봐라! 나의",
+            "흐르는",
+            "땀을!!"
+          ],
+          "fontSizePx": 53,
+          "innerWidth": 272.79999999999995,
+          "innerHeight": 281.59999999999997,
+          "overflow": false
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "sourcePage": "_018.jpg",
+      "blocks": [
+        {
+          "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-1",
+          "lines": [
+            "오버히트... 아직",
+            "멀었군, 내일도",
+            "팍팍 가보자고!"
+          ],
+          "fontSizePx": 18,
+          "innerWidth": 124.95999999999998,
+          "innerHeight": 188.31999999999996,
+          "overflow": false
+        },
+        {
+          "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-2",
+          "lines": [
+            "아니! 마지막",
+            "스퍼트 정말",
+            "멋졌어, 그",
+            "순간은 나보다",
+            "더 빛났다고!!"
+          ],
+          "fontSizePx": 20,
+          "innerWidth": 162.79999999999998,
+          "innerHeight": 219.11999999999998,
+          "overflow": false
+        },
+        {
+          "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-3",
+          "lines": [
+            "불꽃이",
+            "타올라도",
+            "굴하지 않고",
+            "즐기고",
+            "있었구나"
+          ],
+          "fontSizePx": 21,
+          "innerWidth": 124.07999999999998,
+          "innerHeight": 190.95999999999998,
+          "overflow": false
+        },
+        {
+          "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-4",
+          "lines": [
+            "후후훗,",
+            "오늘은",
+            "이쯤 해둘까"
+          ],
+          "fontSizePx": 19,
+          "innerWidth": 117.03999999999999,
+          "innerHeight": 184.79999999999998,
+          "overflow": false
+        },
+        {
+          "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-5",
+          "lines": [
+            "부탁하신",
+            "대로",
+            "냉각은",
+            "했습니다만",
+            "..."
+          ],
+          "fontSizePx": 24,
+          "innerWidth": 185.67999999999998,
+          "innerHeight": 227.91999999999993,
+          "overflow": false
+        },
+        {
+          "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-6",
+          "lines": [
+            "라이스",
+            "씨"
+          ],
+          "fontSizePx": 25,
+          "innerWidth": 87.12,
+          "innerHeight": 178.64,
+          "overflow": false
+        },
+        {
+          "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-7",
+          "lines": [
+            "괜찮으세요...?"
+          ],
+          "fontSizePx": 14,
+          "innerWidth": 87.12,
+          "innerHeight": 179.51999999999998,
+          "overflow": false
+        },
+        {
+          "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-8",
+          "lines": [
+            "게...",
+            "괜찮아...",
+            "엄청",
+            "편해졌어..."
+          ],
+          "fontSizePx": 20,
+          "innerWidth": 116.16,
+          "innerHeight": 211.2,
+          "overflow": false
+        },
+        {
+          "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-9",
+          "lines": [
+            "그 세 사람의",
+            "특훈을",
+            "따라가다니",
+            "대단해요"
+          ],
+          "fontSizePx": 24,
+          "innerWidth": 155.76,
+          "innerHeight": 232.31999999999996,
+          "overflow": false
+        },
+        {
+          "blockId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd-30086495-ff48-48ef-921a-14973a603bf8-block-10",
+          "lines": [
+            "다만... 너무",
+            "무리하면",
+            "오래",
+            "못 가요"
+          ],
+          "fontSizePx": 26,
+          "innerWidth": 148.71999999999997,
+          "innerHeight": 200.64,
+          "overflow": false
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "sourcePage": "_029.jpg",
+      "blocks": [
+        {
+          "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-1",
+          "lines": [
+            "브라이언!",
+            "서둘러",
+            "교내로 가서!",
+            "남아있는",
+            "학생들의",
+            "안부 확인과",
+            "구출을! 한",
+            "명도 남기지",
+            "마!!"
+          ],
+          "fontSizePx": 34,
+          "innerWidth": 212.07999999999998,
+          "innerHeight": 455.83999999999986,
+          "overflow": false
+        },
+        {
+          "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-2",
+          "lines": [
+            "오페라 오!",
+            "피난 유도를",
+            "부탁해!! 혼란을",
+            "억제하고",
+            "안전한 곳으로",
+            "인도해!!"
+          ],
+          "fontSizePx": 36,
+          "innerWidth": 259.59999999999997,
+          "innerHeight": 410.0799999999999,
+          "overflow": false
+        },
+        {
+          "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-3",
+          "lines": [
+            "나는 상황을",
+            "확인하고 현장을",
+            "지휘하겠다!",
+            "모두 피난",
+            "행동을",
+            "취해라!!"
+          ],
+          "fontSizePx": 25,
+          "innerWidth": 189.19999999999993,
+          "innerHeight": 259.59999999999997,
+          "overflow": false
+        },
+        {
+          "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-4",
+          "lines": [
+            "도대체",
+            "무슨",
+            "일일까요"
+          ],
+          "fontSizePx": 20,
+          "innerWidth": 76,
+          "innerHeight": 128.15599999999995,
+          "overflow": false
+        },
+        {
+          "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-5",
+          "lines": [
+            "여기도",
+            "위험해요",
+            "우리도",
+            "피난해요"
+          ],
+          "fontSizePx": 30,
+          "innerWidth": 161.04,
+          "innerHeight": 253.43999999999994,
+          "overflow": false
+        },
+        {
+          "blockId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b-965e9704-13fd-4314-a13b-89d11a3a058d-block-6",
+          "lines": [
+            "잠깐...",
+            "뭔가...",
+            "온다......"
+          ],
+          "fontSizePx": 30,
+          "innerWidth": 109.11999999999999,
+          "innerHeight": 215.59999999999997,
+          "overflow": false
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "sourcePage": "_047.jpg",
+      "blocks": [
+        {
+          "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-1",
+          "lines": [
+            "이렇게 된",
+            "것도 전부 네",
+            "탓 아니야?"
+          ],
+          "fontSizePx": 18,
+          "innerWidth": 95,
+          "innerHeight": 84.625,
+          "overflow": false
+        },
+        {
+          "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-2",
+          "lines": [
+            "있잖아,",
+            "타키온"
+          ],
+          "fontSizePx": 11,
+          "innerWidth": 47.5,
+          "innerHeight": 90.844,
+          "overflow": false
+        },
+        {
+          "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-3",
+          "lines": [
+            "작은 영웅은",
+            "넘쳐흐르는 '",
+            "불꽃의 반짝임'을",
+            "제대로 다루지",
+            "못해 곤란해하고",
+            "있었습니다."
+          ],
+          "fontSizePx": 29,
+          "innerWidth": 235.83999999999997,
+          "innerHeight": 314.15999999999997,
+          "overflow": false
+        },
+        {
+          "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-4",
+          "lines": [
+            "하지만 수많은",
+            "동료를 만나 마침내",
+            "'불꽃의 반짝임",
+            "'을 길들일 수",
+            "있게 되었습니다."
+          ],
+          "fontSizePx": 31,
+          "innerWidth": 253.43999999999997,
+          "innerHeight": 340.55999999999995,
+          "overflow": false
+        },
+        {
+          "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-5",
+          "lines": [
+            "친구가 불꽃에 휩싸여",
+            "날뛰던 때에도 작은",
+            "영웅은 도망치지 않고",
+            "친구를 구해냈습니다."
+          ],
+          "fontSizePx": 28,
+          "innerWidth": 252.55999999999997,
+          "innerHeight": 352.87999999999994,
+          "overflow": false
+        },
+        {
+          "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-6",
+          "lines": [
+            "라이스 씨,",
+            "아침 연습",
+            "힘내세요!"
+          ],
+          "fontSizePx": 19,
+          "innerWidth": 122.31999999999998,
+          "innerHeight": 183.03999999999996,
+          "overflow": false
+        },
+        {
+          "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-7",
+          "lines": [
+            "응!"
+          ],
+          "fontSizePx": 28,
+          "innerWidth": 82.71999999999998,
+          "innerHeight": 144.32,
+          "overflow": false
+        },
+        {
+          "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-8",
+          "lines": [
+            "작은 영웅은",
+            "성장하여,",
+            "훌륭한",
+            "영웅이",
+            "되었습니다."
+          ],
+          "fontSizePx": 28,
+          "innerWidth": 162.79999999999998,
+          "innerHeight": 242.87999999999997,
+          "overflow": false
+        },
+        {
+          "blockId": "678fcdee-4806-4a15-9228-9286f1abf92c-513ba0ce-8e58-4c8c-9c54-9a65390b8bb4-block-9",
+          "lines": [
+            "불꽃의",
+            "반짝임'은"
+          ],
+          "fontSizePx": 28,
+          "innerWidth": 174.24,
+          "innerHeight": 272.79999999999995,
+          "overflow": false
+        }
+      ]
+    },
+    {
+      "pageId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247",
+      "sourcePage": "_0411.png",
+      "blocks": [
+        {
+          "blockId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247-04210a99-da2f-4954-b8b5-3939c515d160-block-1",
+          "lines": [
+            "지",
+            "금 ",
+            "구",
+            "해",
+            "줄 ",
+            "테",
+            "니",
+            "까"
+          ],
+          "fontSizePx": 94,
+          "innerWidth": 143.33300000000008,
+          "innerHeight": 890.0350000000001,
+          "overflow": false
+        },
+        {
+          "blockId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247-04210a99-da2f-4954-b8b5-3939c515d160-block-2",
+          "lines": [
+            "갈게"
+          ],
+          "fontSizePx": 24,
+          "innerWidth": 51.919999999999995,
+          "innerHeight": 133.76,
+          "overflow": false
+        }
+      ]
+    }
+  ]
+}

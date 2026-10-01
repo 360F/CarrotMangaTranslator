@@ -5,6 +5,12 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { performance } = require("node:perf_hooks");
 const { pathToFileURL } = require("node:url");
+const {
+  BENCHMARK_FONT_ID,
+  benchmarkFontPreferences,
+  benchmarkFontRecord,
+  toProductionPageV3,
+} = require("./production-page.cjs");
 
 async function createPlaywrightAdapter(contract) {
   const started = performance.now();
@@ -12,7 +18,18 @@ async function createPlaywrightAdapter(contract) {
   const { createPageExportHtmlSource } = require(
     path.join(contract.repoRoot, "out", "main", "pageExportHtml.js"),
   );
-  const fontId = "benchmark-noto-sans-cjk-kr-regular-2-004";
+  const isV3 = contract.manifest.version === 3;
+  const fontId = isV3
+    ? BENCHMARK_FONT_ID
+    : "benchmark-noto-sans-cjk-kr-regular-2-004";
+  const fontRecord = isV3
+    ? benchmarkFontRecord(contract.font.filePath)
+    : {
+        id: fontId,
+        label: "Noto Sans CJK KR Regular 2.004",
+        family: contract.font.family,
+        fileName: path.basename(contract.font.filePath),
+      };
   const htmlSource = createPageExportHtmlSource({
     assetDirectories: () => [
       path.join(contract.repoRoot, "out", "page-export"),
@@ -22,20 +39,15 @@ async function createPlaywrightAdapter(contract) {
         path.join(contract.repoRoot, "src", "renderer", "src", "styles.css"),
       ).toString(),
     fonts: {
-      list: () => [
-        {
-          id: fontId,
-          label: "Noto Sans CJK KR Regular 2.004",
-          family: contract.font.family,
-          fileName: path.basename(contract.font.filePath),
-        },
-      ],
-      readPreferences: () => ({
-        favoriteIds: [],
-        orderedIds: [],
-        hiddenIds: [],
-        defaultFontId: fontId,
-      }),
+      list: () => [fontRecord],
+      readPreferences: isV3
+        ? benchmarkFontPreferences
+        : () => ({
+            favoriteIds: [],
+            orderedIds: [],
+            hiddenIds: [],
+            defaultFontId: fontId,
+          }),
       resolveFilePath: (id) => (id === fontId ? contract.font.filePath : null),
     },
   });
@@ -68,18 +80,24 @@ async function createPlaywrightAdapter(contract) {
       browserRootPid: rootPid,
       productionArtifact:
         "out/page-export/runtime.js and styles.css (benchmark-only)",
+      inputContract: isV3
+        ? "canonical frozen inputs-v3 via toProductionPageV3"
+        : "historical manifest-v2 adapter defaults",
+      readsSourceChapter: false,
     },
     font: baseFontMetadata(contract),
     async render(fixture) {
       consoleErrors.length = 0;
       const beforeRss = process.memoryUsage().rss;
-      const pageModel = {
-        id: fixture.snapshot.sourcePageId,
-        name: fixture.snapshot.sourcePageName,
-        width: fixture.snapshot.width,
-        height: fixture.snapshot.height,
-        blocks: fixture.snapshot.blocks.map(toProductionBlock),
-      };
+      const pageModel = isV3
+        ? toProductionPageV3(fixture.snapshot, fixture.imagePath)
+        : {
+            id: fixture.snapshot.sourcePageId,
+            name: fixture.snapshot.sourcePageName,
+            width: fixture.snapshot.width,
+            height: fixture.snapshot.height,
+            blocks: fixture.snapshot.blocks.map(toProductionBlock),
+          };
       const imageSrc = toDataUrl(fixture.imagePath);
       const html = htmlSource.buildHtml(
         pageModel,
@@ -137,12 +155,15 @@ async function createPlaywrightAdapter(contract) {
           `Playwright Chromium used an unexpected font: ${JSON.stringify(fontEvidence)}`,
         );
       }
-      const layoutEvidence = await page.evaluate(() =>
+      const observedLayoutEvidence = await page.evaluate(() =>
         Array.from(
           document.querySelectorAll("[data-layout-evidence]"),
           (element) => JSON.parse(element.dataset.layoutEvidence),
         ),
       );
+      const layoutEvidence = isV3
+        ? enrichContractEvidence(observedLayoutEvidence, pageModel.blocks)
+        : observedLayoutEvidence;
       const png = await page.screenshot({
         type: "png",
         clip: { x: 0, y: 0, width: pageModel.width, height: pageModel.height },
@@ -254,6 +275,63 @@ function toDataUrl(filePath) {
   const mime =
     extension === ".jpg" || extension === ".jpeg" ? "image/jpeg" : "image/png";
   return `data:${mime};base64,${fs.readFileSync(filePath).toString("base64")}`;
+}
+
+function enrichContractEvidence(observed, blocks) {
+  const blocksById = new Map(blocks.map((block) => [block.id, block]));
+  return observed.map((entry) => {
+    const block = blocksById.get(entry.blockId);
+    if (!block) return entry;
+    const hasText = Boolean(String(block.translatedText ?? "").trim());
+    const sourceMatch = block.fontSizeIntent === "source-match";
+    const resolvedSourceMatch =
+      sourceMatch &&
+      hasText &&
+      (Number.isFinite(Number(block.sourceFontFacePx)) ||
+        Number.isFinite(Number(block.sourceFontFaceFallbackPx)));
+    const genericAutofit =
+      !sourceMatch && hasText && (block.autoFitText ?? true);
+    const searches = hasText && (sourceMatch || genericAutofit);
+    return {
+      ...entry,
+      layoutPath: sourceMatch
+        ? resolvedSourceMatch
+          ? "source-match"
+          : "fallback"
+        : genericAutofit
+          ? "generic-autofit"
+          : "explicit",
+      fitBounds: {
+        searchMinPx: searches ? 10 : entry.fontSizePx,
+        searchMaxPx: genericAutofit ? 256 : null,
+        selectedPx: entry.fontSizePx,
+        searchMaxEvidence: genericAutofit
+          ? "production MAX_AUTOFIT_FONT_SIZE_PX"
+          : "not exposed by production page-export evidence",
+      },
+      sourceMatch: {
+        fontSizeIntent: block.fontSizeIntent ?? null,
+        sourceText: String(block.sourceText ?? ""),
+        sourceDirection: block.sourceDirection ?? null,
+        sourceFontFacePx: finiteOrNull(block.sourceFontFacePx),
+        sourceFontFaceFallbackPx: finiteOrNull(block.sourceFontFaceFallbackPx),
+        sourceFontSizeConfidence: finiteOrNull(block.sourceFontSizeConfidence),
+        sourceFontSizeMethod: block.sourceFontSizeMethod ?? null,
+        resolvedCapPx: null,
+        resolvedCapEvidence: "not exposed by production page-export evidence",
+      },
+      bubbleSlotUsage: {
+        used: null,
+        evidence: "not exposed by production page-export evidence",
+      },
+    };
+  });
+}
+
+function finiteOrNull(value) {
+  if (value === null || value === undefined) return null;
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : null;
 }
 
 function toProductionBlock(block) {

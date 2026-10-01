@@ -1,0 +1,120 @@
+{
+  "version": 3,
+  "runtime": {
+    "electron": "43.3.0",
+    "chromium": "150.0.7871.212",
+    "node": "24.18.1",
+    "platform": "win32",
+    "arch": "x64",
+    "hardwareAcceleration": "disabled",
+    "deviceScaleFactor": 1
+  },
+  "method": "Electron hidden window loading the identical production page-export HTML; CDP CSS.getPlatformFontsForNode on every leaf text span",
+  "unexpectedFallbacks": 0,
+  "pages": [
+    {
+      "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
+      "sourcePage": "_004.jpg",
+      "inspectedNodes": 44,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 196,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "74d0a78f-93fe-4c24-97b9-25c09382784d",
+      "sourcePage": "_011.jpg",
+      "inspectedNodes": 58,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 520,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "50443352-6248-45ef-8d09-d9f99fe7ab59",
+      "sourcePage": "_012.jpg",
+      "inspectedNodes": 66,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 312,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "6b059220-b404-4d21-89b1-8a8ec7ee1635",
+      "sourcePage": "_015.jpg",
+      "inspectedNodes": 38,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 184,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "f8a2d41b-d26e-44ce-aaf4-8d0600c984fd",
+      "sourcePage": "_018.jpg",
+      "inspectedNodes": 72,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 358,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "676ba29f-3ce3-4bf6-ae47-4ca34169ed3b",
+      "sourcePage": "_029.jpg",
+      "inspectedNodes": 62,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 310,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "678fcdee-4806-4a15-9228-9286f1abf92c",
+      "sourcePage": "_047.jpg",
+      "inspectedNodes": 62,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 404,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    },
+    {
+      "pageId": "46fe6f58-2468-4e3b-9f9b-b8ce7dec4247",
+      "sourcePage": "_0411.png",
+      "inspectedNodes": 18,
+      "fonts": [
+        {
+          "familyName": "Noto Sans CJK KR",
+          "glyphCount": 24,
+          "isCustomFont": true,
+          "postScriptName": "NotoSansCJKkr-Regular"
+        }
+      ]
+    }
+  ]
+}

@@ -1,14 +1,22 @@
 # Renderer comparison spike
 
-This isolated harness compares Skia Canvas, node-canvas, and Playwright Chromium against immutable Carrot reference-v2 output. It is not RoverCMT production renderer code.
+This isolated harness compares renderer candidates against immutable Carrot Electron references. It is evidence-generation code, not RoverCMT production renderer code, and it does not select a winner.
 
-## Authoritative input
+## Contracts
 
-`fixtures/manifest-v2.json` is the only comparison input contract. It binds eight final-page snapshots, render images, lossless reference PNGs, and the exact portable font asset `NotoSansCJKkr-Regular.otf` 2.004 by SHA-256.
+### Contract-aligned v3 (current)
 
-`fixtures/manifest.json` remains the Windows-local v1 diagnostic baseline and is read-only. Do not regenerate or substitute v1 references. Do not rerun OCR, translation, erase, typography, or font inference.
+`fixtures/manifest-v3.json` is the current comparison contract. It binds eight canonical frozen page snapshots, render images, Electron reference-v3 PNGs, layout/font/render verification, and exact Noto Sans CJK KR Regular 2.004 bytes.
 
-## Run
+Every v3 renderer reconstructs its page through `src/production-page.cjs`. Renderers do not read the original chapter. The one-time `build-fixtures-v3.cjs` freezer is the only v3 step that reads the chapter to copy required source-match fields.
+
+### Historical v2
+
+`fixtures/manifest-v2.json`, `reference-v2-noto-sans-cjk-kr-2.004/`, and `outputs/comparison-2026-09-30-v2/` remain read-only historical evidence. V2 used incomplete native font-size semantics and historical Playwright source-field defaults, so do not use it alone for renderer selection.
+
+`fixtures/manifest.json` remains the Windows-local v1 diagnostic baseline and is also read-only.
+
+## Install and test
 
 From this directory:
 
@@ -17,28 +25,49 @@ npm install
 $env:PLAYWRIGHT_BROWSERS_PATH = Join-Path (Get-Location) ".playwright-browsers"
 npx playwright install chromium
 npm test
-npm run compare -- --output <new-run-name>
 ```
 
-The runner refuses to overwrite an existing output directory. Candidate output is written under `outputs/<run-name>/`; fixtures and references are never output targets.
+## Rebuild v3 inputs and reference
 
-Useful focused options:
+The checked canonical fixtures and reference should normally be reused. To regenerate from scratch, first move the existing v3 files out of their authoritative paths; both freezer and generator refuse overwrite.
 
 ```powershell
-npm run compare -- --output <new-run-name> --fixture _004.jpg
+npm run build:fixtures:v3
+npm run reference:v3
+```
+
+`reference:v3` launches Electron with an isolated profile, keeps the CLI application alive between the production render session and font-verification window, and removes the profile after Electron exits.
+
+## Run v3 comparison
+
+```powershell
+npm run compare:v3 -- --output <new-run-name>
+npm run compare:v3 -- --output <new-run-name> --fixture _0411.png
+```
+
+The v3 script runs Skia Canvas and Playwright Chromium. Node-canvas is omitted because the historical Windows Pango probe could not load the pinned OTF/CFF exact face and correctly rejected fallback rendering.
+
+The generic v2-compatible entry point remains:
+
+```powershell
+npm run compare -- --output <new-run-name>
 npm run compare -- --output <new-run-name> --candidate skia-canvas
 ```
 
+The runner refuses to overwrite any output directory.
+
 ## Output contract
 
-Each successful fixture/backend produces a PNG, duration, dimensions, SHA-256, observed memory, layout evidence, runtime information, and font evidence. Candidate failure is fixture-local and does not stop other candidates.
+Each successful fixture/backend records PNG dimensions and SHA-256, duration, observed memory, font evidence, runtime details, line breaks, selected font size, overflow, and layout evidence. V3 native evidence additionally records layout path, search bounds, source-match inputs, resolved cap when available, and bubble-slot usage. Production page-export fields that are not observable are marked unavailable rather than inferred as facts.
 
-`run.json` contains the complete run. `visual-comparison/index.html` shows reference/candidate images and amplified diagnostic diffs. Pixel difference is never a pass/fail or winner criterion.
+`run.json` is the complete machine-readable result. `visual-comparison/index.html` shows Electron reference, candidates, and amplified diagnostic diffs together. Pixel difference is never a pass/fail or winner criterion.
 
-The checked run described in `docs/analysis/RENDERER_COMPARISON_SPIKE.md` is `outputs/comparison-2026-09-30-v2/`.
+Authoritative checked runs:
 
-## Benchmark-only production reuse
+- v3: `outputs/comparison-2026-10-01-v3-contract-aligned/`
+- historical v2: `outputs/comparison-2026-09-30-v2/`
 
-The native adapters share a bundle of Carrot's wrapping and bubble-slot algorithms while injecting backend-specific text metrics. Playwright loads the compiled production PageArtwork page-export runtime. Both are explicitly benchmark-only; RoverCMT production runtime does not import parent Carrot source.
+See:
 
-See the analysis report for exact versions, environment, timing, memory limitations, font loading, fixture differences, and remaining unknowns.
+- `docs/analysis/RENDERER_CONTRACT_ALIGNED_RECOMPARISON.md`
+- `docs/analysis/RENDERER_COMPARISON_SPIKE.md`

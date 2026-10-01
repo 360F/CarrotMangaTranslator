@@ -97,7 +97,11 @@ function buildHtml(contract, runResult, diagnostics) {
         fixture.referencePath,
       );
       const cells = [
-        imageCell("Electron reference-v2", reference, fixture.sourcePage),
+        imageCell(
+          `Electron reference-v${contract.manifest.version}`,
+          reference,
+          fixture.sourcePage,
+        ),
         ...candidateIds.map((candidateId) => {
           const value = result?.candidates[candidateId];
           if (!value?.success)
@@ -109,7 +113,7 @@ function buildHtml(contract, runResult, diagnostics) {
           return `${imageCell(candidateId, `../${value.outputPath}`, fixture.sourcePage)}${
             diagnostic
               ? imageCell(
-                  `${candidateId} ?4 absolute diff`,
+                  `${candidateId} 4x amplified absolute diff`,
                   diagnostic.diffPath.replace(/^visual-comparison\//, ""),
                   fixture.sourcePage,
                 )
@@ -123,7 +127,7 @@ function buildHtml(contract, runResult, diagnostics) {
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RoverCMT renderer comparison</title><style>
-body{margin:0;background:#15171a;color:#f4f5f7;font:14px system-ui,sans-serif}header,article{padding:18px 24px}article{border-top:1px solid #3a3f46}.grid{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:14px;align-items:start}section{min-width:0;background:#20242a;padding:10px;border-radius:8px}h1,h2,h3{margin:.2em 0 .55em}img{display:block;width:100%;height:auto;background:#fff}p{color:#bbc2cc}code,pre{white-space:pre-wrap;color:#ffb4ab}@media(max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(240px,1fr))}}
+body{margin:0;background:#15171a;color:#f4f5f7;font:14px system-ui,sans-serif}header,article{padding:18px 24px}article{border-top:1px solid #3a3f46}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;align-items:start}section{min-width:0;background:#20242a;padding:10px;border-radius:8px}h1,h2,h3{margin:.2em 0 .55em}img{display:block;width:100%;height:auto;background:#fff}p{color:#bbc2cc}code,pre{white-space:pre-wrap;color:#ffb4ab}@media(max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(240px,1fr))}}
 </style></head><body><header><h1>RoverCMT renderer comparison</h1><p>Human review artifact. Pixel diagnostics are aids only, never pass/fail or winner selection.</p></header>${rows}</body></html>\n`;
 }
 

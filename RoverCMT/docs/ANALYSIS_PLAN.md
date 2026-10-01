@@ -292,7 +292,7 @@ Renderer 방향을 사람이 결정하기 전에는 다음을 하지 않는다.
 ## 8. 바로 다음 작업
 
 Renderer feasibility/candidate analysis와 comparison spike 구현·측정은 완료됐다.
-결과는 `docs/analysis/RENDERER_COMPARISON_SPIKE.md`에 기록한다.
+v2 결과는 `docs/analysis/RENDERER_COMPARISON_SPIKE.md`, contract-aligned v3 결과는 `docs/analysis/RENDERER_CONTRACT_ALIGNED_RECOMPARISON.md`에 기록한다.
 
 다음 작업은:
 
@@ -300,6 +300,6 @@ Renderer feasibility/candidate analysis와 comparison spike 구현·측정은 �
 
 이다.
 
-`spikes/renderer-comparison/outputs/comparison-2026-09-30-v2/visual-comparison/index.html`에서
+`spikes/renderer-comparison/outputs/comparison-2026-10-01-v3-contract-aligned/visual-comparison/index.html`에서
 reference와 candidate PNG를 직접 확인한 뒤 native renderer, browser fallback 또는
 추가 검증 방향을 결정한다. 그 전에는 renderer winner나 production architecture를 확정하지 않는다.

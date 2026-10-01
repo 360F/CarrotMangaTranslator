@@ -8,8 +8,12 @@ const { PNG } = require("pngjs");
 const {
   loadManifest,
   sha256,
-  verifyImmutableInventory,
+  verifyImmutableInventory: verifyImmutableInventoryV2,
 } = require("./manifest.cjs");
+const {
+  loadManifestV3,
+  verifyImmutableInventory: verifyImmutableInventoryV3,
+} = require("./manifest-v3.cjs");
 const {
   createNodeCanvasAdapter,
   createSkiaAdapter,
@@ -17,11 +21,8 @@ const {
 const { createPlaywrightAdapter } = require("./playwright-adapter.cjs");
 const { createVisualReport } = require("./visual-report.cjs");
 
-const contract = loadManifest();
-process.env.PLAYWRIGHT_BROWSERS_PATH ||= path.join(
-  contract.spikeRoot,
-  ".playwright-browsers",
-);
+let contract;
+let verifyImmutableInventory;
 
 const factories = [
   ["skia-canvas", createSkiaAdapter],
@@ -36,6 +37,15 @@ void main().catch((error) => {
 
 async function main() {
   const options = parseArguments(process.argv.slice(2));
+  const isV3 = Boolean(options.manifest);
+  contract = isV3 ? loadManifestV3(options.manifest) : loadManifest();
+  verifyImmutableInventory = isV3
+    ? verifyImmutableInventoryV3
+    : verifyImmutableInventoryV2;
+  process.env.PLAYWRIGHT_BROWSERS_PATH ||= path.join(
+    contract.spikeRoot,
+    ".playwright-browsers",
+  );
   const fixtures = options.fixture
     ? contract.fixtures.filter(
         (fixture) => fixture.sourcePage === options.fixture,
@@ -43,11 +53,17 @@ async function main() {
     : contract.fixtures;
   if (fixtures.length === 0)
     throw new Error(`Unknown fixture: ${options.fixture}`);
-  const selectedFactories = options.candidate
-    ? factories.filter(([id]) => id === options.candidate)
+  const selectedIds =
+    options.candidates ?? (options.candidate ? [options.candidate] : null);
+  const selectedFactories = selectedIds
+    ? factories.filter(([id]) => selectedIds.includes(id))
     : factories;
-  if (selectedFactories.length === 0)
-    throw new Error(`Unknown candidate: ${options.candidate}`);
+  if (
+    selectedFactories.length === 0 ||
+    (selectedIds && selectedFactories.length !== new Set(selectedIds).size)
+  ) {
+    throw new Error(`Unknown candidate selection: ${selectedIds?.join(",")}`);
+  }
 
   const outputRoot = path.join(contract.spikeRoot, "outputs");
   const runName =
@@ -106,6 +122,12 @@ async function main() {
       reference: fixture.reference,
       candidates: {},
     })),
+    contractAlignment: isV3
+      ? {
+          canonicalInputs: contract.canonicalInputs,
+          candidatesReadSourceChapter: contract.readsSourceChapter,
+        }
+      : null,
     visualComparison: null,
   };
 
@@ -288,6 +310,8 @@ function parseArguments(args) {
     output: null,
     fixture: null,
     candidate: null,
+    candidates: null,
+    manifest: null,
     timeoutMs: 60_000,
   };
   for (let index = 0; index < args.length; index += 1) {
@@ -295,9 +319,19 @@ function parseArguments(args) {
     if (value === "--output") result.output = args[++index];
     else if (value === "--fixture") result.fixture = args[++index];
     else if (value === "--candidate") result.candidate = args[++index];
+    else if (value === "--candidates") {
+      result.candidates = String(args[++index] ?? "")
+        .split(",")
+        .map((candidate) => candidate.trim())
+        .filter(Boolean);
+    } else if (value === "--manifest") result.manifest = args[++index];
     else if (value === "--timeout-ms") result.timeoutMs = Number(args[++index]);
     else throw new Error(`Unknown argument: ${value}`);
   }
+  if (result.candidate && result.candidates)
+    throw new Error("Use only one of --candidate or --candidates");
+  if (result.candidates && result.candidates.length === 0)
+    throw new Error("Invalid --candidates");
   if (!Number.isFinite(result.timeoutMs) || result.timeoutMs <= 0)
     throw new Error("Invalid --timeout-ms");
   return result;
