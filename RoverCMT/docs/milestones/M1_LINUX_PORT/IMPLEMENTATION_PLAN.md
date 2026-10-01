@@ -17,7 +17,7 @@
 | 항목 | 값 |
 |---|---|
 | Active milestone | **M1 — Linux Port** ([목표와 요구사항](README.md#목표)) |
-| 현재 Step | Step 1 구현·검증 완료, commit/push 마무리 중 |
+| 현재 Step | Step 1 DONE — 사용자 검토 checkpoint 대기 |
 | **다음 Step** | Step 1 사용자 검토 checkpoint → 승인 후 Step 2 |
 | 다음 Step 진행 가능 여부 | Step 1 사용자 검토 전 Step 2를 시작하지 않는다 |
 
@@ -25,7 +25,7 @@
 
 | Step | Name | Status | Main checkpoint |
 |---|---|---|---|
-| 1 | [Core Architecture, Contracts & CLI Adapter](#step-1--core-architecture-contracts--cli-adapter) | IN_PROGRESS | Carrot loader contract 확인 + Core boundary + CLI로 minimal pipeline smoke. **사용자 검토 checkpoint** |
+| 1 | [Core Architecture, Contracts & CLI Adapter](#step-1--core-architecture-contracts--cli-adapter) | DONE | Carrot loader contract 확인 + Core boundary + CLI로 minimal pipeline smoke. **사용자 검토 checkpoint** |
 | 2 | [Detection / Koharu](#step-2--detection--koharu) | NOT_STARTED | Linux detection 결과가 기존 `hayai-regions.json`과 region 수·bbox·순서 일치 |
 | 3 | [OCR / Hayai](#step-3--ocr--hayai) | NOT_STARTED | Linux Hayai `sourceText`가 기존 결과와 일치 |
 | 4 | [Translation](#step-4--translation) | NOT_STARTED | 같은 입력으로 같은 request·parse·merge·memory 갱신 |
@@ -214,7 +214,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 
 ## Step 1 — Core Architecture, Contracts & CLI Adapter
 
-- **Status:** IN_PROGRESS
+- **Status:** DONE
 - **Goal:** Linux RoverCMT의 최소 Core architecture와 실행 골격을 만들고, 이후 stage가 붙을 contract/boundary를 실제 코드로 검증한다. M1에서 가장 중요한 초기 checkpoint다.
 - **Scope:**
   1. Carrot loader/import 경로 선행 분석: Windows Carrot이 RoverCMT output을 open/use하는 데 필요한 최소 project/output contract 확인(D1). 결과는 새 analysis 문서(`docs/analysis/`)로 남기고 M1-COMPAT-001에 링크한다.
@@ -264,10 +264,10 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - 위 Validation 통과, [DONE 조건](#step-status와-done-조건) 충족
   - **Checkpoint:** Step 1 완료 후 다음 Step으로 자동 진행하지 않는다. 이 architecture가 이후 모든 Step의 기반이므로 사용자/검토자가 결과를 확인한다.
 - **Result:**
-  - Status: IN_PROGRESS — 구현·validation 완료; commit/push 후 DONE. 새 WSL Git user.name/user.email 미설정으로 commit 대기 중(사용자에게 요청).
+  - Status: DONE — 구현·validation·commit·push 완료(2026-10-02).
   - Progress notes: branch `main`; 다음은 사용자 architecture 검토 checkpoint. Step 2 미시작.
-  - Commit: 이 Result를 포함하는 Step 1 commit (Git history에서 `feat(rover): add M1 Step 1 core and CLI skeleton` 확인; 완료 SHA는 후속 checkpoint 기록).
-  - Validation result: WSL2 Ubuntu 26.04.1, Node 24.21.0/npm 11.19.0/Python 3.14.4. fetch 후 시작 local/remote HEAD `4f808e213cd0ed5042f25079ab85ab90c5f056a5`, clean main. `npm run check`(typecheck/lint/build 및 9 unit/CLI smoke), `npm run check:boundaries`; 루트 ESLint/Prettier ignore 및 루트 TS include scope와 reference src 무변경 확인. Node child process와 GPU 접근은 sandbox 밖에서 검증.
+  - Commit: [`4c63e4631bbaa5fb4114d8f3ecf996de30cf145e`](https://github.com/360F/RoverCMT/commit/4c63e4631bbaa5fb4114d8f3ecf996de30cf145e) — `feat(rover): add M1 Step 1 core and CLI skeleton`. push 후 local/remote SHA 일치 확인; 이 DONE checkpoint는 후속 docs commit에 기록.
+  - Validation result: WSL2 Ubuntu 26.04.1, Node 24.21.0/npm 11.19.0/Python 3.14.4. fetch 후 시작 local/remote HEAD `4f808e213cd0ed5042f25079ab85ab90c5f056a5`, clean main. Git 작성자 정보를 사용자에게 받아 repo-local 설정; Windows GCM의 기존 인증으로 push 성공(토큰 출력/저장 없음). `npm run check`(typecheck/lint/build 및 9 unit/CLI smoke), `npm run check:boundaries`; 루트 ESLint/Prettier ignore 및 루트 TS include scope와 reference src 무변경 확인. Node child process와 GPU 접근은 sandbox 밖에서 검증.
   - D1: [loader/output contract 분석](../../analysis/CARROT_LOADER_OUTPUT_CONTRACT.md). strict Carrot index/work/chapter/page 최소 필드와 identity/path scope, copied path relocation 및 GUI share ZIP contract 구분. 실제 CLI로 PNG 복사와 chapter JSON 저장·재읽기 검증; dummy run은 page/chapter idle 유지.
   - D2: versioned JSON config, config 파일 기준 상대 경로; unknown field 거부. Carrot settings import는 Step 8까지 보류.
   - D3: 기존 data root를 건드리지 않는 신규 output library root. Windows 별도 data root로 복사 후 source relocation 활용; 실제 open/use는 Step 8. GUI share ZIP export는 현재 구현하지 않음.
