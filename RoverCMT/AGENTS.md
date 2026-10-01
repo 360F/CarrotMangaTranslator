@@ -47,7 +47,8 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 
 ## 실행 환경
 
-- 주 개발·검증 환경은 **Rover PC**다: Windows 11 + WSL2 Ubuntu 26.04.1 LTS, NVIDIA RTX 5090(약 32GB), WSL/Docker GPU 동작 확인, `nvidia-smi` CUDA 13.4 표시. M1 최종 목표 구성은 이 머신의 WSL2다.
+- 주 개발·검증 환경은 **Rover PC**다: Windows 11 + WSL2 Ubuntu 26.04.1 LTS, NVIDIA RTX 5090(약 32GB), WSL/Docker GPU 동작 확인, `nvidia-smi` CUDA 13.4 표시. M1 최종 목표 구성은 이 머신의 WSL2다. 이 환경 값은 사용자 보고 기준이며 에이전트가 직접 검증한 값이 아니다.
+- Rover PC의 WSL2 Ubuntu 환경(GPU 접근 포함)이 실제로 준비됐는지는 M1 Step 1 시작 시 확인한다. 준비되지 않았으면 사용자에게 알리고 Step 1을 `BLOCKED`로 둔다. 확인 결과가 위 값과 달라도 사용자 확인 없이 문서의 환경 값을 바꾸지 않는다.
 - 모든 에이전트가 이 머신에서 실행된다고 가정하지 않는다. GPU가 없는 세션도 있다.
 - GPU가 필요한 검증(FLUX, Hayai CUDA 등)은 실행 시 GPU/runtime 가용성을 먼저 확인한다. 불가능하면 완료 처리하지 말고 Step Result에 "Rover PC에서 추가 검증 필요"로 남긴다.
 - 번역 endpoint는 환경마다 다를 수 있다(외부 번역기, 내장/로컬 서버 등). 확정된 방향은 "OpenAI-compatible endpoint를 설정으로 받는다"까지다. URL, model, API key, 환경변수 이름, live 호출 허용 여부는 M1 Step 4에서 정한다. credential은 repo에 넣지 않는다.
