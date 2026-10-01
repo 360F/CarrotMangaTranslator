@@ -1,11 +1,11 @@
+# Original CarrotMangaTranslator app check (Windows/macOS `npm run check`,
+# macOS FLUX Metal and font runtime smoke). It does not check RoverCMT code.
+# Automatic push/pull_request runs are disabled; run manually if needed.
+# RoverCMT automated CI will be decided separately after M2.
 name: Check
 
 on:
-  push:
-    branches:
-      - master
-      - main
-  pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
