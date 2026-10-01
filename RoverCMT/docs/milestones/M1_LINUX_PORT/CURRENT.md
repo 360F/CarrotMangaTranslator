@@ -40,7 +40,7 @@ Item 목록:
 ### M1-CORE-001 — Linux core pipeline port
 
 - **Status:** CURRENT
-- **Progress:** not started
+- **Progress:** in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음)
 - **Summary:** Carrot staged workflow의 자동 pipeline(detect → ocr → translate → erase → typography/layout → render → output)을 RoverCMT 내부 독립 코드로 이식한다. 각 stage의 runtime 이식은 아래 개별 item이 맡고, 이 item은 orchestration과 stage 연결을 맡는다.
 - **Why it matters:** M1의 본체다. 분석 결론은 "GUI와 Electron에 의존하지 않고 Linux에서 실행 가능한 독립적인 RoverCMT Core를 만드는 것은 현실적"이다.
 - **Related analysis:**
@@ -51,7 +51,9 @@ Item 목록:
 - **Related items:** 모든 M1 runtime item, M1-CORE-002, M1-PERSIST-001.
 - **Dependencies:** M1-RENDER-001(방향은 결정됨: Skia primary), 각 runtime smoke.
 - **Decision / validation needed:** CORE §17의 열린 결정(raw OCR 보존, 번역 누락 처리, erase와 번역의 관계, partial failure 정책 등)을 M1에서 Carrot 동작 그대로 둘지 사용자 확인. 대표 실제 page로 최소 E2E 실행([ANALYSIS_PLAN §6](../../ANALYSIS_PLAN.md#6-end-to-end-검증)).
-- **History:** 2026-10-01 생성(milestone 정의).
+- **History:** 2026-10-01 생성(milestone 정의). 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
+
+- **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
 
 ### M1-CORE-002 — 기존 Translation ↔ Erase 병렬 실행 경로 이식
 
@@ -78,7 +80,7 @@ Item 목록:
 ### M1-CONFIG-001 — Config/settings 파일 기반 설정
 
 - **Status:** CURRENT
-- **Progress:** not started
+- **Progress:** in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음)
 - **Summary:** Carrot의 GUI settings와 `settings.json` 대신 RoverCMT config 파일로 pipeline 설정(model endpoint, runtime 경로, stage option, 언어 등)을 받는다. secret(API key 등)은 config 본문과 분리한다.
 - **Why it matters:** CLI 실행과 재현성의 전제다. 현재 production 동작은 `settings.json`의 값(예: `modelProvider="openai-api"`, `ocr.pipeline="hayai"`, `cumulative:true`)에 따라 분기가 정해진다.
 - **Related analysis:**
@@ -88,12 +90,14 @@ Item 목록:
 - **Related items:** M1-CONFIG-002, M1-CLI-001.
 - **Dependencies:** 없음(설계 먼저 가능).
 - **Decision / validation needed:** config 형식(JSON/TOML/YAML)과 Carrot `settings.json` 값 import 여부.
-- **History:** 2026-10-01 생성.
+- **History:** 2026-10-01 생성. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
+
+- **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
 
 ### M1-CONFIG-002 — Input/output 경로 config화
 
 - **Status:** CURRENT
-- **Progress:** not started
+- **Progress:** in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음)
 - **Summary:** 입력 파일/디렉터리, 출력 파일/디렉터리, model/runtime 경로를 config 또는 CLI 인자로 받는다.
 - **Why it matters:** Carrot은 data root와 library 구조(`library/works/<workId>/chapters/<chapterId>/…`)를 앱이 관리한다. Linux CLI에서는 명시적 경로가 필요하다.
 - **Related analysis:**
@@ -102,12 +106,14 @@ Item 목록:
 - **Related items:** M1-CONFIG-001, M1-COMPAT-001(출력은 Windows Carrot에서 열 수 있어야 한다).
 - **Dependencies:** M1-COMPAT-001(정의 확정: Carrot에서 open/use 가능).
 - **Decision / validation needed:** Carrot이 열 수 있는 출력 형태를 어떤 방식으로 만들지(Carrot library 구조에 직접 쓰기 / 별도 output 디렉터리 + Carrot이 가져올 수 있는 형태). M1-COMPAT-001의 interoperability 검증을 통과해야 한다.
-- **History:** 2026-10-01 생성. 2026-10-01 M1-COMPAT-001 정의 확정에 맞춰 의존 설명 갱신.
+- **History:** 2026-10-01 생성. 2026-10-01 M1-COMPAT-001 정의 확정에 맞춰 의존 설명 갱신. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
+
+- **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
 
 ### M1-CLI-001 — Bash/CLI 실행
 
 - **Status:** CURRENT
-- **Progress:** not started
+- **Progress:** in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음)
 - **Summary:** GUI 없이 Linux bash에서 하나의 command로 pipeline 전체 또는 지정 stage를 실행한다.
 - **Why it matters:** M1의 실행 형태 요구사항이다. 현재 Carrot은 Electron main process와 IPC를 통해 실행된다.
 - **Related analysis:**
@@ -116,12 +122,14 @@ Item 목록:
 - **Related items:** M1-OBS-001.
 - **Dependencies:** M1-CONFIG-001.
 - **Decision / validation needed:** stage 단위 재실행(resume) 지원 범위.
-- **History:** 2026-10-01 생성.
+- **History:** 2026-10-01 생성. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
+
+- **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
 
 ### M1-OBS-001 — Stage 진행상황과 소요시간 실시간 표시
 
 - **Status:** CURRENT
-- **Progress:** not started
+- **Progress:** in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음)
 - **Summary:** 실행 중 page×stage 진행상황과 각 stage 소요시간을 실시간으로 출력하고, run 종료 후에도 남긴다.
 - **Why it matters:** 사용자 요구사항이며 M2 benchmark의 측정 기반이다. 기존 Carrot 로그는 일부 시간을 다른 bucket에 합산한다(예: detection 시간이 `ocr` bucket에 합산).
 - **Related analysis:**
@@ -131,12 +139,14 @@ Item 목록:
 - **Related items:** [M2-BENCH-001](../M2_TEST_SET/CURRENT.md#m2-bench-001--stage별-benchmark와-실행시간-측정), [M2-BENCH-002](../M2_TEST_SET/CURRENT.md#m2-bench-002--full-e2e-benchmark와-실행시간-측정).
 - **Dependencies:** M1-CLI-001.
 - **Decision / validation needed:** 출력 형식(사람용 진행 표시 + 기계용 JSONL 등).
-- **History:** 2026-10-01 생성.
+- **History:** 2026-10-01 생성. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
+
+- **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
 
 ### M1-COMPAT-001 — Windows Carrot과의 output interoperability
 
 - **Status:** CURRENT
-- **Progress:** not started (정의 확정, 2026-10-01)
+- **Progress:** in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음)
 - **Summary:** RoverCMT가 생성한 프로젝트/결과물을 **기존 Windows Carrot에서 열었을 때 정상적으로 불러오고 사용할 수 있게** 한다. 요구사항은 interoperability다: "RoverCMT output → 기존 Windows Carrot에서 정상적으로 open/use 가능".
 - **요구하지 않는 것:**
   - Windows Carrot과 같은 내부 구현
@@ -150,18 +160,20 @@ Item 목록:
   - [CORE §4 Block Data Lifecycle](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#4-block-data-lifecycle) — block 필드별 생산자·소비자. Carrot이 열고 쓰는 데 필요한 필드를 고를 때 쓴다.
   - [CORE §9 Persistence and Artifact Model](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#9-persistence-and-artifact-model) — canonical 파일(`work.json`, `chapter.json`, `style-guide.json`, `story-memory.json`)과 debug artifact 구분.
   - [CORE §13 Proposed Minimal RoverCMT Core Model](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#13-proposed-minimal-rovercmt-core-model) — Rover 내부 model은 Carrot과 달라도 된다(확정 아님). 다르면 Carrot 형식으로 내보내는 경계가 필요하다.
-  - Carrot이 project/chapter를 열 때 요구하는 최소 필드·검증 규칙: `Evidence: not yet analyzed`.
+  - [CARROT_LOADER_OUTPUT_CONTRACT.md](../../analysis/CARROT_LOADER_OUTPUT_CONTRACT.md) — Step 1 D1: strict schema, library path/identity 검증, relocation과 share ZIP 구분, 최소 출력 구조.
 - **Related items:** M1-PERSIST-001, M1-CONFIG-002, [M1-RENDER-001](#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback)(pixel parity 불필요), [M4-PERSIST-001](../M4_OPTIMIZATION/IDEAS.md#m4-persist-001--chapter-전체-json-반복-rewrite-비용-개선).
 - **Dependencies:** 없음. 이 정의가 M1-PERSIST-001, M1-CONFIG-002, M4-PERSIST-001의 범위를 정한다.
 - **Decision / validation needed:**
   - 결정됨: 호환 수준 = Windows Carrot에서 open/use 가능(2026-10-01).
-  - 남은 검증: RoverCMT 출력을 실제 Windows Carrot으로 열어 불러오기와 사용(편집·export 등 사용자가 쓰는 기본 동작)이 되는지 확인. Carrot loader가 요구하는 최소 필드는 아직 분석되지 않았다.
-- **History:** 2026-10-01 생성. 2026-10-01 사용자 결정으로 호환 의미를 output interoperability로 확정하고 title을 "Windows/Electron 결과·프로젝트 호환"에서 변경(ID 유지).
+  - 남은 검증: RoverCMT 출력을 실제 Windows Carrot으로 열어 불러오기와 사용(편집·export 등 사용자가 쓰는 기본 동작)이 되는지 확인. Carrot loader 최소 contract는 Step 1 분석 완료; 실제 Windows open/use는 Step 8 검증한다.
+- **History:** 2026-10-01 생성. 2026-10-01 사용자 결정으로 호환 의미를 output interoperability로 확정하고 title을 "Windows/Electron 결과·프로젝트 호환"에서 변경(ID 유지). 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
+
+- **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
 
 ### M1-PERSIST-001 — Persistence와 data contract parity
 
 - **Status:** CURRENT
-- **Progress:** not started
+- **Progress:** in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음)
 - **Summary:** stage 결과, block 데이터, translation memory(`style-guide.json`, `story-memory.json`), run artifact를 Carrot과 같은 의미로 저장·재사용한다.
 - **Why it matters:** translation은 page N의 memory commit 이후 page N+1이 memory를 읽는 순차 의존이 있고, 같은 의미를 보존해야 현재 결과를 재현할 수 있다.
 - **Related analysis:**
@@ -172,7 +184,9 @@ Item 목록:
 - **Related items:** M1-COMPAT-001, [M4-PERSIST-001](../M4_OPTIMIZATION/IDEAS.md#m4-persist-001--chapter-전체-json-반복-rewrite-비용-개선).
 - **Dependencies:** M1-COMPAT-001(정의 확정: 저장 결과를 Windows Carrot이 열 수 있어야 한다. 내부 저장 방식은 Carrot과 달라도 된다).
 - **Decision / validation needed:** CORE §17 #5 persistence 전략. 요청별 work-context snapshot을 artifact로 남길지(TR-LLM §16.6).
-- **History:** 2026-10-01 생성. 2026-10-01 M1-COMPAT-001 정의 확정에 맞춰 의존 설명 갱신.
+- **History:** 2026-10-01 생성. 2026-10-01 M1-COMPAT-001 정의 확정에 맞춰 의존 설명 갱신. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
+
+- **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
 
 ### M1-PERSIST-002 — Rover Output 이식(번역 JSON/CSV export, 출력 경로, 기본 입출력 디렉터리)
 
@@ -194,7 +208,7 @@ Item 목록:
 ### M1-RUNTIME-001 — Linux runtime/model 의존성 교체·적응
 
 - **Status:** CURRENT
-- **Progress:** not started
+- **Progress:** in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음)
 - **Summary:** Carrot의 Windows/Electron 전용 지원 계층(Electron `nativeImage` image I/O, Windows managed installer/binary catalog, DirectML/PowerShell, FFmpeg 경로 등)을 Linux에서 동작하는 대응물로 교체한다. stage별 runtime은 아래 개별 item이 맡고 이 item은 공통 계층과 exact pin 검증을 맡는다.
 - **Why it matters:** 분석 결론상 핵심 risk는 "Linux용 기술 부재"가 아니라 packaging 분리, exact pin, ABI, model/config compatibility다.
 - **Related analysis:**
@@ -204,7 +218,9 @@ Item 목록:
 - **Related items:** M1-DETECT-001, M1-OCR-001, M1-TRANS-001, M1-INPAINT-001, M1-RENDER-001.
 - **Dependencies:** Linux 실행 환경(distro, GPU/driver). 주 환경: Rover PC([RoverCMT/AGENTS.md 실행 환경](../../../AGENTS.md#실행-환경)).
 - **Decision / validation needed:** 배포 형태(venv/container/system package)와 GPU 필수 여부.
-- **History:** 2026-10-01 생성. 2026-10-01 Dependencies에 Rover PC 실행 환경 링크 추가(user decision).
+- **History:** 2026-10-01 생성. 2026-10-01 Dependencies에 Rover PC 실행 환경 링크 추가(user decision). 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
+
+- **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
 
 ### M1-DETECT-001 — Koharu layout ONNX Linux runtime
 
