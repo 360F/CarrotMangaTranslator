@@ -1,5 +1,15 @@
 # Renderer Comparison Spike Report
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — v2 비교 결과와 renderer 결정 입력
+- [M2 Test Set / Benchmark](../milestones/M2_TEST_SET/README.md) — 비교 report 형식 선례
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md) · [M2 CURRENT](../milestones/M2_TEST_SET/CURRENT.md)
+
 ## 1. Scope and decision status
 
 This spike compares Skia Canvas, node-canvas, and Playwright Chromium in an isolated harness using only `fixtures/manifest-v2.json` as the authoritative input contract. It does not change RoverCMT production code, the fixture corpus, reference images, the portable font, or library data.

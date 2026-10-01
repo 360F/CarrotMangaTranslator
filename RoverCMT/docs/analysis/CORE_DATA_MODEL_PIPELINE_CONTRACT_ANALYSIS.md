@@ -1,5 +1,18 @@
 # Core Data Model & Pipeline Contract Analysis
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — stage contract, persistence, 호환 범위, open decisions
+- [M2 Test Set / Benchmark](../milestones/M2_TEST_SET/README.md) — E2E 측정과 재현성 수준
+- [M3 Pipelining](../milestones/M3_PIPELINING/README.md) — GPU ownership, 공유 상태, 병렬 모드
+- [M4 Optimization](../milestones/M4_OPTIMIZATION/README.md) — persistence·runtime·memory 최적화 근거
+- [M5 Features](../milestones/M5_FEATURES/README.md) — 장시간 실행의 실패 처리와 누적 상태
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md) · [M2 CURRENT](../milestones/M2_TEST_SET/CURRENT.md) · [M3 IDEAS](../milestones/M3_PIPELINING/IDEAS.md) · [M4 IDEAS](../milestones/M4_OPTIMIZATION/IDEAS.md) · [M5 IDEAS](../milestones/M5_FEATURES/IDEAS.md)
+
 ## 0. Scope and Evidence Rules
 
 이 문서는 지금까지의 개별 분석(OCR, Translation, Inpainting, Renderer)을 CarrotMangaTranslator의 end-to-end data flow 하나로 연결한다. 그 위에서 독립 Linux RoverCMT Core가 보존해야 할 최소 데이터 모델과 stage 간 contract를 정리한다.

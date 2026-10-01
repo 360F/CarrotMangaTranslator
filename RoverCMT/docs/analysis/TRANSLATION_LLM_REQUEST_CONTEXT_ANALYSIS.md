@@ -1,5 +1,18 @@
 # Translation LLM Request / Context Analysis
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — 최소 Linux translation contract, M1 blocker 판단
+- [M2 Test Set / Benchmark](../milestones/M2_TEST_SET/README.md) — translation 계측 항목
+- [M3 Pipelining](../milestones/M3_PIPELINING/README.md) — memory 순차 의존과 page 병렬 요청
+- [M4 Optimization](../milestones/M4_OPTIMIZATION/README.md) — Translation 최적화 후보의 측정 근거
+- [M5 Features](../milestones/M5_FEATURES/README.md) — chapter 간 story memory 순서 의존
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md) · [M2 CURRENT](../milestones/M2_TEST_SET/CURRENT.md) · [M2 IDEAS](../milestones/M2_TEST_SET/IDEAS.md) · [M3 IDEAS](../milestones/M3_PIPELINING/IDEAS.md) · [M4 IDEAS](../milestones/M4_OPTIMIZATION/IDEAS.md) · [M5 IDEAS](../milestones/M5_FEATURES/IDEAS.md)
+
 ## 0. Scope and Evidence Rules
 
 이 문서는 CarrotMangaTranslator staged workflow의 translate stage가 **LLM에게 실제로 무엇을 보내는지**를 production code path와 저장된 실제 요청 artifact로 끝까지 추적한 결과다. RoverCMT Milestone 1(Linux 포팅)의 translation contract와, 이후 translation 병목 최적화의 기준 자료로 쓴다.

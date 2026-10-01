@@ -1,5 +1,14 @@
 # Renderer Library Feature Census
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M2 Test Set / Benchmark](../milestones/M2_TEST_SET/README.md) — fixture에 없는 실제 library 사례
+
+Tracking: [M2 CURRENT](../milestones/M2_TEST_SET/CURRENT.md)
+
 ## 1. Purpose
 
 현재 Renderer Comparison fixture(`fixtures/manifest.json`, `manifest-v2.json`)는 한 chapter에서 뽑은 8 pages이며 horizontal / default font / center / primary outline만 포함한다. 이 문서는 Carrot의 **실제 final library data 전체**를 read-only로 조사해, fixture가 다루지 않는 renderer feature가 실제 저장 데이터에 쓰인 사례가 있는지 확인하고 향후 fixture 후보를 고른다.

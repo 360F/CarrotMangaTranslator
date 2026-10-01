@@ -1,5 +1,9 @@
 # RoverCMT Analysis Plan
 
+> **Current implementation planning and milestone tracking: [docs/milestones/README.md](milestones/README.md)**
+>
+> 이 문서는 milestone 도입 이전의 분석·검증 계획 기록이다. 분석 결과는 [`docs/analysis/`](analysis/)에 있고, 앞으로의 작업 계획과 상태는 milestone 문서에서 관리한다.
+
 ## 현재 상태
 
 초기 이식 가능성 분석은 완료됐다.

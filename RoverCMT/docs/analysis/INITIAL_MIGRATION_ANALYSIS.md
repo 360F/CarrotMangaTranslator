@@ -1,5 +1,14 @@
 ﻿# RoverCMT 초기 이식 가능성 분석
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — Linux Core 가능성, component 분류, runtime 교체 근거
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md)
+
 ## 1. 목적과 결론
 
 이 문서는 CarrotMangaTranslator의 자동 번역 pipeline을 분석하여,

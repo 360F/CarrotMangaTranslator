@@ -1,5 +1,14 @@
 ﻿# RoverCMT Renderer Feasibility & Candidate Analysis
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — renderer 요구사항, 후보와 analysis 수준 기각 후보
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md) · [M1 REJECTED](../milestones/M1_LINUX_PORT/REJECTED.md)
+
 ## 1. Executive Summary
 
 Carrot final export는 MangaPage를 HTML에 직렬화하고 숨겨진 Electron BrowserWindow의 Chromium에서 production React PageArtwork를 렌더한 뒤 DevTools Page.captureScreenshot으로 PNG를 만든다. 실제 dependency는 DOM/CSS CJK shaping·fallback, Canvas measurement, CSS vertical writing, 다층 text stroke, SVG curve text, displacement-map warp, transform·clip·filter와 image composition이다. 큰 페이지는 tile capture 후 FFmpeg로 stitch한다.

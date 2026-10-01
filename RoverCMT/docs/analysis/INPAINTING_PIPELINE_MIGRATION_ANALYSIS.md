@@ -1,5 +1,18 @@
 # Erase / Inpainting Pipeline Migration Analysis
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — FLUX Klein runner Linux runtime
+- [M2 Test Set / Benchmark](../milestones/M2_TEST_SET/README.md) — page 수별 benchmark 설계와 계측
+- [M3 Pipelining](../milestones/M3_PIPELINING/README.md) — translation/erase 병렬 경로, GPU handoff
+- [M4 Optimization](../milestones/M4_OPTIMIZATION/README.md) — Fast Erase, crop 수, runtime lifecycle, chapter 저장 비용
+- [M5 Features](../milestones/M5_FEATURES/README.md) — 장시간 실행에서 커지는 상태
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md) · [M2 CURRENT](../milestones/M2_TEST_SET/CURRENT.md) · [M3 IDEAS](../milestones/M3_PIPELINING/IDEAS.md) · [M4 IDEAS](../milestones/M4_OPTIMIZATION/IDEAS.md) · [M5 IDEAS](../milestones/M5_FEATURES/IDEAS.md)
+
 ## 0. Scope and Evidence Rules
 
 이 문서는 CarrotMangaTranslator의 production staged workflow에서 erase/inpainting 경로를 source와 read-only local artifact(settings, library, run 기록, 로그)로 추적한 결과다. 구현, migration, benchmark, dependency 설치, model 다운로드와 실행은 하지 않았다. Carrot source, library, 기존 문서, renderer 관련 파일도 수정하지 않았다.

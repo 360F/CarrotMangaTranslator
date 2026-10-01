@@ -1,5 +1,16 @@
 # Translation Pipeline Migration Analysis
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — translation 이식 경계와 smoke 계획
+- [M3 Pipelining](../milestones/M3_PIPELINING/README.md) — stage-major 실행과 병렬 경로 진입 조건
+- [M4 Optimization](../milestones/M4_OPTIMIZATION/README.md) — degenerate 출력 처리 현황
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md) · [M3 IDEAS](../milestones/M3_PIPELINING/IDEAS.md) · [M4 IDEAS](../milestones/M4_OPTIMIZATION/IDEAS.md)
+
 ## 0. Scope and Evidence Rules
 
 이 문서는 CarrotMangaTranslator의 production translation pipeline을 source와 read-only local artifact로 추적한 결과다. 목적은 Linux RoverCMT Core로 옮길 translation boundary를 정하는 것이다. 이번 작업에서 하지 않은 것은 다음과 같다.

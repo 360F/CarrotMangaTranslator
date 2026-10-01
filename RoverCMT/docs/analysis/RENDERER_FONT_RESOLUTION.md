@@ -1,5 +1,14 @@
 # Renderer Font Resolution
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — renderer font pin과 배포
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md)
+
 ## 1. Current Font Contract
 
 선택된 8 fixtures의 final snapshots에는 `fontFamily`가 하나도 없다. Carrot은 `src/shared/blockFontCatalog.ts`의 다음 default CSS stack을 사용한다.

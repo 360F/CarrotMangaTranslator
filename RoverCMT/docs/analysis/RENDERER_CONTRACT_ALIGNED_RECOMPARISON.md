@@ -1,5 +1,16 @@
 # Renderer Contract-Aligned Re-comparison
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — 최신 renderer 근거(v3)
+- [M2 Test Set / Benchmark](../milestones/M2_TEST_SET/README.md) — versioned manifest와 pixel diagnostic 선례
+- [M4 Optimization](../milestones/M4_OPTIMIZATION/README.md) — 선택 backend 성능 기준선
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md) · [M2 CURRENT](../milestones/M2_TEST_SET/CURRENT.md) · [M2 IDEAS](../milestones/M2_TEST_SET/IDEAS.md) · [M4 IDEAS](../milestones/M4_OPTIMIZATION/IDEAS.md)
+
 ## 1. Why a v3 re-comparison was required
 
 The v2 comparison proved that Skia Canvas and Playwright could render all eight fixtures with the pinned portable font, but it did not prove that both candidates received the same production typography contract as the Electron reference. A renderer decision based on v2 would therefore mix backend differences with input and layout-decision differences.

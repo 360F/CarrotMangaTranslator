@@ -1,5 +1,17 @@
 # Detection Pipeline Migration Analysis
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — Koharu ONNX Linux runtime과 smoke 계획
+- [M2 Test Set / Benchmark](../milestones/M2_TEST_SET/README.md) — stage 계측 부족 근거
+- [M3 Pipelining](../milestones/M3_PIPELINING/README.md) — Koharu session lifecycle과 병렬 모드
+- [M4 Optimization](../milestones/M4_OPTIMIZATION/README.md) — 반복 Koharu 추론 재사용, session 재생성
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md) · [M2 CURRENT](../milestones/M2_TEST_SET/CURRENT.md) · [M3 IDEAS](../milestones/M3_PIPELINING/IDEAS.md) · [M4 IDEAS](../milestones/M4_OPTIMIZATION/IDEAS.md)
+
 ## 0. Scope and Evidence Rules
 
 이 문서는 CarrotMangaTranslator의 staged automatic workflow에서 Detection을 source와 read-only local artifact(model 파일, run artifact `hayai-regions.json` 214개, library, 로그)로 추적한 결과다. 구현, benchmark, 설치, 실행은 하지 않았다. 기존 문서, production code, renderer spike도 수정하지 않았다.

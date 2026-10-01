@@ -1,5 +1,15 @@
 # OCR Runtime Migration Analysis
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — HayaiOCR Linux runtime과 smoke 계획
+- [M4 Optimization](../milestones/M4_OPTIMIZATION/README.md) — OCR + Translation 통합 실험의 하위 의존성
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md) · [M4 IDEAS](../milestones/M4_OPTIMIZATION/IDEAS.md)
+
 ## 1. Purpose and Evidence Rules
 
 이 문서는 Carrot의 현재 production OCR 경로를 source와 read-only local evidence로 추적하고, RoverCMT가 Linux에서 독립 실행할 OCR 경계를 정하기 위한 분석이다. RoverCMT OCR 구현, runtime 설치, 모델 다운로드, OCR 재실행은 하지 않았다. Carrot source, library, runtime, 기존 문서, Renderer Comparison 파일은 수정하지 않았다.

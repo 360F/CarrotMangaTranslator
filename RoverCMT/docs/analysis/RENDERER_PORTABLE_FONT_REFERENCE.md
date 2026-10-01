@@ -1,5 +1,15 @@
 # Renderer Portable Font Reference
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M1 Linux Port](../milestones/M1_LINUX_PORT/README.md) — portable font 라이선스
+- [M2 Test Set / Benchmark](../milestones/M2_TEST_SET/README.md) — manifest revision 선례
+
+Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md) · [M2 CURRENT](../milestones/M2_TEST_SET/CURRENT.md)
+
 ## 1. Purpose
 
 Renderer Comparison의 모든 backend가 동일한 exact font bytes를 사용하도록 portable benchmark font를 고정하고, 기존 8개 final snapshots와 render images를 그대로 사용한 Carrot Chromium lossless reference revision 2를 만든다. 이는 RoverCMT 제품의 영구 default-font 결정이나 renderer 구현이 아니다.

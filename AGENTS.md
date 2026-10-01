@@ -1,5 +1,10 @@
 # Project agent instructions
 
+## RoverCMT 작업
+
+`RoverCMT/` 아래 작업(Linux 이식, 분석, milestone 계획)은 먼저 [`RoverCMT/AGENTS.md`](RoverCMT/AGENTS.md)를 읽고,
+현재 계획과 다음 작업은 [`RoverCMT/docs/milestones/README.md`](RoverCMT/docs/milestones/README.md)에서 확인한다.
+
 ## 사용자 데이터 보호
 
 `library`·보관함·원본·출력물은 정리 대상이 아니다. 워크트리 제거 전 외부 정션/심볼릭 링크는 링크 자체만 먼저 분리하고 원본 보존을 확인한 뒤 워크트리를 제거한다. 링크가 연결된 상태로 재귀·강제 제거하지 않는다.

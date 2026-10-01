@@ -1,5 +1,14 @@
 # Renderer Fixture Census & Reference Manifest
 
+## Project Tracking
+
+> 이 블록은 관련 milestone 링크만 담는다. 계획·상태(CURRENT/IDEAS/REJECTED)의 source of truth는 [docs/milestones](../milestones/README.md)다. 아래 분석 본문은 작성 시점의 근거 자료다.
+
+Related milestones:
+- [M2 Test Set / Benchmark](../milestones/M2_TEST_SET/README.md) — fixture 선정과 manifest 설계 선례
+
+Tracking: [M2 CURRENT](../milestones/M2_TEST_SET/CURRENT.md)
+
 ## 1. Purpose
 
 이 문서는 renderer 구현 전에 현재 Carrot final state를 고정해 Skia Canvas, node-canvas, Playwright Chromium에 동일한 입력을 제공하기 위한 fixture census다. OCR, 번역, erase, typography 재실행이나 renderer 품질 판정은 범위 밖이다. 기존 `library`와 export 결과는 읽기 전용이며 fixture에는 normalized metadata만 저장했다.
