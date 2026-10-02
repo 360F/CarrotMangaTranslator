@@ -57,14 +57,14 @@ test('project root is derived from the entry module, not the CWD', () => {
   assert.equal(projectRootFrom('file:///opt/x/RoverCarrot/dist/cli.js'), '/opt/x/RoverCarrot');
 });
 
-test('PASS screen (non-TTY): ordered stage lines with 100%, Result and Output only; details go to rovercmt.log', async t => {
+test('PASS screen (non-TTY): ordered stage lines with 100%, Result and Output only; details go to log_all.log', async t => {
   const { root, cwd } = await pages(t);
   const { code, out } = await cli({ root, cwd });
   assert.equal(code, 0);
   const bar = '█'.repeat(20);
   assert.equal(out, ['Detect', 'OCR', 'Translate', 'Typography', 'Erase', 'Layout', 'Render']
     .map(name => `${name.padEnd(18)}100% [${bar}] PASS\n`).join('') + '\nResult: PASS\nOutput: output\n');
-  const log = await logLines(root, 'rovercmt.log');
+  const log = await logLines(root, 'log_all.log');
   const types = log.map(entry => entry.type);
   for (const type of ['cli-start', 'run-start', 'input-materialized', 'stage-start', 'stage-end', 'run-end', 'run-result'])
     assert.ok(types.includes(type), type);
@@ -127,11 +127,11 @@ test('logs stay under their size caps, trimmed by whole lines, without backup fi
     const line = JSON.stringify({ old: name, pad: 'x'.repeat(200) }) + '\n';
     return line.repeat(Math.ceil((LOG_LIMITS[name] + 1024 * 1024) / line.length));
   };
-  for (const name of ['rovercmt.log', 'critical.log']) await writeFile(join(root, 'logs', name), filler(name));
+  for (const name of ['log_all.log', 'critical.log']) await writeFile(join(root, 'logs', name), filler(name));
   const { code } = await cli({ root, cwd, argv: ['--output', 'missing-parent/x'] }); // fails: critical gets an entry
   assert.equal(code, 1);
-  assert.deepEqual((await readdir(join(root, 'logs'))).sort(), ['critical.log', 'rovercmt.log']);
-  for (const name of ['rovercmt.log', 'critical.log']) {
+  assert.deepEqual((await readdir(join(root, 'logs'))).sort(), ['critical.log', 'log_all.log']);
+  for (const name of ['log_all.log', 'critical.log']) {
     assert.ok((await stat(join(root, 'logs', name))).size <= LOG_LIMITS[name], name);
     const lines = await logLines(root, name); // every remaining line is complete JSON
     assert.equal(lines.at(-1).type === 'pre-stage-failure' || lines.at(-1).type === 'run-result', true, lines.at(-1).type);

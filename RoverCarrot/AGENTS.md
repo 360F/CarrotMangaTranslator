@@ -80,7 +80,7 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 - `npm run smoke` — build 후 repository input/CLI smoke validation; 사용자 config 실행은 아래 CLI 사용
 - `npm run check` — typecheck + lint + build/test
 - `npm run check:boundaries` — parent runtime import 금지 및 Core/Pipeline → adapter import 금지 확인
-- Linux CLI(`RoverCarrot/`에서 실행): `node dist/cli.js [--input <path>] [--output <path>]` — config는 project root의 `config/config.toml`(TOML), CLI 값이 config 기본값보다 우선, input/output 상대경로는 CWD 기준. 화면은 stage 진행률/PASS/FAIL만, 상세는 `logs/rovercmt.log`, 문제는 `logs/critical.log`(exit 0 PASS / 1 FAIL / 2 config 생성). 현재 dummy smoke 전용; 실제 stage 구현 아님
+- Linux CLI(`RoverCarrot/`에서 실행): `node dist/cli.js [--input <path>] [--output <path>]` — config는 project root의 `config/config.toml`(TOML), CLI 값이 config 기본값보다 우선, input/output 상대경로는 CWD 기준. 화면은 stage 진행률/PASS/FAIL만, 상세는 `logs/log_all.log`, 문제는 `logs/critical.log`(exit 0 PASS / 1 FAIL / 2 config 생성). 현재 dummy smoke 전용; 실제 stage 구현 아님
 - 사용법과 최소 input/output contract: [README.md](README.md)
 
 루트 Carrot 검사는 루트 ESLint global ignore의 `RoverCarrot/**`와 `.prettierignore`의 `/RoverCarrot/`로 Rover 코드를 제외한다. 루트 reference 의존성은 Rover 개발환경에 설치하지 않는다.

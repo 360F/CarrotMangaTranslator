@@ -47,7 +47,7 @@ The terminal shows only stage progress (pages done / total), PASS/FAIL, the
 result and the output path. Interactive terminals update the rows in place;
 pipes and CI get one line per finished stage. Exit codes: 0 PASS, 1 FAIL, 2
 config created. Logs are fixed at `<project root>/logs/` (Git-ignored):
-`rovercmt.log` has the full JSONL detail (run/page IDs, stage events, timing,
+`log_all.log` has the full JSONL detail (run/page IDs, stage events, timing,
 errors), `critical.log` only failures and errors. They are capped at 10 MiB and
 5 MiB by dropping the oldest whole lines (no backups). On failure the CLI prints
 `Details:` with the critical log path (absolute when run outside the project root).

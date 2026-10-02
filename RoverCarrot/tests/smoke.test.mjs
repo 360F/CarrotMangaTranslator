@@ -68,7 +68,7 @@ test('CLI with fixture config: mixed directory natural order, ignores unsupporte
   }
   assert.ok(out.endsWith('\nResult: PASS\nOutput: output\n'), out);
   assert.ok(!out.includes('{') && !out.includes(result.runId) && !out.includes('Details'), out);
-  const events = (await logLines(root, 'rovercmt.log')).filter(e => e.type === 'stage-end');
+  const events = (await logLines(root, 'log_all.log')).filter(e => e.type === 'stage-end');
   assert.equal(events.length, 5 * 7);
   assert.ok(events.every(e => e.runId === result.runId && e.pageId && e.elapsedMs >= 0));
 });
@@ -182,7 +182,7 @@ test('entry dist/cli.js: config and logs fixed at project root, first run create
   assert.ok(pass.stdout.endsWith('\nResult: PASS\nOutput: output\n'), pass.stdout);
   assert.match(pass.stdout, /^Detect {12}100% \[█{20}\] PASS$/m);
   assert.equal((await runRecord(join(dir, 'output'))).status, 'completed');
-  assert.deepEqual((await readdir(join(root, 'logs'))).sort(), ['rovercmt.log']);
+  assert.deepEqual((await readdir(join(root, 'logs'))).sort(), ['log_all.log']);
   assert.deepEqual((await readdir(dir)).sort(), ['input', 'output']); // no config/logs in CWD
 
   const outside = node(dir);

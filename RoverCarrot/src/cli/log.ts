@@ -1,7 +1,7 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-export const LOG_LIMITS = { 'rovercmt.log': 10 * 1024 * 1024, 'critical.log': 5 * 1024 * 1024 } as const;
+export const LOG_LIMITS = { 'log_all.log': 10 * 1024 * 1024, 'critical.log': 5 * 1024 * 1024 } as const;
 type LogName = keyof typeof LOG_LIMITS;
 
 // Keep the newest whole lines whose total size is <= maxBytes. No backup files are kept.
@@ -19,7 +19,7 @@ export function trimLogFile(path: string, maxBytes: number): void {
   renameSync(temporary, path);
 }
 
-// Line-oriented JSONL logs under one directory: rovercmt.log (everything) and
+// Line-oriented JSONL logs under one directory: log_all.log (everything) and
 // critical.log (problems the user must look at). Sync writes survive abrupt exits.
 export class RunLog {
   private sizes = new Map<LogName, number>();
@@ -27,9 +27,9 @@ export class RunLog {
     mkdirSync(dir, { recursive: true });
     for (const name of Object.keys(LOG_LIMITS) as LogName[]) this.trim(name);
   }
-  info(type: string, data: Record<string, unknown> = {}): void { this.write('rovercmt.log', 'info', type, data); }
+  info(type: string, data: Record<string, unknown> = {}): void { this.write('log_all.log', 'info', type, data); }
   critical(type: string, data: Record<string, unknown> = {}): void {
-    this.write('rovercmt.log', 'error', type, data);
+    this.write('log_all.log', 'error', type, data);
     this.write('critical.log', 'error', type, data);
   }
   close(): void { for (const name of Object.keys(LOG_LIMITS) as LogName[]) this.trim(name); }
