@@ -2,12 +2,19 @@ import assert from 'node:assert/strict';
 
 // Detection-only stored fields verified against the fork's strict schemas.
 // Ordinary tests remain independent of the parent source and dependencies.
+// Key sets are exact: the strict schemas reject any other key.
+const pageKeys = ['id', 'name', 'imagePath', 'width', 'height', 'blocks', 'blockOrder', 'analysisStatus',
+  'soundEffectReview', 'createdAt', 'updatedAt'];
 const blockKeys = ['id', 'type', 'bbox', 'bboxSpace', 'sourceText', 'translatedText', 'textRole', 'confidence',
   'sourceDirection', 'renderDirection', 'rotationDeg', 'fontSizePx', 'lineHeight', 'textAlign', 'textColor',
   'outlineColor', 'backgroundColor', 'opacity', 'autoFitText', 'textDisplayMode', 'wordBreak', 'letterSpacing',
   'fontWidthScale', 'textOpacity', 'bold', 'italic', 'outlineWidthScale', 'workflowOrigin'];
+// recognitionBboxes/ocrSubdivision are written only when the region carries them.
+const originKeys = ['geometryKey', 'initialFontSize', 'initialFontStyle'];
+const optionalOriginKeys = ['recognitionBboxes', 'ocrSubdivision'];
 export function assertPersistedDetection(page) {
   assert.ok(!('pageWorkflow' in page));
+  assert.deepEqual(Object.keys(page).sort(), [...pageKeys].sort());
   assert.deepEqual(page.blockOrder, page.blocks.map(block => block.id));
   assert.equal(page.analysisStatus, 'idle');
   for (const block of page.blocks) {
@@ -25,6 +32,8 @@ export function assertPersistedDetection(page) {
       autoFitText: true, textDisplayMode: 'translation-only', wordBreak: 'break-word', letterSpacing: 0,
       fontWidthScale: 1, textOpacity: 1, bold: false, italic: false, outlineWidthScale: 1 };
     for (const [key, value] of Object.entries(defaults)) assert.equal(block[key], value, key);
+    const origin = block.workflowOrigin;
+    assert.deepEqual(Object.keys(origin).sort(), [...originKeys, ...optionalOriginKeys.filter(key => key in origin)].sort());
     assert.ok(block.workflowOrigin.geometryKey);
     assert.equal(block.workflowOrigin.initialFontSize, block.fontSizePx);
     assert.deepEqual(block.workflowOrigin.initialFontStyle, {

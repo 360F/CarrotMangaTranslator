@@ -50,3 +50,19 @@ export function compareManifests(reference: HayaiRegionManifest, actual: HayaiRe
     iou: values.length ? { min: Math.min(...values), mean: values.reduce((a,b) => a+b,0)/values.length, max: Math.max(...values) } : null,
     rows };
 }
+
+// Status gate is count/type/order only (STEP2_VALIDATION.md, Independent rerun).
+// Provenance and subdivision are informational: shown, never change status or exit code.
+export function summarizeComparison(reference: HayaiRegionManifest, actual: HayaiRegionManifest,
+  comparison = compareManifests(reference, actual)) {
+  const status = comparison.sameCounts && comparison.sameType && comparison.sameOrder ? 'IN_PROGRESS' : 'BLOCKED';
+  const counts = (manifest: HayaiRegionManifest) => `${manifest.dialogueRegions.length}/${manifest.effectRegions.length}`;
+  const line = (name: string, same: boolean, role: string) => `${name.padEnd(12)}${same ? 'same' : 'MISMATCH'} — ${role}`;
+  return { status, lines: [
+    line('count', comparison.sameCounts, `status gate (dialogue/effect: reference ${counts(reference)}, actual ${counts(actual)})`),
+    line('type', comparison.sameType, 'status gate'),
+    line('order', comparison.sameOrder, 'status gate'),
+    line('provenance', comparison.sameProvenance, 'informational, status unchanged'),
+    line('subdivision', comparison.sameSubdivision, 'informational, status unchanged'),
+  ] };
+}

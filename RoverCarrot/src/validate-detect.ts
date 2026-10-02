@@ -3,7 +3,7 @@ import { dirname, resolve, join, win32, isAbsolute } from 'node:path';
 import { cpus, platform, arch, release } from 'node:os';
 import { createHash } from 'node:crypto';
 import { checkModel, koharuRuntime, prepareImage } from './adapters/koharu.js';
-import { compareManifests } from './detection/comparison.js';
+import { compareManifests, summarizeComparison } from './detection/comparison.js';
 import { parseKoharuLayoutOutputs } from './detection/outputs.js';
 import { buildHayaiRegionManifest, type HayaiRegionManifest } from './detection/geometry.js';
 
@@ -63,16 +63,18 @@ try {
     outputShapes: Object.fromEntries(Object.entries(raw).map(([name, tensor]) => [name, (tensor as { dims: number[] }).dims])) });
   await save('actual-regions.json', actual);
   const comparison = compareManifests(reference, actual);
-  const { sameCounts, sameType, sameOrder, rows } = comparison;
-  status = sameCounts && sameType && sameOrder ? 'IN_PROGRESS' : 'BLOCKED';
+  const { rows } = comparison;
+  const summary = summarizeComparison(reference, actual, comparison);
+  status = summary.status;
   await save('comparison.json', { status, notes: status === 'IN_PROGRESS' ? 'IMPLEMENTED — independent revalidation pending; numerical/provenance/subdivision differences require review' : 'count/type/order discrepancy or unresolved geometric correspondence requires investigation',
     pageId: page.id, sourceSha256: createHash('sha256').update(await readFile(pagePath)).digest('hex'),
     referenceCounts: [reference.dialogueRegions.length, reference.effectRegions.length], actualCounts: [actual.dialogueRegions.length, actual.effectRegions.length],
     ...comparison });
-  await save('subdivision-comparison.json', { exact: rows.every(row => row.sameSubdivision),
+  await save('subdivision-comparison.json', { exact: comparison.sameSubdivision,
     rows: rows.filter(row => row.kind === 'dialogueRegions').map(row => ({ order: row.order, reference: row.reference?.ocrSubdivision,
       actual: row.actual?.ocrSubdivision, exact: row.sameSubdivision })) });
   console.log(`Detection validation: ${status}; evidence: ${output}`);
+  for (const line of summary.lines) console.log(`  ${line}`);
   if (status === 'BLOCKED') process.exitCode = 1;
 } catch (error) {
   await save('failure.json', { status: 'BLOCKED', message: String(error), stack: error instanceof Error ? error.stack : undefined });

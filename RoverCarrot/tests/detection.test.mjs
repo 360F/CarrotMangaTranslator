@@ -1,5 +1,5 @@
 import { assertPersistedDetection } from './persisted-detection.mjs';
-import { compareManifests } from '../dist/detection/comparison.js';
+import { compareManifests, summarizeComparison } from '../dist/detection/comparison.js';
 import { createHash } from 'node:crypto';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -141,6 +141,15 @@ test('persisted chapter keeps strict-compatible blocks, defaults, subdivision an
     sourceDetectionIds:manifest.effectRegions[0].sourceDetectionIds});
 });
 
+test('persisted-field check rejects keys outside the strict page and workflowOrigin sets', () => {
+  const stored = JSON.parse(JSON.stringify(applyDetection(page, manifest)));
+  assertPersistedDetection(stored);
+  assert.throws(() => assertPersistedDetection({ ...stored, detectionDiagnostics: manifest.diagnostics }), /detectionDiagnostics/);
+  const [block] = stored.blocks;
+  const origin = { ...block.workflowOrigin, regionId: manifest.dialogueRegions[0].regionId };
+  assert.throws(() => assertPersistedDetection({ ...stored, blocks: [{ ...block, workflowOrigin: origin }] }), /regionId/);
+});
+
 test('blank model is unset: production detect fails clearly, excluded detect runs without a model', async t => {
   const text = (await fixtureText('config.toml')) + '\n[models]\nkoharu = ""\n';
   const root = await tempRoot(t, text);
@@ -181,4 +190,29 @@ test('validator compares type, geometric order, provenance and subdivision indep
   const missing=structuredClone(original);missing.dialogueRegions.pop();assert.equal(compareManifests(original,missing).sameOrder,false);
   const ambiguous=structuredClone(original);ambiguous.dialogueRegions[1].bbox=ambiguous.dialogueRegions[0].bbox;
   assert.equal(compareManifests(original,ambiguous).sameOrder,false);
+});
+
+test('validator summary shows provenance/subdivision as informational; only count/type/order gate status', () => {
+  const original = {...manifest, dialogueRegions: [{...manifest.dialogueRegions[0], bbox: [0,0,20,20]},
+    {...manifest.dialogueRegions[0], bbox: [100,0,120,20], sourceDetectionIds: ['T002']}]};
+  const same = summarizeComparison(original, structuredClone(original));
+  assert.equal(same.status, 'IN_PROGRESS');
+  assert.deepEqual(same.lines.map(line => line.split(' ')[0]), ['count', 'type', 'order', 'provenance', 'subdivision']);
+  assert.equal(same.lines[0], 'count       same — status gate (dialogue/effect: reference 2/1, actual 2/1)');
+  assert.ok(same.lines.every(line => /^\S+ +same — /.test(line)));
+  const provenance = structuredClone(original); provenance.dialogueRegions[0].sourceDetectionIds = ['T999'];
+  const subdivision = structuredClone(original); delete subdivision.dialogueRegions[0].ocrSubdivision;
+  for (const [changed, name] of [[provenance, 'provenance'], [subdivision, 'subdivision']]) {
+    const result = summarizeComparison(original, changed);
+    assert.equal(result.status, 'IN_PROGRESS', name);
+    assert.deepEqual(result.lines.filter(line => line.includes('MISMATCH')), [`${name.padEnd(12)}MISMATCH — informational, status unchanged`]);
+  }
+  const count = structuredClone(original); count.dialogueRegions.pop();
+  const type = structuredClone(original); type.dialogueRegions[0].kind = 'effect';
+  const order = structuredClone(original); order.dialogueRegions.reverse();
+  for (const [changed, name] of [[count, 'count'], [type, 'type'], [order, 'order']]) {
+    const result = summarizeComparison(original, changed);
+    assert.equal(result.status, 'BLOCKED', name);
+    assert.match(result.lines.find(line => line.startsWith(name)), /MISMATCH — status gate/);
+  }
 });

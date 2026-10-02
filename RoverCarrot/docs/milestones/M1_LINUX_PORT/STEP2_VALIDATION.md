@@ -3,9 +3,11 @@
 [Implementation plan / status](IMPLEMENTATION_PLAN.md#step-2--detection--koharu)
 · [M1-DETECT-001](CURRENT.md#m1-detect-001--koharu-layout-onnx-linux-runtime)
 
-2026-10-02 implementation and independent-review correction evidence. Correction started from clean `main = origin/main = 17e94c03`. Status: **IN_PROGRESS — IMPLEMENTED, 독립 재검증 대기**. Implementation commit: [`4a435446`](https://github.com/360F/RoverCMT/commit/4a435446); Phase A checkpoint sync: `1859ad91`. Final acceptance belongs to the
-independent validation session and user checkpoint; no numerical tolerance or
-DONE decision was invented. Step 3 has not started.
+2026-10-02 implementation and independent-review correction evidence, plus
+2026-10-03 [checkpoint finishing fixes](#checkpoint-finishing-fixes-2026-10-03).
+Correction started from clean `main = origin/main = 17e94c03`; finishing fixes from clean `main = origin/main = 644c7ad1`. Status: **IN_PROGRESS — 독립 재검증 Low 지적 수정 완료, 사용자 checkpoint 대기**. Implementation commit: [`4a435446`](https://github.com/360F/RoverCMT/commit/4a435446); Phase A checkpoint sync: `1859ad91`. DONE belongs to the
+user checkpoint; no numerical tolerance or DONE decision was invented. Step 3 has
+not started.
 
 ## Boundary and preserved behavior
 
@@ -150,10 +152,14 @@ Final regular portable command (no reference-tensor override) succeeds and leave
 
 Per-region reference/actual, coordinate deltas, confidence deltas and provenance
 are in `comparison.json`; subdivision detail is in `subdivision-comparison.json`.
-These differences require independent review, not an invented IoU PASS threshold.
+These differences were left to independent review, not an invented IoU PASS
+threshold; the effect bbox difference is now accepted for Step 2 only
+([acceptance scope](#effect-bbox-difference-step-2-acceptance)).
 With an identical reference preprocessing tensor the same residual differences
-remain; CPU vs the reference DirectML inference is the remaining likely cause
-(inference, not proven by a fresh DirectML replay).
+remain. The two effect +4.5px differences reproduce with Linux ORT CPU graph
+optimization `all` and `extended` ([runtime evidence](#config-validator-dependencies-and-runtime-evidence)).
+The reference manifest records no execution provider and its DirectML origin is
+unconfirmed, so no cause is asserted.
 
 Ignored evidence directories retain the first mismatched sharp run, the Electron
 tensor control and final portable run. Final portable evidence is
@@ -161,11 +167,15 @@ tensor control and final portable run. Final portable evidence is
 The first CPU session observation was 948.8701900000001ms; it is not a latency
 promise. The exact timings and tensor/model hashes remain independently inspectable.
 
-## Four-page user run and ordinary validation
+## Four-page user run (pre-correction) and ordinary validation
 
-Final actual CLI output: `test-data/output/m1-step2-cpu-20261002-2237/` (ignored).
+Pre-correction four-page CLI output: `test-data/output/m1-step2-cpu-20261002-2237/`
+(ignored). It is superseded, not a final output: the actual strict schema rejects
+it (FAIL, 58 issues; [Actual unmodified Carrot schema](#actual-unmodified-carrot-schema)).
+The post-correction output is in [Fresh S2–S4 and production CLI](#fresh-s2s4-and-production-cli).
 Four JPG pages persisted 10/2/10/20 dialogue blocks and 0/0/3/0 effects. One CPU
-session served all pages, Detect PASS, no raw JSON terminal output or crash.
+session served all pages, the CLI reported Detect PASS, no raw JSON terminal
+output or crash.
 Session creation 950.7283070000001ms; page inference observations
 9131.48793 / 6957.548927999998 / 6700.814727999998 / 6465.290980000002ms
 (first includes session initialization); postprocess
@@ -200,7 +210,10 @@ create a matching context with actual absolute paths and pass
 Every validation invocation creates a new evidence directory, or accepts
 `--output <NEW_EVIDENCE_DIR>`; missing data/model/context is an error, never
 SKIPPED→PASS. A mismatched count/type/order returns BLOCKED/nonzero. Exact or
-bbox-only differences still require independent acceptance.
+bbox-only differences still require independent acceptance. The terminal summary
+prints count/type/order as the status gate and provenance/subdivision as
+informational results; a provenance or subdivision mismatch is shown but does
+not change status or exit code.
 
 Optional preprocessing control, with an existing reference Electron executable:
 
@@ -285,9 +298,13 @@ open/edit/export remains Step 8 validation.
   Windows controls. Confirmed Linux version/hash are recorded above. This does
   not claim Windows decoding parity for all formats.
 - `graphOptimizationLevel: 'all'` is unchanged, matching reference Carrot CPU.
-  Independent review observed basic/disabled bbox-exact agreement with this
-  one DML artifact, with slower execution. That observation is retained as a
-  separate trade-off, not an algorithm/config change or multi-page proof.
+  In the independent review's control on this one reference page, the two
+  effect +4.5px differences reproduced with Linux ORT CPU `all` and `extended`;
+  `basic` and `disabled` matched all 15 reference bboxes. The review's note that
+  `basic`/`disabled` ran slower is a single measurement per level, not a
+  performance comparison; no repeated, multi-page or variance measurement
+  exists, so no performance or cause conclusion is drawn. No optimization-level
+  change was made.
 
 ### Fresh S2–S4 and production CLI
 
@@ -371,6 +388,64 @@ in ignored `fix-bbox-audit.json`.
 | 4 / 18 | `h`: 150.5547686496695 → 150.55476864966948 |
 | 4 / 20 | `w`: 51.806 → 51.806000000000004; `h`: 18.610009442870496 → 18.6100094428705 |
 
-Step 2 remains **IN_PROGRESS — IMPLEMENTED, 독립 재검증 대기**. A new Claude
-independent review plus user checkpoint is required before DONE. Step 3 OCR
-has not started.
+This correction left Step 2 **IN_PROGRESS**, pending a new Claude independent
+review and user checkpoint; Step 3 OCR had not started.
+
+## Checkpoint finishing fixes (2026-10-03)
+
+Started from clean `main = origin/main = 644c7ad1` to address the Low findings of
+the independent revalidation of `644c7ad1`. Detection implementation, geometry,
+parser, adapter, pipeline, ORT optimization level, config contract and
+dependencies are unchanged. Koharu inference, S3/S4 and the four-page run were not
+repeated.
+
+- **Strict persisted-field test (L1):** `tests/persisted-detection.mjs` now
+  compares the exact page key set and the exact `workflowOrigin` key set
+  (`geometryKey`/`initialFontSize`/`initialFontStyle` always;
+  `recognitionBboxes`/`ocrSubdivision` only when the region carries them), and
+  keeps the exact block and `soundEffectReview` key checks. A new test asserts
+  that the helper rejects both defects below. Mutation re-check of the full suite
+  in an isolated copy: with the previous helper, adding `workflowOrigin.regionId`
+  or `page.detectionDiagnostics` passed 44/44; with the new helper each fails
+  8 of 46 tests (CLI persisted chapter, the helper test and six single-file
+  smoke tests), all at the new key-set assertions.
+- **Validator summary:** policy unchanged. Count/type/order decide status
+  (`BLOCKED`/nonzero on mismatch); provenance and subdivision remain
+  informational ([Independent rerun](#independent-rerun); DETECTION §22 S4 asks
+  for identical results or a listed difference). The terminal now prints every
+  result; replaying the reference and the existing `run-1790952491541/` actual
+  manifest, without new inference, gives:
+
+  ```text
+  Detection validation: IN_PROGRESS; evidence: <NEW_EVIDENCE_DIR>
+    count       same — status gate (dialogue/effect: reference 6/9, actual 6/9)
+    type        same — status gate
+    order       same — status gate
+    provenance  same — informational, status unchanged
+    subdivision same — informational, status unchanged
+  ```
+
+  `subdivision-comparison.json` `exact` now reuses the same `sameSubdivision`
+  verdict (equivalent result). Targeted tests cover provenance-only and
+  subdivision-only mismatches (status unchanged) and count/type/order
+  mismatches (`BLOCKED`).
+- **Wording:** the strict-FAIL pre-correction four-page output is no longer called
+  the final CLI output; the optimization-level speed note is limited to its
+  single measurement; the DirectML cause attribution was removed.
+- Validation: typecheck, lint, build, 46 tests, 15 smoke tests and boundaries pass.
+
+### Effect bbox difference: Step 2 acceptance
+
+User decision (2026-10-03): the two effect-region bbox differences of +4.5px
+(zero-based effect orders 5/6; one left edge, one right edge) are accepted for the
+current Step 2 acceptance. Dialogue bboxes are exact: 6/6 with IoU 1, with the
+same count, type, order, provenance and subdivision (confidence values differ
+numerically, as for all regions). The difference is effect-only: it changes only
+two `soundEffectReview` region boxes. Effect regions are excluded from dialogue
+blocks, staged OCR and automatic translation, so it does not affect current M1
+Step 2 dialogue blocks or the OCR/translation path. It reproduces with Linux ORT
+CPU graph optimization `all`/`extended`; no cause is asserted. This acceptance is
+limited to that scope and defines no numerical tolerance.
+
+Step 2 remains **IN_PROGRESS — 독립 재검증 Low 지적 수정 완료, 사용자 checkpoint
+대기**. DONE is decided at the user checkpoint. Step 3 OCR has not started.
