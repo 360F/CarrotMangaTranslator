@@ -67,8 +67,9 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 
 - 개인 repo다. PR은 필수가 아니고 에이전트가 `main`에 직접 commit/push한다.
 - 흐름: session 시작 점검 → 작업 → validation → diff 검토 → commit → push → local/remote SHA 일치 확인.
-- session 시작 점검: current branch → tracked working tree clean → `git fetch origin` → handoff 기준 commit과 HEAD 비교 → local이 단순히 behind일 때만 fast-forward(`git merge --ff-only`).
-- tracked tree가 예상치 않게 dirty, local/remote diverged, merge/rebase 필요, 기준 commit과 HEAD가 설명 없이 다름, handoff 문서 conflict 중 하나면 작업을 계속하지 않고 BLOCKED로 남기거나 사용자에게 보고한다. 임의 rebase·force push·충돌 덮어쓰기는 하지 않는다.
+- session 시작 점검: current branch → tracked working tree clean → `git fetch origin` → remote 동기화 → M1 Step 작업이면 [기준 commit과 Git 판정](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#기준-commit과-git-판정).
+- remote 동기화: HEAD가 `origin/main`과 같으면 그대로 둔다. working tree가 clean이고 local이 단순히 behind일 때만 fast-forward(`git merge --ff-only`)한다. diverged history, merge·rebase·force push 필요, origin에 없는 설명되지 않는 local commit, handoff와 실제 HEAD 불일치는 자동 해결하지 않는다.
+- 위 점검·판정이 실패하거나, tracked tree가 예상치 않게 dirty이거나, handoff 문서 conflict가 있으면 작업을 계속하지 않고 BLOCKED로 남기거나 사용자에게 보고한다. 임의 rebase·force push·충돌 덮어쓰기는 하지 않는다.
 - 사용자가 한 번에 한 agent를 순차 호출하는 것이 전제다. commit을 작업 시작 lock으로 쓰지 않는다(IMPLEMENTING·REVIEWING 같은 상태 commit 금지).
 - 실제 agent 실행 환경(remote/cloud/web, Windows/WSL)과 그 branch 동작은 아직 검증하지 않았다. 특정 mode·branch·PR 방식을 가정하지 않고, 확인 후 이 section을 갱신한다.
 - 큰 실험이나 위험한 변경은 필요하면 별도 branch를 쓴다.

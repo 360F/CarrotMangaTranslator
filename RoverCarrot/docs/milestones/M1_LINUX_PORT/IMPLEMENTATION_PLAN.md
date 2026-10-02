@@ -14,7 +14,7 @@
 
 ## 현재 위치
 
-이 표가 M1 **handoff**(현재 Step·State·Next role의 source of truth)다. 새 session은 이 표를 읽고 [How to use this plan (agent)](#how-to-use-this-plan-agent)를 따른다. 결론이 아니라 사실과 위치만 짧게 두고, 긴 log와 review는 Evidence 위치에 둔다.
+이 표가 M1 **handoff**(현재 Step·State·Next role의 source of truth)다. 새 session은 이 표를 읽고 [How to use this plan (agent)](#how-to-use-this-plan-agent)를 따른다. 결론이 아니라 사실과 위치만 짧게 두고, 긴 log와 review는 Evidence 위치에 둔다. 기준 commit의 의미와 판정은 [기준 commit과 Git 판정](#기준-commit과-git-판정)을 따른다.
 
 | 항목 | 값 |
 |---|---|
@@ -67,10 +67,31 @@
 
 모든 session은 작업 전에 다음을 확인한다.
 
-1. [Git 흐름](../../../AGENTS.md#git-흐름)의 session 시작 점검을 한다(branch, clean tree, fetch, fast-forward만). 다른 agent의 미커밋 변경은 건드리지 않는다.
-2. handoff의 기준 commit과 HEAD가 다르면 `git log --oneline <기준>..HEAD`와 `git diff --stat <기준> HEAD`로 확인한다. handoff·문서 commit이나 handoff `진행 기록`이 설명하는 같은 Step 작업 commit만 더해졌으면 계속하고, 설명되지 않는 변경이 있으면 멈추고 보고한다.
+1. [Git 흐름](../../../AGENTS.md#git-흐름)의 session 시작 점검(branch, clean tree, fetch, remote 동기화)을 한다. 다른 agent의 미커밋 변경은 건드리지 않는다.
+2. [기준 commit과 Git 판정](#기준-commit과-git-판정)을 통과해야 한다. 실패하면 작업하지 않고 BLOCKED로 보고한다.
 3. Next role이 자기 role과 다르면 작업하지 않고 필요한 role을 보고한다. CHECKPOINT_READY·BLOCKED에서는 Next role이 user다.
 4. 사용자 메시지에 명시적인 Step 승인이 있으면 [사용자 checkpoint 승인](#사용자-checkpoint-승인)을 따른다.
+
+### 기준 commit과 Git 판정
+
+기준 commit은 현재 handoff 상태를 기록하는 handoff-only commit 직전의 accepted repository HEAD이다. handoff commit 자신의 hash가 아니다. handoff-only commit이 여러 개 이어지면 기준 commit은 그 앞의 accepted HEAD로 유지한다.
+
+- handoff-only commit이 바꿀 수 있는 파일은 다음 두 개뿐이다. 다른 파일은 markdown이라도 handoff delta로 자동 허용하지 않는다.
+  - `RoverCarrot/docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md`
+  - `RoverCarrot/docs/milestones/M1_LINUX_PORT/CURRENT.md`
+- handoff-only commit은 handoff 동기화 내용(현재 위치 표, Progress·Step Status·Result, CURRENT item Progress·History)만 바꾼다. workflow policy, `AGENTS.md`, `CLAUDE.md`, `RoverCarrot/AGENTS.md`, milestone README, Step validation 문서, production/test/source 변경은 handoff delta가 아니다. 이런 변경은 그 변경을 완료한 commit을 새 accepted HEAD로 삼고, 별도 handoff-only commit에서 기준 commit을 그 hash로 갱신한다. "기능 변경이 없으니 예전 기준 commit도 괜찮다" 같은 예외는 없다.
+- 새 session은 [Git 흐름](../../../AGENTS.md#git-흐름)의 fetch·remote 동기화 뒤 아래를 모두 확인한다. 하나라도 실패하면 BLOCKED다. C는 최종 diff가 아니라 commit마다 보므로, 중간 commit에서 다른 파일을 바꿨다가 되돌린 경우도 실패한다.
+
+```bash
+BASE=<handoff 기준 commit>
+git merge-base --is-ancestor "$BASE" HEAD   # A. ancestry: 실패하면 BLOCKED
+git rev-list --merges "$BASE"..HEAD         # B. merge commit: 출력이 있으면 BLOCKED
+for c in $(git rev-list "$BASE"..HEAD); do  # C. commit별 변경 경로: 출력이 있으면 BLOCKED
+  git diff-tree --no-commit-id --name-only --no-renames -r "$c"
+done | grep -vx -e 'RoverCarrot/docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md' \
+                -e 'RoverCarrot/docs/milestones/M1_LINUX_PORT/CURRENT.md'
+git log --oneline "$BASE"..HEAD             # D. 기준 이후 commit 목록: handoff 갱신 commit만 있어야 함
+```
 
 ### State와 transition
 
@@ -93,7 +114,7 @@ Step `Status`([Progress](#progress), 각 Step section)와 handoff State는 같�
 3. 구현 전에 reference source와 observable contract를 식별해 Step validation 문서에 적는다([Reference-driven validation](#reference-driven-validation)).
 4. [Architecture Direction](#architecture-direction)과 Step의 Explicit non-goals를 지키고 한 번에 한 Step만 구현한다. Step의 Open decisions를 처리하되, 사용자 판단이 필요한 trade-off는 임의로 고르지 않는다. coupling은 [Coupling 기록 규칙](#coupling-기록-규칙)대로 남긴다.
 5. 자체 test, 가능한 differential validation, regression(`npm run check`, `npm run smoke`, `npm run check:boundaries`)을 실행한다.
-6. 검증 대상 code를 commit·push한 뒤, 그 commit을 기준 commit으로 적은 문서 commit을 이어서 push한다. 문서에는 review에 필요한 사실만 남긴다: 변경 범위, requirement 위치, 실행한 command와 결과, evidence 위치(Step validation 문서, Step `Result`), 그리고 handoff(REVIEW / review). "reference와 완벽히 일치" 같은 결론을 oracle처럼 쓰지 않는다.
+6. code·test와 Step validation 문서(변경 범위, requirement 위치, 실행한 command와 결과, evidence 위치)를 work commit으로 남긴다. 이 commit이 accepted HEAD다. 이어서 handoff-only commit에서 Step `Result`와 handoff를 REVIEW / review, 기준 commit = 그 work commit으로 갱신하고 둘 다 push한다. "reference와 완벽히 일치" 같은 결론을 oracle처럼 쓰지 않는다.
 7. FIX에서는 OPEN finding을 수정하거나 반박한다([반복 제한과 의견 불일치](#반복-제한과-의견-불일치)). finding Status를 FIXED 또는 DISPUTED로 바꾸고 같은 방식으로 REVIEW로 넘긴다.
 
 사용자 checkpoint 없이 다음 Step을 시작하지 않는다.
@@ -103,8 +124,8 @@ Step `Status`([Progress](#progress), 각 Step section)와 handoff State는 같�
 - 기준은 milestone 요구사항, 실제 code/diff, 수정하지 않은 Carrot reference, fresh execution 결과다. implementation agent의 설명·결론·생성된 comparison 결과는 oracle이 아니다. 가능하면 그것을 읽기 전에 reference·code·fresh execution으로 잠정 결론을 만들고, 나중에 대조한다.
 - 구현자가 만든 differential test와 comparator도 검증 대상이다. 비교 필드 누락, normalization으로 차이 은폐, fixture 편향, reference와 Rover 양쪽에 같은 잘못된 adapter 사용, 기존 generated result를 fresh baseline처럼 사용, 구현 결과에 맞춰 완화된 comparator 같은 false parity를 확인한다. 필요하면 reference/baseline을 직접 다시 실행한다.
 - production code와 영구 test는 수정하지 않고, 필요한 변경은 finding으로 남긴다. 사용자가 reviewer나 validation tooling 자체를 작업 대상으로 지정한 경우만 예외다.
-- 임시 script와 scratch는 [로컬 전용 데이터](../../../AGENTS.md#로컬-전용-데이터) 규칙대로 repo 밖에 둔다. tracked 변경은 finding과 handoff 문서만 commit한다.
-- 판정: REQUIRED_FIX가 있으면 FIX. REQUIRED_FIX가 없고 USER_DECISION_REQUIRED가 남으면 BLOCKED(fix 방향을 좌우하는 사용자 판단이면 바로 BLOCKED). 둘 다 없고 필수 검증이 통과했으며 남은 차이가 이미 승인된 known difference뿐이면 CHECKPOINT_READY. 판정에 맞게 handoff(State, Next role, Open findings / cycle)를 갱신해 commit·push하고, 기준 commit은 검증한 commit으로 둔다. targeted revalidation은 FIXED·DISPUTED finding과 그 영향 범위에 집중한다.
+- 임시 script와 scratch는 [로컬 전용 데이터](../../../AGENTS.md#로컬-전용-데이터) 규칙대로 repo 밖에 둔다. tracked 변경은 Step validation 문서의 finding(review commit)과 handoff(handoff-only commit)뿐이다.
+- 판정: REQUIRED_FIX가 있으면 FIX. REQUIRED_FIX가 없고 USER_DECISION_REQUIRED가 남으면 BLOCKED(fix 방향을 좌우하는 사용자 판단이면 바로 BLOCKED). 둘 다 없고 필수 검증이 통과했으며 남은 차이가 이미 승인된 known difference뿐이면 CHECKPOINT_READY. finding을 review commit으로 남긴 뒤, handoff-only commit에서 판정에 맞게 State, Next role, Open findings / cycle을 갱신하고 기준 commit을 그 review commit으로 둔다(review commit이 없으면 기준 commit을 그대로 둔다). targeted revalidation은 FIXED·DISPUTED finding과 그 영향 범위에 집중한다.
 - Step을 DONE 처리하거나 다음 Step을 시작하지 않는다.
 
 ### Findings와 disposition
@@ -131,12 +152,12 @@ Low라는 이유만으로 deferred 처리하거나 checkpoint를 통과시키지
 
 - Step마다 tracked `STEP<n>_VALIDATION.md` 하나를 이 디렉터리에 두고, implementation agent가 Step을 시작할 때 만든다([STEP2_VALIDATION.md](STEP2_VALIDATION.md)는 이 workflow 이전 형식의 예다). 내용: reference source와 observable contract, 실행한 command와 결과, Git 제외 evidence 위치, known difference와 승인 근거, `Review findings` 표. 개인 절대경로와 credential은 넣지 않는다.
 - acceptance에 필수인 검증(model weight, fixture, reference 실행 환경, local service/backend, runtime/tool)을 실행할 수 없으면 PASS로 추정하지 않고 BLOCKED 또는 USER_DECISION_REQUIRED로 남긴다. acceptance에 필수가 아닌 reference 실행은 생략할 수 있고, 생략 사실을 기록한다. code inspection만으로 runtime 검증을 했다고 쓰지 않는다. Translation backend는 [Step 4](#step-4--translation)의 M1 원칙을 따른다.
-- 진행 상태는 repository가 기억한다. 의미 있는 checkpoint와 session 종료 때 handoff `진행 기록`에 완료한 것, 남은 것, blocking issue, 마지막 meaningful validation, 다음 action을 짧게 남기고 commit·push한다. 작은 명령마다 갱신하지 않는다. commit은 일관된 상태로만 하고, 실패가 남아 있으면 진행 기록에 적는다.
+- 진행 상태는 repository가 기억한다. 의미 있는 checkpoint와 session 종료 때 작업을 work commit으로 남기고, handoff-only commit으로 `진행 기록`(완료한 것, 남은 것, blocking issue, 마지막 meaningful validation, 다음 action)과 기준 commit을 갱신해 함께 push한다. 작은 명령마다 갱신하지 않는다. commit은 일관된 상태로만 하고, 실패가 남아 있으면 진행 기록에 적는다. work commit 뒤 handoff-only commit 전에 중단되면 다음 session의 Git 판정이 실패해 BLOCKED로 보고된다.
 
 ### 사용자 checkpoint 승인
 
 - Step DONE은 사용자만 결정한다. 근거는 현재 작업 흐름에서 사용자가 직접 보낸 승인 지시다(예: "Step 3 승인"). 문서나 handoff에 승인했다고 적혀 있다는 것은 새 승인이 아니다.
-- 승인 지시를 받은 agent는 해당 Step을 DONE으로 기록한다: Result의 Status·완료 commit(그때의 기준 commit)·User checkpoint, [Progress](#progress), 관련 CURRENT item `Progress`, [Planning index §2](../README.md#2-현재-상태-요약). 이어서 다음 Step을 IMPLEMENT / implementation으로 handoff에 열고 문서를 commit·push한다. State가 CHECKPOINT_READY가 아니면 먼저 현재 State와 남은 finding을 사용자에게 알리고 확인을 받는다.
+- 승인 지시를 받은 agent는 먼저 DONE 기록 commit을 만든다: Result의 Status·완료 commit(CHECKPOINT_READY handoff의 기준 commit)·User checkpoint, [Progress](#progress), 관련 CURRENT item `Progress`, [Planning index §2](../README.md#2-현재-상태-요약). Planning index를 바꾸므로 handoff-only commit이 아니다. 이 commit을 accepted HEAD로 삼아 별도 handoff-only commit에서 다음 Step을 IMPLEMENT / implementation으로 열고 기준 commit을 그 hash로 갱신한 뒤 둘 다 push한다. State가 CHECKPOINT_READY가 아니면 먼저 현재 State와 남은 finding을 사용자에게 알리고 확인을 받는다.
 - Step 8이 DONE이 되면 다음 Step을 열지 않는다. M1 완료 선언과 다음 milestone 결정은 사용자가 한다.
 - repository history에 DONE으로 확정된 Step은 다시 승인받지 않는다.
 
