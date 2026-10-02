@@ -3,22 +3,27 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src tests",
     "test": "npm run build && node --test tests/*.test.mjs",
     "check": "npm run typecheck && npm run lint && npm test",
-    "smoke": "node dist/cli.js --config",
+    "smoke": "npm run build && node --test tests/smoke.test.mjs",
     "check:boundaries": "node tests/boundaries.mjs"
   },
   "devDependencies": {
-    "typescript": "5.9.3",
+    "@eslint/js": "9.39.1",
     "@types/node": "24.10.1",
     "eslint": "9.39.1",
-    "@eslint/js": "9.39.1",
-    "typescript-eslint": "8.48.1",
-    "globals": "16.5.0"
+    "globals": "16.5.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.48.1"
+  },
+  "dependencies": {
+    "sharp": "0.35.5"
   }
 }

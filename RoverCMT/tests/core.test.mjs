@@ -8,7 +8,7 @@ import { run } from '../dist/core/run.js';
 import { loadConfig, resolveConfig } from '../dist/core/config.js';
 import { libraryPersistence } from '../dist/adapters/library.js';
 import { smokeStages } from '../dist/adapters/smoke.js';
-const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=', 'base64');
+const png = await readFile(new URL('./fixtures/pixel.png', import.meta.url));
 async function fixture() {
   const dir = await mkdtemp(join(tmpdir(), 'rovercmt-step1-'));
   await writeFile(join(dir, 'page.png'), png);

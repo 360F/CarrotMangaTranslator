@@ -28,7 +28,7 @@ GUI 없이 Linux에서 독립 실행되는 Core로 옮기고, 이후 처리 시�
 | Reference source | fork `fd461737`(upstream v2.8.2 `d20695df` + fork 커밋). "기존 Carrot"의 의미와 fork 전용 기능: [RoverCMT/AGENTS.md](../../AGENTS.md#reference-implementation) |
 | RoverCMT production code | Step 1 독립 TypeScript Core/CLI/persistence skeleton 구현·검증 완료; 실제 stage는 아직 없다. [실행/개발](../../README.md), [Step 1 Result](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter) |
 | 확정된 주요 결정 | 2026-10-01: M1 호환 = Windows Carrot에서 output open/use(interoperability), 기존 Translation ↔ Erase 병렬 경로는 M1에서 이식, M1 renderer = Skia Canvas primary / Playwright Chromium fallback. 상세: [M1 CURRENT](M1_LINUX_PORT/CURRENT.md) 상단 표 |
-| 마지막 구조 갱신 | 2026-10-02 Step 1 skeleton 및 loader contract 분석·사용자 checkpoint 추가. |
+| 마지막 구조 갱신 | 2026-10-02 Step 1 사용자 검토 보완: 이미지 materialization/실제 repository smoke/로컬 test-data 영역. Step 2 미시작. |
 | 이전 구조 갱신 | 2026-10-01 reference baseline·실행 환경·로컬 데이터·Git/CI 정책을 [RoverCMT/AGENTS.md](../../AGENTS.md)에 기록, Rover Output 이식 item(M1-PERSIST-002) 추가 |
 
 ## 3. Milestones

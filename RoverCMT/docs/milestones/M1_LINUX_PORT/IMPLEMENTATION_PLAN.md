@@ -148,6 +148,40 @@ shared object가 있는지가 문제가 아니라 **의존이 숨겨진 global s
 - 이해하지 못한 Carrot 코드를 불필요해 보인다는 이유로 제거하지 않는다([MIGRATION_PRINCIPLES §5](../../MIGRATION_PRINCIPLES.md#5-behavior-compatibility)).
 - 호환 기준은 [M1-COMPAT-001](CURRENT.md#m1-compat-001--windows-carrot과의-output-interoperability)이다: RoverCMT output을 Windows Carrot에서 open/use할 수 있으면 된다. 같은 구현·runtime·renderer, byte/pixel identical은 요구하지 않는다.
 
+## Input Materialization Direction
+
+장기 boundary는 `external input → input materialization → normalized pages → pipeline`이다.
+현재 persistence adapter의 initialize가 `adapters/input.ts`를 호출하여 검증한
+source bytes/width/height를 기존 Page contract로 저장한다. Core와 stage는 원본 형식,
+archive 추출 여부, URL 다운로드 여부를 분기하지 않는다. 새 factory/framework는 없다.
+
+- 현재 Step 1: PNG, JPEG/JPG, WebP, JFIF 단일 파일 및 direct mixed-format directory.
+  case-insensitive extension, 기존 natural order; unsupported 파일/하위 directory 무시.
+  손상된 supported 파일 하나라도 있으면 output 생성 전 전체 import 실패.
+  실제 format과 extension 일치 검사 및 full pixel decode; 원본 bytes 보존,
+  JFIF만 저장 suffix `.jpg`. EXIF 회전/animated multi-page 처리는 현재 하지 않는다.
+- 최종 직접 이미지: PNG/JPEG/WebP/JFIF 및 Carrot 실제 지원/만화에 필요한 기타
+  형식을 평가한다. reference `src/main/libraryStore/storage.ts:isSupportedImagePath`는
+  PNG/JPG/JPEG/WebP만 allowlist하며 GIF/BMP/TIFF 등의 필요성과 처리 규칙은 향후 결정한다.
+- 최종 directory: 지원 이미지를 page sequence로 materialize한다. 현재 direct-file
+  semantics 근거는 `src/main/libraryStore/importSources.ts:listImageFiles`;
+  reference의 nested-folder chapter 발견은 별도 `listNestedImageFolders` 경로다.
+- 최종 archive: 최소 ZIP와 7z를 고려하고 reference의 ZIP/CBZ, RAR/CBR도 포함한다.
+  `src/shared/archive.ts`의 실제 allowlist에는 **7z가 없다**.
+  `src/main/libraryStore/importPreparedPreview.ts`는 ZIP 직접 preview,
+  RAR native staging이며 `importSourceRunner.ts`는 PDF도 별도 staging한다.
+  안전한 추출/예산/페이지 순서 contract는 구현 시 해당 source를 따른다.
+- 최종 URL/link: URL에서 필요한 데이터를 가져와 image 또는 archive 입력으로
+  materialize할 수 있어야 한다. reference `src/main/application/webImportService.ts`,
+  `src/main/webImportSessionManager.ts`, `webImportPageDiscovery.ts`,
+  `webImportDownload.ts`, `webImportUrlPolicy.ts`는 web page scan → image candidate
+  발견/선택 → 다운로드 → prepared import 흐름을 제공한다. 이것을 임의의 archive URL
+  downloader 지원 근거로 확대하지 않는다. Rover URL/다운로드/추출 정책은 향후 구현 대상이다.
+
+이번 Step 1 검토 보완은 archive/URL/PDF/기타 이미지 구현과 Step 2를 시작하지 않는다.
+로컬 실제 데이터의 수동 검증은 Git 제외 `RoverCMT/test-data/`, 자동화된 소형
+배포 가능 fixture는 tracked `RoverCMT/tests/fixtures/`로 분리한다([사용법](../../../README.md)).
+
 ## Coupling 기록 규칙
 
 1. Step에서 발견한 coupling은 먼저 그 Step Result의 **Remaining coupling / follow-up**에 적는다. 모든 coupling을 새 milestone item으로 만들 필요는 없다.
@@ -276,12 +310,14 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - D6: stderr JSONL 실시간 page×stage start/end 및 wall ms, stdout structured run result, output `runs/<runId>.json`. 사람도 stage ID와 timing을 즉시 볼 수 있음.
   - D7: stage completed/empty/failed, failed에서도 partial page 반환 가능; thrown exception 변환. page issue는 run partial, setup/persistence 인프라 예외는 failed. 실패 page의 후속 stage 생략. dummy stage 성공을 번역 completion으로 저장하지 않음.
   - D8: 사용자 승인 Node.js/TypeScript; CLI composition → Core `run` → pipeline → stage contracts. 독립 package/lock/build/test/lint; framework/factory registry 없음.
-  - D9: Step 1은 Node runtime, dev dependencies만 설치. uv/Docker 미확인·미설치; ONNX/Python/Rust/CUDA 설치·pin은 해당 Step. 실제 `nvidia-smi`: RTX 5070 Ti 16GB, CUDA 표시 13.2 (문서의 사용자 보고 5090/13.4와 다름; 환경 규정은 변경하지 않음).
-  - D10: 단일 PNG/디렉터리 direct PNG natural order, signature/IHDR 크기 검사 + 원본 bytes 복사. 전체 decode/zip/WebP import parity Step 8 재검토.
+  - D9: Step 1은 Node runtime; 검토 보완에서 독립 runtime dependency `sharp`를 pin하여 이미지 decode 검증 추가. uv/Docker 미확인·미설치; ONNX/Python/Rust/CUDA 설치·pin은 해당 Step. 실제 `nvidia-smi`: RTX 5070 Ti 16GB, CUDA 표시 13.2 (문서의 사용자 보고 5090/13.4와 다름; 환경 규정은 변경하지 않음).
+  - D10: 사용자 검토 보완으로 PNG/JPG/JPEG/WebP/JFIF 단일 파일·mixed directory, full decode/format 일치·크기 검증 + 원본 bytes 복사 지원. 상세와 archive/URL 장기 범위는 [Input Materialization Direction](#input-materialization-direction).
   - D11: skeleton은 source/translation/format rules 및 review 순서 표현 가능; 실제 포함 여부 사용자 결정 Step 8.
   - D27: config, page IDs, copied source, run event/timing 기록. exact model/request/runtime provenance는 실제 stage Step에서 확장; M2 Golden/benchmark 아님.
   - Known differences: no-op providers만 있음; 실제 번역/최종 raster 없음. partial input publication 실패 시 신규 디렉터리를 보존하고 자동 정리하지 않음. 기존 출력/링크는 거부. Linux → Windows interoperability는 source 분석과 최소 출력 smoke까지만 검증.
   - Remaining coupling / follow-up: shared chapter/page state + chapter 전체 rewrite; 순차 stage-major 정책은 pipeline 소유. provider는 page copy 반환 및 reads/writes/resources 선언. translation memory 순서와 page/context transaction 구현은 Step 4; Translation↔Erase overlap/GPU handoff는 Step 8. [M3-STATE-001](../M3_PIPELINING/IDEAS.md#m3-state-001--공유-mutable-state-분리), [M3-TRANS-001](../M3_PIPELINING/IDEAS.md#m3-trans-001--translation-memory-순차-dependency-완화), [M4-PERSIST-001](../M4_OPTIMIZATION/IDEAS.md#m4-persist-001--chapter-전체-json-반복-rewrite-비용-개선) 기존 item과 연결; 신규 최적화 구현 없음.
+  - User review supplement (2026-10-02): 실제 JPG 4페이지가 `No PNG inputs`로 실패한 문제를 지원 형식 확대/실제 decode로 수정. 인자 없는 `npm run smoke` Usage error를 repository fixture 기반 CLI validation으로 수정. 손상된 기존 1×1 PNG test fixture를 유효한 합성 PNG로 교체. tracked 소형 fixture와 Git 제외 `test-data/input/`, `test-data/output/` 분리; README에 폴더 복사/config/신규 output 사용법 기록. 실제 사용자 만화는 commit하지 않음.
+  - Supplement validation: `npm run check`(typecheck/lint/build, 21 tests), `npm run smoke`(12 tests), `npm run check:boundaries`; PNG/JPG/JPEG/WebP/JFIF/case-insensitive 단일 입력, mixed natural order, 크기/bytes 복사, malformed/truncated/mismatch/unsupported 처리 및 explicit CLI config 검증. `git check-ignore`로 임의 중첩·dotfile·내부 ignore의 unignore 시도도 제외됨을 확인. root reference source 무변경. 보완 commit은 `fix(rover): support image inputs and repository smoke validation`이며 이 Result와 같은 commit에 포함.
   - Follow-up items: Step 1 사용자 checkpoint; 승인 후 Step 2 시작 시 D31 로컬 Carrot data root 위치 확인.
 
 ## Step 2 — Detection / Koharu

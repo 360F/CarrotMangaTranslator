@@ -56,7 +56,8 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 
 ## 로컬 전용 데이터
 
-- **repo에 포함된 검증 데이터:** `spikes/renderer-comparison/`의 fixture(v1/v2/v3), Electron reference PNG, 고정 폰트뿐이다. spike `outputs/`(visual-comparison HTML 등)는 git 미추적 로컬 전용이다.
+- **수동 검증 로컬 데이터:** `test-data/input/`에 실제 만화 폴더를 복사하고, 신규 `test-data/output/<run>/`을 config output으로 지정한다. `test-data/` 전체는 Git 제외이며 삭제·정리 대상이 아니다. 초기 디렉터리 생성과 config 예시는 [README](README.md)를 따른다. 자동 테스트용 작은 합성 이미지 fixture는 tracked `tests/fixtures/`에 둔다.
+- **repo에 포함된 renderer 검증 데이터:** `spikes/renderer-comparison/`의 fixture(v1/v2/v3), Electron reference PNG, 고정 폰트뿐이다. spike `outputs/`(visual-comparison HTML 등)는 git 미추적 로컬 전용이다.
 - **로컬 Carrot data root(gitignore, repo 밖):** M1 Step 2~6의 비교 기준(`hayai-regions.json`, `ocr-bbox-hints.json`, 번역 `result.json`, `library/`, `page-workflows/`, `runs/`, `models/`, `ocr-runtime/`, `hf-cache/`)은 여기에 있다. analysis가 말하는 "두 data root"는 개발용 repo data root와 설치 앱 data root다.
 - 현재 위치는 Windows 로컬이다. 정확한 경로는 `사용자 확인 필요`(예전 노트의 개발 repo 경로 `D:\01_code\CarrotMangaTranslator`는 현재 값으로 확인되지 않았다). M1 진행 중 WSL에서 `/mnt/...`로 접근하도록 옮길 예정이다.
 - 환경변수 이름이나 config key를 미리 정하지 않는다. 데이터가 필요한 Step에서 위치를 사용자에게 확인한다. 이 데이터는 사용자 데이터이므로 정리·삭제 대상이 아니다.
@@ -76,6 +77,7 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 - Node.js >=24; 개발 의존성은 `npm ci --ignore-scripts`로 이 하위 프로젝트에만 설치한다.
 - `npm run build` — TypeScript build (`dist/`, gitignored)
 - `npm run typecheck`, `npm run lint`, `npm test` — 독립 typecheck / ESLint / Node unit·CLI smoke
+- `npm run smoke` — build 후 repository input/CLI smoke validation; 사용자 config 실행은 아래 CLI 사용
 - `npm run check` — typecheck + lint + build/test
 - `npm run check:boundaries` — parent runtime import 금지 및 Core/Pipeline → adapter import 금지 확인
 - Linux CLI: `node dist/cli.js --config <config.json>` (현재 dummy smoke 전용; 실제 stage 구현 아님)

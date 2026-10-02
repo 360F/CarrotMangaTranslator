@@ -10,7 +10,7 @@ async function inspect(dir) {
     for (const match of source.matchAll(/(?:from\s*|import\s*\(|import\s*)['"]([^'"]+)['"]/g)) {
       const specifier = match[1];
       if (!specifier.startsWith('.')) {
-        assert.ok(specifier.startsWith('node:'), `Unexpected runtime dependency: ${specifier}`);
+        assert.ok(specifier.startsWith('node:') || (specifier === 'sharp' && path === resolve('src/adapters/input.ts')), `Unexpected runtime dependency: ${specifier}`);
         continue;
       }
       const target = relative(root, resolve(dirname(path), specifier));

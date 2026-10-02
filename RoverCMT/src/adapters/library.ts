@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
-import { copyFile, mkdir, readFile, readdir, rename, stat, writeFile } from 'node:fs/promises';
-import { basename, extname, join } from 'node:path';
+import { mkdir, readdir, rename, stat, writeFile } from 'node:fs/promises';
+import { basename, join } from 'node:path';
+import { materializeImages, supportsImage } from './input.js';
 import type { Chapter, Persistence } from '../core/contracts.js';
 
 async function writeJson(path: string, value: unknown): Promise<void> {
@@ -17,19 +18,11 @@ export function libraryPersistence(): Persistence {
       const inputStat = await stat(config.input);
       const inputs = inputStat.isDirectory()
         ? (await readdir(config.input, { withFileTypes: true }))
-          .filter(entry => entry.isFile() && extname(entry.name).toLowerCase() === '.png')
+          .filter(entry => entry.isFile() && supportsImage(entry.name))
           .map(entry => join(config.input, entry.name)).sort((a, b) => a.localeCompare(b, 'en', { numeric: true }))
         : [config.input];
-      if (!inputs.length) throw new Error('No PNG inputs');
-      const images = await Promise.all(inputs.map(async path => {
-        if (extname(path).toLowerCase() !== '.png') throw new Error('Step 1 supports PNG input only');
-        const bytes = await readFile(path);
-        if (bytes.length < 33 || !bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10])) ||
-            bytes.toString('ascii', 12, 16) !== 'IHDR') throw new Error(`Invalid PNG header: ${path}`);
-        const width = bytes.readUInt32BE(16), height = bytes.readUInt32BE(20);
-        if (!width || !height || width > 100000 || height > 100000) throw new Error('Invalid PNG dimensions');
-        return { path, width, height };
-      }));
+      if (!inputs.length) throw new Error('No supported image inputs');
+      const images = await materializeImages(inputs);
       // Exclusive root creation refuses existing data, symlinks and concurrent writers.
       output = config.output;
       await mkdir(output);
@@ -41,8 +34,8 @@ export function libraryPersistence(): Persistence {
       const pages = [];
       for (const [index, image] of images.entries()) {
         const id = randomUUID();
-        const imagePath = join(pagesDir, `${String(index + 1).padStart(3, '0')}-${id}.png`);
-        await copyFile(image.path, imagePath);
+        const imagePath = join(pagesDir, `${String(index + 1).padStart(3, '0')}-${id}${image.extension}`);
+        await writeFile(imagePath, image.bytes);
         pages.push({ id, name: basename(image.path), imagePath, width: image.width, height: image.height,
           blocks: [], analysisStatus: 'idle' as const, createdAt: now, updatedAt: now });
       }

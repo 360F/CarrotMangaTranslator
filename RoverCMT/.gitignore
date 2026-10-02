@@ -1,2 +1,5 @@
 node_modules/
 dist/
+
+# Private manual validation data: never track contents or placeholders.
+/test-data/
