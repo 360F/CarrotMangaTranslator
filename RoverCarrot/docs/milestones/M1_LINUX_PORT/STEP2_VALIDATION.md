@@ -5,8 +5,8 @@
 
 2026-10-02 implementation and independent-review correction evidence, plus
 2026-10-03 [checkpoint finishing fixes](#checkpoint-finishing-fixes-2026-10-03).
-Correction started from clean `main = origin/main = 17e94c03`; finishing fixes from clean `main = origin/main = 644c7ad1`. Status: **IN_PROGRESS — 독립 재검증 Low 지적 수정 완료, 사용자 checkpoint 대기**. Implementation commit: [`4a435446`](https://github.com/360F/RoverCMT/commit/4a435446); Phase A checkpoint sync: `1859ad91`. DONE belongs to the
-user checkpoint; no numerical tolerance or DONE decision was invented. Step 3 has
+Correction started from clean `main = origin/main = 17e94c03`; finishing fixes from clean `main = origin/main = 644c7ad1`. Status: **DONE — 2026-10-03 사용자 checkpoint 승인**; Step 2 completion commit: [`4e8059e4`](https://github.com/360F/RoverCMT/commit/4e8059e4c071a22bb9e474392cf3a99147cada5a). Implementation commit: [`4a435446`](https://github.com/360F/RoverCMT/commit/4a435446); Phase A checkpoint sync: `1859ad91`. DONE was
+decided at the user checkpoint; no numerical tolerance was invented. Step 3 has
 not started.
 
 ## Boundary and preserved behavior
@@ -447,5 +447,6 @@ Step 2 dialogue blocks or the OCR/translation path. It reproduces with Linux ORT
 CPU graph optimization `all`/`extended`; no cause is asserted. This acceptance is
 limited to that scope and defines no numerical tolerance.
 
-Step 2 remains **IN_PROGRESS — 독립 재검증 Low 지적 수정 완료, 사용자 checkpoint
-대기**. DONE is decided at the user checkpoint. Step 3 OCR has not started.
+These fixes left Step 2 awaiting the user checkpoint. The 2026-10-03 user
+checkpoint approved Step 2 as **DONE** on the validation results of `4e8059e4`,
+with the accepted effect bbox difference above. Step 3 OCR has not started.

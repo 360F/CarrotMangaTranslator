@@ -17,16 +17,16 @@
 | 항목 | 값 |
 |---|---|
 | Active milestone | **M1 — Linux Port** ([목표와 요구사항](README.md#목표)) |
-| 현재 Step | Step 2 IN_PROGRESS — 독립 재검증 Low 지적 수정 완료, 사용자 checkpoint 대기 |
-| **다음 Step** | Step 2 checkpoint 마무리 수정 commit 확인·사용자 checkpoint(DONE 여부는 사용자 결정) |
-| 다음 Step 진행 가능 여부 | Step 3는 Step 2 사용자 승인 후 진행 |
+| 현재 Step | Step 2 DONE — 사용자 checkpoint 승인 완료 (2026-10-03) |
+| **다음 Step** | Step 3 — OCR / Hayai |
+| 다음 Step 진행 가능 여부 | 사용자 checkpoint 승인으로 Step 3 진행 가능(prerequisite Step 2 DONE 충족). 아직 시작하지 않음 |
 
 ## Progress
 
 | Step | Name | Status | Main checkpoint |
 |---|---|---|---|
 | 1 | [Core Architecture, Contracts & CLI Adapter](#step-1--core-architecture-contracts--cli-adapter) | DONE | Carrot loader contract 확인 + Core boundary + CLI로 minimal pipeline smoke. **사용자 검토 checkpoint** |
-| 2 | [Detection / Koharu](#step-2--detection--koharu) | IN_PROGRESS | Linux detection 결과가 기존 `hayai-regions.json`과 region 수·bbox·순서 일치 |
+| 2 | [Detection / Koharu](#step-2--detection--koharu) | DONE | Linux detection 결과가 기존 `hayai-regions.json`과 region 수·bbox·순서 일치 |
 | 3 | [OCR / Hayai](#step-3--ocr--hayai) | NOT_STARTED | Linux Hayai `sourceText`가 기존 결과와 일치 |
 | 4 | [Translation](#step-4--translation) | NOT_STARTED | 같은 입력으로 같은 request·parse·merge·memory 갱신 |
 | 5 | [Typography / Layout](#step-5--typography--layout) | NOT_STARTED | 고정 입력의 font size·bubble layout이 reference와 일치 |
@@ -316,7 +316,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 
 ## Step 2 — Detection / Koharu
 
-- **Status:** IN_PROGRESS
+- **Status:** DONE
 - **Goal:** Carrot Detection을 Linux RoverCMT stage로 이식하고, Step 1 architecture에 첫 실제 stage를 붙여 contract를 검증한다.
 - **Scope:** Koharu layout ONNX runtime(Linux), portable image decode/input, preprocessing, inference, 기존 결정적 후처리(`buildHayaiRegionManifest`), region/block 출력, `ocrSubdivision` 등 OCR이 쓰는 정보, Rover stage contract 연결.
 - **Explicit non-goals:** 반복 Koharu 추론 제거, raw inference 재사용 등 [M4-DETECT-001](../M4_OPTIMIZATION/IDEAS.md#m4-detect-001--같은-원본-raster의-koharu-raw-inference-재사용) 범위. 휴면 상태인 `recognitionBboxes` 경로의 재설계. anime-text-yolo 등 production 밖 detector.
@@ -335,9 +335,9 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Validation:** 고정 입력(기존 run artifact의 원본 page)으로 기존 `hayai-regions.json`과 region 수, bbox, 순서, subdivision 등 필요한 metadata를 비교한다(DETECTION §22 S0–S3).
 - **Completion criteria:** DetectionResult가 Rover stage boundary를 통해 다음 stage(OCR)가 쓸 수 있는 상태로 저장됨. ONNX inference 성공만으로는 DONE이 아니다. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
-  - Status: IN_PROGRESS.
-  - Progress notes: IMPLEMENTED(2026-10-02). Strict persistence 독립 검증 지적사항 수정 시작 HEAD `17e94c03`. 2026-10-03 `644c7ad1` 독립 재검증의 Low 지적 수정 시작 HEAD `644c7ad1`(clean local/remote); 수정 완료, 사용자 checkpoint 대기. Step 3 미시작. Phase B 시작 HEAD `1859ad91` (Step 1 승인·문서 동기화 commit, clean local/remote 확인 후 시작).
-  - Commit: [`4a435446`](https://github.com/360F/RoverCMT/commit/4a435446) — `feat(rover): implement Koharu CPU detection with internal smoke injection`. 독립 검증 대기 상태로 commit/push; DONE을 의미하지 않는다. Phase A 문서 동기화 commit은 `1859ad91`.
+  - Status: DONE — 구현·validation·commit·push 완료, 사용자 checkpoint 승인(2026-10-03).
+  - Progress notes: branch `main`; 사용자 checkpoint 승인 완료(2026-10-03). 작업 시작 HEAD(각각 clean local/remote): Phase B `1859ad91`(Step 1 승인·문서 동기화 commit), strict persistence 수정 `17e94c03`, Low 지적 수정 `644c7ad1`. 다음은 Step 3(미시작).
+  - Commit: Step 2 완료 commit [`4e8059e4`](https://github.com/360F/RoverCMT/commit/4e8059e4c071a22bb9e474392cf3a99147cada5a) — `fix(rover): close Step 2 checkpoint Low findings`. 사용자 checkpoint 승인(2026-10-03)의 검증 기준 HEAD이며, 이 DONE 기록은 후속 docs commit에 있다. 구현 commit [`4a435446`](https://github.com/360F/RoverCMT/commit/4a435446) — `feat(rover): implement Koharu CPU detection with internal smoke injection`(독립 검증 대기 상태로 commit/push), strict persistence 수정 commit `644c7ad1`. Phase A 문서 동기화 commit은 `1859ad91`.
   - Validation result: `npm run check`(46 tests; 원 구현 40, 독립 검증 수정 44), `npm run smoke`(15 tests), boundaries PASS. S0/S1 Linux x64 ORT 1.27.0 CPU native load·model filename/148,442,003 bytes/전체 SHA·metadata 확인; isolated `npm ci --ignore-scripts` 성공. S2 실제 원본으로 추론 성공. S3 dialogue/effect 6/9, type/order/provenance 일치, dialogue bbox exact, effect 2개 4.5px 차이(effect-only, Step 2 acceptance에서 수용). IoU min/mean/max 0.959525094441446 / 0.996616066806934 / 1. S4 subdivision mode/count/box/order exact. 실제 사용자 JPG 4장 Detect PASS·block persistence·session 1회 재사용·기존 data bytes 보존. [재현 명령·artifact binding·측정 전체](STEP2_VALIDATION.md).
   - Independent-review correction: 실제 root strict schema로 reference/Step 1/새 Step 2 PASS, 구 Step 2 58 issues FAIL 재현. 허용 persistence 필드·subdivision 회귀 test 추가. blank Koharu unset/stage 선택, reference bbox clamp/연산순서(4페이지 33 block 미세 보정), validator order/provenance 분리·Usage, scoped adm-zip override, Electron platform evidence 정정. S2–S4 actual manifest 이전 결과 exact; graphOptimizationLevel `all` 유지. fresh 4페이지 10/2/10/20 blocks·strict PASS, model-less clean check 44/smoke 15/boundaries PASS. [전체 수정·bbox 전후 기록](STEP2_VALIDATION.md#independent-review-correction-h1m1l1l2l4l5l6).
   - Checkpoint finishing(2026-10-03): persisted strict test에 page·workflowOrigin exact key 비교 추가(L1 mutation `workflowOrigin.regionId`/`page.detectionDiagnostics`: 이전 helper 44/44 통과 → 각 46개 중 8개 실패). validator terminal summary에 count/type/order(status gate)와 provenance/subdivision(정보성, status·exit code 불변) 표시 — 기존 정책 유지. STEP2_VALIDATION 표현 정정(수정 전 strict FAIL output, 최적화 수준 단일 측정, DirectML 원인 표현). [상세](STEP2_VALIDATION.md#checkpoint-finishing-fixes-2026-10-03).
@@ -345,7 +345,8 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - D31: filesystem read-only 발견 및 model identity/개발 root의 chapter-page-run binding으로 `<CARROT_DATA_ROOT>`와 `<KOHARU_MODEL>` 식별. 개인 절대경로는 ignored `test-data/validation/m1-step2/validation-context.json`에만 저장.
   - Known differences: 동일 Electron tensor로도 confidence 차이와 effect 경계 2개 +4.5px 차이. effect 차이는 Linux ORT CPU graph optimization `all`/`extended`에서 재현되며, reference manifest에 execution provider 기록이 없어 DirectML 생성 여부가 확인되지 않았으므로 원인을 단정하지 않음. Dialogue bbox는 exact; effect-only 차이로 현재 Step 2 acceptance에서 수용(사용자 결정 2026-10-03, 현재 Step 2 dialogue block·OCR/translation 경로 영향 없음 범위). [Acceptance 범위](STEP2_VALIDATION.md#effect-bbox-difference-step-2-acceptance). sharp 일반 Lanczos3가 class를 바꾸던 문제는 Chromium fixed-point resize 이식으로 수정(실제/합성 PNG tensor exact). 모든 JPEG/CMYK/ICC/alpha decode parity를 주장하지 않음. 나머지 stage는 no-op.
   - Remaining coupling / follow-up: shared page/block state와 chapter rewrite 유지. model/session은 run-owned adapter, Detection stage는 real manifest를 읽어 blocks/review/geometry에 기록. Page에 optional blockOrder/review, config에 models.koharu. 독립 검증에서 발견된 invalid partial pageWorkflow와 block의 Rover-only provenance 3개 키는 제거. 임계값/geometry 정책 변경 없음; dialogue provenance는 runtime manifest에 유지, strict record 밖 artifact persistence와 empty-result marker(full receipt 필요)는 후속 과제. [boundary·source 차이·결정 기록](STEP2_VALIDATION.md#boundary-and-preserved-behavior).
-  - Follow-up items: 사용자 checkpoint 후에만 DONE. M4 raw inference 최적화 미구현.
+  - User checkpoint (2026-10-03): `4e8059e4` 검증 결과 기준으로 사용자 Step 2 승인 완료. Known differences의 effect bbox +4.5px 차이는 Step 2 acceptance에서 수용된 상태로 유지.
+  - Follow-up items: M4 raw inference 최적화 미구현.
 
 ## Step 3 — OCR / Hayai
 
