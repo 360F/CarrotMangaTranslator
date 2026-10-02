@@ -9,11 +9,12 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src tests",
+    "lint": "eslint src tests tools",
     "test": "npm run build && node --test tests/*.test.mjs",
     "check": "npm run typecheck && npm run lint && npm test",
     "smoke": "npm run build && node --test tests/smoke.test.mjs",
-    "check:boundaries": "node tests/boundaries.mjs"
+    "check:boundaries": "node tests/boundaries.mjs",
+    "validate:detect": "npm run build && node dist/validate-detect.js"
   },
   "devDependencies": {
     "@eslint/js": "9.39.1",
@@ -24,6 +25,7 @@
     "typescript-eslint": "8.48.1"
   },
   "dependencies": {
+    "onnxruntime-node": "1.27.0",
     "sharp": "0.35.5",
     "smol-toml": "1.9.0"
   }

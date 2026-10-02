@@ -25,6 +25,10 @@ output = "test-data/output/example-run"
 # Stages run in the fixed reference order. Optional extra stages:
 # "source-rules", "translation-rules", "format-rules", "review".
 stages = ["detect", "ocr", "translate", "typography", "erase", "layout", "render"]
+
+[models]
+# Absolute path to the Koharu ONNX model (no automatic download).
+koharu = ""
 `;
 
 export class ConfigError extends Error {}
@@ -46,12 +50,14 @@ export function parseConfigToml(text: string, cwd: string, overrides: PathOverri
     const first = (error instanceof Error ? error.message : String(error)).split('\n')[0];
     throw new ConfigError(`Invalid TOML: ${first}`, { cause: error });
   }
-  const top = table(doc, 'top level', ['version', 'mode', 'paths', 'pipeline']);
+  const top = table(doc, 'top level', ['version', 'mode', 'paths', 'pipeline', 'models']);
   const paths = table(top.paths, 'paths', ['input', 'output']);
   const pipeline = table(top.pipeline, 'pipeline', ['stages']);
+  const models = table(top.models, 'models', ['koharu']);
   const raw: Record<string, unknown> = { version: top.version, mode: top.mode };
   for (const [key, value] of [['input', paths.input], ['output', paths.output], ['stages', pipeline.stages]] as const)
     if (value !== undefined) raw[key] = value;
+  if (top.models !== undefined) raw.models = models;
   try {
     return resolveConfig(raw, cwd, overrides);
   } catch (error) {

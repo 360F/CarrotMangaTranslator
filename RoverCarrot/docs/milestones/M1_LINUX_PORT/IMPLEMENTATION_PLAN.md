@@ -17,16 +17,16 @@
 | 항목 | 값 |
 |---|---|
 | Active milestone | **M1 — Linux Port** ([목표와 요구사항](README.md#목표)) |
-| 현재 Step | Step 1 DONE — 사용자 수동 검증·checkpoint 승인 완료 (2026-10-02) |
-| **다음 Step** | Step 2 — Detection / Koharu |
-| 다음 Step 진행 가능 여부 | 사용자 checkpoint 승인으로 Step 2 진행 가능 |
+| 현재 Step | Step 2 IN_PROGRESS — IMPLEMENTED, 독립 검증 대기 |
+| **다음 Step** | Step 2 독립 검증·사용자 checkpoint |
+| 다음 Step 진행 가능 여부 | Step 3는 Step 2 독립 검증·사용자 승인 후 진행 |
 
 ## Progress
 
 | Step | Name | Status | Main checkpoint |
 |---|---|---|---|
 | 1 | [Core Architecture, Contracts & CLI Adapter](#step-1--core-architecture-contracts--cli-adapter) | DONE | Carrot loader contract 확인 + Core boundary + CLI로 minimal pipeline smoke. **사용자 검토 checkpoint** |
-| 2 | [Detection / Koharu](#step-2--detection--koharu) | NOT_STARTED | Linux detection 결과가 기존 `hayai-regions.json`과 region 수·bbox·순서 일치 |
+| 2 | [Detection / Koharu](#step-2--detection--koharu) | IN_PROGRESS | Linux detection 결과가 기존 `hayai-regions.json`과 region 수·bbox·순서 일치 |
 | 3 | [OCR / Hayai](#step-3--ocr--hayai) | NOT_STARTED | Linux Hayai `sourceText`가 기존 결과와 일치 |
 | 4 | [Translation](#step-4--translation) | NOT_STARTED | 같은 입력으로 같은 request·parse·merge·memory 갱신 |
 | 5 | [Typography / Layout](#step-5--typography--layout) | NOT_STARTED | 고정 입력의 font size·bubble layout이 reference와 일치 |
@@ -234,7 +234,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 | D28 | RENDERER_CANDIDATE_ANALYSIS §7 기각 후보를 사용자 REJECTED로 기록할지 | M1-RENDER-001 | 어느 Step과도 무관 | 사용자 확인 | **아니오** | 언제든 |
 | D29 | Rover Output 이식을 어느 Step에서 구현할지 | M1-PERSIST-002 | 4 구현 → 8 통합(기본안) | 기본안 유지. export는 번역 저장 상태에서 트리거되므로 translation persistence가 생기는 Step 4에서 export를 구현하고, 출력 경로·기본 입출력 디렉터리와 전체 output 흐름은 Step 8에서 통합 검증한다 | 아니오 | 아니오(M1 scope) |
 | D30 | 병렬 경로의 장치 전제: 번역 backend가 별도 장치에 있는 전제 vs 같은 GPU 공유 가능성 | M1-CORE-002 | 8 | 기록·검증(결정하지 않음) | 아니오 | GPU scheduling은 [M3-RUNTIME-001](../M3_PIPELINING/IDEAS.md#m3-runtime-001--pipelining을-위한-gpu-resource-scheduling) |
-| D31 | 로컬 Carrot data root 위치(비교 기준 데이터) | Step 2–6 Validation | 2 시작 전 | 사용자 확인 필요([로컬 전용 데이터](../../../AGENTS.md#로컬-전용-데이터)) | 예(Step 2–6 비교 검증의 전제) | 아니오 |
+| D31 | 로컬 Carrot data root 위치(비교 기준 데이터) | Step 2–6 Validation | 2 시작 전 | Step 2에서 read-only filesystem/model/chapter-page-run binding으로 식별(2026-10-02); [ignored context와 재현](STEP2_VALIDATION.md#reference-binding-d31) | 예(Step 2–6 비교 검증의 전제) | 아니오 |
 
 ---
 
@@ -316,7 +316,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 
 ## Step 2 — Detection / Koharu
 
-- **Status:** NOT_STARTED
+- **Status:** IN_PROGRESS
 - **Goal:** Carrot Detection을 Linux RoverCMT stage로 이식하고, Step 1 architecture에 첫 실제 stage를 붙여 contract를 검증한다.
 - **Scope:** Koharu layout ONNX runtime(Linux), portable image decode/input, preprocessing, inference, 기존 결정적 후처리(`buildHayaiRegionManifest`), region/block 출력, `ocrSubdivision` 등 OCR이 쓰는 정보, Rover stage contract 연결.
 - **Explicit non-goals:** 반복 Koharu 추론 제거, raw inference 재사용 등 [M4-DETECT-001](../M4_OPTIMIZATION/IDEAS.md#m4-detect-001--같은-원본-raster의-koharu-raw-inference-재사용) 범위. 휴면 상태인 `recognitionBboxes` 경로의 재설계. anime-text-yolo 등 production 밖 detector.
@@ -326,7 +326,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - [DETECTION §1 Production Detection Flow](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#1-production-detection-flow-fact), [§3 Image Decode / Preprocessing](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#3-image-decode--preprocessing), [§5 Detection Postprocessing](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#5-detection-postprocessing-buildhayairegionmanifest), [§6 Block Creation and Defaults](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#6-block-creation-and-defaults), [§7 Recognition Geometry](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#7-recognition-geometry)
   - [DETECTION §12 Input Contract](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#12-detection-input-contract), [§13 Output Contract](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#13-detection-output-contract), [§22 Linux Runtime Smoke Test Plan](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#22-linux-runtime-smoke-test-plan-미실행), [§24 Recommended Migration Boundary](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#24-recommended-migration-boundary), [§25 Open Decisions](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#25-open-decisions-for-user)
 - **Source areas to inspect:** `src/main/textDetection/hayaiRegionPrepass.ts`, `src/main/textDetection/pageTextRegionDetector.ts`, `src/main/textDetection/hayaiRegionGeometry.ts`, `src/main/textDetection/hayaiOcrSubdivision.ts`, `src/main/bubbleLayout/detector.ts`, `src/main/pageWorkflow/pageWorkflowOcr.ts`(`detectWorkflowBlocks`).
-- **Open decisions to resolve:** D31(로컬 data root 위치, 시작 전 사용자 확인), D12(SFX 범위, 재실행 semantics, ONNX 구현 언어). 기록: D12 raw mask 보존·cache 범위, D9의 ONNX Runtime 배포 형태.
+- **Open decisions to resolve:** D31(로컬 data root 위치; 사용자 지침에 따라 filesystem read-only 식별 완료), D12(SFX 범위, 재실행 semantics, ONNX 구현 언어). 기록: D12 raw mask 보존·cache 범위, D9의 ONNX Runtime 배포 형태.
 - **Architecture/coupling concerns:**
   - detection은 `blocks`를 통째로 교체하고 이후 stage 필드를 버린다([CORE §3 Page Data Lifecycle](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#3-page-data-lifecycle)).
   - 같은 Koharu model을 Step 5 layout과 Step 6 erase prepass도 쓴다. runtime을 이 세 용도가 공유할 수 있는 boundary로 둔다(결과 재사용은 M4).
@@ -335,13 +335,15 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Validation:** 고정 입력(기존 run artifact의 원본 page)으로 기존 `hayai-regions.json`과 region 수, bbox, 순서, subdivision 등 필요한 metadata를 비교한다(DETECTION §22 S0–S3).
 - **Completion criteria:** DetectionResult가 Rover stage boundary를 통해 다음 stage(OCR)가 쓸 수 있는 상태로 저장됨. ONNX inference 성공만으로는 DONE이 아니다. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
-  - Status: —
-  - Progress notes: —
-  - Commit: —
-  - Validation result: —
-  - Known differences: —
-  - Remaining coupling / follow-up: —
-  - Follow-up items: —
+  - Status: IN_PROGRESS.
+  - Progress notes: IMPLEMENTED — 독립 검증 대기(2026-10-02). Step 3 미시작. Phase B 시작 HEAD `1859ad91` (Step 1 승인·문서 동기화 commit, clean local/remote 확인 후 시작).
+  - Commit: Phase B 구현 commit은 아래 validation 기록과 함께 git history에 기록한다.
+  - Validation result: `npm run check`(40 tests), `npm run smoke`(15 tests), boundaries PASS. S0/S1 Linux x64 ORT 1.27.0 CPU native load·model filename/148,442,003 bytes/전체 SHA·metadata 확인; isolated `npm ci --ignore-scripts` 성공. S2 실제 원본으로 추론 성공. S3 dialogue/effect 6/9, type/order/provenance 일치, dialogue bbox exact, effect 2개 4.5px 차이. IoU min/mean/max 0.959525094441446 / 0.996616066806934 / 1. S4 subdivision mode/count/box/order exact. 실제 사용자 JPG 4장 Detect PASS·block persistence·session 1회 재사용·기존 data bytes 보존. [재현 명령·artifact binding·측정 전체](STEP2_VALIDATION.md).
+  - D9/D12: exact Node ORT in-process CPU; session run 내 재사용, 종료 release. SFX review만 보존, staged OCR/자동 translation 제외; internal skip/overwrite만, CLI 신규 flag 없음. raw masks/cross-stage inference cache 없음. sourceDirection horizontal과 presentation defaults 유지.
+  - D31: filesystem read-only 발견 및 model identity/개발 root의 chapter-page-run binding으로 `<CARROT_DATA_ROOT>`와 `<KOHARU_MODEL>` 식별. 개인 절대경로는 ignored `test-data/validation/m1-step2/validation-context.json`에만 저장.
+  - Known differences: 동일 Electron tensor로도 confidence와 effect 경계 2개 차이(DirectML vs CPU 영향 추정, 새 DML replay로 입증하지 않음); 독립 검증자가 수치 재현·판단. sharp 일반 Lanczos3가 class를 바꾸던 문제는 Chromium fixed-point resize 이식으로 수정(실제/합성 PNG tensor exact). 모든 JPEG/CMYK/ICC/alpha decode parity를 주장하지 않음. 나머지 stage는 no-op.
+  - Remaining coupling / follow-up: shared page/block state와 chapter rewrite 유지. model/session은 run-owned adapter, Detection stage는 real manifest를 읽어 blocks/review/geometry에 기록. Page에 optional blockOrder/review/empty marker, config에 models.koharu만 추가. 임계값/geometry 정책 변경 없음; provenance를 block에도 추가 영속. [boundary·source 차이·결정 기록](STEP2_VALIDATION.md#boundary-and-preserved-behavior).
+  - Follow-up items: 독립 Claude S2–S4 재실행 및 사용자 checkpoint 후에만 DONE. M4 raw inference 최적화 미구현.
 
 ## Step 3 — OCR / Hayai
 

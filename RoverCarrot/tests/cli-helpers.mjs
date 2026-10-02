@@ -1,3 +1,4 @@
+import { fakeRuntime } from './fake-koharu.mjs';
 // Shared helpers for CLI tests. Every CLI run uses a temporary project root, so the
 // real config/config.toml and logs/ of this checkout are never read or written.
 import assert from 'node:assert/strict';
@@ -19,9 +20,9 @@ export async function tempRoot(t, configText) {
   return root;
 }
 
-export async function cli({ root, cwd = root, argv = [], tty = false, env = { LANG: 'C.UTF-8' }, stages }) {
+export async function cli({ root, cwd = root, argv = [], tty = false, env = { LANG: 'C.UTF-8' }, stages, runtime = fakeRuntime }) {
   let out = '';
-  const code = await runCli({ argv, projectRoot: root, cwd, isTTY: tty, env, stages, write: text => { out += text; } });
+  const code = await runCli({ argv, projectRoot: root, cwd, isTTY: tty, env, stages, runtime, write: text => { out += text; } });
   return { code, out };
 }
 

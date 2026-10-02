@@ -7,6 +7,9 @@ export type Page = {
   id: string; name: string; imagePath: string; width: number; height: number;
   blocks: Record<string, unknown>[];
   analysisStatus: 'idle' | 'running' | 'completed' | 'failed';
+  blockOrder?: string[];
+  pageWorkflow?: { emptyDetectionKey?: string };
+  soundEffectReview?: Record<string, unknown>;
   createdAt: string; updatedAt: string;
 };
 export type Chapter = {
@@ -17,6 +20,7 @@ export type Chapter = {
 export type Config = {
   version: 1; mode: 'smoke'; input: string; output: string;
   stages: StageId[];
+  models?: { koharu: string };
 };
 export type Issue = { pageId?: string; stage?: StageId; message: string; retryable: boolean };
 export type Event = {

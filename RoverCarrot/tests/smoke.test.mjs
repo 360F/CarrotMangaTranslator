@@ -1,3 +1,5 @@
+import { fakeRuntime } from './fake-koharu.mjs';
+import { koharuDetectionStage } from '../dist/adapters/detection.js';
 import { after, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, readFile, writeFile, rm, access, cp, symlink, readdir } from 'node:fs/promises';
@@ -22,7 +24,8 @@ async function setup(t) {
   return { dir, config };
 }
 async function execute(config) {
-  return run(config, { persistence: libraryPersistence(), stages: smokeStages() });
+  const stages = smokeStages().map(stage => stage.id === 'detect' ? koharuDetectionStage(fakeRuntime) : stage);
+  return run(config, { persistence: libraryPersistence(), stages });
 }
 async function loadChapter(output) {
   const json = async path => JSON.parse(await readFile(path, 'utf8'));
@@ -42,6 +45,10 @@ for (const [extension, format] of Object.entries({ png: 'png', jpg: 'jpeg', jpeg
     assert.equal(pages.length, 1);
     assert.equal(pages[0].width, 3); assert.equal(pages[0].height, 2);
     assert.equal(pages[0].analysisStatus, 'idle');
+    assert.ok(pages[0].blocks.length > 0);
+    assert.equal(pages[0].soundEffectReview.regions.length, 1);
+    assert.deepEqual(pages[0].blockOrder, pages[0].blocks.map(b => b.id));
+    assert.ok(pages[0].blocks.every(b => b.sourceDetectionIds.length && b.workflowOrigin.geometryKey));
     assert.equal(extname(pages[0].imagePath), extension === 'jfif' ? '.jpg' : `.${extension.toLowerCase()}`);
     assert.deepEqual(await readFile(pages[0].imagePath), fixtures[format]);
   });
@@ -169,29 +176,36 @@ test('entry dist/cli.js: config and logs fixed at project root, first run create
 
   const created = node(dir);
   assert.equal(created.status, 2, created.stdout + created.stderr);
+  assert.equal(created.stderr, '');
   assert.equal(created.stdout, `Config created: ${join(root, 'config', 'config.toml')} — edit it and run again.\n`);
   assert.deepEqual(await readdir(join(root, 'config')), ['config.toml']);
   const template = await readFile(join(root, 'config', 'config.toml'), 'utf8');
   assert.match(template, /^# RoverCMT configuration/); assert.match(template, /Relative paths resolve/);
   assert.deepEqual((await readdir(dir)).sort(), ['input']); // no pipeline, nothing written in CWD
 
-  await writeFile(join(root, 'config', 'config.toml'), template.replace('test-data/input/example', 'input').replace('test-data/output/example-run', 'output'));
-  const pass = node(dir);
-  assert.equal(pass.status, 0, pass.stdout + pass.stderr);
-  assert.equal(pass.stderr, '');
-  assert.ok(pass.stdout.endsWith('\nResult: PASS\nOutput: output\n'), pass.stdout);
-  assert.match(pass.stdout, /^Detect {12}100% \[█{20}\] PASS$/m);
+  await writeFile(join(root, 'config', 'config.toml'), template.replace('test-data/input/example', 'input').replace('test-data/output/example-run', 'output').replace('koharu = ""', 'koharu = "/unused/rfdetr-seg-2xlarge.onnx"'));
+  const pass = await cli({ root, cwd: dir });
+  assert.equal(pass.code, 0, pass.out);
+  assert.ok(pass.out.endsWith('\nResult: PASS\nOutput: output\n'), pass.out);
+  assert.match(pass.out, /^Detect {12}100% \[█{20}\] PASS$/m);
   assert.equal((await runRecord(join(dir, 'output'))).status, 'completed');
   assert.deepEqual((await readdir(join(root, 'logs'))).sort(), ['log_all.log']);
   assert.deepEqual((await readdir(dir)).sort(), ['input', 'output']); // no config/logs in CWD
 
   const outside = node(dir);
   assert.equal(outside.status, 1);
+  assert.equal(outside.stderr, '');
   assert.equal(outside.stdout, `Result: FAIL\nReason: Output directory already exists: ${join(dir, 'output')}\nDetails: ${join(root, 'logs', 'critical.log')}\n`);
   const inside = node(root, '--input', join(dir, 'input'), '--output', join(dir, 'output'));
   assert.equal(inside.status, 1);
+  assert.equal(inside.stderr, '');
   assert.match(inside.stdout, /\nDetails: logs\/critical\.log\n$/);
   const critical = await logLines(root, 'critical.log');
   assert.equal(critical.length, 2);
   assert.ok(critical.every(entry => /Output directory already exists/.test(entry.message)));
+  const missingModel = node(dir, '--output', 'without-model');
+  assert.equal(missingModel.status, 1);
+  assert.equal(missingModel.stderr, '');
+  assert.match(missingModel.stdout, /^Detect .*FAIL$/m);
+  assert.equal((await runRecord(join(dir, 'without-model'))).issues[0].message, 'Koharu model file not found or unreadable');
 });

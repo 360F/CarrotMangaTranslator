@@ -33,7 +33,8 @@ async function chapter(output) {
     assert.equal(page.width, 1); assert.equal(page.height, 1);
     assert.deepEqual(await readFile(page.imagePath), png);
     assert.equal(page.analysisStatus, 'idle');
-    assert.ok(!('dataUrl' in page)); assert.ok(!('pageWorkflow' in page));
+    assert.ok(!('dataUrl' in page));
+    if (page.blocks.length) { assert.ok(page.pageWorkflow); assert.ok(page.blocks.every(b => b.workflowOrigin.geometryKey)); }
   }
   return record;
 }

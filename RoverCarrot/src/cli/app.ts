@@ -1,3 +1,5 @@
+import { koharuRuntime, type KoharuRuntime } from '../adapters/koharu.js';
+import { koharuDetectionStage } from '../adapters/detection.js';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { run } from '../core/run.js';
@@ -21,6 +23,7 @@ export function projectRootFrom(entryUrl: string | URL): string {
 export type CliOptions = {
   argv: string[]; projectRoot: string; cwd: string; write: (text: string) => void;
   isTTY: boolean; env?: Record<string, string | undefined>;
+  runtime?: KoharuRuntime;
   stages?: Stage[]; // tests only: inject failing providers
 };
 
@@ -54,6 +57,7 @@ export async function runCli(options: CliOptions): Promise<number> {
     write(`${afterTable ? '\n' : ''}${['Result: FAIL', ...lines, `Details: ${details}`].join('\n')}\n`);
     return EXIT.fail;
   };
+  let runtime: KoharuRuntime | undefined;
   try {
     log.info('cli-start', { argv: options.argv, cwd, configPath });
     let config;
@@ -80,8 +84,16 @@ export async function runCli(options: CliOptions): Promise<number> {
       progress.start(chapter.pages.length);
       return chapter;
     } };
-    const result = await run(config, { persistence: observed, stages: options.stages ?? smokeStages(),
+    const stages = options.stages ?? smokeStages();
+    if (!options.stages && config.stages.includes('detect')) {
+      if (!options.runtime && !config.models?.koharu) throw new ConfigError('models.koharu must be a non-empty absolute path');
+      runtime = options.runtime ?? koharuRuntime(config.models!.koharu, (type, fields) => log.info(type, fields));
+      stages[stages.findIndex(stage => stage.id === 'detect')] = koharuDetectionStage(runtime, (type, fields) => log.info(type, fields));
+    }
+    const result = await run(config, { persistence: observed, stages,
       onEvent: event => { log.info(event.type, { ...event }); progress.event(event); } });
+    await runtime?.close?.();
+    runtime = undefined;
     log.info('run-result', { runId: result.runId, status: result.status, output: result.output, issues: result.issues });
     if (!started) {
       const message = result.issues[0]?.message ?? 'Run failed before stages started';
@@ -101,6 +113,8 @@ export async function runCli(options: CliOptions): Promise<number> {
       stack: error instanceof Error ? error.stack : undefined });
     return fail([`Reason: ${error instanceof Error ? error.message : String(error)}`]);
   } finally {
+    try { await runtime?.close?.(); }
+    catch (error) { log.critical('detect-session-release', { message: String(error) }); }
     log.close();
   }
 }

@@ -1,8 +1,10 @@
 # RoverCMT Linux Core
 
-M1 Step 1 skeleton: independent TypeScript Core with a CLI adapter. All providers
-are explicit no-ops. Successful smoke means orchestration and storage worked;
-it does not mean Detection/OCR/Translation/Erase/Render ran.
+Independent TypeScript Core with a CLI adapter. Detection now runs the pinned
+Koharu model on Linux CPU and persists dialogue blocks, OCR geometry and effect
+review regions. Other stages remain explicit no-ops; their PASS lines do not
+mean OCR, translation, erase or rendering ran. Step 2 validation and the next
+checkpoint are tracked in the [M1 plan](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-2--detection--koharu).
 
 Requires Node.js 24 or newer. From `RoverCarrot/`:
 
@@ -29,7 +31,16 @@ output = "test-data/output/example-run"  # must not exist yet
 
 [pipeline]
 stages = ["detect", "ocr", "translate", "typography", "erase", "layout", "render"]
+
+[models]
+# Absolute path to the verified rfdetr-seg-2xlarge.onnx file.
+koharu = ""
 ```
+
+Set `[models].koharu` to an existing absolute model path before running detect.
+Empty, relative, missing or wrong model files fail clearly. RoverCMT verifies the
+pinned filename, byte size and SHA-256 and never copies or downloads the model.
+The template deliberately contains no personal path.
 
 `[paths]` values are defaults. `--input`/`--output` override them for one run
 (CLI value first, else config value; a run fails before creating output if
@@ -77,12 +88,18 @@ import { resolveConfig } from './dist/core/config.js';
 import { run } from './dist/core/run.js';
 import { libraryPersistence } from './dist/adapters/library.js';
 import { smokeStages } from './dist/adapters/smoke.js';
-const config = resolveConfig({ version: 1, mode: 'smoke', input: 'pages', output: 'library' }, '/abs/base');
-const result = await run(config, {
-  persistence: libraryPersistence(),
-  stages: smokeStages(),
-  onEvent: event => console.log(event),
-});
+import { koharuRuntime } from './dist/adapters/koharu.js';
+import { koharuDetectionStage } from './dist/adapters/detection.js';
+const config = resolveConfig({ version: 1, mode: 'smoke', input: 'pages', output: 'library',
+  models: { koharu: '/absolute/path/to/rfdetr-seg-2xlarge.onnx' } }, '/abs/base');
+const runtime = koharuRuntime(config.models.koharu);
+try {
+  const result = await run(config, {
+    persistence: libraryPersistence(),
+    stages: smokeStages().map(stage => stage.id === 'detect' ? koharuDetectionStage(runtime) : stage),
+    onEvent: event => console.log(event),
+  });
+} finally { await runtime.close(); }
 ```
 
 Dependency direction: CLI composes adapters and invokes Core → pipeline → stage
@@ -111,7 +128,20 @@ small synthetic fixtures in `tests/fixtures/` (including its own TOML test confi
 CLI tests use a temporary project root, so they never read or write the real
 `config/config.toml` or `logs/`. They check exit codes, persisted run JSON,
 output files and logs, plus formats, ordering, copied bytes, overrides and
-failures. For your own data, use the CLI above.
+failures. Fake raw inference is injected only through internal API arguments;
+the real parser, postprocessing, Detection stage and persistence still run.
+The executable's config creation and failure paths remain subprocess tests.
+No real model or private data is required for `npm test` or `npm run smoke`.
+For your own data, use the CLI above.
+
+Real-model developer validation is separate (missing artifacts fail):
+
+```bash
+npm run validate:detect -- --model <KOHARU_MODEL> --data-root <CARROT_DATA_ROOT>
+```
+
+Provide a local ignored validation context as described in
+[Step 2 validation](docs/milestones/M1_LINUX_PORT/STEP2_VALIDATION.md).
 
 For private manual validation, use `test-data/input/` and `test-data/output/`.
 The entire `test-data/` tree is Git-ignored; do not force-add it. Small
@@ -127,6 +157,5 @@ cp -a /path/to/comic test-data/input/
 Point `input` in `config/config.toml` at that folder (for example
 `test-data/input/comic`), or pass `--input` for a one-off run. Inspect the library
 under the output path in `test-data/output/`. Existing outputs are refused, so
-use a new `--output` (or a new config default) for each run. These runs still
-use no-op stages and produce no translated raster. Local data is user-owned and
+use a new `--output` (or a new config default) for each run. Detection runs the actual model; other stages remain no-ops and produce no translated raster. Local data is user-owned and
 must be preserved.

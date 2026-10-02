@@ -19,7 +19,7 @@ Item 목록:
 
 | ID | Title | Progress |
 |---|---|---|
-| [M1-CORE-001](#m1-core-001--linux-core-pipeline-port) | Linux core pipeline port | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
+| [M1-CORE-001](#m1-core-001--linux-core-pipeline-port) | Linux core pipeline port | in progress (Step 1 skeleton·Step 2 Detection 구현; 독립/전체 M1 검증 남음) |
 | [M1-CORE-002](#m1-core-002--기존-translation--erase-병렬-실행-경로-이식) | 기존 Translation ↔ Erase 병렬 실행 경로 이식 | not started |
 | [M1-CONFIG-001](#m1-config-001--configsettings-파일-기반-설정) | Config/settings 파일 기반 설정 | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
 | [M1-CONFIG-002](#m1-config-002--inputoutput-경로-config화) | Input/output 경로 config화 | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
@@ -29,8 +29,8 @@ Item 목록:
 | [M1-COMPAT-001](#m1-compat-001--windows-carrot과의-output-interoperability) | Windows Carrot과의 output interoperability | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
 | [M1-PERSIST-001](#m1-persist-001--persistence와-data-contract-parity) | Persistence와 data contract parity | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
 | [M1-PERSIST-002](#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리) | Rover Output 이식(번역 JSON/CSV export, 출력 경로, 기본 입출력 디렉터리) | not started |
-| [M1-RUNTIME-001](#m1-runtime-001--linux-runtimemodel-의존성-교체적응) | Linux runtime/model 의존성 교체·적응 | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
-| [M1-DETECT-001](#m1-detect-001--koharu-layout-onnx-linux-runtime) | Koharu layout ONNX Linux runtime | not started |
+| [M1-RUNTIME-001](#m1-runtime-001--linux-runtimemodel-의존성-교체적응) | Linux runtime/model 의존성 교체·적응 | in progress (Step 1 skeleton·Step 2 Detection 구현; 독립/전체 M1 검증 남음) |
+| [M1-DETECT-001](#m1-detect-001--koharu-layout-onnx-linux-runtime) | Koharu layout ONNX Linux runtime | in progress (IMPLEMENTED — 독립 검증·사용자 checkpoint 대기) |
 | [M1-OCR-001](#m1-ocr-001--hayaiocr-linux-runtime) | HayaiOCR Linux runtime | not started |
 | [M1-TRANS-001](#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식) | OpenAI-compatible translation client와 prompt contract 이식 | not started |
 | [M1-INPAINT-001](#m1-inpaint-001--flux-klein-candle-runner-linux-runtime) | FLUX Klein Candle runner Linux runtime | not started |
@@ -41,7 +41,7 @@ Item 목록:
 ### M1-CORE-001 — Linux core pipeline port
 
 - **Status:** CURRENT
-- **Progress:** in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음)
+- **Progress:** in progress (Step 1 skeleton·Step 2 Detection 구현; 독립/전체 M1 검증 남음)
 - **Summary:** Carrot staged workflow의 자동 pipeline(detect → ocr → translate → erase → typography/layout → render → output)을 RoverCMT 내부 독립 코드로 이식한다. 각 stage의 runtime 이식은 아래 개별 item이 맡고, 이 item은 orchestration과 stage 연결을 맡는다.
 - **Why it matters:** M1의 본체다. 분석 결론은 "GUI와 Electron에 의존하지 않고 Linux에서 실행 가능한 독립적인 RoverCMT Core를 만드는 것은 현실적"이다.
 - **Related analysis:**
@@ -52,6 +52,8 @@ Item 목록:
 - **Related items:** 모든 M1 runtime item, M1-CORE-002, M1-PERSIST-001.
 - **Dependencies:** M1-RENDER-001(방향은 결정됨: Skia primary), 각 runtime smoke.
 - **Decision / validation needed:** CORE §17의 열린 결정(raw OCR 보존, 번역 누락 처리, erase와 번역의 관계, partial failure 정책 등)을 M1에서 Carrot 동작 그대로 둘지 사용자 확인. 대표 실제 page로 최소 E2E 실행([ANALYSIS_PLAN §6](../../ANALYSIS_PLAN.md#6-end-to-end-검증)).
+- **Step 2 evidence (2026-10-02):** 실제 Koharu CPU Detection 연결·저장, model 없는 test/smoke PASS; [Step 2 validation](STEP2_VALIDATION.md). 다른 stage/runtime 및 전체 M1 검증은 남음.
+
 - **History:** 2026-10-01 생성(milestone 정의). 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
 
 - **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
@@ -244,7 +246,7 @@ Item 목록:
 ### M1-RUNTIME-001 — Linux runtime/model 의존성 교체·적응
 
 - **Status:** CURRENT
-- **Progress:** in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음)
+- **Progress:** in progress (Step 1 skeleton·Step 2 Detection 구현; 독립/전체 M1 검증 남음)
 - **Summary:** Carrot의 Windows/Electron 전용 지원 계층(Electron `nativeImage` image I/O, Windows managed installer/binary catalog, DirectML/PowerShell, FFmpeg 경로 등)을 Linux에서 동작하는 대응물로 교체한다. stage별 runtime은 아래 개별 item이 맡고 이 item은 공통 계층과 exact pin 검증을 맡는다.
 - **Why it matters:** 분석 결론상 핵심 risk는 "Linux용 기술 부재"가 아니라 packaging 분리, exact pin, ABI, model/config compatibility다.
 - **Related analysis:**
@@ -254,6 +256,8 @@ Item 목록:
 - **Related items:** M1-DETECT-001, M1-OCR-001, M1-TRANS-001, M1-INPAINT-001, M1-RENDER-001.
 - **Dependencies:** Linux 실행 환경(distro, GPU/driver). 주 환경: Rover PC([RoverCarrot/AGENTS.md 실행 환경](../../../AGENTS.md#실행-환경)).
 - **Decision / validation needed:** 배포 형태(venv/container/system package)와 GPU 필수 여부.
+- **Step 2 evidence (2026-10-02):** 실제 Koharu CPU Detection 연결·저장, model 없는 test/smoke PASS; [Step 2 validation](STEP2_VALIDATION.md). 다른 stage/runtime 및 전체 M1 검증은 남음.
+
 - **History:** 2026-10-01 생성. 2026-10-01 Dependencies에 Rover PC 실행 환경 링크 추가(user decision). 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
 
 - **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
@@ -261,7 +265,7 @@ Item 목록:
 ### M1-DETECT-001 — Koharu layout ONNX Linux runtime
 
 - **Status:** CURRENT
-- **Progress:** not started
+- **Progress:** in progress (IMPLEMENTED — 독립 검증·사용자 checkpoint 대기)
 - **Summary:** Koharu layout ONNX detection과 Hayai region 후처리를 Linux에서 portable decoder + ONNX Runtime으로 재현한다.
 - **Why it matters:** 이후 OCR·erase·layout의 block geometry 원천이다. 현재 Windows는 DirectML provider를 쓴다.
 - **Related analysis:**
@@ -272,7 +276,7 @@ Item 목록:
 - **Related items:** [M4-DETECT-001](../M4_OPTIMIZATION/IDEAS.md#m4-detect-001--같은-원본-raster의-koharu-raw-inference-재사용)(반복 추론 감소는 M4).
 - **Dependencies:** M1-RUNTIME-001.
 - **Decision / validation needed:** DETECTION §25의 결정. smoke S0–S3로 기존 `hayai-regions.json`과 region 수·bbox·순서 비교.
-- **History:** 2026-10-01 생성.
+- **History:** 2026-10-01 생성. 2026-10-02 Koharu CPU runtime/실제 Detection stage·persistence와 model 없는 내부 API smoke 구현, S0–S4 및 실제 4페이지 자체 검증 완료; 독립 검증 대기. [Step 2 검증·재현 기록](STEP2_VALIDATION.md).
 
 ### M1-OCR-001 — HayaiOCR Linux runtime
 
@@ -385,6 +389,6 @@ Item 목록:
 
 ## Suggested next step
 
-M1의 구현 순서와 다음 Step은 **[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)** 가 관리한다(2026-10-01부터). Step 1 사용자 checkpoint가 승인됐다(2026-10-02). 다음은 [Step 2 — Detection / Koharu](IMPLEMENTATION_PLAN.md#step-2--detection--koharu)다.
+M1의 구현 순서와 다음 Step은 **[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)** 가 관리한다(2026-10-01부터). Step 1 사용자 checkpoint가 승인됐다(2026-10-02). [Step 2 — Detection / Koharu](IMPLEMENTATION_PLAN.md#step-2--detection--koharu)는 구현·자체 검증 완료 후 독립 검증·사용자 checkpoint를 기다린다. Step 3는 아직 시작하지 않는다.
 
 이전에 이 section에 있던 제안(Skia Linux 검증, Carrot loader 요구 조건 확인, runtime smoke, config/CLI/OBS 설계)은 IMPLEMENTATION_PLAN의 Step 1–8과 [Open decision / validation register](IMPLEMENTATION_PLAN.md#open-decision--validation-register)로 옮겼다.
