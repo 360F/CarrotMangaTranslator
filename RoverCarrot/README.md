@@ -13,21 +13,35 @@ npm run check:boundaries
 npm run smoke
 ```
 
-Create a JSON config outside the repository (paths resolve relative to that file):
+Run every command from `RoverCarrot/`. Settings live in the fixed `config/`
+directory: `config/example.json` is the tracked template, and `config/local.json`
+is your Git-ignored config. Create it once after cloning and edit its values:
+
+```bash
+cp config/example.json config/local.json
+```
 
 ```json
 {
   "version": 1,
   "mode": "smoke",
-  "input": "pages",
-  "output": "new-library",
+  "input": "test-data/input/example",
+  "output": "test-data/output/example-run",
   "stages": ["detect", "ocr", "translate", "typography", "erase", "layout", "render"]
 }
 ```
 
+`input`/`output` in the config are defaults. `--input`/`--output` override them
+for one run (CLI value first, else config value; a run fails before creating
+output if neither provides one). Relative paths from both sources resolve
+against the current working directory, not the config file location; absolute
+paths are used as is. `--config` is required.
+
 ```bash
 npm run build
-node dist/cli.js --config /absolute/path/config.json
+node dist/cli.js --config config/local.json
+node dist/cli.js --config config/local.json --input test-data/input/other-comic
+node dist/cli.js --config config/local.json --output test-data/output/run-002
 ```
 
 Input is a PNG, JPEG (`.jpg`/`.jpeg`/`.jfif`) or WebP file, or a directory
@@ -86,33 +100,25 @@ Current scope and next checkpoint:
 [M1 implementation plan](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md).
 
 `npm run smoke` builds and runs the repository's input/CLI smoke validation with
-small synthetic fixtures in `tests/fixtures/`. It creates disposable output in the
-OS temporary directory and checks formats, ordering, copied bytes, persisted run
-results and failures. For your own input/config, use the explicit CLI command above.
+small synthetic fixtures in `tests/fixtures/` (including its own test configs).
+It creates disposable output in the OS temporary directory, never reads
+`config/local.json`, and checks formats, ordering, copied bytes, persisted run
+results, CLI overrides and failures. For your own data, use the CLI above.
 
 For private manual validation, use `test-data/input/` and `test-data/output/`.
-The entire `test-data/` tree is Git-ignored, including configs and arbitrary nested
-files; do not force-add it. Small distributable automated fixtures belong in
-`tests/fixtures/`, separate from real comics, personal data and large files.
-Empty directories are not committed, so initialize them after a fresh checkout:
+The entire `test-data/` tree is Git-ignored; do not force-add it. Small
+distributable automated fixtures belong in `tests/fixtures/`, separate from real
+comics, personal data and large files. Empty directories are not committed, so
+initialize them after a fresh checkout:
 
 ```bash
 mkdir -p test-data/input test-data/output
 cp -a /path/to/comic test-data/input/
 ```
 
-Save this as `test-data/config.json` (paths resolve relative to the config):
-
-```json
-{ "version": 1, "mode": "smoke", "input": "input/comic", "output": "output/comic-run-001" }
-```
-
-```bash
-npm run build
-node dist/cli.js --config test-data/config.json
-```
-
-Inspect the library under `test-data/output/comic-run-001/`. Choose a new output
-name for each run because existing outputs are refused. These runs still use
-no-op stages and produce no translated raster. Local data is user-owned and
+Point `input` in `config/local.json` at that folder (for example
+`test-data/input/comic`), or pass `--input` for a one-off run. Inspect the library
+under the output path in `test-data/output/`. Existing outputs are refused, so
+use a new `--output` (or a new config default) for each run. These runs still
+use no-op stages and produce no translated raster. Local data is user-owned and
 must be preserved.

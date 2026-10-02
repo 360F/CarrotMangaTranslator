@@ -13,8 +13,9 @@ async function fixture() {
   const dir = await mkdtemp(join(tmpdir(), 'rovercmt-step1-'));
   await writeFile(join(dir, 'page.png'), png);
   const raw = { version: 1, mode: 'smoke', input: 'page.png', output: 'library' };
-  await writeFile(join(dir, 'config.json'), JSON.stringify(raw));
-  return { dir, config: await loadConfig(join(dir, 'config.json')) };
+  await mkdir(join(dir, 'config'));
+  await writeFile(join(dir, 'config', 'local.json'), JSON.stringify(raw));
+  return { dir, config: resolveConfig(raw, dir) };
 }
 async function chapter(output) {
   const json = async path => JSON.parse(await readFile(path, 'utf8'));
@@ -37,9 +38,10 @@ async function chapter(output) {
   }
   return record;
 }
-test('CLI config paths resolve against config directory; output follows loader layout', async () => {
+const cli = new URL('../dist/cli.js', import.meta.url).pathname;
+test('CLI config paths resolve against CWD, not config directory; output follows loader layout', async () => {
   const { dir, config } = await fixture();
-  const child = spawnSync(process.execPath, ['dist/cli.js', '--config', join(dir, 'config.json')], { encoding: 'utf8' });
+  const child = spawnSync(process.execPath, [cli, '--config', 'config/local.json'], { cwd: dir, encoding: 'utf8' });
   assert.equal(child.status, 0, child.stderr);
   const result = JSON.parse(child.stdout);
   assert.equal(result.status, 'completed'); assert.equal(result.mode, 'smoke');
@@ -49,6 +51,29 @@ test('CLI config paths resolve against config directory; output follows loader l
   assert.equal((await chapter(config.output)).status, 'idle');
   const saved = JSON.parse(await readFile(join(config.output, 'runs', `${result.runId}.json`), 'utf8'));
   assert.deepEqual(saved, result);
+  assert.equal(result.output, join(dir, 'library'));
+  await assert.rejects(readdir(join(dir, 'config', 'library')));
+});
+test('config input/output are defaults; overrides win; relative paths use base, absolute stay', () => {
+  const raw = { version: 1, mode: 'smoke', input: 'in', output: 'out' };
+  const pick = c => [c.input, c.output];
+  assert.deepEqual(pick(resolveConfig(raw, '/work')), ['/work/in', '/work/out']);
+  assert.deepEqual(pick(resolveConfig(raw, '/work', { input: 'other' })), ['/work/other', '/work/out']);
+  assert.deepEqual(pick(resolveConfig(raw, '/work', { output: 'run2' })), ['/work/in', '/work/run2']);
+  assert.deepEqual(pick(resolveConfig(raw, '/work', { input: '/abs/in', output: '/abs/out' })), ['/abs/in', '/abs/out']);
+  assert.deepEqual(pick(resolveConfig({ ...raw, input: '/cfg/in' }, '/work')), ['/cfg/in', '/work/out']);
+  assert.deepEqual(pick(resolveConfig({ version: 1, mode: 'smoke' }, '/work', { input: 'a', output: 'b' })), ['/work/a', '/work/b']);
+  assert.equal(resolveConfig(raw).input, join(process.cwd(), 'in'));
+  assert.throws(() => resolveConfig({ version: 1, mode: 'smoke', output: 'out' }, '/work'), /input path is required/);
+  assert.throws(() => resolveConfig({ version: 1, mode: 'smoke', input: 'in' }, '/work'), /output path is required/);
+  for (const bad of [{ input: '' }, { input: 3 }, { output: '  ' }])
+    assert.throws(() => resolveConfig({ ...raw, ...bad }, '/work'), /non-empty path/);
+  assert.throws(() => resolveConfig(raw, '/work', { output: '' }), /non-empty path/);});
+test('loadConfig resolves fixture config paths against process CWD and applies overrides', async () => {
+  const path = new URL('./fixtures/config-relative.json', import.meta.url).pathname;
+  const loaded = await loadConfig(path);
+  assert.deepEqual([loaded.input, loaded.output], [join(process.cwd(), 'input'), join(process.cwd(), 'output')]);
+  assert.equal((await loadConfig(path, { output: '/abs/run' })).output, '/abs/run');
 });
 test('programmatic Core boundary executes stage-major across naturally ordered pages', async () => {
   const { dir, config } = await fixture();

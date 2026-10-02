@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "mode": "smoke",
+  "input": "test-data/input/example",
+  "output": "test-data/output/example-run",
+  "stages": ["detect", "ocr", "translate", "typography", "erase", "layout", "render"]
+}

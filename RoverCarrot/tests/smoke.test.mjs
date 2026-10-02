@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, readFile, writeFile, rm, access } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join, extname } from 'node:path';
+import { join, extname, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { STAGES } from '../dist/core/contracts.js';
 import { resolveConfig } from '../dist/core/config.js';
@@ -12,6 +12,8 @@ import { run } from '../dist/core/run.js';
 
 const fixtures = Object.fromEntries(await Promise.all(['png', 'jpeg', 'webp'].map(async format =>
   [format, await readFile(new URL(`./fixtures/page.${format}`, import.meta.url))])));
+const cli = new URL('../dist/cli.js', import.meta.url).pathname;
+const fixtureConfig = name => new URL(`./fixtures/${name}`, import.meta.url).pathname;
 async function setup(t) {
   const dir = await mkdtemp(join(tmpdir(), 'rovercmt-input-'));
   t.after(() => rm(dir, { recursive: true, force: true }));
@@ -51,9 +53,7 @@ test('explicit CLI config: mixed directory natural order, ignores unsupported fi
   await writeFile(join(config.input, 'notes.txt'), 'private note');
   await mkdir(join(config.input, 'nested'));
   await writeFile(join(config.input, 'nested', '5.png'), fixtures.png);
-  const path = join(dir, 'config.json');
-  await writeFile(path, JSON.stringify({ version: 1, mode: 'smoke', input: 'input', output: 'output' }));
-  const child = spawnSync(process.execPath, ['dist/cli.js', '--config', path], { encoding: 'utf8' });
+  const child = spawnSync(process.execPath, [cli, '--config', fixtureConfig('config-relative.json')], { cwd: dir, encoding: 'utf8' });
   assert.equal(child.status, 0, child.stdout + child.stderr);
   const result = JSON.parse(child.stdout);
   assert.equal(result.status, 'completed');
@@ -95,4 +95,51 @@ test('directory without supported images has an actionable failure', async t => 
   const result = await execute(config);
   assert.equal(result.status, 'failed'); assert.match(result.issues[0].message, /No supported image inputs/);
   await assert.rejects(access(config.output));
+});
+test('CLI --input/--output override config defaults; relative to CWD; absolute paths unchanged', async t => {
+  const { dir } = await setup(t);
+  for (const name of ['input', 'other']) { await mkdir(join(dir, name)); await writeFile(join(dir, name, '1.png'), fixtures.png); }
+  await writeFile(join(dir, 'other', '2.webp'), fixtures.webp);
+  const cases = [ // [CLI args, expected input dir, expected output relative to CWD]
+    [[], 'input', 'output'],
+    [['--input', 'other'], 'other', 'output'],
+    [['--output', 'out-only'], 'input', 'out-only'],
+    [['--output', join(dir, 'abs-out'), '--input', join(dir, 'other')], 'other', 'abs-out'],
+  ];
+  for (const [args, input, output] of cases) {
+    // Outputs are never reused; clear the config default output before the next case falls back to it.
+    await rm(join(dir, 'output'), { recursive: true, force: true });
+    const child = spawnSync(process.execPath, [cli, '--config', fixtureConfig('config-relative.json'), ...args],
+      { cwd: dir, encoding: 'utf8' });
+    assert.equal(child.status, 0, child.stdout + child.stderr);
+    const result = JSON.parse(child.stdout);
+    assert.equal(result.output, join(dir, output));
+    const chapter = await loadChapter(result.output);
+    assert.deepEqual(chapter.pages.map(p => p.name), input === 'other' ? ['1.png', '2.webp'] : ['1.png']);
+  }
+  await assert.rejects(access(join(dirname(fixtureConfig('config-relative.json')), 'output')));
+});
+test('CLI fails clearly without effective input/output and on bad arguments, creating no output', async t => {
+  const { dir } = await setup(t);
+  await mkdir(join(dir, 'input')); await writeFile(join(dir, 'input', '1.png'), fixtures.png);
+  const runCli = args => spawnSync(process.execPath, [cli, ...args], { cwd: dir, encoding: 'utf8' });
+  const noPaths = fixtureConfig('config-no-paths.json');
+  for (const [args, message] of [
+    [['--config', noPaths], /input path is required/],
+    [['--config', noPaths, '--input', 'input'], /output path is required/],
+    [['--config', noPaths, '--output', 'output'], /input path is required/],
+    [['--config', noPaths, '--input', 'input', '--output', ''], /non-empty path/],
+    [['--input', 'input', '--output', 'output'], /Usage/],
+    [['--config', noPaths, '--input'], /Usage/],
+    [['--config', noPaths, '--input', '--output', 'output'], /Usage/],
+    [['--config', noPaths, '--input', 'a', '--input', 'b', '--output', 'output'], /Usage/],
+    [['--config', noPaths, '--source', 'input'], /Usage/],
+  ]) {
+    const child = runCli(args);
+    assert.equal(child.status, 1, args.join(' '));
+    assert.match(JSON.parse(child.stderr.trim().split('\n').at(-1)).message, message);
+    await assert.rejects(access(join(dir, 'output')));
+  }
+  const ok = runCli(['--config', noPaths, '--input', 'input', '--output', 'output']);
+  assert.equal(ok.status, 0, ok.stderr);
 });

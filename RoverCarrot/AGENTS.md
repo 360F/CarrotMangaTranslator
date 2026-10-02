@@ -56,7 +56,7 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 
 ## 로컬 전용 데이터
 
-- **수동 검증 로컬 데이터:** `test-data/input/`에 실제 만화 폴더를 복사하고, 신규 `test-data/output/<run>/`을 config output으로 지정한다. `test-data/` 전체는 Git 제외이며 삭제·정리 대상이 아니다. 초기 디렉터리 생성과 config 예시는 [README](README.md)를 따른다. 자동 테스트용 작은 합성 이미지 fixture는 tracked `tests/fixtures/`에 둔다.
+- **수동 검증 로컬 데이터:** `test-data/input/`에 실제 만화 폴더를 복사하고 결과는 `test-data/output/`에 둔다. `test-data/` 전체는 Git 제외이며 삭제·정리 대상이 아니다. 실제 사용자 config는 Git 제외 `config/local.json`(tracked template `config/example.json`)이며 역시 정리 대상이 아니다. 사용법은 [README](README.md)를 따른다. 자동 테스트용 작은 합성 이미지 fixture는 tracked `tests/fixtures/`에 둔다.
 - **repo에 포함된 renderer 검증 데이터:** `spikes/renderer-comparison/`의 fixture(v1/v2/v3), Electron reference PNG, 고정 폰트뿐이다. spike `outputs/`(visual-comparison HTML 등)는 git 미추적 로컬 전용이다.
 - **로컬 Carrot data root(gitignore, repo 밖):** M1 Step 2~6의 비교 기준(`hayai-regions.json`, `ocr-bbox-hints.json`, 번역 `result.json`, `library/`, `page-workflows/`, `runs/`, `models/`, `ocr-runtime/`, `hf-cache/`)은 여기에 있다. analysis가 말하는 "두 data root"는 개발용 repo data root와 설치 앱 data root다.
 - 현재 위치는 Windows 로컬이다. 정확한 경로는 `사용자 확인 필요`(예전 노트의 개발 repo 경로 `D:\01_code\CarrotMangaTranslator`는 현재 값으로 확인되지 않았다). M1 진행 중 WSL에서 `/mnt/...`로 접근하도록 옮길 예정이다.
@@ -80,7 +80,7 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 - `npm run smoke` — build 후 repository input/CLI smoke validation; 사용자 config 실행은 아래 CLI 사용
 - `npm run check` — typecheck + lint + build/test
 - `npm run check:boundaries` — parent runtime import 금지 및 Core/Pipeline → adapter import 금지 확인
-- Linux CLI: `node dist/cli.js --config <config.json>` (현재 dummy smoke 전용; 실제 stage 구현 아님)
+- Linux CLI(`RoverCarrot/`에서 실행): `node dist/cli.js --config config/local.json [--input <path>] [--output <path>]` — CLI 값이 config 기본값보다 우선, 상대경로는 CWD 기준(현재 dummy smoke 전용; 실제 stage 구현 아님)
 - 사용법과 최소 input/output contract: [README.md](README.md)
 
 루트 Carrot 검사는 루트 ESLint global ignore의 `RoverCarrot/**`와 `.prettierignore`의 `/RoverCarrot/`로 Rover 코드를 제외한다. 루트 reference 의존성은 Rover 개발환경에 설치하지 않는다.

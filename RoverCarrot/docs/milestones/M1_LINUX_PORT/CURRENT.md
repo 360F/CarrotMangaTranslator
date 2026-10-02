@@ -107,7 +107,7 @@ Item 목록:
 - **Related items:** M1-CONFIG-001, M1-COMPAT-001(출력은 Windows Carrot에서 열 수 있어야 한다).
 - **Dependencies:** M1-COMPAT-001(정의 확정: Carrot에서 open/use 가능).
 - **Decision / validation needed:** Carrot이 열 수 있는 출력 형태를 어떤 방식으로 만들지(Carrot library 구조에 직접 쓰기 / 별도 output 디렉터리 + Carrot이 가져올 수 있는 형태). M1-COMPAT-001의 interoperability 검증을 통과해야 한다.
-- **History:** 2026-10-01 생성. 2026-10-01 M1-COMPAT-001 정의 확정에 맞춰 의존 설명 갱신. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신. 2026-10-02 사용자 검토 보완(input/smoke/local test-data), Step 2 미시작.
+- **History:** 2026-10-01 생성. 2026-10-01 M1-COMPAT-001 정의 확정에 맞춰 의존 설명 갱신. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신. 2026-10-02 사용자 검토 보완(input/smoke/local test-data), Step 2 미시작. 2026-10-02 고정 `config/`와 CLI `--input`/`--output` override, CWD 기준 상대경로(Step 1 Result D2).
 
 - **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료. 사용자 검토 보완으로 PNG/JPEG/WebP/JFIF decode, repository smoke와 Git 제외 로컬 test-data 추가(같은 Result 참고).
 

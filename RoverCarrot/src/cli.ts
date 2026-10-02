@@ -4,9 +4,15 @@ import { libraryPersistence } from './adapters/library.js';
 import { smokeStages } from './adapters/smoke.js';
 
 async function main() {
-  const args = process.argv.slice(2);
-  if (args.length !== 2 || args[0] !== '--config') throw new Error('Usage: node dist/cli.js --config <config.json>');
-  const config = await loadConfig(args[1]!);
+  const usage = 'Usage: node dist/cli.js --config <config.json> [--input <path>] [--output <path>]';
+  const args = process.argv.slice(2), options: Record<string, string> = {};
+  for (let i = 0; i < args.length; i += 2) {
+    const flag = args[i]!, value = args[i + 1];
+    if (!['--config', '--input', '--output'].includes(flag) || flag in options || value === undefined || value.startsWith('--')) throw new Error(usage);
+    options[flag] = value;
+  }
+  if (!options['--config']) throw new Error(usage);
+  const config = await loadConfig(options['--config'], { input: options['--input'], output: options['--output'] });
   const result = await run(config, { persistence: libraryPersistence(), stages: smokeStages(),
     onEvent: event => process.stderr.write(JSON.stringify(event) + '\n') });
   process.stdout.write(JSON.stringify(result) + '\n');
