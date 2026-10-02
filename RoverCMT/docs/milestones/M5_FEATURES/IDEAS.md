@@ -6,6 +6,7 @@
 |---|---|
 | [M5-QUEUE-001](#m5-queue-001--multi-filechapter-queue) | Multi-file/chapter queue |
 | [M5-BATCH-001](#m5-batch-001--장시간-unattended-batch-processing) | 장시간 unattended batch processing |
+| [M5-INPUT-001](#m5-input-001--carrot에-없던-input-형식import-방식) | Carrot에 없던 input 형식/import 방식 |
 
 ---
 
@@ -35,3 +36,15 @@
 - **Dependencies:** M5-QUEUE-001, M1-OBS-001.
 - **Decision / validation needed:** 실패 허용·재시도 정책([MIGRATION_PRINCIPLES §7 Recovery Policy](../../MIGRATION_PRINCIPLES.md#7-recovery-policy) 참고) — 사용자.
 - **History:** 2026-10-01 생성.
+
+### M5-INPUT-001 — Carrot에 없던 input 형식/import 방식
+
+- **Status:** IDEA
+- **Summary:** Carrot이 지원하지 않던 input을 RoverCMT 신규 기능으로 검토한다. 후보: 7z archive, GIF/BMP/TIFF/AVIF 등 추가 이미지 형식, archive/이미지 URL 직접 다운로드, recursive 폴더를 1 chapter로 합치기, clipboard 입력.
+- **Why it matters:** Carrot 기존 지원 input은 M1 parity([M1-INPUT-001](../M1_LINUX_PORT/CURRENT.md#m1-input-001--carrot-inputimport-parity))다. 그 밖의 형식은 M1에 섞지 않고 여기서 따로 판단한다. "decoder library가 지원한다"는 이유만으로 parity에 넣지 않는다.
+- **Related analysis:**
+  - [CARROT_LOADER_OUTPUT_CONTRACT — Input / import capability](../../analysis/CARROT_LOADER_OUTPUT_CONTRACT.md#input--import-capability-d10-source-trace-2026-10-02) — 위 후보가 Carrot에 없다는 근거(allowlist, 웹 import의 명시적 unsupported skip, 7z 부재).
+- **Related items:** M1-INPUT-001. JFIF `.jfif`도 Carrot 미지원 신규 기능이지만 사용자 요청으로 M1 Step 1 보완에서 이미 구현됐다(M1-INPUT-001에 기록).
+- **Dependencies:** M1-INPUT-001의 materialization 경로.
+- **Decision / validation needed:** 후보별 필요성과 처리 규칙(animated GIF 처리, 저장 형식 변환, Windows Carrot이 그 page를 열 수 있는지) — 사용자.
+- **History:** 2026-10-02 생성(D10 source trace의 신규 기능 분류).

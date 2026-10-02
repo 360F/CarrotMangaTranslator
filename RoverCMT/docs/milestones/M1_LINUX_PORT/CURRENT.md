@@ -23,6 +23,7 @@ Item 목록:
 | [M1-CORE-002](#m1-core-002--기존-translation--erase-병렬-실행-경로-이식) | 기존 Translation ↔ Erase 병렬 실행 경로 이식 | not started |
 | [M1-CONFIG-001](#m1-config-001--configsettings-파일-기반-설정) | Config/settings 파일 기반 설정 | not started |
 | [M1-CONFIG-002](#m1-config-002--inputoutput-경로-config화) | Input/output 경로 config화 | not started |
+| [M1-INPUT-001](#m1-input-001--carrot-inputimport-parity) | Carrot input/import parity | in progress (Step 1: 직접 이미지·direct folder 일부) |
 | [M1-CLI-001](#m1-cli-001--bashcli-실행) | Bash/CLI 실행 | not started |
 | [M1-OBS-001](#m1-obs-001--stage-진행상황과-소요시간-실시간-표시) | Stage 진행상황과 소요시간 실시간 표시 | not started |
 | [M1-COMPAT-001](#m1-compat-001--windows-carrot과의-output-interoperability) | Windows Carrot과의 output interoperability | not started (정의 확정) |
@@ -109,6 +110,41 @@ Item 목록:
 - **History:** 2026-10-01 생성. 2026-10-01 M1-COMPAT-001 정의 확정에 맞춰 의존 설명 갱신. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신. 2026-10-02 사용자 검토 보완(input/smoke/local test-data), Step 2 미시작.
 
 - **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료. 사용자 검토 보완으로 PNG/JPEG/WebP/JFIF decode, repository smoke와 Git 제외 로컬 test-data 추가(같은 Result 참고).
+
+### M1-INPUT-001 — Carrot input/import parity
+
+- **Status:** CURRENT
+- **Progress:** in progress (Step 1 보완으로 PNG/JPG/JPEG/WebP 단일 파일·direct folder 일부 구현. 아래 차이와 나머지 parity 항목 남음)
+- **Summary:** 기존 Carrot 사용자가 실제로 쓸 수 있던 input/import 기능을 Linux RoverCMT(config/CLI 입력)로 이식한다. 범위 판단 기준: **Carrot 기존 지원 → M1 parity**(빠지면 migration regression), **Carrot 미지원 → 신규 기능**(M1 parity 아님, [M5-INPUT-001](../M5_FEATURES/IDEAS.md#m5-input-001--carrot에-없던-input-형식import-방식)).
+- **Why it matters:** 실제 사용자 검토에서 JPG 4페이지 만화가 PNG 전용 Step 1 입력에서 실패했다. 이식 중 기존 input 기능이 조용히 빠지지 않도록 M1 완료 전 점검표가 필요하다.
+- **Related analysis:**
+  - [CARROT_LOADER_OUTPUT_CONTRACT — Input / import capability](../../analysis/CARROT_LOADER_OUTPUT_CONTRACT.md#input--import-capability-d10-source-trace-2026-10-02) — entry point, 형식, directory/archive/URL 동작의 source evidence(이 item의 사실 근거. 여기서 다시 쓰지 않는다).
+- **Parity checklist** (Carrot 근거는 위 analysis. M1 완료 전 모두 `done` 또는 사용자 결정으로 처리되어야 한다):
+
+  | # | Carrot 기능 | Rover 현재 | 비고 |
+  |---|---|---|---|
+  | P1 | 직접 이미지 PNG/JPG/JPEG/WebP | 부분(Step 1) | 아래 차이 I1–I5 |
+  | P2 | 폴더 direct file import(non-recursive, natural order) | 부분(Step 1) | 아래 차이 I3, I6 |
+  | P3 | 이미지 여러 개 선택 import(1 chapter) | 없음 | config `input`은 경로 1개. CLI 표현 결정 필요 |
+  | P4 | ZIP/CBZ(1 chapter, 내부 경로 natural order) | 없음 | yauzl 예산·순서 |
+  | P5 | RAR/CBR | 없음 | Carrot은 Rust runner(`rars`). Linux 재사용 가능성 확인 |
+  | P6 | PDF(300 DPI PNG rasterize) | 없음 | 같은 runner(`hayro`) |
+  | P7 | 일괄 가져오기 폴더(여러 archive/하위 폴더 → 여러 chapter) | 없음 | multi-chapter output 필요(현재 output은 1 work 1 chapter) |
+  | P8 | 웹 페이지 URL import | 없음 | Carrot은 Electron browser로 page scan → GUI 후보 선택. Linux browser runtime과 CLI 선택 정책 결정 필요 |
+  | P9 | drag & drop | 해당 없음 | GUI entry. 같은 경로 분류(P1–P6)로 대체되며 혼합 drop 거부 규칙만 의미가 있다 |
+
+- **Step 1 구현과 Carrot 동작의 차이** (2026-10-02 [Step 1 보완](IMPLEMENTATION_PLAN.md#input-materialization-direction) 기준. 바꿀지는 사용자 결정):
+  - I1 확장자/content 불일치: Carrot은 content로 판정해 받아들이고 저장 확장자를 고친다. Rover는 실패시킨다.
+  - I2 WebP: Carrot은 PNG로 변환해 `.png`로 저장한다. Rover는 원본 `.webp`를 보존한다. Carrot loader는 `.webp` page path를 허용하지만 Carrot import가 만들지 않는 형태라 Windows 후속 stage 동작은 Step 8 interop 검증이 필요하다.
+  - I3 header가 잘못된 파일: Carrot folder/이미지 import는 그 파일만 제외하고 계속한다(유효 page 0이면 실패). Rover는 전체 실패다. pixel 손상은 둘 다 전체 실패다.
+  - I4 JPEG EXIF orientation 5–8: Carrot은 회전 후 width/height를 기록한다. Rover는 저장 raster 크기를 기록한다.
+  - I5 animated WebP: Carrot은 header를 허용한다(첫 frame만 변환되는 것으로 보이나 미확정). Rover는 거부한다.
+  - I6 정렬과 metadata: Carrot은 `localeCompare(undefined, {numeric, sensitivity: "base"})`, Rover는 `'en'`·numeric(대소문자 동률 처리가 다를 수 있다). Carrot folder page의 `sourceFileName`/`sourceRelativePath`, chapter title(폴더 이름)은 Rover에 아직 없다. 크기 한계(256 MiB, 120M pixel)도 다르다.
+- **신규 기능으로 분류(M1 parity 아님):** JFIF `.jfif` 확장자 — Carrot 미지원. 사용자 요청으로 Step 1 보완에서 JPEG decoder로 구현됐다(저장 `.jpg`). 7z, GIF/BMP/TIFF/AVIF 등, archive/이미지 URL 직접 다운로드, recursive 폴더를 1 chapter로 합치기, clipboard → [M5-INPUT-001](../M5_FEATURES/IDEAS.md#m5-input-001--carrot에-없던-input-형식import-방식).
+- **Related items:** M1-CONFIG-002(input 경로 config), M1-COMPAT-001(I2 등 Windows open/use), M1-PERSIST-001(multi-chapter output), M1-RUNTIME-001(ffmpeg/Rust runner/browser 의존성).
+- **Dependencies:** P7은 multi-chapter output, P8은 Linux browser runtime 결정.
+- **Decision / validation needed:** (사용자) I1–I6를 Carrot 동작으로 맞출지. P3/P8의 CLI 표현(P8의 후보 선택 GUI를 어떻게 대체할지). `.mgtshare` 공유 패키지 import와 기존 작품에 chapter 추가를 이 item 범위로 볼지(원본 만화 input이 아니라 Carrot 작품/library 조작이라 분류를 보류했다). 구현 Step 배정. 미배정이어도 [Step 8](IMPLEMENTATION_PLAN.md#step-8--full-integration--interoperability) 완료 전 이 점검표로 누락을 확인한다.
+- **History:** 2026-10-02 생성. 사용자 원칙(Carrot 기존 지원 = M1 parity, 미지원 = 신규 기능)과 D10 source trace에 따름(user decision). Step 2 미시작.
 
 ### M1-CLI-001 — Bash/CLI 실행
 

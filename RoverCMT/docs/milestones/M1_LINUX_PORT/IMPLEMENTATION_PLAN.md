@@ -160,23 +160,15 @@ archive 추출 여부, URL 다운로드 여부를 분기하지 않는다. 새 fa
   손상된 supported 파일 하나라도 있으면 output 생성 전 전체 import 실패.
   실제 format과 extension 일치 검사 및 full pixel decode; 원본 bytes 보존,
   JFIF만 저장 suffix `.jpg`. EXIF 회전/animated multi-page 처리는 현재 하지 않는다.
-- 최종 직접 이미지: PNG/JPEG/WebP/JFIF 및 Carrot 실제 지원/만화에 필요한 기타
-  형식을 평가한다. reference `src/main/libraryStore/storage.ts:isSupportedImagePath`는
-  PNG/JPG/JPEG/WebP만 allowlist하며 GIF/BMP/TIFF 등의 필요성과 처리 규칙은 향후 결정한다.
-- 최종 directory: 지원 이미지를 page sequence로 materialize한다. 현재 direct-file
-  semantics 근거는 `src/main/libraryStore/importSources.ts:listImageFiles`;
-  reference의 nested-folder chapter 발견은 별도 `listNestedImageFolders` 경로다.
-- 최종 archive: 최소 ZIP와 7z를 고려하고 reference의 ZIP/CBZ, RAR/CBR도 포함한다.
-  `src/shared/archive.ts`의 실제 allowlist에는 **7z가 없다**.
-  `src/main/libraryStore/importPreparedPreview.ts`는 ZIP 직접 preview,
-  RAR native staging이며 `importSourceRunner.ts`는 PDF도 별도 staging한다.
-  안전한 추출/예산/페이지 순서 contract는 구현 시 해당 source를 따른다.
-- 최종 URL/link: URL에서 필요한 데이터를 가져와 image 또는 archive 입력으로
-  materialize할 수 있어야 한다. reference `src/main/application/webImportService.ts`,
-  `src/main/webImportSessionManager.ts`, `webImportPageDiscovery.ts`,
-  `webImportDownload.ts`, `webImportUrlPolicy.ts`는 web page scan → image candidate
-  발견/선택 → 다운로드 → prepared import 흐름을 제공한다. 이것을 임의의 archive URL
-  downloader 지원 근거로 확대하지 않는다. Rover URL/다운로드/추출 정책은 향후 구현 대상이다.
+- 범위 기준: Carrot 기존 지원 input = M1 parity, Carrot 미지원 = 신규 기능.
+  Carrot의 실제 지원 범위(source evidence)는
+  [CARROT_LOADER_OUTPUT_CONTRACT — Input / import capability](../../analysis/CARROT_LOADER_OUTPUT_CONTRACT.md#input--import-capability-d10-source-trace-2026-10-02),
+  parity 점검표·위 Step 1 동작과 Carrot의 차이(I1–I6)·사용자 결정 사항은
+  [M1-INPUT-001](CURRENT.md#m1-input-001--carrot-inputimport-parity)이 source of truth다.
+  요약: 직접 이미지는 PNG/JPG/JPEG/WebP만(WebP는 PNG로 변환), archive는 ZIP/CBZ/RAR/CBR와 PDF,
+  폴더 import와 다중 chapter 일괄 가져오기, 일반 web page URL scan import가 parity다.
+- 신규 기능(M1 parity 아님): JFIF(사용자 요청으로 Step 1 보완에서 구현), 7z, GIF/BMP/TIFF/AVIF,
+  archive/이미지 URL 직접 다운로드 등. [M5-INPUT-001](../M5_FEATURES/IDEAS.md#m5-input-001--carrot에-없던-input-형식import-방식).
 
 이번 Step 1 검토 보완은 archive/URL/PDF/기타 이미지 구현과 Step 2를 시작하지 않는다.
 로컬 실제 데이터의 수동 검증은 Git 제외 `RoverCMT/test-data/`, 자동화된 소형
@@ -221,7 +213,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 | D7 | stage result/error 기본 contract, partial failure 표현(CORE §17 #4) | M1-CORE-001 | 1 | 기본 contract 해결. 기존 completed/failed 의미 보존 | 예(모든 stage의 전제) | 상태 세분화는 후속 가능 |
 | D8 | Core 구현 언어/runtime과 code hierarchy, dependency direction | Step 1 범위(이 계획) | 1 | 해결. 사용자 판단이 필요한 trade-off면 사용자에게 제시 | 예 | 아니오 |
 | D9 | 배포 형태(venv/container/system package), GPU 필수 여부 | M1-RUNTIME-001 | 1 기록 → 2·3·6·7에서 runtime별 결정 → 8 확정 | 단계적 | 아니오 | — |
-| D10 | 입력 materialization(zip/folder, webp→PNG 등 Carrot import 동작) 범위 | 누락 확인(CORE §1 import) | 1 | 최소 input contract 해결. import parity 범위는 기록 | 아니오 | Step 8까지 결정 |
+| D10 | 입력 materialization(zip/folder, webp→PNG 등 Carrot import 동작) 범위 | 누락 확인(CORE §1 import) | 1 기록 → 8 확인 | 최소 input contract 해결. Carrot parity 범위는 source trace로 확정해 [M1-INPUT-001](CURRENT.md#m1-input-001--carrot-inputimport-parity) 점검표로 추적(2026-10-02). 구현 Step 배정은 사용자 결정 | 아니오(Step별) | 아니오(M1 완료 전 parity 항목 구현·검증) |
 | D11 | 사용자 rule stage(source/translation/format rules)와 review stage를 M1에 포함할지 | 누락 확인([CORE §1](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#1-end-to-end-production-data-flow), [CORE §16](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#16-what-not-to-migrate-초기)) | 1 기록 → 8 결정 | 사용자 확인 필요 | 아니오(rule 없으면 no-op) | 아니오(M1 완료 전 결정) |
 | D12 | detection open decisions(DETECTION §25): raw mask 보존, cache 범위, SFX 범위, 재실행 semantics, ONNX 구현 언어, presentation 기본값 분리, source direction | M1-DETECT-001 | 2 | SFX 범위·재실행 semantics·ONNX 언어는 해결(현재 동작 보존 기본). raw mask 보존·cache는 기록 | 아니오 | raw mask/cache는 [M4-DETECT-001](../M4_OPTIMIZATION/IDEAS.md#m4-detect-001--같은-원본-raster의-koharu-raw-inference-재사용) |
 | D13 | raw OCR 보존과 sanitize 위치(CORE §17 #1) | M1-OCR-001 | 3 | 해결(현재 동작 보존 기본, 변경 시 사용자 결정) | 아니오 | — |
@@ -496,7 +488,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Validation:**
   - 실제 chapter/page로 Linux E2E smoke(순차 경로와 병렬 경로 모두)
   - RoverCMT가 만든 output/project를 실제 Windows Carrot에서 열어 load/open, 기본 데이터 사용, 사용자가 쓰는 기본 edit/export workflow가 깨지지 않는지 확인. byte/pixel identical은 요구하지 않는다
-- **Completion criteria:** M1 CURRENT item 각각의 `Progress`와 완료 근거가 CURRENT.md에 기록되어 M1 completion을 판단할 수 있음. [DONE 조건](#step-status와-done-조건) 충족. M1 완료 선언과 다음 active milestone 결정은 사용자가 한다.
+- **Completion criteria:** M1 CURRENT item 각각의 `Progress`와 완료 근거가 CURRENT.md에 기록되어 M1 completion을 판단할 수 있음. [M1-INPUT-001](CURRENT.md#m1-input-001--carrot-inputimport-parity) parity 점검표의 모든 항목이 구현·검증되었거나 사용자 결정으로 처리됨(Carrot input 기능 누락 없음). [DONE 조건](#step-status와-done-조건) 충족. M1 완료 선언과 다음 active milestone 결정은 사용자가 한다.
 - **Result:**
   - Status: —
   - Progress notes: —
