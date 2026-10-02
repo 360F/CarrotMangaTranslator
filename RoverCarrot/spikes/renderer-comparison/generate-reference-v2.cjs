@@ -9,7 +9,7 @@ const { pathToFileURL } = require("node:url");
 const spikeRoot = __dirname;
 const repoRoot = path.resolve(spikeRoot, "../../..");
 const manifestPath = path.join(spikeRoot, "fixtures", "manifest.json");
-const fontRelativePath = "RoverCMT/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf";
+const fontRelativePath = "RoverCarrot/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf";
 const fontPath = path.join(repoRoot, fontRelativePath);
 const referenceDir = path.join(spikeRoot, "reference-v2-noto-sans-cjk-kr-2.004");
 const workDir = path.join(referenceDir, ".work");
@@ -90,7 +90,7 @@ async function run() {
   } finally {
     session.close();
   }
-  const result = { version: 1, revision: "portable-font-reference-v2", derivedFrom: "RoverCMT/spikes/renderer-comparison/fixtures/manifest.json", runtime: { electron: process.versions.electron, chromium: process.versions.chrome, node: process.versions.node, platform: process.platform, arch: process.arch }, font: { id: fontId, family: "Noto Sans CJK KR", cssFamily: fontFamily, postScriptName: "NotoSansCJKkr-Regular", path: fontRelativePath, format: "OTF", sha256: fontHash }, outputs };
+  const result = { version: 1, revision: "portable-font-reference-v2", derivedFrom: "RoverCarrot/spikes/renderer-comparison/fixtures/manifest.json", runtime: { electron: process.versions.electron, chromium: process.versions.chrome, node: process.versions.node, platform: process.platform, arch: process.arch }, font: { id: fontId, family: "Noto Sans CJK KR", cssFamily: fontFamily, postScriptName: "NotoSansCJKkr-Regular", path: fontRelativePath, format: "OTF", sha256: fontHash }, outputs };
   await fsp.writeFile(path.join(referenceDir, "render-verification.json"), `${JSON.stringify(result, null, 2)}\n`, "utf8");
   await fsp.rm(workDir, { recursive: true, force: true });
   await fsp.rm(path.join(spikeRoot, ".reference-v2-electron-user-data"), { recursive: true, force: true });

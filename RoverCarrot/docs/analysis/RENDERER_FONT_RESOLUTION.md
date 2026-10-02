@@ -21,7 +21,7 @@ Tracking: [M1 CURRENT](../milestones/M1_LINUX_PORT/CURRENT.md)
 
 ## 2. Inspection Method
 
-`RoverCMT/spikes/renderer-comparison/inspect-chromium-fonts.cjs`를 기존 repository Electron으로 실행했다. 새 dependency나 renderer candidate를 설치하지 않았다.
+`RoverCarrot/spikes/renderer-comparison/inspect-chromium-fonts.cjs`를 기존 repository Electron으로 실행했다. 새 dependency나 renderer candidate를 설치하지 않았다.
 
 - Runtime: Electron 43.3.0, Chromium 150.0.7871.212, Windows x64
 - BrowserWindow: hidden/offscreen, sandbox/context isolation enabled

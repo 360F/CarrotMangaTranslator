@@ -4,7 +4,7 @@ M1 Step 1 skeleton: independent TypeScript Core with a CLI adapter. All provider
 are explicit no-ops. Successful smoke means orchestration and storage worked;
 it does not mean Detection/OCR/Translation/Erase/Render ran.
 
-Requires Node.js 24 or newer. From `RoverCMT/`:
+Requires Node.js 24 or newer. From `RoverCarrot/`:
 
 ```bash
 npm ci --ignore-scripts

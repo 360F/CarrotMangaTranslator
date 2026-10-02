@@ -194,7 +194,7 @@ Bundled fonts가 repository에 존재하더라도 이 chapter는 해당 font ID�
 
 ## 11. Fixture Manifest Design
 
-`RoverCMT/spikes/renderer-comparison/fixtures/manifest.json` version 1은 renderer-neutral data만 가진다.
+`RoverCarrot/spikes/renderer-comparison/fixtures/manifest.json` version 1은 renderer-neutral data만 가진다.
 
 - source chapter path/hash/page count
 - latest read-only reference export identity

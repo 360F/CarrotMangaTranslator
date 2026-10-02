@@ -1,8 +1,13 @@
 {
   "version": 3,
-  "revision": "contract-aligned-inputs-v3",
+  "revision": "contract-aligned-renderer-v3",
+  "purpose": "Contract-aligned renderer comparison input. Reference and candidates consume the same frozen v3 page snapshots.",
+  "inputs": {
+    "path": "RoverCarrot/spikes/renderer-comparison/fixtures/inputs-v3.json",
+    "sha256": "65a8f547487360a6cb0614ea5ff2ac3ae26d884a151ed9a13aa25b33f90c031f"
+  },
   "derivedFrom": {
-    "path": "RoverCMT/spikes/renderer-comparison/fixtures/manifest-v2.json",
+    "path": "RoverCarrot/spikes/renderer-comparison/fixtures/manifest-v2.json",
     "sha256": "b23af38b7fdcb4ddd0d6fff1f02a5828bb572d92270fb97aacec72443cb65f14"
   },
   "frozenFromChapter": {
@@ -32,12 +37,12 @@
       "postScriptName": "NotoSansCJKkr-Regular",
       "version": "2.004",
       "format": "OTF",
-      "path": "RoverCMT/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf",
+      "path": "RoverCarrot/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf",
       "bytes": 16433112,
       "sha256": "6bcb2a0703aa137e874fc2dffa85f6c21ba9a67fa329e81b8c801663af7e992a",
       "license": {
         "id": "OFL-1.1",
-        "path": "RoverCMT/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/LICENSE.txt",
+        "path": "RoverCarrot/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/LICENSE.txt",
         "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
         "redistribution": "permitted-with-license"
       },
@@ -53,6 +58,36 @@
   "fontRoles": {
     "default-dialogue": "benchmark-default-noto-sans-cjk-kr-regular-2.004"
   },
+  "benchmarkFont": {
+    "id": "benchmark-noto-sans-cjk-kr-regular-2-004",
+    "cssFamily": "Rover Benchmark Noto Sans CJK KR"
+  },
+  "referenceRuntime": {
+    "electron": "43.3.0",
+    "chromium": "150.0.7871.212",
+    "node": "24.18.1",
+    "platform": "win32",
+    "arch": "x64",
+    "hardwareAcceleration": "disabled",
+    "deviceScaleFactor": 1
+  },
+  "verification": {
+    "render": {
+      "path": "RoverCarrot/spikes/renderer-comparison/reference-v3-contract-aligned/render-verification.json",
+      "bytes": 5633,
+      "sha256": "10803834b9dfe60589381af8a4c7fff31367d578a70713525396f76383b99395"
+    },
+    "font": {
+      "path": "RoverCarrot/spikes/renderer-comparison/reference-v3-contract-aligned/font-verification.json",
+      "bytes": 3071,
+      "sha256": "3600ad2a0a7c3fed21d43ac3eb7436451a0a097e9f1d169c65cf23a70dde37ec"
+    },
+    "layout": {
+      "path": "RoverCarrot/spikes/renderer-comparison/reference-v3-contract-aligned/layout-evidence.json",
+      "bytes": 24799,
+      "sha256": "f70d5683945aef357edbcea170d36497a5097dd406025ff21f54fa7caf944f34"
+    }
+  },
   "fixtures": [
     {
       "pageId": "e311fd1f-0bf2-4fc1-99f5-646dc1be76c2",
@@ -66,7 +101,7 @@
         "benchmark-default-noto-sans-cjk-kr-regular-2.004"
       ],
       "pageSnapshot": {
-        "path": "RoverCMT/spikes/renderer-comparison/fixtures/pages-v3/e311fd1f-0bf2-4fc1-99f5-646dc1be76c2.json",
+        "path": "RoverCarrot/spikes/renderer-comparison/fixtures/pages-v3/e311fd1f-0bf2-4fc1-99f5-646dc1be76c2.json",
         "bytes": 122166,
         "sha256": "fca91f9a2eda6763f79a8a84e1411835aabcf30bb6730a02465d9fdcb99e7b01"
       },
@@ -76,6 +111,15 @@
         "sha256": "51f49f4b54b7e5cec01b2b8521069b8552e4db2f9998c1d65dc0de281277edc7",
         "width": 1280,
         "height": 1791
+      },
+      "reference": {
+        "status": "rendered-from-frozen-v3-snapshot",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v3-contract-aligned/_004.png",
+        "format": "PNG",
+        "width": 1280,
+        "height": 1791,
+        "bytes": 1775359,
+        "sha256": "8f6661fd8b9d779fd5093fbe8b7c081ea730a2cdd8458c20b9cd58a9203293ee"
       }
     },
     {
@@ -90,7 +134,7 @@
         "benchmark-default-noto-sans-cjk-kr-regular-2.004"
       ],
       "pageSnapshot": {
-        "path": "RoverCMT/spikes/renderer-comparison/fixtures/pages-v3/74d0a78f-93fe-4c24-97b9-25c09382784d.json",
+        "path": "RoverCarrot/spikes/renderer-comparison/fixtures/pages-v3/74d0a78f-93fe-4c24-97b9-25c09382784d.json",
         "bytes": 146082,
         "sha256": "6ba50abf62dbb2a6759ddaaf81314ad9c395c65fc7e3b9b52dcaa7a2421f85e7"
       },
@@ -100,6 +144,15 @@
         "sha256": "e038738ac409c768ff576a1bf419f9ef800adff6e14f2864f500ee68de4dbcc9",
         "width": 1280,
         "height": 1791
+      },
+      "reference": {
+        "status": "rendered-from-frozen-v3-snapshot",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v3-contract-aligned/_011.png",
+        "format": "PNG",
+        "width": 1280,
+        "height": 1791,
+        "bytes": 1522150,
+        "sha256": "8c053a62f279dbb7003a4e8ebeb9594cb6235ebba2de5b8ce907fd6ce52c4459"
       }
     },
     {
@@ -115,7 +168,7 @@
         "benchmark-default-noto-sans-cjk-kr-regular-2.004"
       ],
       "pageSnapshot": {
-        "path": "RoverCMT/spikes/renderer-comparison/fixtures/pages-v3/50443352-6248-45ef-8d09-d9f99fe7ab59.json",
+        "path": "RoverCarrot/spikes/renderer-comparison/fixtures/pages-v3/50443352-6248-45ef-8d09-d9f99fe7ab59.json",
         "bytes": 204582,
         "sha256": "f099ee9736d2163f9db58e484db2c47f1185268c7f2c2505a8d1df2fc3a4c46f"
       },
@@ -125,6 +178,15 @@
         "sha256": "6852b0a0d42ac5c2426380c933d0369c4e2ddde2722e970bd113f6ab75718d2c",
         "width": 1280,
         "height": 1791
+      },
+      "reference": {
+        "status": "rendered-from-frozen-v3-snapshot",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v3-contract-aligned/_012.png",
+        "format": "PNG",
+        "width": 1280,
+        "height": 1791,
+        "bytes": 1550387,
+        "sha256": "a159fee79178f2b15aee5667318eef09093f324fcc44f5387c0c1496da99514c"
       }
     },
     {
@@ -140,7 +202,7 @@
         "benchmark-default-noto-sans-cjk-kr-regular-2.004"
       ],
       "pageSnapshot": {
-        "path": "RoverCMT/spikes/renderer-comparison/fixtures/pages-v3/6b059220-b404-4d21-89b1-8a8ec7ee1635.json",
+        "path": "RoverCarrot/spikes/renderer-comparison/fixtures/pages-v3/6b059220-b404-4d21-89b1-8a8ec7ee1635.json",
         "bytes": 135066,
         "sha256": "355e5bda2b3c8a042bbe5ca261192dc5d45e06ce23a89ba022071b956f281954"
       },
@@ -150,6 +212,15 @@
         "sha256": "ab14b1974b91b990f658bd1fd7e7e8b0d0cfb0108e2d02e592ecb1cb42c2b227",
         "width": 1280,
         "height": 1791
+      },
+      "reference": {
+        "status": "rendered-from-frozen-v3-snapshot",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v3-contract-aligned/_015.png",
+        "format": "PNG",
+        "width": 1280,
+        "height": 1791,
+        "bytes": 1690833,
+        "sha256": "8f978b315df32e2d3a376586fc6e7f721a6d4a47d44881a5e2f2f6834a31420f"
       }
     },
     {
@@ -165,7 +236,7 @@
         "benchmark-default-noto-sans-cjk-kr-regular-2.004"
       ],
       "pageSnapshot": {
-        "path": "RoverCMT/spikes/renderer-comparison/fixtures/pages-v3/f8a2d41b-d26e-44ce-aaf4-8d0600c984fd.json",
+        "path": "RoverCarrot/spikes/renderer-comparison/fixtures/pages-v3/f8a2d41b-d26e-44ce-aaf4-8d0600c984fd.json",
         "bytes": 197969,
         "sha256": "ab3135369e8790889f1f1bc19ddd51a1a270b598457d272fccfaa47b1c000c27"
       },
@@ -175,6 +246,15 @@
         "sha256": "f30b56ba9b44ea9e3f3c0d44c1aea9aa3ff2eebb82d80160eebcd313c418074c",
         "width": 1280,
         "height": 1791
+      },
+      "reference": {
+        "status": "rendered-from-frozen-v3-snapshot",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v3-contract-aligned/_018.png",
+        "format": "PNG",
+        "width": 1280,
+        "height": 1791,
+        "bytes": 1194181,
+        "sha256": "aefa251a4a29d7f02809c63025901ed5daf8f888f8c2cb2795fa004b75bd162b"
       }
     },
     {
@@ -190,7 +270,7 @@
         "benchmark-default-noto-sans-cjk-kr-regular-2.004"
       ],
       "pageSnapshot": {
-        "path": "RoverCMT/spikes/renderer-comparison/fixtures/pages-v3/676ba29f-3ce3-4bf6-ae47-4ca34169ed3b.json",
+        "path": "RoverCarrot/spikes/renderer-comparison/fixtures/pages-v3/676ba29f-3ce3-4bf6-ae47-4ca34169ed3b.json",
         "bytes": 114001,
         "sha256": "54663975b11c765c4df0f0dc9c013db16857f29aac4135fdb7fe9c4185801e08"
       },
@@ -200,6 +280,15 @@
         "sha256": "9f5ae65a6b3ed9f1aeb339f24532961c4711aa40e9e86782ab3121c03145733e",
         "width": 1280,
         "height": 1791
+      },
+      "reference": {
+        "status": "rendered-from-frozen-v3-snapshot",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v3-contract-aligned/_029.png",
+        "format": "PNG",
+        "width": 1280,
+        "height": 1791,
+        "bytes": 1612208,
+        "sha256": "82dfaa095dc60c4b882986ca85dff317f441be290d85b412e8dd6f027fd99091"
       }
     },
     {
@@ -215,7 +304,7 @@
         "benchmark-default-noto-sans-cjk-kr-regular-2.004"
       ],
       "pageSnapshot": {
-        "path": "RoverCMT/spikes/renderer-comparison/fixtures/pages-v3/678fcdee-4806-4a15-9228-9286f1abf92c.json",
+        "path": "RoverCarrot/spikes/renderer-comparison/fixtures/pages-v3/678fcdee-4806-4a15-9228-9286f1abf92c.json",
         "bytes": 148578,
         "sha256": "9081d31ba1fcecd61ac9b3cafe37545deb4fee336627a79a58ac2bdb2d1b7d2a"
       },
@@ -225,6 +314,15 @@
         "sha256": "9279aabebbeb44d1c249f92b1812031da93b488f9efcdd14a0d5a9b16c512e6b",
         "width": 1280,
         "height": 1791
+      },
+      "reference": {
+        "status": "rendered-from-frozen-v3-snapshot",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v3-contract-aligned/_047.png",
+        "format": "PNG",
+        "width": 1280,
+        "height": 1791,
+        "bytes": 1324787,
+        "sha256": "0bf4dda04b4447a5c01397c947f7df430ffba7f3352701d2fcafe5d6623c68bc"
       }
     },
     {
@@ -239,7 +337,7 @@
         "benchmark-default-noto-sans-cjk-kr-regular-2.004"
       ],
       "pageSnapshot": {
-        "path": "RoverCMT/spikes/renderer-comparison/fixtures/pages-v3/46fe6f58-2468-4e3b-9f9b-b8ce7dec4247.json",
+        "path": "RoverCarrot/spikes/renderer-comparison/fixtures/pages-v3/46fe6f58-2468-4e3b-9f9b-b8ce7dec4247.json",
         "bytes": 21706,
         "sha256": "c3feaeeb9d22cfecbc3f56ddae83a8963648b3b7a401b4f33a8f36c268e308f0"
       },
@@ -249,6 +347,15 @@
         "sha256": "aaca60cfc1dba908ed31ced56667008b8ebd6127426f7fc943862755f9007e08",
         "width": 1280,
         "height": 925
+      },
+      "reference": {
+        "status": "rendered-from-frozen-v3-snapshot",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v3-contract-aligned/_0411.png",
+        "format": "PNG",
+        "width": 1280,
+        "height": 925,
+        "bytes": 1149475,
+        "sha256": "53466eae52aa2c77243d9c7d147c2ed44ab0498340c3a2b2e53193054ff07e02"
       }
     }
   ]

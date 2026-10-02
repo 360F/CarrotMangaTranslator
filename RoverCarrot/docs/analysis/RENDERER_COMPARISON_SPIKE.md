@@ -18,7 +18,7 @@ The work produces engineering evidence for a later renderer decision. It does no
 
 ## 2. Harness
 
-Location: `RoverCMT/spikes/renderer-comparison/`
+Location: `RoverCarrot/spikes/renderer-comparison/`
 
 - `src/manifest.cjs`: strict manifest-v2 loading, path safety checks, SHA-256/byte/dimension verification, and before/after immutable inventory comparison.
 - `src/shared-layout.ts`: benchmark-only reuse of the selected Carrot wrapping, balanced paragraph, and bubble-slot logic. Text measurement is injected by each backend.

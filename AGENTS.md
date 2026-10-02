@@ -6,12 +6,12 @@
 
 저장소 구조와 루트 소스 정책:
 
-- 루트의 Carrot 소스(`src/`, `tests/`, `package.json` 등)는 이식 기간의 **읽기 전용 reference**다. 기준 커밋은 fork `fd461737`(upstream v2.8.2 `d20695df` + fork 커밋)이며, 정의와 fork 전용 기능은 [`RoverCMT/AGENTS.md`](RoverCMT/AGENTS.md#reference-implementation)에 있다. RoverCMT 작업 중에는 수정하지 않는다. 예외: 루트 eslint·check가 `RoverCMT/`를 검사하지 않도록 루트 ignore 설정만 바꾸는 것([M1 Step 1 Scope 10번](RoverCMT/docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter)).
-- RoverCMT 코드와 문서는 `RoverCMT/` 아래에만 둔다.
+- 루트의 Carrot 소스(`src/`, `tests/`, `package.json` 등)는 이식 기간의 **읽기 전용 reference**다. 기준 커밋은 fork `fd461737`(upstream v2.8.2 `d20695df` + fork 커밋)이며, 정의와 fork 전용 기능은 [`RoverCarrot/AGENTS.md`](RoverCarrot/AGENTS.md#reference-implementation)에 있다. RoverCMT 작업 중에는 수정하지 않는다. 예외: 루트 eslint·check가 `RoverCarrot/`를 검사하지 않도록 루트 ignore 설정만 바꾸는 것([M1 Step 1 Scope 10번](RoverCarrot/docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter)).
+- RoverCMT 코드와 문서는 `RoverCarrot/` 아래에만 둔다. `RoverCarrot`은 내부 구현 project 디렉터리 이름이고 제품명은 RoverCMT다.
 - 최종적으로 repo에는 RoverCMT만 남지만, 루트 Carrot 소스는 **사용자가 명시적으로 제거를 결정할 때만** 제거한다. milestone 완료는 자동 제거 조건이 아니다. 제거 전에는 baseline 커밋에 태그를 남겨 analysis의 `src/...` 참조를 추적할 수 있게 한다(태그 이름은 그때 정한다).
 
-`RoverCMT/` 아래 작업(Linux 이식, 분석, milestone 계획)은 먼저 [`RoverCMT/AGENTS.md`](RoverCMT/AGENTS.md)를 읽고,
-현재 계획과 다음 작업은 [`RoverCMT/docs/milestones/README.md`](RoverCMT/docs/milestones/README.md)에서 확인한다.
+`RoverCarrot/` 아래 작업(Linux 이식, 분석, milestone 계획)은 먼저 [`RoverCarrot/AGENTS.md`](RoverCarrot/AGENTS.md)를 읽고,
+현재 계획과 다음 작업은 [`RoverCarrot/docs/milestones/README.md`](RoverCarrot/docs/milestones/README.md)에서 확인한다.
 
 > 아래의 Carrot 앱 규칙(사용자 데이터 보호, 코드·UI, UI QA, 폰트 맞춤, 자산·앱 릴리스)은 reference source를 수정하지 않는 한 RoverCMT 작업에는 적용되지 않는다. 단, 데이터 보호 원칙은 로컬 Carrot data root를 다룰 때 계속 적용한다.
 

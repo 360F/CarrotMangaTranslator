@@ -171,8 +171,8 @@ archive 추출 여부, URL 다운로드 여부를 분기하지 않는다. 새 fa
   archive/이미지 URL 직접 다운로드 등. [M5-INPUT-001](../M5_FEATURES/IDEAS.md#m5-input-001--carrot에-없던-input-형식import-방식).
 
 이번 Step 1 검토 보완은 archive/URL/PDF/기타 이미지 구현과 Step 2를 시작하지 않는다.
-로컬 실제 데이터의 수동 검증은 Git 제외 `RoverCMT/test-data/`, 자동화된 소형
-배포 가능 fixture는 tracked `RoverCMT/tests/fixtures/`로 분리한다([사용법](../../../README.md)).
+로컬 실제 데이터의 수동 검증은 Git 제외 `RoverCarrot/test-data/`, 자동화된 소형
+배포 가능 fixture는 tracked `RoverCarrot/tests/fixtures/`로 분리한다([사용법](../../../README.md)).
 
 ## Coupling 기록 규칙
 
@@ -192,7 +192,7 @@ Status: `NOT_STARTED` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 - push 완료
 - Result에 commit, validation 결과, known differences 기록
 
-Step 2~6 Validation의 비교 기준 데이터(기존 run artifact, `hayai-regions.json`, `ocr-bbox-hints.json`, `result.json` 등)는 repo가 아니라 로컬 Carrot data root에 있다([RoverCMT/AGENTS.md 로컬 전용 데이터](../../../AGENTS.md#로컬-전용-데이터), 위치 확인은 D31).
+Step 2~6 Validation의 비교 기준 데이터(기존 run artifact, `hayai-regions.json`, `ocr-bbox-hints.json`, `result.json` 등)는 repo가 아니라 로컬 Carrot data root에 있다([RoverCarrot/AGENTS.md 로컬 전용 데이터](../../../AGENTS.md#로컬-전용-데이터), 위치 확인은 D31).
 
 Step `Result`의 `Progress notes`에는 `IN_PROGRESS`나 `BLOCKED`일 때 한 일, 남은 일, 사용자 답을 기다리는 질문, 작업 branch를 짧게 적는다. `DONE`이 되면 비우거나 요약만 남긴다.
 
@@ -252,7 +252,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   7. persistence boundary(D4)와 D3을 만족하는 최소 output 구현
   8. 최소 code hierarchy와 dependency direction(D8): `CLI → Core public boundary → Pipeline/orchestration → Stage boundaries → runtime/provider implementations`
   9. dummy/no-op stage로 구성한 minimal pipeline을 Linux CLI로 실행하는 smoke
-  10. repository 배치와 개발 명령: Rover 코드는 `RoverCMT/` 아래에 둔다. Rover 전용 build/test/lint 명령을 정해 [RoverCMT/AGENTS.md CI / 테스트 정책](../../../AGENTS.md#ci--테스트-정책)에 기록한다. 루트 Carrot eslint·check가 `RoverCMT/` 코드를 검사하지 않도록 처리한다(루트 `src/`는 수정하지 않는다. 루트 ignore 설정 변경만 허용)
+  10. repository 배치와 개발 명령: Rover 코드는 `RoverCarrot/` 아래에 둔다. Rover 전용 build/test/lint 명령을 정해 [RoverCarrot/AGENTS.md CI / 테스트 정책](../../../AGENTS.md#ci--테스트-정책)에 기록한다. 루트 Carrot eslint·check가 `RoverCarrot/` 코드를 검사하지 않도록 처리한다(루트 `src/`는 수정하지 않는다. 루트 ignore 설정 변경만 허용)
 - **Explicit non-goals:**
   - 실제 Detection/OCR/Translation/Inpainting/Renderer 구현
   - 전체 M1을 상상해 빈 interface/factory/file을 대량으로 만드는 것. 필요한 최소 skeleton만 만들고 Step 2부터 실제 stage를 붙이며 검증·확장한다
@@ -286,7 +286,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Completion criteria:**
   - D1 결과가 analysis 문서로 남고 M1-COMPAT-001에 링크됨
   - D2–D8 결정과 이유가 Result 또는 관련 CURRENT item에 기록됨(사용자 판단이 필요한 항목은 사용자 답을 받았거나 `BLOCKED` 사유가 명시됨)
-  - Rover 코드가 `RoverCMT/` 아래에 있고, Rover 전용 build/test/lint 명령이 RoverCMT/AGENTS.md에 기록되고, 루트 Carrot eslint·check가 `RoverCMT/` 코드를 검사하지 않음(루트 `src/` 무변경)
+  - Rover 코드가 `RoverCarrot/` 아래에 있고, Rover 전용 build/test/lint 명령이 RoverCarrot/AGENTS.md에 기록되고, 루트 Carrot eslint·check가 `RoverCarrot/` 코드를 검사하지 않음(루트 `src/` 무변경)
   - 위 Validation 통과, [DONE 조건](#step-status와-done-조건) 충족
   - **Checkpoint:** Step 1 완료 후 다음 Step으로 자동 진행하지 않는다. 이 architecture가 이후 모든 Step의 기반이므로 사용자/검토자가 결과를 확인한다.
 - **Result:**
@@ -459,7 +459,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Related M1 items:** [M1-RENDER-001](CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback), [M1-COMPAT-001](CURRENT.md#m1-compat-001--windows-carrot과의-output-interoperability)
 - **Prerequisites:** Step 5 DONE(layout state). Step 6 DONE(inpainted raster). fixture 기반 renderer 작업은 v3 fixture로 먼저 시작할 수 있다.
 - **Related analysis:** [M1-RENDER-001의 Related analysis](CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback)를 따른다. 핵심: [RECOMPARISON §6 Canonical v3 contract](../../analysis/RENDERER_CONTRACT_ALIGNED_RECOMPARISON.md#6-canonical-v3-contract), [§11](../../analysis/RENDERER_CONTRACT_ALIGNED_RECOMPARISON.md#11-fixture-results), [§17](../../analysis/RENDERER_CONTRACT_ALIGNED_RECOMPARISON.md#17-unresolved-questions), [RENDERER_CANDIDATE §3](../../analysis/RENDERER_CANDIDATE_ANALYSIS.md#3-actual-renderer-requirements), [§4 Reusable Layout vs Backend Responsibilities](../../analysis/RENDERER_CANDIDATE_ANALYSIS.md#4-reusable-layout-vs-backend-responsibilities).
-- **Source areas to inspect:** `RoverCMT/spikes/renderer-comparison/`(v3 manifest, `production-page.cjs`, `shared-layout.ts`, `native-adapters.cjs`, `playwright-adapter.cjs`), `src/renderer/src/lib/overlayLayout.ts`, `src/renderer/src/lib/sourceFontSizeMatching.ts`, `src/renderer/src/lib/bubbleFontSizeFitting.ts`, `src/main/pageExport.ts`, `src/main/pageExportHtml.ts`. spike 코드는 production으로 정리해 옮기며, spike 디렉터리 자체를 runtime dependency로 쓰지 않는다.
+- **Source areas to inspect:** `RoverCarrot/spikes/renderer-comparison/`(v3 manifest, `production-page.cjs`, `shared-layout.ts`, `native-adapters.cjs`, `playwright-adapter.cjs`), `src/renderer/src/lib/overlayLayout.ts`, `src/renderer/src/lib/sourceFontSizeMatching.ts`, `src/renderer/src/lib/bubbleFontSizeFitting.ts`, `src/main/pageExport.ts`, `src/main/pageExportHtml.ts`. spike 코드는 production으로 정리해 옮기며, spike 디렉터리 자체를 runtime dependency로 쓰지 않는다.
 - **Open decisions to resolve:** D22, D23. D28은 이 Step의 blocker가 아니다.
 - **Architecture/coupling concerns:** renderer는 모든 이전 stage 결과(번역, geometry, typography, bubble layout, inpainted raster)를 읽는다. Skia와 Playwright가 같은 renderer boundary 뒤에 있어야 fallback이 가능하다([A2](#a2-상위-core는-하위-implementation을-가능한-한-몰라야-한다)).
 - **Validation:** v3 fixture를 Linux Skia로 렌더하고 reference와 비교(자동 diagnostic은 보조), Linux Skia smoke, font capability smoke, memory/runtime sanity check. Skia fallback 조건([M1-RENDER-001](CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback))에 해당하는 blocker가 있으면 조용히 바꾸지 않고 근거와 History를 M1-RENDER-001에 기록한 뒤 Playwright를 쓴다.

@@ -25,7 +25,7 @@ GUI 없이 Linux에서 독립 실행되는 Core로 옮기고, 이후 처리 시�
 | M1 현재 작업 목록 | [M1_LINUX_PORT/CURRENT.md](M1_LINUX_PORT/CURRENT.md) (item과 Progress의 source of truth) |
 | M1 구현 순서 / 다음 Step | [M1_LINUX_PORT/IMPLEMENTATION_PLAN.md](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md) |
 | M2–M5 | 정의와 future scope만 있다. 아직 active가 아니다 |
-| Reference source | fork `fd461737`(upstream v2.8.2 `d20695df` + fork 커밋). "기존 Carrot"의 의미와 fork 전용 기능: [RoverCMT/AGENTS.md](../../AGENTS.md#reference-implementation) |
+| Reference source | fork `fd461737`(upstream v2.8.2 `d20695df` + fork 커밋). "기존 Carrot"의 의미와 fork 전용 기능: [RoverCarrot/AGENTS.md](../../AGENTS.md#reference-implementation) |
 | RoverCMT production code | Step 1 독립 TypeScript Core/CLI/persistence skeleton 구현·검증 완료; 실제 stage는 아직 없다. [실행/개발](../../README.md), [Step 1 Result](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter) |
 | 확정된 주요 결정 | 2026-10-01: M1 호환 = Windows Carrot에서 output open/use(interoperability), 기존 Translation ↔ Erase 병렬 경로는 M1에서 이식, M1 renderer = Skia Canvas primary / Playwright Chromium fallback. 상세: [M1 CURRENT](M1_LINUX_PORT/CURRENT.md) 상단 표 |
 | 마지막 구조 갱신 | 2026-10-02 Carrot input/import source trace: [M1-INPUT-001](M1_LINUX_PORT/CURRENT.md#m1-input-001--carrot-inputimport-parity)(parity) / [M5-INPUT-001](M5_FEATURES/IDEAS.md#m5-input-001--carrot에-없던-input-형식import-방식)(신규 기능) 추가. Step 2 미시작. |
@@ -73,7 +73,7 @@ GUI 없이 Linux에서 독립 실행되는 Core로 옮기고, 이후 처리 시�
 ## 6. 작업 전에 무엇을 읽는가 (Progressive disclosure)
 
 ```text
-RoverCMT/AGENTS.md
+RoverCarrot/AGENTS.md
   → docs/milestones/README.md   (이 문서: 전체 위치, 규칙)
     → 해당 milestone README     (목표, 범위, 원칙)
       → (M1 구현 작업) IMPLEMENTATION_PLAN.md → 현재 Step
@@ -107,10 +107,10 @@ RoverCMT/AGENTS.md
    애매하면 primary owner 하나에 넣고 다른 milestone은 `Related items`로만 연결한다. **같은 아이디어를 여러 milestone에 복제하지 않는다.**
 3. **중복 검색**: 기존 item과 겹치는지 먼저 찾는다.
    ```bash
-   grep -rn -i "<키워드>" RoverCMT/docs/milestones/
+   grep -rn -i "<키워드>" RoverCarrot/docs/milestones/
    ```
    한국어와 영어 동의어를 함께 검색한다(예: `단색|solid|fill|Fast Erase`). 이미 있으면 **새 item을 만들지 않고** 기존 item의 Summary·Related analysis·Decision needed를 보완한다.
-4. **근거 검색**: `grep -rn -i "<키워드>" RoverCMT/docs/analysis/`로 관련 분석을 찾는다.
+4. **근거 검색**: `grep -rn -i "<키워드>" RoverCarrot/docs/analysis/`로 관련 분석을 찾는다.
    - 있으면 정확한 상대 링크와 section, 그리고 "왜 이 분석이 근거인지" 한 줄을 적는다.
    - 없으면 `Evidence: not yet analyzed`라고 적는다. 근거를 지어내지 않는다.
 5. **추가**: 해당 milestone의 `IDEAS.md`에 아래 template으로 추가한다. 사용자가 명시적으로 "하기로 했다"고 말한 경우에만 `CURRENT.md`에 넣는다.
@@ -138,7 +138,7 @@ RoverCMT/AGENTS.md
 ### 7.2 ID 규칙
 
 - 형식: `M<milestone>-<AREA>-<NNN>` (예: `M4-TRANS-001`, `M4-INPAINT-001`, `M3-RUNTIME-001`, `M5-QUEUE-001`).
-- 번호는 milestone·AREA 안에서 증가한다. 다음 번호는 `grep -rhoE "M4-INPAINT-[0-9]{3}" RoverCMT/docs/milestones | sort | tail -1`로 확인한다.
+- 번호는 milestone·AREA 안에서 증가한다. 다음 번호는 `grep -rhoE "M4-INPAINT-[0-9]{3}" RoverCarrot/docs/milestones | sort | tail -1`로 확인한다.
 - **한번 만든 ID는 바꾸지 않는다.** title이 바뀌어도, 상태가 바뀌어도 그대로 둔다. 다른 milestone으로 옮겨야 하면 원래 위치에 `Moved to <새 ID>`를 남긴다.
 - 삭제하지 않는다. 하지 않기로 했으면 REJECTED로 옮긴다.
 
@@ -197,7 +197,7 @@ RoverCMT/AGENTS.md
 | Renderer fixture/font/reference | [RENDERER_FIXTURE_CENSUS.md](../analysis/RENDERER_FIXTURE_CENSUS.md), [RENDERER_LIBRARY_FEATURE_CENSUS.md](../analysis/RENDERER_LIBRARY_FEATURE_CENSUS.md), [RENDERER_FONT_RESOLUTION.md](../analysis/RENDERER_FONT_RESOLUTION.md), [RENDERER_PORTABLE_FONT_REFERENCE.md](../analysis/RENDERER_PORTABLE_FONT_REFERENCE.md) |
 | Renderer 비교 결과(v2, 최신 v3) | [RENDERER_COMPARISON_SPIKE.md](../analysis/RENDERER_COMPARISON_SPIKE.md), **최신:** [RENDERER_CONTRACT_ALIGNED_RECOMPARISON.md](../analysis/RENDERER_CONTRACT_ALIGNED_RECOMPARISON.md) |
 
-3. 그래도 없으면 `grep -rn -i "<키워드>" RoverCMT/docs/analysis/`로 검색한다.
+3. 그래도 없으면 `grep -rn -i "<키워드>" RoverCarrot/docs/analysis/`로 검색한다.
 4. 분석 문서끼리 결론이 다르면 더 최신 문서의 "정정/Corrections" section을 확인한다(예: TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS §21, CORE §0.1, DETECTION §0.1).
 
 ## 10. 문서 유지 규칙

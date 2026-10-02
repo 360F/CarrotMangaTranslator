@@ -51,7 +51,7 @@ Root `LICENSE`와 font embedded name ID 13은 SIL Open Font License 1.1을 명�
 
 | Field | Value |
 |---|---|
-| Path | `RoverCMT/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf` |
+| Path | `RoverCarrot/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf` |
 | Format/signature | static OpenType/CFF, `OTTO` |
 | Family | Noto Sans CJK KR |
 | Subfamily | Regular |
@@ -91,7 +91,7 @@ Noto family를 production default나 application-wide setting에 hard-code하지
 
 ## 8. Reference Revision 2
 
-Output: `RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/`
+Output: `RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/`
 
 | Page | Dimensions | Format | SHA-256 |
 |---|---:|---|---|

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "revision": "portable-font-reference-v2",
-  "derivedFrom": "RoverCMT/spikes/renderer-comparison/fixtures/manifest.json",
+  "derivedFrom": "RoverCarrot/spikes/renderer-comparison/fixtures/manifest.json",
   "runtime": {
     "electron": "43.3.0",
     "chromium": "150.0.7871.212",
@@ -14,7 +14,7 @@
     "family": "Noto Sans CJK KR",
     "cssFamily": "Rover Benchmark Noto Sans CJK KR",
     "postScriptName": "NotoSansCJKkr-Regular",
-    "path": "RoverCMT/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf",
+    "path": "RoverCarrot/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf",
     "format": "OTF",
     "sha256": "6bcb2a0703aa137e874fc2dffa85f6c21ba9a67fa329e81b8c801663af7e992a"
   },
@@ -25,7 +25,7 @@
       "snapshotSha256": "bb2e6e374b160ba58e54b18e08eb4c0751235fdd844ad69bbaa6e26fb0881a6f",
       "renderImageSha256": "51f49f4b54b7e5cec01b2b8521069b8552e4db2f9998c1d65dc0de281277edc7",
       "output": {
-        "path": "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_004.png",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_004.png",
         "format": "PNG",
         "width": 1280,
         "height": 1791,
@@ -39,7 +39,7 @@
       "snapshotSha256": "9872035d0e8c95f664ea3a84d00c849121384a7402458491cc3f333afd726918",
       "renderImageSha256": "e038738ac409c768ff576a1bf419f9ef800adff6e14f2864f500ee68de4dbcc9",
       "output": {
-        "path": "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_011.png",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_011.png",
         "format": "PNG",
         "width": 1280,
         "height": 1791,
@@ -53,7 +53,7 @@
       "snapshotSha256": "97b683dd53a612ecda584a6983bbeef4fbcf2eb3d3eebafe04e91cbcbec9699f",
       "renderImageSha256": "6852b0a0d42ac5c2426380c933d0369c4e2ddde2722e970bd113f6ab75718d2c",
       "output": {
-        "path": "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_012.png",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_012.png",
         "format": "PNG",
         "width": 1280,
         "height": 1791,
@@ -67,7 +67,7 @@
       "snapshotSha256": "161fd17086b5c886136d18ead3e67076383aababa08abbeb908dff6d9b766a00",
       "renderImageSha256": "ab14b1974b91b990f658bd1fd7e7e8b0d0cfb0108e2d02e592ecb1cb42c2b227",
       "output": {
-        "path": "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_015.png",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_015.png",
         "format": "PNG",
         "width": 1280,
         "height": 1791,
@@ -81,7 +81,7 @@
       "snapshotSha256": "5b7ff8ccf459138938343ede21510243265c8fa3f037e2029fc64c49dc7f445d",
       "renderImageSha256": "f30b56ba9b44ea9e3f3c0d44c1aea9aa3ff2eebb82d80160eebcd313c418074c",
       "output": {
-        "path": "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_018.png",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_018.png",
         "format": "PNG",
         "width": 1280,
         "height": 1791,
@@ -95,7 +95,7 @@
       "snapshotSha256": "66c15269a282a8b89610f031b7442fa3c98536d9260deed4142d456858c9a23a",
       "renderImageSha256": "9f5ae65a6b3ed9f1aeb339f24532961c4711aa40e9e86782ab3121c03145733e",
       "output": {
-        "path": "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_029.png",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_029.png",
         "format": "PNG",
         "width": 1280,
         "height": 1791,
@@ -109,7 +109,7 @@
       "snapshotSha256": "d3aadcc298e70c1fb61a241346095a712c2c1d06f5e8bdaf087a47b256631617",
       "renderImageSha256": "9279aabebbeb44d1c249f92b1812031da93b488f9efcdd14a0d5a9b16c512e6b",
       "output": {
-        "path": "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_047.png",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_047.png",
         "format": "PNG",
         "width": 1280,
         "height": 1791,
@@ -123,7 +123,7 @@
       "snapshotSha256": "ca7795122a83a6948e65387d55550767feaafd16a0427c2cb992a8fcea1b9395",
       "renderImageSha256": "aaca60cfc1dba908ed31ced56667008b8ebd6127426f7fc943862755f9007e08",
       "output": {
-        "path": "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_0411.png",
+        "path": "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_0411.png",
         "format": "PNG",
         "width": 1280,
         "height": 925,

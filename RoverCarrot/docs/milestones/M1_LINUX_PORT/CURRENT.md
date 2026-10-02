@@ -4,7 +4,7 @@
 
 사용자가 M1에서 하기로 결정한 작업이다(2026-10-01 milestone 정의 기준). 각 item은 근거 analysis로 연결된다.
 진행 상태는 `Progress`로 표시하며, 현재 값은 아래 Item 목록 표와 각 item의 `Progress` 필드를 따른다.
-"기존 Carrot"/"Windows Carrot"은 reference fork(`fd461737`)와 그 Windows 빌드를 뜻한다([RoverCMT/AGENTS.md](../../../AGENTS.md#reference-implementation)).
+"기존 Carrot"/"Windows Carrot"은 reference fork(`fd461737`)와 그 Windows 빌드를 뜻한다([RoverCarrot/AGENTS.md](../../../AGENTS.md#reference-implementation)).
 
 **2026-10-01 사용자 확정 결정** (자세한 내용은 각 item):
 
@@ -252,7 +252,7 @@ Item 목록:
   - [INITIAL_MIGRATION_ANALYSIS §8 현재 migration risk](../../analysis/INITIAL_MIGRATION_ANALYSIS.md#8-현재-migration-risk) — runtime availability와 packaging risk.
   - [ANALYSIS_PLAN §5 이후 Runtime Smoke Tests](../../ANALYSIS_PLAN.md#5-이후-runtime-smoke-tests) — runtime별 최소 smoke 기준.
 - **Related items:** M1-DETECT-001, M1-OCR-001, M1-TRANS-001, M1-INPAINT-001, M1-RENDER-001.
-- **Dependencies:** Linux 실행 환경(distro, GPU/driver). 주 환경: Rover PC([RoverCMT/AGENTS.md 실행 환경](../../../AGENTS.md#실행-환경)).
+- **Dependencies:** Linux 실행 환경(distro, GPU/driver). 주 환경: Rover PC([RoverCarrot/AGENTS.md 실행 환경](../../../AGENTS.md#실행-환경)).
 - **Decision / validation needed:** 배포 형태(venv/container/system package)와 GPU 필수 여부.
 - **History:** 2026-10-01 생성. 2026-10-01 Dependencies에 Rover PC 실행 환경 링크 추가(user decision). 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
 
@@ -372,7 +372,7 @@ Item 목록:
   - [RENDERER_FIXTURE_CENSUS §7 Coverage Matrix](../../analysis/RENDERER_FIXTURE_CENSUS.md#7-coverage-matrix) — v3 8 fixture가 다루는 범위와 빠진 범위.
   - [RENDERER_FONT_RESOLUTION §8 Portability / Distribution Considerations](../../analysis/RENDERER_FONT_RESOLUTION.md#8-portability--distribution-considerations)와 [RENDERER_PORTABLE_FONT_REFERENCE §4 License / Redistribution](../../analysis/RENDERER_PORTABLE_FONT_REFERENCE.md#4-license--redistribution) — Linux에서 같은 결과를 내려면 font를 pin하고 배포해야 한다는 근거와 선택된 portable font의 라이선스. [PORTABLE_FONT_REFERENCE §12 Future Multi-Font Compatibility](../../analysis/RENDERER_PORTABLE_FONT_REFERENCE.md#12-future-multi-font-compatibility) — font role → asset mapping(vertical, user-custom 등 확장 지점).
   - [CORE §0.2 Renderer decision state](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#02-renderer-decision-state) 와 [CORE §16 What NOT to Migrate](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#16-what-not-to-migrate-초기) — advanced renderer field는 현재 미사용이지만 schema를 optional로 남기라는 권장.
-  - Review artifact(로컬, git 미추적): `RoverCMT/spikes/renderer-comparison/outputs/comparison-2026-10-01-v3-contract-aligned/visual-comparison/index.html`. Spike 설명: [spikes/renderer-comparison/README.md](../../../spikes/renderer-comparison/README.md).
+  - Review artifact(로컬, git 미추적): `RoverCarrot/spikes/renderer-comparison/outputs/comparison-2026-10-01-v3-contract-aligned/visual-comparison/index.html`. Spike 설명: [spikes/renderer-comparison/README.md](../../../spikes/renderer-comparison/README.md).
 - **Related items:** [M1-COMPAT-001](#m1-compat-001--windows-carrot과의-output-interoperability), [M4-RENDER-001](../M4_OPTIMIZATION/IDEAS.md#m4-render-001--선택된-linux-renderer-backend의-성능-최적화)(선택 후 성능 최적화), [M2-GOLDEN-001](../M2_TEST_SET/CURRENT.md#m2-golden-001--사용자-검토-golden-sample-약-3종)(장기 기준 셋은 M2).
 - **Dependencies:** 없음(방향 결정됨).
 - **Decision / validation needed:**

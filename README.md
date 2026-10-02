@@ -12,5 +12,5 @@ It is under development and is not a public release or general-purpose distribut
 
 ## Development
 
-Development notes, migration analysis, and milestone tracking are under [`RoverCMT/`](RoverCMT/AGENTS.md).
+Development notes, migration analysis, and milestone tracking are under [`RoverCarrot/`](RoverCarrot/AGENTS.md).
 The original CarrotMangaTranslator source in this repository is kept as the reference implementation for the migration.

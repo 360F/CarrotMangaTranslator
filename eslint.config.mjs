@@ -7,7 +7,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 export default tseslint.config(
   {
     ignores: [
-      "RoverCMT/**",
+      "RoverCarrot/**",
       "node_modules/**",
       "out/**",
       "dist/**",

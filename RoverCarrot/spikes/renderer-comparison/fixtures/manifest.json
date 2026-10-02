@@ -41,7 +41,7 @@
                                               "identityEvidence":  "exact source page filename in newest timestamped work export"
                                           },
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/e311fd1f-0bf2-4fc1-99f5-646dc1be76c2.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/e311fd1f-0bf2-4fc1-99f5-646dc1be76c2.json",
                                               "sha256":  "bb2e6e374b160ba58e54b18e08eb4c0751235fdd844ad69bbaa6e26fb0881a6f"
                                           },
                          "fonts":  [
@@ -80,7 +80,7 @@
                                               "identityEvidence":  "exact source page filename in newest timestamped work export"
                                           },
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/74d0a78f-93fe-4c24-97b9-25c09382784d.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/74d0a78f-93fe-4c24-97b9-25c09382784d.json",
                                               "sha256":  "9872035d0e8c95f664ea3a84d00c849121384a7402458491cc3f333afd726918"
                                           },
                          "fonts":  [
@@ -120,7 +120,7 @@
                                               "identityEvidence":  "exact source page filename in newest timestamped work export"
                                           },
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/50443352-6248-45ef-8d09-d9f99fe7ab59.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/50443352-6248-45ef-8d09-d9f99fe7ab59.json",
                                               "sha256":  "97b683dd53a612ecda584a6983bbeef4fbcf2eb3d3eebafe04e91cbcbec9699f"
                                           },
                          "fonts":  [
@@ -160,7 +160,7 @@
                                               "identityEvidence":  "exact source page filename in newest timestamped work export"
                                           },
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/6b059220-b404-4d21-89b1-8a8ec7ee1635.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/6b059220-b404-4d21-89b1-8a8ec7ee1635.json",
                                               "sha256":  "161fd17086b5c886136d18ead3e67076383aababa08abbeb908dff6d9b766a00"
                                           },
                          "fonts":  [
@@ -200,7 +200,7 @@
                                               "identityEvidence":  "exact source page filename in newest timestamped work export"
                                           },
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/f8a2d41b-d26e-44ce-aaf4-8d0600c984fd.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/f8a2d41b-d26e-44ce-aaf4-8d0600c984fd.json",
                                               "sha256":  "5b7ff8ccf459138938343ede21510243265c8fa3f037e2029fc64c49dc7f445d"
                                           },
                          "fonts":  [
@@ -240,7 +240,7 @@
                                               "identityEvidence":  "exact source page filename in newest timestamped work export"
                                           },
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/676ba29f-3ce3-4bf6-ae47-4ca34169ed3b.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/676ba29f-3ce3-4bf6-ae47-4ca34169ed3b.json",
                                               "sha256":  "66c15269a282a8b89610f031b7442fa3c98536d9260deed4142d456858c9a23a"
                                           },
                          "fonts":  [
@@ -280,7 +280,7 @@
                                               "identityEvidence":  "exact source page filename in newest timestamped work export"
                                           },
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/678fcdee-4806-4a15-9228-9286f1abf92c.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/678fcdee-4806-4a15-9228-9286f1abf92c.json",
                                               "sha256":  "d3aadcc298e70c1fb61a241346095a712c2c1d06f5e8bdaf087a47b256631617"
                                           },
                          "fonts":  [
@@ -319,7 +319,7 @@
                                               "identityEvidence":  "exact source page filename in newest timestamped work export"
                                           },
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/46fe6f58-2468-4e3b-9f9b-b8ce7dec4247.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/46fe6f58-2468-4e3b-9f9b-b8ce7dec4247.json",
                                               "sha256":  "ca7795122a83a6948e65387d55550767feaafd16a0427c2cb992a8fcea1b9395"
                                           },
                          "fonts":  [

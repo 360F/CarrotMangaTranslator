@@ -2,7 +2,7 @@
     "version":  2,
     "revision":  "portable-font-reference-v2",
     "derivedFrom":  {
-                        "path":  "RoverCMT/spikes/renderer-comparison/fixtures/manifest.json",
+                        "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/manifest.json",
                         "sha256":  "7e00585df4f504c7b2e831676426de1182fff053cebd81b3dd7cc231a486cb07",
                         "version":  1
                     },
@@ -21,12 +21,12 @@
                            "postScriptName":  "NotoSansCJKkr-Regular",
                            "version":  "2.004",
                            "format":  "OTF",
-                           "path":  "RoverCMT/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf",
+                           "path":  "RoverCarrot/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/NotoSansCJKkr-Regular.otf",
                            "bytes":  16433112,
                            "sha256":  "6bcb2a0703aa137e874fc2dffa85f6c21ba9a67fa329e81b8c801663af7e992a",
                            "license":  {
                                            "id":  "OFL-1.1",
-                                           "path":  "RoverCMT/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/LICENSE.txt",
+                                           "path":  "RoverCarrot/spikes/renderer-comparison/assets/fonts/noto-sans-cjk-kr-2.004/LICENSE.txt",
                                            "sha256":  "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
                                            "redistribution":  "permitted-with-license"
                                        },
@@ -54,12 +54,12 @@
                           },
     "verification":  {
                          "render":  {
-                                        "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/render-verification.json",
-                                        "sha256":  "ef0708b5d4b680476e5918672a303559eb65241e079a3e7f3d0ee62edf983ad8",
+                                        "path":  "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/render-verification.json",
+                                        "sha256":  "47486c06cfabb0ab37669636351654a0558ea6b1cb3a8fc579a5fdd05f9810bc",
                                         "outputs":  8
                                     },
                          "font":  {
-                                      "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/font-verification.json",
+                                      "path":  "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/font-verification.json",
                                       "sha256":  "dba870348432a2eee90df8bbec3fd701b6e3c643d1db7b0246fddd473d9b2d30",
                                       "blocks":  57,
                                       "uniqueNonWhitespaceGlyphs":  280,
@@ -77,7 +77,7 @@
                                           "outline"
                                       ],
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/e311fd1f-0bf2-4fc1-99f5-646dc1be76c2.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/e311fd1f-0bf2-4fc1-99f5-646dc1be76c2.json",
                                               "sha256":  "bb2e6e374b160ba58e54b18e08eb4c0751235fdd844ad69bbaa6e26fb0881a6f"
                                           },
                          "renderImage":  {
@@ -91,7 +91,7 @@
                                               "benchmark-default-noto-sans-cjk-kr-regular-2.004"
                                           ],
                          "reference":  {
-                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_004.png",
+                                           "path":  "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_004.png",
                                            "format":  "PNG",
                                            "width":  1280,
                                            "height":  1791,
@@ -108,7 +108,7 @@
                                           "outline"
                                       ],
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/74d0a78f-93fe-4c24-97b9-25c09382784d.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/74d0a78f-93fe-4c24-97b9-25c09382784d.json",
                                               "sha256":  "9872035d0e8c95f664ea3a84d00c849121384a7402458491cc3f333afd726918"
                                           },
                          "renderImage":  {
@@ -122,7 +122,7 @@
                                               "benchmark-default-noto-sans-cjk-kr-regular-2.004"
                                           ],
                          "reference":  {
-                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_011.png",
+                                           "path":  "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_011.png",
                                            "format":  "PNG",
                                            "width":  1280,
                                            "height":  1791,
@@ -140,7 +140,7 @@
                                           "outline"
                                       ],
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/50443352-6248-45ef-8d09-d9f99fe7ab59.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/50443352-6248-45ef-8d09-d9f99fe7ab59.json",
                                               "sha256":  "97b683dd53a612ecda584a6983bbeef4fbcf2eb3d3eebafe04e91cbcbec9699f"
                                           },
                          "renderImage":  {
@@ -154,7 +154,7 @@
                                               "benchmark-default-noto-sans-cjk-kr-regular-2.004"
                                           ],
                          "reference":  {
-                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_012.png",
+                                           "path":  "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_012.png",
                                            "format":  "PNG",
                                            "width":  1280,
                                            "height":  1791,
@@ -172,7 +172,7 @@
                                           "outline"
                                       ],
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/6b059220-b404-4d21-89b1-8a8ec7ee1635.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/6b059220-b404-4d21-89b1-8a8ec7ee1635.json",
                                               "sha256":  "161fd17086b5c886136d18ead3e67076383aababa08abbeb908dff6d9b766a00"
                                           },
                          "renderImage":  {
@@ -186,7 +186,7 @@
                                               "benchmark-default-noto-sans-cjk-kr-regular-2.004"
                                           ],
                          "reference":  {
-                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_015.png",
+                                           "path":  "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_015.png",
                                            "format":  "PNG",
                                            "width":  1280,
                                            "height":  1791,
@@ -204,7 +204,7 @@
                                           "outline"
                                       ],
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/f8a2d41b-d26e-44ce-aaf4-8d0600c984fd.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/f8a2d41b-d26e-44ce-aaf4-8d0600c984fd.json",
                                               "sha256":  "5b7ff8ccf459138938343ede21510243265c8fa3f037e2029fc64c49dc7f445d"
                                           },
                          "renderImage":  {
@@ -218,7 +218,7 @@
                                               "benchmark-default-noto-sans-cjk-kr-regular-2.004"
                                           ],
                          "reference":  {
-                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_018.png",
+                                           "path":  "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_018.png",
                                            "format":  "PNG",
                                            "width":  1280,
                                            "height":  1791,
@@ -236,7 +236,7 @@
                                           "outline"
                                       ],
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/676ba29f-3ce3-4bf6-ae47-4ca34169ed3b.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/676ba29f-3ce3-4bf6-ae47-4ca34169ed3b.json",
                                               "sha256":  "66c15269a282a8b89610f031b7442fa3c98536d9260deed4142d456858c9a23a"
                                           },
                          "renderImage":  {
@@ -250,7 +250,7 @@
                                               "benchmark-default-noto-sans-cjk-kr-regular-2.004"
                                           ],
                          "reference":  {
-                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_029.png",
+                                           "path":  "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_029.png",
                                            "format":  "PNG",
                                            "width":  1280,
                                            "height":  1791,
@@ -268,7 +268,7 @@
                                           "outline"
                                       ],
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/678fcdee-4806-4a15-9228-9286f1abf92c.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/678fcdee-4806-4a15-9228-9286f1abf92c.json",
                                               "sha256":  "d3aadcc298e70c1fb61a241346095a712c2c1d06f5e8bdaf087a47b256631617"
                                           },
                          "renderImage":  {
@@ -282,7 +282,7 @@
                                               "benchmark-default-noto-sans-cjk-kr-regular-2.004"
                                           ],
                          "reference":  {
-                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_047.png",
+                                           "path":  "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_047.png",
                                            "format":  "PNG",
                                            "width":  1280,
                                            "height":  1791,
@@ -299,7 +299,7 @@
                                           "outline"
                                       ],
                          "pageSnapshot":  {
-                                              "path":  "RoverCMT/spikes/renderer-comparison/fixtures/pages/46fe6f58-2468-4e3b-9f9b-b8ce7dec4247.json",
+                                              "path":  "RoverCarrot/spikes/renderer-comparison/fixtures/pages/46fe6f58-2468-4e3b-9f9b-b8ce7dec4247.json",
                                               "sha256":  "ca7795122a83a6948e65387d55550767feaafd16a0427c2cb992a8fcea1b9395"
                                           },
                          "renderImage":  {
@@ -313,7 +313,7 @@
                                               "benchmark-default-noto-sans-cjk-kr-regular-2.004"
                                           ],
                          "reference":  {
-                                           "path":  "RoverCMT/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_0411.png",
+                                           "path":  "RoverCarrot/spikes/renderer-comparison/reference-v2-noto-sans-cjk-kr-2.004/_0411.png",
                                            "format":  "PNG",
                                            "width":  1280,
                                            "height":  925,

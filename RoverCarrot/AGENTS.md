@@ -72,7 +72,7 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 
 ## CI / 테스트 정책
 
-자동 CI는 꺼져 있다(루트 `.github/workflows/check.yml`은 원본 Carrot 앱 검사이며 `workflow_dispatch` 전용). 테스트는 당분간 수동으로 실행하고, 에이전트를 통한 자동 실행은 M2 이후 다시 정한다. M2 Golden benchmark는 commit/push CI가 아니며 일반 unit/smoke/regression test와 구분한다. Rover 전용 명령(2026-10-02, `RoverCMT/`에서 실행):
+자동 CI는 꺼져 있다(루트 `.github/workflows/check.yml`은 원본 Carrot 앱 검사이며 `workflow_dispatch` 전용). 테스트는 당분간 수동으로 실행하고, 에이전트를 통한 자동 실행은 M2 이후 다시 정한다. M2 Golden benchmark는 commit/push CI가 아니며 일반 unit/smoke/regression test와 구분한다. Rover 전용 명령(2026-10-02, `RoverCarrot/`에서 실행):
 
 - Node.js >=24; 개발 의존성은 `npm ci --ignore-scripts`로 이 하위 프로젝트에만 설치한다.
 - `npm run build` — TypeScript build (`dist/`, gitignored)
@@ -83,7 +83,7 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 - Linux CLI: `node dist/cli.js --config <config.json>` (현재 dummy smoke 전용; 실제 stage 구현 아님)
 - 사용법과 최소 input/output contract: [README.md](README.md)
 
-루트 Carrot 검사는 루트 ESLint global ignore의 `RoverCMT/**`와 `.prettierignore`의 `/RoverCMT/`로 Rover 코드를 제외한다. 루트 reference 의존성은 Rover 개발환경에 설치하지 않는다.
+루트 Carrot 검사는 루트 ESLint global ignore의 `RoverCarrot/**`와 `.prettierignore`의 `/RoverCarrot/`로 Rover 코드를 제외한다. 루트 reference 의존성은 Rover 개발환경에 설치하지 않는다.
 
 ---
 

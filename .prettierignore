@@ -26,4 +26,4 @@ src/main/runtime/font-matching-crossscript-proxy/runtime-manifest.json
 src/main/runtime/font-matching-crossscript-proxy/.manga-font-crossscript-proxy-runtime-owned.json
 
 # Standalone RoverCMT owns its development checks.
-/RoverCMT/
+/RoverCarrot/
