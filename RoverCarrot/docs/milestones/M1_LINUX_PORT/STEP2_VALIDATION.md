@@ -3,7 +3,7 @@
 [Implementation plan / status](IMPLEMENTATION_PLAN.md#step-2--detection--koharu)
 · [M1-DETECT-001](CURRENT.md#m1-detect-001--koharu-layout-onnx-linux-runtime)
 
-2026-10-02 implementation-session evidence. Final acceptance belongs to the
+2026-10-02 implementation-session evidence. Implementation commit: [`4a435446`](https://github.com/360F/RoverCMT/commit/4a435446); Phase A checkpoint sync: `1859ad91`. Final acceptance belongs to the
 independent validation session and user checkpoint; no numerical tolerance or
 DONE decision was invented. Step 3 has not started.
 

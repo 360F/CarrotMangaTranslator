@@ -337,7 +337,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Result:**
   - Status: IN_PROGRESS.
   - Progress notes: IMPLEMENTED — 독립 검증 대기(2026-10-02). Step 3 미시작. Phase B 시작 HEAD `1859ad91` (Step 1 승인·문서 동기화 commit, clean local/remote 확인 후 시작).
-  - Commit: Phase B 구현 commit은 아래 validation 기록과 함께 git history에 기록한다.
+  - Commit: [`4a435446`](https://github.com/360F/RoverCMT/commit/4a435446) — `feat(rover): implement Koharu CPU detection with internal smoke injection`. 독립 검증 대기 상태로 commit/push; DONE을 의미하지 않는다. Phase A 문서 동기화 commit은 `1859ad91`.
   - Validation result: `npm run check`(40 tests), `npm run smoke`(15 tests), boundaries PASS. S0/S1 Linux x64 ORT 1.27.0 CPU native load·model filename/148,442,003 bytes/전체 SHA·metadata 확인; isolated `npm ci --ignore-scripts` 성공. S2 실제 원본으로 추론 성공. S3 dialogue/effect 6/9, type/order/provenance 일치, dialogue bbox exact, effect 2개 4.5px 차이. IoU min/mean/max 0.959525094441446 / 0.996616066806934 / 1. S4 subdivision mode/count/box/order exact. 실제 사용자 JPG 4장 Detect PASS·block persistence·session 1회 재사용·기존 data bytes 보존. [재현 명령·artifact binding·측정 전체](STEP2_VALIDATION.md).
   - D9/D12: exact Node ORT in-process CPU; session run 내 재사용, 종료 release. SFX review만 보존, staged OCR/자동 translation 제외; internal skip/overwrite만, CLI 신규 flag 없음. raw masks/cross-stage inference cache 없음. sourceDirection horizontal과 presentation defaults 유지.
   - D31: filesystem read-only 발견 및 model identity/개발 root의 chapter-page-run binding으로 `<CARROT_DATA_ROOT>`와 `<KOHARU_MODEL>` 식별. 개인 절대경로는 ignored `test-data/validation/m1-step2/validation-context.json`에만 저장.
