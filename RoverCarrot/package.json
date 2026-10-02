@@ -24,6 +24,7 @@
     "typescript-eslint": "8.48.1"
   },
   "dependencies": {
-    "sharp": "0.35.5"
+    "sharp": "0.35.5",
+    "smol-toml": "1.9.0"
   }
 }

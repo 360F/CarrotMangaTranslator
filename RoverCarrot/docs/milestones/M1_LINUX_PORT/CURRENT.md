@@ -91,7 +91,7 @@ Item 목록:
 - **Related items:** M1-CONFIG-002, M1-CLI-001.
 - **Dependencies:** 없음(설계 먼저 가능).
 - **Decision / validation needed:** config 형식(JSON/TOML/YAML)과 Carrot `settings.json` 값 import 여부.
-- **History:** 2026-10-01 생성. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
+- **History:** 2026-10-01 생성. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신. 2026-10-02 Step 1 UX 보완: 단일 TOML config `config/config.toml`, `--config` 제거. Step 2 미시작.
 
 - **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
 
@@ -175,7 +175,7 @@ Item 목록:
 - **Related items:** [M2-BENCH-001](../M2_TEST_SET/CURRENT.md#m2-bench-001--stage별-benchmark와-실행시간-측정), [M2-BENCH-002](../M2_TEST_SET/CURRENT.md#m2-bench-002--full-e2e-benchmark와-실행시간-측정).
 - **Dependencies:** M1-CLI-001.
 - **Decision / validation needed:** 출력 형식(사람용 진행 표시 + 기계용 JSONL 등).
-- **History:** 2026-10-01 생성. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신.
+- **History:** 2026-10-01 생성. 2026-10-02 Step 1 skeleton/contract smoke 완료, Progress와 근거 갱신. 2026-10-02 Step 1 UX 보완: 사람용 진행률 화면 + `logs/rovercmt.log`/`critical.log`. Step 2 미시작.
 
 - **Step 1 evidence (2026-10-02):** [Step 1 Result](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter); loader contract, config/Core/CLI, dummy progress 및 isolated library persistence smoke 완료.
 

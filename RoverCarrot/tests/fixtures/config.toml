@@ -1,0 +1,10 @@
+# Automated-test config: relative paths resolve against the test's CWD.
+version = 1
+mode = "smoke"
+
+[paths]
+input = "input"
+output = "output"
+
+[pipeline]
+stages = ["detect", "ocr", "translate", "typography", "erase", "layout", "render"]

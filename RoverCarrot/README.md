@@ -13,36 +13,44 @@ npm run check:boundaries
 npm run smoke
 ```
 
-Run every command from `RoverCarrot/`. Settings live in the fixed `config/`
-directory: `config/example.json` is the tracked template, and `config/local.json`
-is your Git-ignored config. Create it once after cloning and edit its values:
+Run commands from `RoverCarrot/`. The only user config is `config/config.toml`
+(Git-ignored). It is always read from the project root, wherever you run the
+command. If it is missing, the first run writes a commented default, prints
+`Config created: config/config.toml — edit it and run again.` and exits with
+code 2 without processing anything. Edit it and run again:
 
-```bash
-cp config/example.json config/local.json
+```toml
+version = 1
+mode = "smoke"
+
+[paths]
+input = "test-data/input/example"        # relative to the current directory
+output = "test-data/output/example-run"  # must not exist yet
+
+[pipeline]
+stages = ["detect", "ocr", "translate", "typography", "erase", "layout", "render"]
 ```
 
-```json
-{
-  "version": 1,
-  "mode": "smoke",
-  "input": "test-data/input/example",
-  "output": "test-data/output/example-run",
-  "stages": ["detect", "ocr", "translate", "typography", "erase", "layout", "render"]
-}
-```
-
-`input`/`output` in the config are defaults. `--input`/`--output` override them
-for one run (CLI value first, else config value; a run fails before creating
-output if neither provides one). Relative paths from both sources resolve
-against the current working directory, not the config file location; absolute
-paths are used as is. `--config` is required.
+`[paths]` values are defaults. `--input`/`--output` override them for one run
+(CLI value first, else config value; a run fails before creating output if
+neither provides one). Relative input/output paths resolve against the current
+working directory; absolute paths are used as is.
 
 ```bash
 npm run build
-node dist/cli.js --config config/local.json
-node dist/cli.js --config config/local.json --input test-data/input/other-comic
-node dist/cli.js --config config/local.json --output test-data/output/run-002
+node dist/cli.js
+node dist/cli.js --input test-data/input/other-comic
+node dist/cli.js --output test-data/output/run-002
 ```
+
+The terminal shows only stage progress (pages done / total), PASS/FAIL, the
+result and the output path. Interactive terminals update the rows in place;
+pipes and CI get one line per finished stage. Exit codes: 0 PASS, 1 FAIL, 2
+config created. Logs are fixed at `<project root>/logs/` (Git-ignored):
+`rovercmt.log` has the full JSONL detail (run/page IDs, stage events, timing,
+errors), `critical.log` only failures and errors. They are capped at 10 MiB and
+5 MiB by dropping the oldest whole lines (no backups). On failure the CLI prints
+`Details:` with the critical log path (absolute when run outside the project root).
 
 Input is a PNG, JPEG (`.jpg`/`.jpeg`/`.jfif`) or WebP file, or a directory
 containing these images. Direct files form one naturally ordered page sequence;
@@ -58,20 +66,19 @@ in the [input materialization direction](docs/milestones/M1_LINUX_PORT/IMPLEMENT
 The output is an isolated Carrot library structure, not a GUI share ZIP.
 Do not replace the index of an existing Carrot library with this output.
 
-CLI emits JSONL progress/timing on stderr and one structured result on stdout;
-exit 0 means completed smoke, exit 1 means failure/partial or invalid arguments.
 `stages` chooses a subset, always executed in reference order. Every invocation
-imports to a new output; stage selection is not saved-state resume. No implicit
-skip/retry policy or subprocess output parsing is needed by programmatic callers.
+imports to a new output; stage selection is not saved-state resume. Programmatic
+callers get the structured result from `run()` and need no CLI output parsing.
 
 Programmatic usage (after build):
 
 ```js
-import { loadConfig } from './dist/core/config.js';
+import { resolveConfig } from './dist/core/config.js';
 import { run } from './dist/core/run.js';
 import { libraryPersistence } from './dist/adapters/library.js';
 import { smokeStages } from './dist/adapters/smoke.js';
-const result = await run(await loadConfig('/absolute/path/config.json'), {
+const config = resolveConfig({ version: 1, mode: 'smoke', input: 'pages', output: 'library' }, '/abs/base');
+const result = await run(config, {
   persistence: libraryPersistence(),
   stages: smokeStages(),
   onEvent: event => console.log(event),
@@ -100,10 +107,11 @@ Current scope and next checkpoint:
 [M1 implementation plan](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md).
 
 `npm run smoke` builds and runs the repository's input/CLI smoke validation with
-small synthetic fixtures in `tests/fixtures/` (including its own test configs).
-It creates disposable output in the OS temporary directory, never reads
-`config/local.json`, and checks formats, ordering, copied bytes, persisted run
-results, CLI overrides and failures. For your own data, use the CLI above.
+small synthetic fixtures in `tests/fixtures/` (including its own TOML test configs).
+CLI tests use a temporary project root, so they never read or write the real
+`config/config.toml` or `logs/`. They check exit codes, persisted run JSON,
+output files and logs, plus formats, ordering, copied bytes, overrides and
+failures. For your own data, use the CLI above.
 
 For private manual validation, use `test-data/input/` and `test-data/output/`.
 The entire `test-data/` tree is Git-ignored; do not force-add it. Small
@@ -116,7 +124,7 @@ mkdir -p test-data/input test-data/output
 cp -a /path/to/comic test-data/input/
 ```
 
-Point `input` in `config/local.json` at that folder (for example
+Point `input` in `config/config.toml` at that folder (for example
 `test-data/input/comic`), or pass `--input` for a one-off run. Inspect the library
 under the output path in `test-data/output/`. Existing outputs are refused, so
 use a new `--output` (or a new config default) for each run. These runs still

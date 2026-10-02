@@ -1,4 +1,3 @@
-import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { STAGES, type Config, type StageId } from './contracts.js';
 
@@ -13,7 +12,7 @@ function pathValue(name: string, override: unknown, configured: unknown, base: s
   throw new Error(`${name} path is required (config "${name}" or --${name})`);
 }
 
-// Relative input/output paths resolve against `base` (the CWD for loadConfig/CLI),
+// Relative input/output paths resolve against `base` (the CLI passes its CWD),
 // never against the config file location. Overrides take precedence over config values.
 export function resolveConfig(raw: unknown, base: string = process.cwd(), overrides: PathOverrides = {}): Config {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('Config must be an object');
@@ -28,7 +27,4 @@ export function resolveConfig(raw: unknown, base: string = process.cwd(), overri
       stages.some(id => !STAGES.includes(id)) || new Set(stages).size !== stages.length)
     throw new Error('stages must contain unique known stage IDs');
   return { version: 1, mode: 'smoke', input, output, stages: STAGES.filter(id => (stages as StageId[]).includes(id)) };
-}
-export async function loadConfig(path: string, overrides: PathOverrides = {}): Promise<Config> {
-  return resolveConfig(JSON.parse(await readFile(resolve(path), 'utf8')), process.cwd(), overrides);
 }

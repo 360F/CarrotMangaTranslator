@@ -4,5 +4,6 @@ dist/
 # Private manual validation data: never track contents or placeholders.
 /test-data/
 
-# Real user config (local paths/titles); config/example.json is the tracked template.
-/config/local.json
+# The single user config (config/config.toml: local paths/titles) and runtime logs.
+/config/
+/logs/

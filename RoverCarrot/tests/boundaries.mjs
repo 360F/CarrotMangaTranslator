@@ -10,15 +10,17 @@ async function inspect(dir) {
     for (const match of source.matchAll(/(?:from\s*|import\s*\(|import\s*)['"]([^'"]+)['"]/g)) {
       const specifier = match[1];
       if (!specifier.startsWith('.')) {
-        assert.ok(specifier.startsWith('node:') || (specifier === 'sharp' && path === resolve('src/adapters/input.ts')), `Unexpected runtime dependency: ${specifier}`);
+        const allowed = { sharp: 'src/adapters/input.ts', 'smol-toml': 'src/cli/config-file.ts' };
+        assert.ok(specifier.startsWith('node:') || path === resolve(allowed[specifier] ?? '\0'), `Unexpected runtime dependency: ${specifier}`);
         continue;
       }
       const target = relative(root, resolve(dirname(path), specifier));
       assert.ok(!target.startsWith('..'), `Parent source import: ${path}: ${specifier}`);
-      if (path.startsWith(resolve('src/core'))) assert.ok(!target.startsWith('adapters'), 'Core imports adapter');
-      if (path.startsWith(resolve('src/pipeline'))) assert.ok(!target.startsWith('adapters'), 'Pipeline imports adapter');
+      for (const layer of ['core', 'pipeline'])
+        if (path.startsWith(resolve('src', layer)))
+          assert.ok(!target.startsWith('adapters') && !target.startsWith('cli'), `${layer} imports adapter/CLI: ${specifier}`);
     }
   }
 }
 await inspect(root);
-console.log('Runtime imports stay within RoverCMT; Core/Pipeline do not import adapters.');
+console.log('Runtime imports stay within RoverCMT; Core/Pipeline do not import adapters or CLI.');

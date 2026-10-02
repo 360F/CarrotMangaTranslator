@@ -15,7 +15,9 @@ export function libraryPersistence(): Persistence {
   let chapterPath: string;
   return {
     async initialize(config) {
-      const inputStat = await stat(config.input);
+      const inputStat = await stat(config.input).catch((error: NodeJS.ErrnoException) => {
+        throw error.code === 'ENOENT' ? new Error(`Input not found: ${config.input}`) : error;
+      });
       const inputs = inputStat.isDirectory()
         ? (await readdir(config.input, { withFileTypes: true }))
           .filter(entry => entry.isFile() && supportsImage(entry.name))
@@ -25,7 +27,9 @@ export function libraryPersistence(): Persistence {
       const images = await materializeImages(inputs);
       // Exclusive root creation refuses existing data, symlinks and concurrent writers.
       output = config.output;
-      await mkdir(output);
+      await mkdir(output).catch((error: NodeJS.ErrnoException) => {
+        throw error.code === 'EEXIST' ? new Error(`Output directory already exists: ${config.output}`) : error;
+      });
       const workId = randomUUID(), chapterId = randomUUID(), now = new Date().toISOString();
       const workDir = join(output, 'works', workId);
       const chapterDir = join(workDir, 'chapters', chapterId);

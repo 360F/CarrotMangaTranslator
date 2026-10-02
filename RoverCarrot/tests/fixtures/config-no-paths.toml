@@ -1,0 +1,3 @@
+# Automated-test config without default input/output.
+version = 1
+mode = "smoke"
