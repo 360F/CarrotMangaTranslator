@@ -17,9 +17,9 @@
 | 항목 | 값 |
 |---|---|
 | Active milestone | **M1 — Linux Port** ([목표와 요구사항](README.md#목표)) |
-| 현재 Step | Step 1 DONE — 사용자 검토 checkpoint 대기 |
-| **다음 Step** | Step 1 사용자 검토 checkpoint → 승인 후 Step 2 |
-| 다음 Step 진행 가능 여부 | Step 1 사용자 검토 전 Step 2를 시작하지 않는다 |
+| 현재 Step | Step 1 DONE — 사용자 수동 검증·checkpoint 승인 완료 (2026-10-02) |
+| **다음 Step** | Step 2 — Detection / Koharu |
+| 다음 Step 진행 가능 여부 | 사용자 checkpoint 승인으로 Step 2 진행 가능 |
 
 ## Progress
 
@@ -291,7 +291,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - **Checkpoint:** Step 1 완료 후 다음 Step으로 자동 진행하지 않는다. 이 architecture가 이후 모든 Step의 기반이므로 사용자/검토자가 결과를 확인한다.
 - **Result:**
   - Status: DONE — 구현·validation·commit·push 완료(2026-10-02).
-  - Progress notes: branch `main`; 다음은 사용자 architecture 검토 checkpoint. Step 2 미시작.
+  - Progress notes: branch `main`; 사용자 수동 검증·architecture checkpoint 승인 완료(2026-10-02). 다음은 Step 2.
   - Commit: [`4c63e4631bbaa5fb4114d8f3ecf996de30cf145e`](https://github.com/360F/RoverCMT/commit/4c63e4631bbaa5fb4114d8f3ecf996de30cf145e) — `feat(rover): add M1 Step 1 core and CLI skeleton`. push 후 local/remote SHA 일치 확인; 이 DONE checkpoint는 후속 docs commit에 기록.
   - Validation result: WSL2 Ubuntu 26.04.1, Node 24.21.0/npm 11.19.0/Python 3.14.4. fetch 후 시작 local/remote HEAD `4f808e213cd0ed5042f25079ab85ab90c5f056a5`, clean main. Git 작성자 정보를 사용자에게 받아 repo-local 설정; Windows GCM의 기존 인증으로 push 성공(토큰 출력/저장 없음). `npm run check`(typecheck/lint/build 및 9 unit/CLI smoke), `npm run check:boundaries`; 루트 ESLint/Prettier ignore 및 루트 TS include scope와 reference src 무변경 확인. Node child process와 GPU 접근은 sandbox 밖에서 검증.
   - D1: [loader/output contract 분석](../../analysis/CARROT_LOADER_OUTPUT_CONTRACT.md). strict Carrot index/work/chapter/page 최소 필드와 identity/path scope, copied path relocation 및 GUI share ZIP contract 구분. 실제 CLI로 PNG 복사와 chapter JSON 저장·재읽기 검증; dummy run은 page/chapter idle 유지.
@@ -309,8 +309,10 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - Known differences: no-op providers만 있음; 실제 번역/최종 raster 없음. partial input publication 실패 시 신규 디렉터리를 보존하고 자동 정리하지 않음. 기존 출력/링크는 거부. Linux → Windows interoperability는 source 분석과 최소 출력 smoke까지만 검증.
   - Remaining coupling / follow-up: shared chapter/page state + chapter 전체 rewrite; 순차 stage-major 정책은 pipeline 소유. provider는 page copy 반환 및 reads/writes/resources 선언. translation memory 순서와 page/context transaction 구현은 Step 4; Translation↔Erase overlap/GPU handoff는 Step 8. [M3-STATE-001](../M3_PIPELINING/IDEAS.md#m3-state-001--공유-mutable-state-분리), [M3-TRANS-001](../M3_PIPELINING/IDEAS.md#m3-trans-001--translation-memory-순차-dependency-완화), [M4-PERSIST-001](../M4_OPTIMIZATION/IDEAS.md#m4-persist-001--chapter-전체-json-반복-rewrite-비용-개선) 기존 item과 연결; 신규 최적화 구현 없음.
   - User review supplement (2026-10-02): 실제 JPG 4페이지가 `No PNG inputs`로 실패한 문제를 지원 형식 확대/실제 decode로 수정. 인자 없는 `npm run smoke` Usage error를 repository fixture 기반 CLI validation으로 수정. 손상된 기존 1×1 PNG test fixture를 유효한 합성 PNG로 교체. tracked 소형 fixture와 Git 제외 `test-data/input/`, `test-data/output/` 분리; README에 폴더 복사/config/신규 output 사용법 기록. 실제 사용자 만화는 commit하지 않음.
-  - Supplement validation: `npm run check`(typecheck/lint/build, 21 tests), `npm run smoke`(12 tests), `npm run check:boundaries`; PNG/JPG/JPEG/WebP/JFIF/case-insensitive 단일 입력, mixed natural order, 크기/bytes 복사, malformed/truncated/mismatch/unsupported 처리 및 explicit CLI config 검증. `git check-ignore`로 임의 중첩·dotfile·내부 ignore의 unignore 시도도 제외됨을 확인. root reference source 무변경. 보완 commit은 `fix(rover): support image inputs and repository smoke validation`이며 이 Result와 같은 commit에 포함.
-  - Follow-up items: Step 1 사용자 checkpoint; 승인 후 Step 2 시작 시 D31 로컬 Carrot data root 위치 확인.
+  - Supplement validation: `npm run check`(typecheck/lint/build, 21 tests), `npm run smoke`(12 tests), `npm run check:boundaries`; PNG/JPG/JPEG/WebP/JFIF/case-insensitive 단일 입력, mixed natural order, 크기/bytes 복사, malformed/truncated/mismatch/unsupported 처리 및 explicit CLI config 검증. `git check-ignore`로 임의 중첩·dotfile·내부 ignore의 unignore 시도도 제외됨을 확인. root reference source 무변경. 보완 commit은 `86749346` — `fix(rover): support image inputs and repository smoke validation`.
+  - Follow-up history (git history 확인, 2026-10-02): 최초 구현 `4c63e463` 유지. `77561d35` 완료 checkpoint 기록 → `86749346` input/smoke remediation → `ebf7466a` Carrot input/import parity 범위 기록 → `2003514e` 내부 디렉터리 `RoverCarrot/` rename → `5aa082e4` 고정 config 경로와 `--input`/`--output` override → `e99c9c76` single TOML `config/config.toml`, `--config` 제거, 사람용 progress/PASS/FAIL과 `logs/` 분리 → `030b2df5` 상세 로그 `rovercmt.log` → `log_all.log` rename.
+  - User checkpoint (2026-10-02): 실제 JPG 4장 수동 검증 완료, 원본/output byte preservation 및 기존 output overwrite 없이 FAIL 확인; 사용자 Step 1 승인 완료.
+  - Follow-up items: Step 2 시작 시 D31 로컬 Carrot data root 위치 확인.
 
 ## Step 2 — Detection / Koharu
 

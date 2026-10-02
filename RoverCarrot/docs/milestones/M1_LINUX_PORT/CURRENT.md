@@ -19,22 +19,22 @@ Item 목록:
 
 | ID | Title | Progress |
 |---|---|---|
-| [M1-CORE-001](#m1-core-001--linux-core-pipeline-port) | Linux core pipeline port | not started |
+| [M1-CORE-001](#m1-core-001--linux-core-pipeline-port) | Linux core pipeline port | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
 | [M1-CORE-002](#m1-core-002--기존-translation--erase-병렬-실행-경로-이식) | 기존 Translation ↔ Erase 병렬 실행 경로 이식 | not started |
-| [M1-CONFIG-001](#m1-config-001--configsettings-파일-기반-설정) | Config/settings 파일 기반 설정 | not started |
-| [M1-CONFIG-002](#m1-config-002--inputoutput-경로-config화) | Input/output 경로 config화 | not started |
-| [M1-INPUT-001](#m1-input-001--carrot-inputimport-parity) | Carrot input/import parity | in progress (Step 1: 직접 이미지·direct folder 일부) |
-| [M1-CLI-001](#m1-cli-001--bashcli-실행) | Bash/CLI 실행 | not started |
-| [M1-OBS-001](#m1-obs-001--stage-진행상황과-소요시간-실시간-표시) | Stage 진행상황과 소요시간 실시간 표시 | not started |
-| [M1-COMPAT-001](#m1-compat-001--windows-carrot과의-output-interoperability) | Windows Carrot과의 output interoperability | not started (정의 확정) |
-| [M1-PERSIST-001](#m1-persist-001--persistence와-data-contract-parity) | Persistence와 data contract parity | not started |
+| [M1-CONFIG-001](#m1-config-001--configsettings-파일-기반-설정) | Config/settings 파일 기반 설정 | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
+| [M1-CONFIG-002](#m1-config-002--inputoutput-경로-config화) | Input/output 경로 config화 | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
+| [M1-INPUT-001](#m1-input-001--carrot-inputimport-parity) | Carrot input/import parity | in progress (Step 1 보완으로 PNG/JPG/JPEG/WebP 단일 파일·direct folder 일부 구현. 아래 차이와 나머지 parity 항목 남음) |
+| [M1-CLI-001](#m1-cli-001--bashcli-실행) | Bash/CLI 실행 | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
+| [M1-OBS-001](#m1-obs-001--stage-진행상황과-소요시간-실시간-표시) | Stage 진행상황과 소요시간 실시간 표시 | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
+| [M1-COMPAT-001](#m1-compat-001--windows-carrot과의-output-interoperability) | Windows Carrot과의 output interoperability | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
+| [M1-PERSIST-001](#m1-persist-001--persistence와-data-contract-parity) | Persistence와 data contract parity | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
 | [M1-PERSIST-002](#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리) | Rover Output 이식(번역 JSON/CSV export, 출력 경로, 기본 입출력 디렉터리) | not started |
-| [M1-RUNTIME-001](#m1-runtime-001--linux-runtimemodel-의존성-교체적응) | Linux runtime/model 의존성 교체·적응 | not started |
+| [M1-RUNTIME-001](#m1-runtime-001--linux-runtimemodel-의존성-교체적응) | Linux runtime/model 의존성 교체·적응 | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
 | [M1-DETECT-001](#m1-detect-001--koharu-layout-onnx-linux-runtime) | Koharu layout ONNX Linux runtime | not started |
 | [M1-OCR-001](#m1-ocr-001--hayaiocr-linux-runtime) | HayaiOCR Linux runtime | not started |
 | [M1-TRANS-001](#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식) | OpenAI-compatible translation client와 prompt contract 이식 | not started |
 | [M1-INPAINT-001](#m1-inpaint-001--flux-klein-candle-runner-linux-runtime) | FLUX Klein Candle runner Linux runtime | not started |
-| [M1-RENDER-001](#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback) | Linux renderer: Skia Canvas primary, Playwright Chromium fallback | in progress (방향 결정, Skia 구현·검증 전) |
+| [M1-RENDER-001](#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback) | Linux renderer: Skia Canvas primary, Playwright Chromium fallback | in progress — 분석·spike·contract-aligned v3 비교 완료, **방향 결정(2026-10-01)**, Skia production 구현·검증 전 |
 
 ---
 
@@ -385,6 +385,6 @@ Item 목록:
 
 ## Suggested next step
 
-M1의 구현 순서와 다음 Step은 **[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)** 가 관리한다(2026-10-01부터). 현재 다음 Step은 [Step 1 — Core Architecture, Contracts & CLI Adapter](IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter)다.
+M1의 구현 순서와 다음 Step은 **[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)** 가 관리한다(2026-10-01부터). Step 1 사용자 checkpoint가 승인됐다(2026-10-02). 다음은 [Step 2 — Detection / Koharu](IMPLEMENTATION_PLAN.md#step-2--detection--koharu)다.
 
 이전에 이 section에 있던 제안(Skia Linux 검증, Carrot loader 요구 조건 확인, runtime smoke, config/CLI/OBS 설계)은 IMPLEMENTATION_PLAN의 Step 1–8과 [Open decision / validation register](IMPLEMENTATION_PLAN.md#open-decision--validation-register)로 옮겼다.
