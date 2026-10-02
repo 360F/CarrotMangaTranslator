@@ -22,7 +22,7 @@
 | 현재 Step | [Step 3 — OCR / Hayai](#step-3--ocr--hayai) |
 | State | **IMPLEMENT** — 2026-10-03 Step 2 사용자 승인으로 열림. 착수 가능, production implementation 미시작 |
 | Next role | **implementation** |
-| 기준 commit | `bbe97a97`(Step 2 DONE 기록). 그 뒤 commit은 문서만 바꾼 agent workflow 정비다 |
+| 기준 commit | `e2128ca00838b86100762806a6c390cdfc899710`(accepted HEAD: 기준 commit·Git 판정 규칙 정비) |
 | Task | Step 3 Scope 구현과 [Reference-driven validation](#reference-driven-validation). 시작할 때 `STEP3_VALIDATION.md`를 만든다 |
 | 기준 문서 | [Step 3](#step-3--ocr--hayai), [M1-OCR-001](CURRENT.md#m1-ocr-001--hayaiocr-linux-runtime), Step 3의 Related analysis·Source areas(Carrot reference) |
 | Evidence / findings | 아직 없음. 위치: `STEP3_VALIDATION.md`(tracked), Git 제외 `RoverCarrot/test-data/validation/m1-step3*/` |
