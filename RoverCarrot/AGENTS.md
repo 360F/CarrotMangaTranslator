@@ -7,7 +7,7 @@
 - 계획, 현재 active milestone, 다음 작업, 아이디어, 폐기 결정의 source of truth: [`docs/milestones/README.md`](docs/milestones/README.md)
 - 현재 프로젝트 상태나 다음 작업을 판단하기 전에 이 milestone 문서를 먼저 읽는다.
 - 아이디어 추가, 작업 시작, 작업 폐기, milestone 변경 전에도 그 문서의 규칙(§7–§8)을 먼저 읽는다.
-- M1 구현 작업("M1 Step N 진행해", "다음 Step 진행해")은 [`docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md`](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md)의 절차와 Architecture Direction을 따른다.
+- M1 Step 작업(구현·독립 review·수정)은 [`docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md`](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md)의 [현재 위치](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#현재-위치)(handoff: 현재 Step·State·Next role)를 먼저 읽고 [agent workflow](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#how-to-use-this-plan-agent)와 Architecture Direction을 따른다. "agent instructions와 현재 handoff를 읽고 지정된 다음 작업을 수행해", "M1 Step N 진행해", "다음 Step 진행해" 모두 이 절차다.
 - 이전 대화의 기억에 의존하지 않는다. repository의 현재 문서를 source of truth로 쓰고, 충돌하면 최신 상태를 확인하거나 사용자에게 묻는다.
 
 ## 작업 전 필수 문서
@@ -51,7 +51,7 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 - Rover PC의 WSL2 Ubuntu 환경(GPU 접근 포함)이 실제로 준비됐는지는 M1 Step 1 시작 시 확인한다. 준비되지 않았으면 사용자에게 알리고 Step 1을 `BLOCKED`로 둔다. 확인 결과가 위 값과 달라도 사용자 확인 없이 문서의 환경 값을 바꾸지 않는다.
 - 모든 에이전트가 이 머신에서 실행된다고 가정하지 않는다. GPU가 없는 세션도 있다.
 - GPU가 필요한 검증(FLUX, Hayai CUDA 등)은 실행 시 GPU/runtime 가용성을 먼저 확인한다. 불가능하면 완료 처리하지 말고 Step Result에 "Rover PC에서 추가 검증 필요"로 남긴다.
-- 번역 endpoint는 환경마다 다를 수 있다(외부 번역기, 내장/로컬 서버 등). 확정된 방향은 "OpenAI-compatible endpoint를 설정으로 받는다"까지다. URL, model, API key, 환경변수 이름, live 호출 허용 여부는 M1 Step 4에서 정한다. credential은 repo에 넣지 않는다.
+- 번역 endpoint는 환경마다 다를 수 있다(외부 번역기, 내장/로컬 서버 등). 확정된 방향은 "OpenAI-compatible endpoint를 설정으로 받는다"까지다. URL, model, API key, 환경변수 이름, live 호출 허용 여부는 M1 Step 4에서 정한다. credential은 repo에 넣지 않는다. 외부 서버 없이 local backend로 검증하는 M1 번역 검증 원칙은 [Step 4](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-4--translation)에 있다.
 - analysis의 run evidence는 예전 구성(로컬 RTX 5070 Ti에서 OCR/FLUX, Rover 5090에서 llama.cpp Gemma 번역 서버)에서 나왔다. 수치를 인용할 때 이 환경 차이를 감안한다.
 
 ## 로컬 전용 데이터
@@ -61,11 +61,16 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 - **로컬 Carrot data root(gitignore, repo 밖):** M1 Step 2~6의 비교 기준(`hayai-regions.json`, `ocr-bbox-hints.json`, 번역 `result.json`, `library/`, `page-workflows/`, `runs/`, `models/`, `ocr-runtime/`, `hf-cache/`)은 여기에 있다. analysis가 말하는 "두 data root"는 개발용 repo data root와 설치 앱 data root다.
 - 현재 위치는 Windows 로컬이다. 정확한 경로는 `사용자 확인 필요`(예전 노트의 개발 repo 경로 `D:\01_code\CarrotMangaTranslator`는 현재 값으로 확인되지 않았다). M1 진행 중 WSL에서 `/mnt/...`로 접근하도록 옮길 예정이다.
 - 환경변수 이름이나 config key를 미리 정하지 않는다. 데이터가 필요한 Step에서 위치를 사용자에게 확인한다. 이 데이터는 사용자 데이터이므로 정리·삭제 대상이 아니다.
+- **agent 임시 파일:** 임시 validation script와 scratch는 repo 밖(`/tmp`나 agent scratch 디렉터리)에 둔다. 영구 보존할 local evidence는 Git 제외 `test-data/validation/`의 Step별 디렉터리(예: `m1-step2/`, `m1-step2-revalidation/`)에 둔다. tracked tree에 임시 review artifact를 남기지 않고, 기존 user/reference/test data를 수정하지 않는다.
 
 ## Git 흐름
 
 - 개인 repo다. PR은 필수가 아니고 에이전트가 `main`에 직접 commit/push한다.
-- 흐름: 현재 HEAD/remote 확인 → fetch/pull → working tree clean 확인 → 작업 → validation → diff 검토 → commit → push → local/remote SHA 일치 확인.
+- 흐름: session 시작 점검 → 작업 → validation → diff 검토 → commit → push → local/remote SHA 일치 확인.
+- session 시작 점검: current branch → tracked working tree clean → `git fetch origin` → handoff 기준 commit과 HEAD 비교 → local이 단순히 behind일 때만 fast-forward(`git merge --ff-only`).
+- tracked tree가 예상치 않게 dirty, local/remote diverged, merge/rebase 필요, 기준 commit과 HEAD가 설명 없이 다름, handoff 문서 conflict 중 하나면 작업을 계속하지 않고 BLOCKED로 남기거나 사용자에게 보고한다. 임의 rebase·force push·충돌 덮어쓰기는 하지 않는다.
+- 사용자가 한 번에 한 agent를 순차 호출하는 것이 전제다. commit을 작업 시작 lock으로 쓰지 않는다(IMPLEMENTING·REVIEWING 같은 상태 commit 금지).
+- 실제 agent 실행 환경(remote/cloud/web, Windows/WSL)과 그 branch 동작은 아직 검증하지 않았다. 특정 mode·branch·PR 방식을 가정하지 않고, 확인 후 이 section을 갱신한다.
 - 큰 실험이나 위험한 변경은 필요하면 별도 branch를 쓴다.
 - force push와 history rewrite는 사용자가 명시적으로 요청할 때만 한다.
 - remote: `origin` = https://github.com/360F/RoverCMT. `carrot-original`(ucx0204 원본)은 로컬 설정이라 새 clone에는 없다. 원본 정보는 루트 [README](../README.md)를 따른다.

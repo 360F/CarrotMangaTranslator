@@ -14,12 +14,21 @@
 
 ## 현재 위치
 
+이 표가 M1 **handoff**(현재 Step·State·Next role의 source of truth)다. 새 session은 이 표를 읽고 [How to use this plan (agent)](#how-to-use-this-plan-agent)를 따른다. 결론이 아니라 사실과 위치만 짧게 두고, 긴 log와 review는 Evidence 위치에 둔다.
+
 | 항목 | 값 |
 |---|---|
 | Active milestone | **M1 — Linux Port** ([목표와 요구사항](README.md#목표)) |
-| 현재 Step | Step 2 DONE — 사용자 checkpoint 승인 완료 (2026-10-03) |
-| **다음 Step** | Step 3 — OCR / Hayai |
-| 다음 Step 진행 가능 여부 | 사용자 checkpoint 승인으로 Step 3 진행 가능(prerequisite Step 2 DONE 충족). 아직 시작하지 않음 |
+| 현재 Step | [Step 3 — OCR / Hayai](#step-3--ocr--hayai) |
+| State | **IMPLEMENT** — 2026-10-03 Step 2 사용자 승인으로 열림. 착수 가능, production implementation 미시작 |
+| Next role | **implementation** |
+| 기준 commit | `bbe97a97`(Step 2 DONE 기록). 그 뒤 commit은 문서만 바꾼 agent workflow 정비다 |
+| Task | Step 3 Scope 구현과 [Reference-driven validation](#reference-driven-validation). 시작할 때 `STEP3_VALIDATION.md`를 만든다 |
+| 기준 문서 | [Step 3](#step-3--ocr--hayai), [M1-OCR-001](CURRENT.md#m1-ocr-001--hayaiocr-linux-runtime), Step 3의 Related analysis·Source areas(Carrot reference) |
+| Evidence / findings | 아직 없음. 위치: `STEP3_VALIDATION.md`(tracked), Git 제외 `RoverCarrot/test-data/validation/m1-step3*/` |
+| Open findings / cycle | 없음 / 0 of 3 |
+| 진행 기록 | — |
+| 다음 transition | 구현·자체 검증·evidence 기록 후 State REVIEW, Next role review, 기준 commit = 검증 대상 commit |
 
 ## Progress
 
@@ -27,7 +36,7 @@
 |---|---|---|---|
 | 1 | [Core Architecture, Contracts & CLI Adapter](#step-1--core-architecture-contracts--cli-adapter) | DONE | Carrot loader contract 확인 + Core boundary + CLI로 minimal pipeline smoke. **사용자 검토 checkpoint** |
 | 2 | [Detection / Koharu](#step-2--detection--koharu) | DONE | Linux detection 결과가 기존 `hayai-regions.json`과 region 수·bbox·순서 일치 |
-| 3 | [OCR / Hayai](#step-3--ocr--hayai) | NOT_STARTED | Linux Hayai `sourceText`가 기존 결과와 일치 |
+| 3 | [OCR / Hayai](#step-3--ocr--hayai) | IMPLEMENT | Linux Hayai `sourceText`가 기존 결과와 일치 |
 | 4 | [Translation](#step-4--translation) | NOT_STARTED | 같은 입력으로 같은 request·parse·merge·memory 갱신 |
 | 5 | [Typography / Layout](#step-5--typography--layout) | NOT_STARTED | 고정 입력의 font size·bubble layout이 reference와 일치 |
 | 6 | [Inpainting / Erase](#step-6--inpainting--erase) | NOT_STARTED | Linux FLUX runner로 기존 mask·erase 결과 재현 |
@@ -45,16 +54,91 @@
 
 ## How to use this plan (agent)
 
-사용자가 "M1 Step N 진행해" 또는 "다음 Step 진행해"라고 하면:
+이 section이 M1 Step 작업의 agent workflow다. 구현과 독립 review는 서로 다른 새 session이 맡고, 대화 기억 대신 repository로 이어받는다: [현재 위치](#현재-위치)(handoff), 각 Step `Result`, Step validation 문서. "agent instructions와 현재 handoff를 읽고 지정된 다음 작업을 수행해", "M1 Step N 진행해", "다음 Step 진행해" 같은 호출은 모두 이 절차를 뜻한다.
 
-1. `git fetch` 후 local/remote HEAD와 `git status`를 확인한다. 다른 에이전트의 미커밋 변경은 건드리지 않는다. GPU가 필요한 Step(FLUX, Hayai CUDA 등)은 시작 전에 GPU/runtime 가용성을 확인하고, 불가능하면 [실행 환경 규칙](../../../AGENTS.md#실행-환경)대로 완료 처리하지 않고 "Rover PC에서 추가 검증 필요"로 남긴다.
-2. 이 문서의 [Progress](#progress)에서 대상 Step을 정한다. "다음 Step"은 Status가 `DONE`이 아닌 가장 작은 번호다. 단 **Step 1이 DONE이 된 직후에는 사용자가 결과를 확인하기 전까지 Step 2를 자동으로 시작하지 않는다.**
-3. 대상 Step의 Prerequisites가 모두 충족됐는지 확인한다. 아니면 `BLOCKED`로 표시하고 이유를 보고한다.
-4. Step의 Related M1 items → [CURRENT.md](CURRENT.md)의 해당 item → Related analysis section → Source areas 순서로 읽는다. 필요한 section만 읽는다.
-5. [Architecture Direction](#architecture-direction)과 Step의 Explicit non-goals를 지킨다. 한 번에 한 Step만 구현한다.
-6. Step의 "Open decisions to resolve"를 처리한다. 사용자 판단이 필요한 trade-off면 임의로 고르지 않고 사용자에게 묻거나 `BLOCKED`로 둔다.
-7. Validation을 실행하고 [DONE 조건](#step-status와-done-조건)을 모두 만족하면 Step의 Result를 채우고, CURRENT.md의 관련 item `Progress`를 갱신하고, commit·push한다.
-8. 발견한 coupling은 [Coupling 기록 규칙](#coupling-기록-규칙)대로 남긴다.
+### Role과 session 시작
+
+| Role | 맡는 State | 기본 배정 |
+|---|---|---|
+| implementation | IMPLEMENT, FIX | Codex |
+| review | REVIEW | Claude Code |
+
+기본 배정은 현재 운영 기준이고 규칙은 role 기준이다. 사용자가 호출에서 role을 지정하면 그것을 따르고, 배정이 없거나 모호하면 사용자에게 묻는다. 한 session이 같은 Step의 구현과 review를 함께 맡지 않는다.
+
+모든 session은 작업 전에 다음을 확인한다.
+
+1. [Git 흐름](../../../AGENTS.md#git-흐름)의 session 시작 점검을 한다(branch, clean tree, fetch, fast-forward만). 다른 agent의 미커밋 변경은 건드리지 않는다.
+2. handoff의 기준 commit과 HEAD가 다르면 `git log --oneline <기준>..HEAD`와 `git diff --stat <기준> HEAD`로 확인한다. handoff·문서 commit이나 handoff `진행 기록`이 설명하는 같은 Step 작업 commit만 더해졌으면 계속하고, 설명되지 않는 변경이 있으면 멈추고 보고한다.
+3. Next role이 자기 role과 다르면 작업하지 않고 필요한 role을 보고한다. CHECKPOINT_READY·BLOCKED에서는 Next role이 user다.
+4. 사용자 메시지에 명시적인 Step 승인이 있으면 [사용자 checkpoint 승인](#사용자-checkpoint-승인)을 따른다.
+
+### State와 transition
+
+Step `Status`([Progress](#progress), 각 Step section)와 handoff State는 같은 값을 쓴다. 과거 기록의 `IN_PROGRESS`는 IMPLEMENT·REVIEW·FIX 중 하나에 해당하는 이전 표기다.
+
+| State | 의미 | Next role | 다음 State |
+|---|---|---|---|
+| NOT_STARTED | 아직 열리지 않은 Step | — | 이전 Step이 DONE이 되면 IMPLEMENT |
+| IMPLEMENT | 착수 가능 또는 구현 중 | implementation | 구현·자체 검증 후 REVIEW |
+| REVIEW | 독립 검증 차례 | review | FIX, CHECKPOINT_READY 또는 BLOCKED |
+| FIX | finding 수정·반박 차례 | implementation | REVIEW |
+| CHECKPOINT_READY | review 통과, 사용자 승인 대기 | user | 사용자 승인 시 DONE |
+| BLOCKED | 사용자 판단 필요 | user | 사용자 결정에 따름 |
+| DONE | 사용자 승인 완료 | — | 다음 Step을 IMPLEMENT로 연다 |
+
+### Implementation role
+
+1. Step의 Related M1 items → [CURRENT.md](CURRENT.md)의 해당 item → Related analysis section → Source areas 순서로 필요한 section만 읽는다.
+2. Prerequisites와 필요한 GPU/runtime(Hayai CUDA, FLUX 등)을 확인한다. 없으면 [실행 환경](../../../AGENTS.md#실행-환경) 규칙대로 Result에 "Rover PC에서 추가 검증 필요"를 남기고, 아래 실행 환경 부족 규칙에 따라 BLOCKED로 둔다.
+3. 구현 전에 reference source와 observable contract를 식별해 Step validation 문서에 적는다([Reference-driven validation](#reference-driven-validation)).
+4. [Architecture Direction](#architecture-direction)과 Step의 Explicit non-goals를 지키고 한 번에 한 Step만 구현한다. Step의 Open decisions를 처리하되, 사용자 판단이 필요한 trade-off는 임의로 고르지 않는다. coupling은 [Coupling 기록 규칙](#coupling-기록-규칙)대로 남긴다.
+5. 자체 test, 가능한 differential validation, regression(`npm run check`, `npm run smoke`, `npm run check:boundaries`)을 실행한다.
+6. 검증 대상 code를 commit·push한 뒤, 그 commit을 기준 commit으로 적은 문서 commit을 이어서 push한다. 문서에는 review에 필요한 사실만 남긴다: 변경 범위, requirement 위치, 실행한 command와 결과, evidence 위치(Step validation 문서, Step `Result`), 그리고 handoff(REVIEW / review). "reference와 완벽히 일치" 같은 결론을 oracle처럼 쓰지 않는다.
+7. FIX에서는 OPEN finding을 수정하거나 반박한다([반복 제한과 의견 불일치](#반복-제한과-의견-불일치)). finding Status를 FIXED 또는 DISPUTED로 바꾸고 같은 방식으로 REVIEW로 넘긴다.
+
+사용자 checkpoint 없이 다음 Step을 시작하지 않는다.
+
+### Independent review role
+
+- 기준은 milestone 요구사항, 실제 code/diff, 수정하지 않은 Carrot reference, fresh execution 결과다. implementation agent의 설명·결론·생성된 comparison 결과는 oracle이 아니다. 가능하면 그것을 읽기 전에 reference·code·fresh execution으로 잠정 결론을 만들고, 나중에 대조한다.
+- 구현자가 만든 differential test와 comparator도 검증 대상이다. 비교 필드 누락, normalization으로 차이 은폐, fixture 편향, reference와 Rover 양쪽에 같은 잘못된 adapter 사용, 기존 generated result를 fresh baseline처럼 사용, 구현 결과에 맞춰 완화된 comparator 같은 false parity를 확인한다. 필요하면 reference/baseline을 직접 다시 실행한다.
+- production code와 영구 test는 수정하지 않고, 필요한 변경은 finding으로 남긴다. 사용자가 reviewer나 validation tooling 자체를 작업 대상으로 지정한 경우만 예외다.
+- 임시 script와 scratch는 [로컬 전용 데이터](../../../AGENTS.md#로컬-전용-데이터) 규칙대로 repo 밖에 둔다. tracked 변경은 finding과 handoff 문서만 commit한다.
+- 판정: REQUIRED_FIX가 있으면 FIX. REQUIRED_FIX가 없고 USER_DECISION_REQUIRED가 남으면 BLOCKED(fix 방향을 좌우하는 사용자 판단이면 바로 BLOCKED). 둘 다 없고 필수 검증이 통과했으며 남은 차이가 이미 승인된 known difference뿐이면 CHECKPOINT_READY. 판정에 맞게 handoff(State, Next role, Open findings / cycle)를 갱신해 commit·push하고, 기준 commit은 검증한 commit으로 둔다. targeted revalidation은 FIXED·DISPUTED finding과 그 영향 범위에 집중한다.
+- Step을 DONE 처리하거나 다음 Step을 시작하지 않는다.
+
+### Findings와 disposition
+
+finding은 Step validation 문서의 `Review findings` 표에 한 줄씩 두고 상세 근거는 링크한다. fix session은 이 표와 링크만 읽어도 된다.
+
+| 열 | 규칙 |
+|---|---|
+| ID | `S<n>-F<nn>`. 바꾸거나 재사용하지 않는다 |
+| Severity | High / Medium / Low. 영향 크기이며 checkpoint gate와 별개다 |
+| Disposition | reviewer는 새 finding에 `REQUIRED_FIX` 또는 `USER_DECISION_REQUIRED`만 지정한다. `ACCEPTED`·`DEFERRED`는 현재 사용자의 명시적 승인, 또는 authoritative 문서에 기록된 사용자 승인·승인된 known difference가 있을 때만 쓰고 그 근거를 링크한다 |
+| Status | `OPEN` → `FIXED` 또는 `DISPUTED`(implementation) → `CLOSED` 또는 다시 `OPEN`(review) |
+| Rounds | 해결되지 않은 채 끝난 연속 review 횟수 |
+
+Low라는 이유만으로 deferred 처리하거나 checkpoint를 통과시키지 않는다. REQUIRED_FIX가 남아 있으면 CHECKPOINT_READY가 될 수 없다.
+
+### 반복 제한과 의견 불일치
+
+- REVIEW → FIX 전환마다 cycle을 1 늘려 handoff에 `n of 3`으로 적는다.
+- 다음 중 하나면 더 반복하지 않고 BLOCKED(Next role user)로 넘긴다: 4번째 FIX가 필요함(3 cycle 초과), 같은 substantive finding이 연속 2회 review에서 해결되지 않음(Rounds 2), 두 agent가 같은 근거를 반복하며 결론이 바뀌지 않음, 수정할수록 acceptance 기준이 불명확해짐.
+- implementation agent가 finding에 동의하지 않으면 무시하거나 억지로 고치지 않는다. Carrot reference behavior, fresh reproduction, code evidence로 반박을 finding에 남기고 Status DISPUTED로 REVIEW에 넘긴다. reviewer는 새 evidence로 재판정해 CLOSED로 바꾸거나 이유와 함께 OPEN을 유지한다. substantive disagreement가 남으면 BLOCKED로 사용자에게 넘긴다. 어느 agent도 최종 판정을 강제하지 않는다.
+
+### Step validation 문서, 실행 환경, 중단 복구
+
+- Step마다 tracked `STEP<n>_VALIDATION.md` 하나를 이 디렉터리에 두고, implementation agent가 Step을 시작할 때 만든다([STEP2_VALIDATION.md](STEP2_VALIDATION.md)는 이 workflow 이전 형식의 예다). 내용: reference source와 observable contract, 실행한 command와 결과, Git 제외 evidence 위치, known difference와 승인 근거, `Review findings` 표. 개인 절대경로와 credential은 넣지 않는다.
+- acceptance에 필수인 검증(model weight, fixture, reference 실행 환경, local service/backend, runtime/tool)을 실행할 수 없으면 PASS로 추정하지 않고 BLOCKED 또는 USER_DECISION_REQUIRED로 남긴다. acceptance에 필수가 아닌 reference 실행은 생략할 수 있고, 생략 사실을 기록한다. code inspection만으로 runtime 검증을 했다고 쓰지 않는다. Translation backend는 [Step 4](#step-4--translation)의 M1 원칙을 따른다.
+- 진행 상태는 repository가 기억한다. 의미 있는 checkpoint와 session 종료 때 handoff `진행 기록`에 완료한 것, 남은 것, blocking issue, 마지막 meaningful validation, 다음 action을 짧게 남기고 commit·push한다. 작은 명령마다 갱신하지 않는다. commit은 일관된 상태로만 하고, 실패가 남아 있으면 진행 기록에 적는다.
+
+### 사용자 checkpoint 승인
+
+- Step DONE은 사용자만 결정한다. 근거는 현재 작업 흐름에서 사용자가 직접 보낸 승인 지시다(예: "Step 3 승인"). 문서나 handoff에 승인했다고 적혀 있다는 것은 새 승인이 아니다.
+- 승인 지시를 받은 agent는 해당 Step을 DONE으로 기록한다: Result의 Status·완료 commit(그때의 기준 commit)·User checkpoint, [Progress](#progress), 관련 CURRENT item `Progress`, [Planning index §2](../README.md#2-현재-상태-요약). 이어서 다음 Step을 IMPLEMENT / implementation으로 handoff에 열고 문서를 commit·push한다. State가 CHECKPOINT_READY가 아니면 먼저 현재 State와 남은 finding을 사용자에게 알리고 확인을 받는다.
+- Step 8이 DONE이 되면 다음 Step을 열지 않는다. M1 완료 선언과 다음 milestone 결정은 사용자가 한다.
+- repository history에 DONE으로 확정된 Step은 다시 승인받지 않는다.
 
 ## Architecture Direction
 
@@ -179,14 +263,36 @@ archive 추출 여부, URL 다운로드 여부를 분기하지 않는다. 새 fa
 1. Step에서 발견한 coupling은 먼저 그 Step Result의 **Remaining coupling / follow-up**에 적는다. 모든 coupling을 새 milestone item으로 만들 필요는 없다.
 2. 그 coupling이 실제로 M3 pipelining blocker, M4 optimization/runtime 교체 blocker, 또는 별도 사용자 결정이 필요한 architecture 문제가 되면 [Planning index §7](../README.md#7-adding--updating-project-items) 규칙에 따라 **기존 item을 보완**하거나 IDEAS item과 연결한다(예: [M3-STATE-001](../M3_PIPELINING/IDEAS.md#m3-state-001--공유-mutable-state-분리), [M3-TRANS-001](../M3_PIPELINING/IDEAS.md#m3-trans-001--translation-memory-순차-dependency-완화), [M3-RUNTIME-001](../M3_PIPELINING/IDEAS.md#m3-runtime-001--pipelining을-위한-gpu-resource-scheduling)). 중복 item을 만들지 않는다.
 
+## Reference-driven validation
+
+M1은 기존 Carrot Windows implementation의 Linux port다. [M1 원칙](README.md#원칙)("동작 변경은 사용자 결정, 기본은 현재 동작 보존")을 검증 기준으로 구체화하면 각 Step의 correctness oracle은 다음 순서다. Step에 별도 acceptance rule이 있으면 그것이 아래 일반 원칙보다 우선한다.
+
+1. milestone 문서의 명시적 요구사항(Step 정의, CURRENT item, 기록된 사용자 결정)
+2. 수정하지 않은 Carrot reference implementation([Reference implementation](../../../AGENTS.md#reference-implementation))
+3. 이미 승인된 validation 결과와 known difference(각 Step `Result`, Step validation 문서)
+
+- 구현 전에 Step의 reference source와 observable contract(입력, 출력 field, persistence, error 처리)를 식별한다.
+- 가능하면 같은 입력으로 reference와 Rover를 비교하는 differential validation/test를 만든다. 기존 reference artifact를 baseline으로 쓰면 그 출처와 binding을 적고 fresh 실행처럼 표현하지 않는다.
+- 문서에 허용된 차이가 없는 observable behavior는 reference와 일치시키는 것이 기본이다. Rover에 맞추려고 reference를 수정하지 않고, fixture 변경·normalization·comparator 축소로 실제 차이를 숨기지 않는다.
+- platform/runtime 차이로 exact parity가 불가능하면 차이를 격리하고, 재현 evidence를 남기고, downstream 영향을 확인한다. 임의 tolerance를 추가하지 않고 수용 여부는 사용자 판단(USER_DECISION_REQUIRED)으로 남긴다. 예: Step 2의 [effect bbox 차이 수용](STEP2_VALIDATION.md#effect-bbox-difference-step-2-acceptance).
+
+모든 결과가 byte-exact여야 한다는 뜻은 아니다. 비교 방식은 observable contract에 따라 정한다.
+
+| 비교 방식 | 대상 예 |
+|---|---|
+| Exact가 기본 | schema, allowed key set, count, order, ID, enum/type, persisted structure, deterministic configuration behavior |
+| 원인 분석이 먼저 | floating point, confidence, runtime-dependent geometry, image/model runtime 차이 |
+| Semantic contract | 자연어 번역, rendered image, inpainting output 같은 비결정적 생성 결과 |
+
 ## Step status와 DONE 조건
 
-Status: `NOT_STARTED` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
+Status: `NOT_STARTED` / `IMPLEMENT` / `REVIEW` / `FIX` / `CHECKPOINT_READY` / `BLOCKED` / `DONE`. 의미와 transition은 [State와 transition](#state와-transition)에 있다.
 
 `DONE`은 코드 작성 완료가 아니다. 다음을 모두 만족해야 한다.
 
 - Step scope 구현 완료
-- Step Validation 완료
+- Step Validation 완료([Reference-driven validation](#reference-driven-validation))
+- 독립 review 통과(CHECKPOINT_READY: open REQUIRED_FIX·USER_DECISION_REQUIRED 없음)와 사용자의 명시적 승인([사용자 checkpoint 승인](#사용자-checkpoint-승인))
 - 필요한 milestone 문서 갱신(이 문서의 Result, Progress 표, [현재 위치](#현재-위치) 표, CURRENT.md의 관련 item `Progress`)
 - commit 완료
 - push 완료
@@ -194,7 +300,7 @@ Status: `NOT_STARTED` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 
 Step 2~6 Validation의 비교 기준 데이터(기존 run artifact, `hayai-regions.json`, `ocr-bbox-hints.json`, `result.json` 등)는 repo가 아니라 로컬 Carrot data root에 있다([RoverCarrot/AGENTS.md 로컬 전용 데이터](../../../AGENTS.md#로컬-전용-데이터), 위치 확인은 D31).
 
-Step `Result`의 `Progress notes`에는 `IN_PROGRESS`나 `BLOCKED`일 때 한 일, 남은 일, 사용자 답을 기다리는 질문, 작업 branch를 짧게 적는다. `DONE`이 되면 비우거나 요약만 남긴다.
+Step `Result`의 `Progress notes`에는 `DONE`이 아닐 때 한 일, 남은 일, 사용자 답을 기다리는 질문, 작업 branch를 짧게 적는다. `DONE`이 되면 비우거나 요약만 남긴다.
 
 **M1 validation과 M2를 혼동하지 않는다.** M1에서는 구현용 unit/smoke/regression fixture와 test를 에이전트가 만들 수 있다. 사용자가 검토·승인하는 장기 Golden Sample과 benchmark는 [M2](../M2_TEST_SET/README.md)다.
 
@@ -350,7 +456,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 
 ## Step 3 — OCR / Hayai
 
-- **Status:** NOT_STARTED
+- **Status:** IMPLEMENT
 - **Goal:** HayaiOCR Linux worker와 Rover adapter를 이식한다.
 - **Scope:** Linux Python worker, pinned model/runtime, region manifest 입력, OCR 실행, normalization/sanitize, OCR 결과 → block binding, `ocrSubdivision` 관련 기존 동작, `sourceText` 생성, stage/runtime boundary.
 - **Explicit non-goals:** VLM 단독 OCR+Translation 통합([M4-TRANS-001](../M4_OPTIMIZATION/IDEAS.md#m4-trans-001--hayai-ocr--vision-translation을-vision-llm-단독-ocrtranslation으로-통합)). PaddleOCR legacy, ROCm, Windows managed Python. 성능 최적화.
@@ -391,7 +497,11 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - **순서 의존(M3에 중요):** page N+1 요청은 page N의 memory commit 이후 memory를 읽는다([TR-LLM §10.1](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#101-workflow의-저장-의미-fact)). 이 의존을 stage contract나 Result에 명시하고 [M3-TRANS-001](../M3_PIPELINING/IDEAS.md#m3-trans-001--translation-memory-순차-dependency-완화)과 연결한다.
   - translation은 page/block state와 work 단위 `style-guide.json`, chapter 단위 `story-memory.json`을 쓴다.
   - Carrot은 endpoint session을 page마다 열고 닫는다. 현재 `openai-api` 설정에서는 비용이 없다([TR-LLM §13.3](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#133-잠재-위험-fact-code--inference-영향)).
-- **Validation:** 고정 OCR/page/context 입력으로 request construction(저장된 `result.json`의 prompt·system prompt와 비교), parsing, merge, memory 갱신을 검증한다. 원격 endpoint 실호출 smoke는 TRANSLATION_PIPELINE §15 S4를 따른다. server 설정은 결과와 함께 기록한다.
+- **Validation:** 고정 OCR/page/context 입력으로 request construction(저장된 `result.json`의 prompt·system prompt와 비교), parsing, merge, memory 갱신을 검증한다. endpoint 실호출 smoke는 TRANSLATION_PIPELINE §15 S4를 따르되 아래 원칙대로 local backend를 쓸 수 있다. server 설정은 결과와 함께 기록한다.
+- **M1 translation correctness (2026-10-03 사용자 결정):**
+  - 기준은 번역 문장의 exact parity가 아니라 observable contract다: request payload, prompt/context 구성, block/text grouping과 순서, API 호출 흐름, timeout/retry/error 처리, response parsing, persistence, empty/partial/error response 처리, downstream workflow 연결.
+  - deterministic하게 비교할 수 있는 request/response 구조와 parsing 결과는 Carrot reference behavior로 검증한다. 번역 문장 자체의 reference exact-match test는 만들지 않는다.
+  - 외부 개인 번역 서버의 availability는 M1 진행의 전제가 아니다. live 호출 검증에는 Rover PC(RTX 5090) 등에서 쓸 수 있는 local OpenAI-compatible LLM backend를 쓸 수 있다. 다른 LLM/backend 때문에 생긴 번역 문구 차이는 implementation regression이 아니다.
 - **Completion criteria:** translated block과 memory 갱신이 Rover persistence boundary를 통해 저장되고 다음 page 요청에 반영됨. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
   - Status: —

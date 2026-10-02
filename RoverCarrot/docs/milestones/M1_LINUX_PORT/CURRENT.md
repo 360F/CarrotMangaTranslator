@@ -308,7 +308,8 @@ Item 목록:
 - **Related items:** M1-PERSIST-001, M1-OCR-001. 속도 개선 아이디어는 M4-TRANS-*.
 - **Dependencies:** M1-CONFIG-001.
 - **Decision / validation needed:** 원격 server 설정(이미지 token 수 등) 기록 방식. 요청별 work-context snapshot 저장. TR §16 "아직 결정하지 않을 것" 목록.
-- **History:** 2026-10-01 생성.
+- **M1 검증 원칙 (2026-10-03 user decision):** 외부 번역 서버는 전제가 아니고 local OpenAI-compatible backend로 contract를 검증할 수 있다. 번역 문장 exact parity는 기준이 아니다. 상세: [Step 4](IMPLEMENTATION_PLAN.md#step-4--translation).
+- **History:** 2026-10-01 생성. 2026-10-03 M1 번역 검증 원칙 링크 추가(user decision).
 
 ### M1-INPAINT-001 — FLUX Klein Candle runner Linux runtime
 
@@ -390,6 +391,6 @@ Item 목록:
 
 ## Suggested next step
 
-M1의 구현 순서와 다음 Step은 **[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)** 가 관리한다(2026-10-01부터). Step 1 사용자 checkpoint가 승인됐다(2026-10-02). [Step 2 — Detection / Koharu](IMPLEMENTATION_PLAN.md#step-2--detection--koharu)는 사용자 checkpoint 승인으로 DONE이다(2026-10-03, 완료 commit `4e8059e4`). 다음은 [Step 3 — OCR / Hayai](IMPLEMENTATION_PLAN.md#step-3--ocr--hayai)이며 아직 시작하지 않았다.
+M1의 구현 순서와 다음 Step은 **[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)** 가 관리한다(2026-10-01부터). Step 1 사용자 checkpoint가 승인됐다(2026-10-02). [Step 2 — Detection / Koharu](IMPLEMENTATION_PLAN.md#step-2--detection--koharu)는 사용자 checkpoint 승인으로 DONE이다(2026-10-03, 완료 commit `4e8059e4`). 다음은 [Step 3 — OCR / Hayai](IMPLEMENTATION_PLAN.md#step-3--ocr--hayai)이며 State IMPLEMENT(착수 가능, 구현 미시작)다. 현재 State·Next role은 [handoff](IMPLEMENTATION_PLAN.md#현재-위치)를 따른다.
 
 이전에 이 section에 있던 제안(Skia Linux 검증, Carrot loader 요구 조건 확인, runtime smoke, config/CLI/OBS 설계)은 IMPLEMENTATION_PLAN의 Step 1–8과 [Open decision / validation register](IMPLEMENTATION_PLAN.md#open-decision--validation-register)로 옮겼다.

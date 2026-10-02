@@ -2,7 +2,7 @@
 
 **Status: ACTIVE** · [Planning index](../README.md) · [CURRENT](CURRENT.md) · [IMPLEMENTATION_PLAN](IMPLEMENTATION_PLAN.md) · [IDEAS](IDEAS.md) · [REJECTED](REJECTED.md)
 
-> **구현 작업을 시작하거나 "다음 Step"을 찾을 때는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)를 읽는다.** Step 순서, architecture direction, Step별 열린 결정과 완료 기준이 있다. M1 item과 `Progress`의 source of truth는 [CURRENT.md](CURRENT.md)다.
+> **구현 작업을 시작하거나 "다음 Step"을 찾을 때는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)를 읽는다.** Step 순서, architecture direction, Step별 열린 결정과 완료 기준, 현재 handoff(Step·State·Next role)와 implementation/review workflow가 있다. M1 item과 `Progress`의 source of truth는 [CURRENT.md](CURRENT.md)다.
 
 ## 목표
 
@@ -23,6 +23,7 @@
 - M1은 **성능 최적화를 목표로 하지 않는다.** 먼저 기존 기능을 Linux에서 끝까지 재현한다.
 - 속도 개선 아이디어는 발견해도 M3(병렬화) 또는 M4(stage 최적화)의 IDEAS에 기록하고 M1에서 구현하지 않는다.
 - 동작을 바꿔야 하는 열린 결정(analysis의 "Open Decisions")은 사용자에게 묻는다. 묻기 전 기본값은 "Carrot 현재 동작 보존"을 제안할 수 있지만 확정하지 않는다.
+- 각 Step의 correctness oracle은 milestone 요구사항, 수정하지 않은 Carrot reference, 승인된 known difference다([Reference-driven validation](IMPLEMENTATION_PLAN.md#reference-driven-validation)).
 - 이식 방식은 [MIGRATION_PRINCIPLES.md](../../MIGRATION_PRINCIPLES.md)를 따른다(parent source 직접 import 금지, 단계적 이식, 이해하지 못한 코드 임의 제거 금지).
 
 ## Compatibility의 의미 (2026-10-01 확정)

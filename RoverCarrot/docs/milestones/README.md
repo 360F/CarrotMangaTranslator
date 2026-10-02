@@ -23,13 +23,13 @@ GUI 없이 Linux에서 독립 실행되는 Core로 옮기고, 이후 처리 시�
 |---|---|
 | **Active milestone** | **M1 — Linux Port** |
 | M1 현재 작업 목록 | [M1_LINUX_PORT/CURRENT.md](M1_LINUX_PORT/CURRENT.md) (item과 Progress의 source of truth) |
-| M1 구현 순서 / 다음 Step | [M1_LINUX_PORT/IMPLEMENTATION_PLAN.md](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md) |
+| M1 구현 순서 / 현재 handoff | [M1_LINUX_PORT/IMPLEMENTATION_PLAN.md](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md). 현재 Step·State·Next role의 source of truth는 [현재 위치](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#현재-위치) |
 | M2–M5 | 정의와 future scope만 있다. 아직 active가 아니다 |
 | Reference source | fork `fd461737`(upstream v2.8.2 `d20695df` + fork 커밋). "기존 Carrot"의 의미와 fork 전용 기능: [RoverCarrot/AGENTS.md](../../AGENTS.md#reference-implementation) |
 | RoverCMT production code | Step 1 승인 완료; Step 2 실제 Koharu CPU Detection DONE(2026-10-03 사용자 checkpoint 승인, 완료 commit `4e8059e4`). 다른 stage는 no-op. [실행/개발](../../README.md), [Step 1 Result](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter), [Step 2 Result](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-2--detection--koharu) |
 | 확정된 주요 결정 | 2026-10-01: M1 호환 = Windows Carrot에서 output open/use(interoperability), 기존 Translation ↔ Erase 병렬 경로는 M1에서 이식, M1 renderer = Skia Canvas primary / Playwright Chromium fallback. 상세: [M1 CURRENT](M1_LINUX_PORT/CURRENT.md) 상단 표 |
-| 마지막 구조 갱신 | 2026-10-02 Carrot input/import source trace: [M1-INPUT-001](M1_LINUX_PORT/CURRENT.md#m1-input-001--carrot-inputimport-parity)(parity) / [M5-INPUT-001](M5_FEATURES/IDEAS.md#m5-input-001--carrot에-없던-input-형식import-방식)(신규 기능) 추가. Step 1 사용자 checkpoint 승인 완료. Step 2 DONE(2026-10-03 사용자 checkpoint 승인); 다음 Step 3(미시작). |
-| 이전 구조 갱신 | 2026-10-02 Step 1 사용자 검토 보완: 이미지 materialization/실제 repository smoke/로컬 test-data 영역. |
+| 마지막 구조 갱신 | 2026-10-03 M1 agent handoff workflow: implementation/review role, handoff State·Next role, finding disposition, 반복 제한([agent workflow](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#how-to-use-this-plan-agent)), [Reference-driven validation](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#reference-driven-validation), [Step 4](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-4--translation) 번역 검증 원칙. |
+| 이전 구조 갱신 | 2026-10-02 Carrot input/import source trace: [M1-INPUT-001](M1_LINUX_PORT/CURRENT.md#m1-input-001--carrot-inputimport-parity)(parity) / [M5-INPUT-001](M5_FEATURES/IDEAS.md#m5-input-001--carrot에-없던-input-형식import-방식)(신규 기능) 추가. |
 
 ## 3. Milestones
 
@@ -76,7 +76,7 @@ GUI 없이 Linux에서 독립 실행되는 Core로 옮기고, 이후 처리 시�
 RoverCarrot/AGENTS.md
   → docs/milestones/README.md   (이 문서: 전체 위치, 규칙)
     → 해당 milestone README     (목표, 범위, 원칙)
-      → (M1 구현 작업) IMPLEMENTATION_PLAN.md → 현재 Step
+      → (M1 Step 작업) IMPLEMENTATION_PLAN.md 현재 위치(handoff) → 현재 Step
         → CURRENT / IDEAS / REJECTED (item 단위; Step이 가리키는 item)
           → item·Step의 Related analysis (필요한 section만)
             → Step의 Source areas (실제 source code)
@@ -85,7 +85,7 @@ RoverCarrot/AGENTS.md
 | 하려는 일 | 먼저 읽을 것 |
 |---|---|
 | 다음 할 일 판단 | 이 문서 §2 → active milestone README → `IMPLEMENTATION_PLAN.md`의 현재 위치·Progress(M1) |
-| "M1 Step N 진행해" / "다음 Step 진행해" | [M1 IMPLEMENTATION_PLAN의 How to use this plan](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#how-to-use-this-plan-agent) |
+| M1 Step 구현·review·수정("M1 Step N 진행해", "다음 Step 진행해", 짧은 handoff 호출) | [M1 handoff(현재 위치)](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#현재-위치) → [How to use this plan](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#how-to-use-this-plan-agent) |
 | 특정 item 작업 시작 | item의 Related analysis와 Dependencies, 해당 milestone README의 원칙 |
 | 아이디어 추가·보완 | 이 문서 §7 |
 | 상태 변경·폐기 | 이 문서 §8 |

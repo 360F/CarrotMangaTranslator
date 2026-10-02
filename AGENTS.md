@@ -12,6 +12,7 @@
 
 `RoverCarrot/` 아래 작업(Linux 이식, 분석, milestone 계획)은 먼저 [`RoverCarrot/AGENTS.md`](RoverCarrot/AGENTS.md)를 읽고,
 현재 계획과 다음 작업은 [`RoverCarrot/docs/milestones/README.md`](RoverCarrot/docs/milestones/README.md)에서 확인한다.
+M1 Step 작업(구현·독립 review·수정)의 현재 handoff와 agent workflow는 [M1 IMPLEMENTATION_PLAN 현재 위치](RoverCarrot/docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#현재-위치)에서 시작한다.
 
 > 아래의 Carrot 앱 규칙(사용자 데이터 보호, 코드·UI, UI QA, 폰트 맞춤, 자산·앱 릴리스)은 reference source를 수정하지 않는 한 RoverCMT 작업에는 적용되지 않는다. 단, 데이터 보호 원칙은 로컬 Carrot data root를 다룰 때 계속 적용한다.
 
