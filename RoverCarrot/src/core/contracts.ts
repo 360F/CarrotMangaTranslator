@@ -8,7 +8,6 @@ export type Page = {
   blocks: Record<string, unknown>[];
   analysisStatus: 'idle' | 'running' | 'completed' | 'failed';
   blockOrder?: string[];
-  pageWorkflow?: { emptyDetectionKey?: string };
   soundEffectReview?: Record<string, unknown>;
   createdAt: string; updatedAt: string;
 };

@@ -3,6 +3,7 @@ import { dirname, resolve, join, win32, isAbsolute } from 'node:path';
 import { cpus, platform, arch, release } from 'node:os';
 import { createHash } from 'node:crypto';
 import { checkModel, koharuRuntime, prepareImage } from './adapters/koharu.js';
+import { compareManifests } from './detection/comparison.js';
 import { parseKoharuLayoutOutputs } from './detection/outputs.js';
 import { buildHayaiRegionManifest, type HayaiRegionManifest } from './detection/geometry.js';
 
@@ -10,7 +11,7 @@ const args: Record<string, string> = {};
 for (let i = 2; i < process.argv.length; i += 2) {
   const flag = process.argv[i]!, value = process.argv[i + 1];
   if (!['--context', '--model', '--data-root', '--output', '--reference-tensor'].includes(flag) || args[flag] || !value)
-    throw new Error('Usage: validate:detect -- --context <LOCAL_CONTEXT> [--model <ABS_MODEL>] [--data-root <ABS_ROOT>] [--output <NEW_DIR>]');
+    throw new Error('Usage: validate:detect -- --context <LOCAL_CONTEXT> [--model <ABS_MODEL>] [--data-root <ABS_ROOT>] [--output <NEW_DIR>] [--reference-tensor <CHW_BIN>]');
   args[flag] = value;
 }
 const contextPath = resolve(args['--context'] ?? 'test-data/validation/m1-step2/validation-context.json');
@@ -61,30 +62,13 @@ try {
     postprocessMs: performance.now() - postStart, tensorHash, tensorShape: prepared.dims,
     outputShapes: Object.fromEntries(Object.entries(raw).map(([name, tensor]) => [name, (tensor as { dims: number[] }).dims])) });
   await save('actual-regions.json', actual);
-  const rows = (['dialogueRegions', 'effectRegions'] as const).flatMap(kind => {
-    const old = reference[kind], next = actual[kind];
-    return Array.from({ length: Math.max(old.length, next.length) }, (_, order) => {
-      const a = old[order], b = next[order];
-      if (!a || !b) return { kind, order, reference: a, actual: b, missing: true };
-      const intersection = Math.max(0, Math.min(a.bbox[2], b.bbox[2]) - Math.max(a.bbox[0], b.bbox[0])) *
-        Math.max(0, Math.min(a.bbox[3], b.bbox[3]) - Math.max(a.bbox[1], b.bbox[1]));
-      const area = (r: typeof a) => (r.bbox[2] - r.bbox[0]) * (r.bbox[3] - r.bbox[1]);
-      return { kind, order, reference: a, actual: b, iou: intersection / (area(a) + area(b) - intersection),
-        coordinateDelta: b.bbox.map((value, i) => value - a.bbox[i]!), confidenceDelta: b.detectorConfidence - a.detectorConfidence,
-        sameProvenance: JSON.stringify(a.sourceDetectionIds) === JSON.stringify(b.sourceDetectionIds),
-        sameSubdivision: JSON.stringify(a.ocrSubdivision) === JSON.stringify(b.ocrSubdivision) };
-    });
-  });
-  const sameCounts = reference.dialogueRegions.length === actual.dialogueRegions.length && reference.effectRegions.length === actual.effectRegions.length;
-  // Compare ordered detection provenance instead of assigning arbitrary IoU tolerances.
-  const sameOrder = sameCounts && rows.every(row => row.sameProvenance && row.reference?.kind === row.actual?.kind);
-  const values = rows.flatMap(row => row.iou === undefined ? [] : [row.iou]);
-  status = sameOrder ? 'IN_PROGRESS' : 'BLOCKED';
-  await save('comparison.json', { status, notes: sameOrder ? 'IMPLEMENTED — independent validation pending; numerical differences require review' : 'count/type/order/provenance discrepancy requires investigation',
+  const comparison = compareManifests(reference, actual);
+  const { sameCounts, sameType, sameOrder, rows } = comparison;
+  status = sameCounts && sameType && sameOrder ? 'IN_PROGRESS' : 'BLOCKED';
+  await save('comparison.json', { status, notes: status === 'IN_PROGRESS' ? 'IMPLEMENTED — independent revalidation pending; numerical/provenance/subdivision differences require review' : 'count/type/order discrepancy or unresolved geometric correspondence requires investigation',
     pageId: page.id, sourceSha256: createHash('sha256').update(await readFile(pagePath)).digest('hex'),
     referenceCounts: [reference.dialogueRegions.length, reference.effectRegions.length], actualCounts: [actual.dialogueRegions.length, actual.effectRegions.length],
-    sameCounts, sameOrder, exact: JSON.stringify(reference) === JSON.stringify(actual),
-    iou: { min: Math.min(...values), mean: values.reduce((a,b) => a+b,0)/values.length, max: Math.max(...values) }, rows });
+    ...comparison });
   await save('subdivision-comparison.json', { exact: rows.every(row => row.sameSubdivision),
     rows: rows.filter(row => row.kind === 'dialogueRegions').map(row => ({ order: row.order, reference: row.reference?.ocrSubdivision,
       actual: row.actual?.ocrSubdivision, exact: row.sameSubdivision })) });

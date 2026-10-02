@@ -3,7 +3,7 @@
 [Implementation plan / status](IMPLEMENTATION_PLAN.md#step-2--detection--koharu)
 · [M1-DETECT-001](CURRENT.md#m1-detect-001--koharu-layout-onnx-linux-runtime)
 
-2026-10-02 implementation-session evidence. Implementation commit: [`4a435446`](https://github.com/360F/RoverCMT/commit/4a435446); Phase A checkpoint sync: `1859ad91`. Final acceptance belongs to the
+2026-10-02 implementation and independent-review correction evidence. Correction started from clean `main = origin/main = 17e94c03`. Status: **IN_PROGRESS — IMPLEMENTED, 독립 재검증 대기**. Implementation commit: [`4a435446`](https://github.com/360F/RoverCMT/commit/4a435446); Phase A checkpoint sync: `1859ad91`. Final acceptance belongs to the
 independent validation session and user checkpoint; no numerical tolerance or
 DONE decision was invented. Step 3 has not started.
 
@@ -17,10 +17,11 @@ read only; parser/geometry/subdivision were copied into independent Rover code.
 Import paths, unused lint suppression and type-only index assertions changed;
 thresholds, grouping, ordering and geometry constants did not.
 
-The old Page contract lacked `blockOrder`, `soundEffectReview` and the empty
-detection marker; optional fields now preserve these persisted values. Config
-adds optional `models.koharu`, required by the production CLI when detect is
-selected. This is a minimal extension, without redesigning the orchestration.
+The Page contract preserves optional `blockOrder` and `soundEffectReview`.
+The invalid partial `pageWorkflow` shape and persisted empty-detection marker
+were removed after independent review. Config adds optional `models.koharu`: a
+blank string is unset, a nonempty value must be absolute, and the production CLI
+requires it only when detect is selected. No orchestration redesign was added.
 
 - Original raster → sharp decode → sRGB → black-premultiplied alpha removal →
   Chromium-style fixed-point Lanczos3 stretch → RGB CHW float32 ImageNet
@@ -33,11 +34,14 @@ selected. This is a minimal extension, without redesigning the orchestration.
   review state and are excluded from staged OCR/automatic translation.
 - Blocks retain normalized bbox, confidence, source direction `horizontal`,
   production presentation defaults, geometry key, optional subdivision and
-  initial font/style metadata. Rover additionally persists ordered provenance
-  `sourceDetectionIds`/region identifiers on blocks (reference only stored
-  dialogue provenance in the region manifest).
-- Existing blocks/empty marker skip detect unless internal `overwrite` is true;
-  overwrite clears stale translation receipts. No user CLI rerun/overwrite flag.
+  initial font/style metadata. Strict blocks omit `sourceDetectionIds`,
+  `regionId` and `regionType`. Runtime manifests and developer validation retain
+  dialogue provenance; production dialogue artifact persistence is a follow-up.
+  SFX review keeps its schema-supported source IDs.
+- Existing blocks skip detect unless internal `overwrite` is true;
+  overwrite clears stale translation receipts. Empty detection runs again when
+  called internally; a persisted rerun marker awaits full receipt semantics.
+  No user CLI rerun/overwrite flag.
 - CLI still accepts only `--input`/`--output`. Fake runtime injection is the
   internal `runCli({ runtime })` argument. Tests pass deterministic raw tensors
   through real parsing/geometry/stage/persistence. Executable config creation,
@@ -92,8 +96,12 @@ stored. Existing Carrot/library/model data was not changed or moved.
 
 The first sharp-native `resize(...kernel: 'lanczos3')` run yielded dialogue/effect
 7/8 instead of reference 6/9. Thresholds/postprocessing were not adjusted.
-Windows Electron 43.3.0 with an isolated profile decoded/resized the same original
-page. Supplying that tensor to Linux CPU recovered reference count/type/order.
+An Electron 43.3.0 control decoded/resized the same original page. Historical
+metadata did not record platform, so the earlier Windows attribution is
+withdrawn. Independent review confirmed **Electron 43.3.0 / Chromium
+150.0.7871.212 on Linux** in `m1-step2-independent/electron-ref/` metadata, with
+the same tensor hash. Supplying that tensor to Linux CPU recovered reference
+count/type/order. Future tool metadata includes `platform` and `arch`.
 Compared with Electron, the sharp resize had 1,861,116 differing values out of
 3,981,312, normalized mean absolute delta 0.010097108917163216 and max
 0.3501400947570801. Thus using the name "Lanczos3" alone did not reproduce pixels.
@@ -169,7 +177,7 @@ returned FAIL without overwrite. Summaries and terminal capture are under the
 ignored validation directory. The local user's config was extended only with
 `[models].koharu`; existing input/output defaults were retained.
 
-`npm run check` passes typecheck/lint/build and 40 tests; `npm run smoke` passes
+The original implementation run passed typecheck/lint/build and 40 tests; `npm run smoke` passes
 15 tests; `npm run check:boundaries` passes. Ordinary validation needs no real
 model, real config/logs or private comic. It covers preprocessing, malformed
 output, thresholds, subdivision, skip/overwrite, model identity failures,
@@ -210,3 +218,159 @@ npm run validate:detect -- --context <LOCAL_CONTEXT> --reference-tensor <ELECTRO
 
 This option belongs only to the developer validator, not the product CLI. It is
 not fake runtime selection. The normal S2–S4 command must also be rerun without it.
+
+
+## Independent-review correction (H1/M1/L1/L2/L4/L5/L6)
+
+The review reproduced Detection but found a strict persistence regression.
+`src/shared/ipcLibrarySchemas.ts` uses strict stored pages and blocks. A present
+`pageWorkflow` requires all `PageWorkflowReceiptSchema` fields (`runId`,
+`planKey`, `steps`, `findings`); the previous partial object was invalid even
+when serialized as `{}`. `TranslationBlockObjectSchema` rejects the three
+Rover-only provenance keys. The earlier Step 1 guard and smoke assertions had
+incorrectly blessed those values. They now require their absence and assert the
+persisted permitted fields, defaults, confidence, bbox, block order, review and
+subdivision, using actual raw-tensor → stage → chapter writes.
+
+No fake full receipt was created. Core's partial receipt shape was removed.
+Existing-block skip and internal overwrite tests remain; empty-result rerun
+markers are deferred until full receipt semantics exist. Production dialogue
+provenance is used in `HayaiRegionManifest` at runtime, but there is no new
+production run artifact writer. Persisting it outside strict records is a
+follow-up; developer evidence retains actual manifests. Downstream subdivision
+remains in the schema-supported `workflowOrigin.ocrSubdivision`. No resume,
+artifact framework or stage-context redesign was introduced.
+
+### Actual unmodified Carrot schema
+
+Development-only bundling used **esbuild 0.25.12 + zod 3.25.76 in /tmp**, loading
+this repository's actual root `LibraryChapterFileSchema` without source edits.
+No root install, root dependency or tracked validation dependency was added.
+Ordinary Rover tests use their own detection-only persisted-field assertions.
+
+| Target | Actual strict parse |
+|---|---|
+| Reference Carrot chapter | PASS, zero issues |
+| Existing Step 1 output (`manual-step1-001`) | PASS, zero issues |
+| Prior Step 2 output (`m1-step2-cpu-20261002-2237`) | FAIL, 58 issues |
+| Prior Step 2 with only block-key removal (in-memory copy) | FAIL, 16 receipt issues |
+| Prior Step 2 with only receipt removal (in-memory copy) | FAIL, 42 block issues |
+| Fresh fixed Step 2 output | PASS, zero issues |
+
+Detailed issues are in ignored `fix-strict-schema.json`; all original chapters
+were read only. Strict parse establishes schema compliance; Windows GUI
+open/edit/export remains Step 8 validation.
+
+### Config, validator, dependencies and runtime evidence
+
+- Blank Koharu template now parses as unset. Detect selected without a model
+  fails with the actionable `models.koharu ... absolute path` message; excluded
+  detect runs without a model. Nonempty relative paths still fail, absolute
+  paths parse. Tests cover all four cases, without altering input/output rules.
+- Validator Usage now lists `--reference-tensor`. Comparison reports separate
+  `sameType`, `sameOrder`, `sameProvenance`, `sameSubdivision`. Order uses unique
+  mutual-best geometric overlap per region array, independently of IDs. Ties,
+  absent overlap and non-bijective correspondence are unresolved/BLOCKED. This
+  is identity correspondence, not an IoU acceptance threshold. Tests include
+  ID-only changes, actual reorder, bbox residuals, type/subdivision/count
+  differences and ambiguity. Provenance compares source IDs directly between
+  reference/actual manifests; removal from blocks did not remove this check.
+- Root's `onnxruntime-node` scoped `adm-zip: ^0.6.0` override was mirrored.
+  Only adm-zip changed in the lock (0.5.18 → 0.6.1); no unrelated upgrades.
+  `npm ci --ignore-scripts` succeeded in a new /tmp install and Rover's own
+  dependency directory, with zero reported audit vulnerabilities. The new
+  isolated source/test copy passes without a model, user config/logs or parent
+  dependencies: check 44/44, smoke 15/15, boundaries PASS.
+- Historical Electron artifacts without platform evidence are no longer called
+  Windows controls. Confirmed Linux version/hash are recorded above. This does
+  not claim Windows decoding parity for all formats.
+- `graphOptimizationLevel: 'all'` is unchanged, matching reference Carrot CPU.
+  Independent review observed basic/disabled bbox-exact agreement with this
+  one DML artifact, with slower execution. That observation is retained as a
+  separate trade-off, not an algorithm/config change or multi-page proof.
+
+### Fresh S2–S4 and production CLI
+
+Normal `npm run validate:detect` creates `run-1790952491541/`, using the existing
+model/context binding with no reference tensor override. Model size/full SHA
+and native metadata passed. S2 inference succeeded; tensor hash is unchanged.
+Its **entire actual manifest equals the prior final portable manifest**.
+
+S3 remains dialogue/effect **6/9**, same count/type/geometric order/provenance.
+Dialogue bbox 6/6 exact; effects 7/9 exact, effects at zero-based orders 5/6 have
++4.5px left/right edge deltas. IoU min/mean/max remains
+**0.959525094441446 / 0.996616066806934 / 1**. Maximum absolute confidence delta
+is **0.0033999999999999586**. S4 mode/count/crop boxes/order remains exact for all
+six dialogue regions. No thresholds, parser, grouping, subdivision or
+preprocessing changes were made.
+
+Fresh production output: `test-data/output/m1-step2-fixed-20261002-234923/`.
+Detect PASS; four JPG pages have **10/2/10/20 blocks and 0/0/3/0 effects**.
+One actual CPU session serves all pages; stdout has no raw JSON, stderr empty.
+Session creation 896.5634440000001ms; page inference
+8865.094149 / 6947.933069000001 / 6974.107545999999 / 6387.03844ms (first includes
+session initialization). Original raster bytes are exact. Re-running the same
+output is refused and all output file hashes remain unchanged. All 55 baseline
+input/output/config/root-package files remain byte-identical. Root node_modules
+was absent at start and remains absent; reference source/lock is unchanged.
+Local source check passes typecheck/lint/build, **44 tests**, **15 smoke tests**,
+and boundaries. Evidence lives in ignored `fix-run-summary.json`, CLI captures,
+`fix-bbox-audit.json`, and per-page developer manifests, never staged.
+
+### Persisted bbox correction details
+
+Normalization now exactly follows reference `pixelsToBbox`/`clampBbox`: divide
+then multiply by 1000, finite-value clamp, x/y at most 999, w/h within
+1..1000-x/y. Right/bottom-edge regression tests cover the previous escape.
+S3 manifest coordinates are unchanged. Re-inference of all four source pages
+reproduced every old persisted bbox with the old normalization; applying the
+actual root reference helper to those same pixel boxes exactly equals every new
+bbox. Confidence/subdivision remain unchanged. **33 of 42 blocks** changed
+(9/1/7/16 by page), with 54 coordinate values changed; maximum absolute delta
+**1.1368683772161603e-13 normalized units**. These are arithmetic-order rounding
+corrections, not detector geometry changes or boundary clamp changes on these
+four pages. Review geometry is reference-normalized as well.
+
+Page/block below are one-based indices in the fresh chapter's page/block order;
+only changed coordinates are listed. Complete boxes and old/new block IDs are
+in ignored `fix-bbox-audit.json`.
+
+| Page / block | Coordinate: before → after |
+|---|---|
+| 1 / 1 | `h`: 22.082152974504247 → 22.08215297450425 |
+| 1 / 2 | `x`: 764.028 → 764.0279999999999; `w`: 93.47200000000007 → 93.47200000000005 |
+| 1 / 4 | `x`: 652.9166666666666 → 652.9166666666667 |
+| 1 / 5 | `x`: 170.278 → 170.27800000000002; `w`: 27.499999999999982 → 27.49999999999998; `h`: 67.22143531633617 → 67.22143531633616 |
+| 1 / 6 | `x`: 246.66666666666666 → 246.66666666666669; `y`: 532.3616619452314 → 532.3616619452313 |
+| 1 / 7 | `w`: 76.11133333333332 → 76.1113333333333 |
+| 1 / 8 | `x`: 38.333333333333336 → 38.33333333333333; `y`: 719.8616619452314 → 719.8616619452313; `h`: 105.41595845136929 → 105.4159584513693 |
+| 1 / 9 | `x`: 180.69466666666668 → 180.69466666666665; `w`: 110.83333333333333 → 110.83333333333334 |
+| 1 / 10 | `w`: 79.58333333333333 → 79.58333333333334 |
+| 2 / 1 | `h`: 25.554768649669498 → 25.5547686496695 |
+| 3 / 1 | `x`: 833.472 → 833.4720000000001; `y`: 60.139282341831915 → 60.13928234183192; `w`: 24.027999999999942 → 24.027999999999945 |
+| 3 / 4 | `x`: 152.91666666666666 → 152.91666666666669; `w`: 30.97200000000002 → 30.972000000000016; `h`: 53.33286118980167 → 53.332861189801676 |
+| 3 / 5 | `x`: 826.528 → 826.5279999999999 |
+| 3 / 6 | `y`: 299.72285174693104 → 299.7228517469311; `h`: 216.5269121813031 → 216.52691218130306 |
+| 3 / 8 | `w`: 83.0553333333334 → 83.05533333333338 |
+| 3 / 9 | `x`: 52.222 → 52.221999999999994 |
+| 3 / 10 | `y`: 799.722851746931 → 799.7228517469312 |
+| 4 / 1 | `y`: 46.25023607176582 → 46.25023607176581; `w`: 62.22266666666655 → 62.222666666666555; `h`: 178.33286118980166 → 178.3328611898017 |
+| 4 / 2 | `y`: 60.139282341831915 → 60.13928234183192 |
+| 4 / 3 | `x`: 402.9166666666667 → 402.91666666666663; `y`: 80.97261567516524 → 80.97261567516526; `w`: 37.916666666666664 → 37.91666666666667 |
+| 4 / 4 | `x`: 531.3886666666667 → 531.3886666666666; `h`: 63.74929178470255 → 63.749291784702535 |
+| 4 / 5 | `y`: 202.50047214353162 → 202.50047214353165 |
+| 4 / 6 | `y`: 226.80594900849857 → 226.8059490084986 |
+| 4 / 7 | `x`: 264.028 → 264.02799999999996 |
+| 4 / 8 | `y`: 337.9169027384325 → 337.91690273843244 |
+| 4 / 9 | `y`: 337.9169027384325 → 337.91690273843244; `h`: 91.52738432483477 → 91.52738432483476 |
+| 4 / 11 | `h`: 126.24929178470252 → 126.24929178470254 |
+| 4 / 12 | `w`: 114.30599999999988 → 114.3059999999999 |
+| 4 / 13 | `y`: 532.3616619452314 → 532.3616619452313 |
+| 4 / 15 | `x`: 145.972 → 145.97199999999998 |
+| 4 / 16 | `x`: 857.778 → 857.7779999999999; `w`: 37.916666666666664 → 37.91666666666667; `h`: 112.36024551463646 → 112.36024551463647 |
+| 4 / 18 | `h`: 150.5547686496695 → 150.55476864966948 |
+| 4 / 20 | `w`: 51.806 → 51.806000000000004; `h`: 18.610009442870496 → 18.6100094428705 |
+
+Step 2 remains **IN_PROGRESS — IMPLEMENTED, 독립 재검증 대기**. A new Claude
+independent review plus user checkpoint is required before DONE. Step 3 OCR
+has not started.

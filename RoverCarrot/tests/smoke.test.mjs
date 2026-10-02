@@ -1,3 +1,4 @@
+import { assertPersistedDetection } from './persisted-detection.mjs';
 import { fakeRuntime } from './fake-koharu.mjs';
 import { koharuDetectionStage } from '../dist/adapters/detection.js';
 import { after, test } from 'node:test';
@@ -48,7 +49,7 @@ for (const [extension, format] of Object.entries({ png: 'png', jpg: 'jpeg', jpeg
     assert.ok(pages[0].blocks.length > 0);
     assert.equal(pages[0].soundEffectReview.regions.length, 1);
     assert.deepEqual(pages[0].blockOrder, pages[0].blocks.map(b => b.id));
-    assert.ok(pages[0].blocks.every(b => b.sourceDetectionIds.length && b.workflowOrigin.geometryKey));
+    assertPersistedDetection(pages[0]);
     assert.equal(extname(pages[0].imagePath), extension === 'jfif' ? '.jpg' : `.${extension.toLowerCase()}`);
     assert.deepEqual(await readFile(pages[0].imagePath), fixtures[format]);
   });

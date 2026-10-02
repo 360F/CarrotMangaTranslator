@@ -1,3 +1,5 @@
+import { assertPersistedDetection } from './persisted-detection.mjs';
+import { compareManifests } from '../dist/detection/comparison.js';
 import { createHash } from 'node:crypto';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -8,7 +10,7 @@ import { rawOutputs, fakeRuntime } from './fake-koharu.mjs';
 import { prepareImage, checkModel } from '../dist/adapters/koharu.js';
 import { parseKoharuLayoutOutputs } from '../dist/detection/outputs.js';
 import { buildHayaiRegionManifest } from '../dist/detection/geometry.js';
-import { detectionStage, applyDetection } from '../dist/detection/stage.js';
+import { detectionStage, applyDetection, normalized } from '../dist/detection/stage.js';
 import { koharuDetectionStage } from '../dist/adapters/detection.js';
 import { parseConfigToml } from '../dist/cli/config-file.js';
 import { cli, tempRoot, logLines, runRecord, fixtureText } from './cli-helpers.mjs';
@@ -52,7 +54,7 @@ test('production geometry separates dialogue/effect; subdivision keeps right-to-
   assert.deepEqual(result.blocks[0].workflowOrigin.ocrSubdivision,dialogue.ocrSubdivision);
 });
 
-test('existing-block and empty detection skip; internal overwrite replaces blocks and stale receipts',async()=>{
+test('existing-block skip and empty detection rerun; internal overwrite replaces blocks and stale receipts',async()=>{
   let calls=0;const detect=async()=>{calls++;return manifest;};
   const first=(await detectionStage(detect).execute(page)).page;
   assert.strictEqual((await detectionStage(detect).execute(first)).page,first);assert.equal(calls,1);
@@ -60,7 +62,7 @@ test('existing-block and empty detection skip; internal overwrite replaces block
   assert.equal(calls,2);assert.notEqual(overwritten.blocks[0].id,first.blocks[0].id);assert.equal(overwritten.translationCompletion,undefined);
   const empty=async()=>{calls++;return {...manifest,dialogueRegions:[],effectRegions:[]};};
   const outcome=await detectionStage(empty).execute(page);assert.equal(outcome.status,'empty');
-  const before=calls;await detectionStage(empty).execute(outcome.page);assert.equal(calls,before);
+  const before=calls;await detectionStage(empty).execute(outcome.page);assert.equal(calls,before+1);assert.ok(!('pageWorkflow' in outcome.page));
 });
 
 test('portable preprocessing is stretch RGB CHW normalized; grayscale and transparent alpha have explicit policy',async t=>{
@@ -77,9 +79,10 @@ test('portable preprocessing is stretch RGB CHW normalized; grayscale and transp
   await assert.rejects(prepareImage(join(root,'missing.png')),/decode\/preprocessing/);
 });
 
-test('models config accepts only absolute nonempty path; native model identity rejects missing, filename, size and hash',async t=>{
+test('models config treats blank as unset and accepts only absolute nonempty path; native model identity rejects missing, filename, size and hash',async t=>{
   const text=await fixtureText('config.toml');
-  for(const value of ['', 'relative/model.onnx'])assert.throws(()=>parseConfigToml(text+`\n[models]\nkoharu = "${value}"\n`,'/w'),/absolute/);
+  assert.equal(parseConfigToml(text+'\n[models]\nkoharu = ""\n','/w').models,undefined);
+  for(const value of ['relative/model.onnx'])assert.throws(()=>parseConfigToml(text+`\n[models]\nkoharu = "${value}"\n`,'/w'),/absolute/);
   assert.equal(parseConfigToml(text+'\n[models]\nkoharu = "/models/rfdetr-seg-2xlarge.onnx"\n','/w').models.koharu,'/models/rfdetr-seg-2xlarge.onnx');
   const root=await tempRoot(t);const model=join(root,'rfdetr-seg-2xlarge.onnx');
   await assert.rejects(checkModel(model),/not found/);
@@ -106,11 +109,76 @@ test('real detection failure reaches page persistence, progress, critical log, a
   assert.match(bad.message,/decode/);
 });
 
-// Windows Electron 43.3.0 RESIZE_BEST reference for the tracked 3x2 RGB PNG.
+// Electron 43.3.0 RESIZE_BEST reference (historical metadata lacks platform).
+// Independent review confirmed the tracked 3x2 RGB PNG tensor with a Linux control.
 // Regenerate with tools/electron-detect-preprocess.mjs; no model or Electron
 // dependency is needed to run this characterization in a fresh Linux clone.
 test('portable resize keeps the exact Electron RGB/CHW reference tensor for synthetic raster', async () => {
   const image = await prepareImage(new URL('./fixtures/page.png', import.meta.url).pathname);
   assert.equal(createHash('sha256').update(new Uint8Array(image.data.buffer)).digest('hex'),
     'cb62ba6ec5bcec2be808b280ffd5bb65402cdf007f6942b334280ecfad3c8fa8');
+});
+
+test('persisted chapter keeps strict-compatible blocks, defaults, subdivision and effect review', async t => {
+  const root = await tempRoot(t, await fixtureText('config.toml'));
+  const image = join(root, 'page.png'), output = join(root, 'output');
+  await sharp({create:{width:1152,height:1152,channels:3,background:'white'}}).png().toFile(image);
+  const result = await cli({root, argv:['--input', image, '--output', output]});
+  assert.equal(result.code, 0, result.out);
+  const json = async path => JSON.parse(await readFile(path, 'utf8'));
+  const index = await json(join(output, 'index.json'));
+  const workDir = join(output, 'works', index.workOrder[0]);
+  const work = await json(join(workDir, 'work.json'));
+  const chapter = await json(join(workDir, 'chapters', work.chapterOrder[0], 'chapter.json'));
+  const stored = chapter.pages[0];
+  assertPersistedDetection(stored);
+  assert.equal(stored.blocks.length, 1);
+  assert.deepEqual(stored.blocks[0].bbox, normalized(manifest.dialogueRegions[0].bbox, page));
+  assert.equal(stored.blocks[0].confidence, manifest.dialogueRegions[0].detectorConfidence);
+  assert.deepEqual(stored.blocks[0].workflowOrigin.ocrSubdivision, manifest.dialogueRegions[0].ocrSubdivision);
+  assert.deepEqual(stored.soundEffectReview.regions[0], {id:manifest.effectRegions[0].regionId,
+    bbox:normalized(manifest.effectRegions[0].bbox,page), detectorConfidence:manifest.effectRegions[0].detectorConfidence,
+    sourceDetectionIds:manifest.effectRegions[0].sourceDetectionIds});
+});
+
+test('blank model is unset: production detect fails clearly, excluded detect runs without a model', async t => {
+  const text = (await fixtureText('config.toml')) + '\n[models]\nkoharu = ""\n';
+  const root = await tempRoot(t, text);
+  const image = join(root, 'page.png');
+  await writeFile(image, await readFile(new URL('./fixtures/page.png', import.meta.url)));
+  const failed = await cli({root, runtime:null, argv:['--input',image,'--output',join(root,'detect')]});
+  assert.equal(failed.code,1); assert.match(failed.out,/models.koharu.*absolute path/);
+  await writeFile(join(root,'config','config.toml'), text.replace('"detect", ', ''));
+  const config = parseConfigToml(await readFile(join(root,'config','config.toml'),'utf8'),root);
+  assert.ok(!config.stages.includes('detect')); assert.equal(config.models,undefined);
+  const passed = await cli({root, runtime:null, argv:['--input',image,'--output',join(root,'no-detect')]});
+  assert.equal(passed.code,0,passed.out); assert.ok(!passed.out.includes('Detect'));
+});
+
+test('normalized bbox follows reference divide-then-scale, finite clamp and right/bottom edges', () => {
+  assert.deepEqual(normalized([100,100,101,101],{width:100,height:100}),{x:999,y:999,w:1,h:1});
+  assert.deepEqual(normalized([99.95,99.95,120,120],{width:100,height:100}),{x:999,y:999,w:1,h:1});
+  assert.deepEqual(normalized([-1,-1,2,2],{width:100,height:100}),{x:0,y:0,w:30,h:30});
+  assert.deepEqual(normalized([NaN,Infinity,NaN,Infinity],{width:100,height:100}),{x:0,y:0,w:1,h:1});
+  const size={width:1280,height:1791}, box=[33.75,40.5,101.25,94.5];
+  assert.deepEqual(normalized(box,size),{x:(box[0]/1280)*1000,y:(box[1]/1791)*1000,
+    w:((box[2]-box[0])/1280)*1000,h:((box[3]-box[1])/1791)*1000});
+});
+
+test('validator compares type, geometric order, provenance and subdivision independently', () => {
+  const original={...manifest,dialogueRegions:[{...manifest.dialogueRegions[0],bbox:[0,0,20,20]},
+    {...manifest.dialogueRegions[0],bbox:[100,0,120,20],sourceDetectionIds:['T002']}]};
+  assert.ok(compareManifests(original,structuredClone(original)).sameOrder);
+  const changed=structuredClone(original);changed.dialogueRegions[0].sourceDetectionIds=['T999'];
+  let result=compareManifests(original,changed);
+  assert.ok(result.sameOrder && result.sameType && result.sameSubdivision);assert.equal(result.sameProvenance,false);
+  changed.dialogueRegions.reverse();result=compareManifests(original,changed);assert.equal(result.sameOrder,false);
+  const residual=structuredClone(original);residual.dialogueRegions[0].bbox[2]+=4.5;
+  assert.ok(compareManifests(original,residual).sameOrder);
+  residual.dialogueRegions[0].kind='effect';assert.equal(compareManifests(original,residual).sameType,false);
+  const subdivision=structuredClone(original);delete subdivision.dialogueRegions[0].ocrSubdivision;
+  assert.equal(compareManifests(original,subdivision).sameSubdivision,false);
+  const missing=structuredClone(original);missing.dialogueRegions.pop();assert.equal(compareManifests(original,missing).sameOrder,false);
+  const ambiguous=structuredClone(original);ambiguous.dialogueRegions[1].bbox=ambiguous.dialogueRegions[0].bbox;
+  assert.equal(compareManifests(original,ambiguous).sameOrder,false);
 });

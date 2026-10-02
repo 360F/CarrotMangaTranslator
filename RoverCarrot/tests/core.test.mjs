@@ -34,7 +34,8 @@ async function chapter(output) {
     assert.deepEqual(await readFile(page.imagePath), png);
     assert.equal(page.analysisStatus, 'idle');
     assert.ok(!('dataUrl' in page));
-    if (page.blocks.length) { assert.ok(page.pageWorkflow); assert.ok(page.blocks.every(b => b.workflowOrigin.geometryKey)); }
+    assert.ok(!('pageWorkflow' in page));
+    if (page.blocks.length) { assert.ok(page.blocks.every(b => b.workflowOrigin.geometryKey)); }
   }
   return record;
 }

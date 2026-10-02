@@ -31,9 +31,11 @@ export function resolveConfig(raw: unknown, base: string = process.cwd(), overri
     const model = value.models as Record<string, unknown>;
     if (!model || typeof model !== 'object' || Array.isArray(model) || Object.keys(model).some(key => key !== 'koharu'))
       throw new Error('models must contain only koharu');
-    if (typeof model.koharu !== 'string' || !model.koharu.trim()) throw new Error('models.koharu must be a non-empty absolute path');
-    if (!isAbsolute(model.koharu)) throw new Error('models.koharu must be an absolute path');
-    models = { koharu: model.koharu };
+    if (typeof model.koharu !== 'string') throw new Error('models.koharu must be a string');
+    if (model.koharu.trim()) {
+      if (!isAbsolute(model.koharu)) throw new Error('models.koharu must be an absolute path');
+      models = { koharu: model.koharu };
+    }
   }
   return { ...(models ? { models } : {}), version: 1, mode: 'smoke', input, output, stages: STAGES.filter(id => (stages as StageId[]).includes(id)) };
 }

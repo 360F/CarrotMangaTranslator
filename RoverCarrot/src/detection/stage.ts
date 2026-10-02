@@ -6,13 +6,17 @@ import { hashStableValue } from './fingerprint.js';
 export type DetectionResult = HayaiRegionManifest;
 export type DetectPage = (page: Page) => Promise<DetectionResult>;
 
-function normalized(box: number[], page: Page) {
-  const x = Math.max(0, Math.min(1000, box[0]! * 1000 / page.width));
-  const y = Math.max(0, Math.min(1000, box[1]! * 1000 / page.height));
-  return { x, y, w: Math.max(1, Math.min(1000 - x, (box[2]! - box[0]!) * 1000 / page.width)),
-    h: Math.max(1, Math.min(1000 - y, (box[3]! - box[1]!) * 1000 / page.height)) };
+// Reference pixelsToBbox/clampBbox arithmetic, kept local to the port.
+function clamp(value: number, min: number, max: number): number {
+  if (!Number.isFinite(value)) return min;
+  return Math.min(max, Math.max(min, value));
 }
-const emptyKey = (page: Page) => hashStableValue([page.imagePath, []]);
+export function normalized(box: number[], page: Pick<Page, 'width' | 'height'>) {
+  const x = clamp((box[0]! / Math.max(1, page.width)) * 1000, 0, 999);
+  const y = clamp((box[1]! / Math.max(1, page.height)) * 1000, 0, 999);
+  return { x, y, w: clamp(((box[2]! - box[0]!) / Math.max(1, page.width)) * 1000, 1, 1000 - x),
+    h: clamp(((box[3]! - box[1]!) / Math.max(1, page.height)) * 1000, 1, 1000 - y) };
+}
 
 // Minimum detection-only slice of overlayItemToBlock with production format defaults.
 // Empty text "...": readable-box expansion needs >=28.5x11.8 px; the
@@ -31,7 +35,6 @@ export function applyDetection(page: Page, manifest: DetectionResult): Page {
       lineHeight: 1.18, textAlign: 'center', textColor: '#111111', outlineColor: '#ffffff',
       backgroundColor: '#fef3c7', opacity: 0.7, autoFitText: true, textDisplayMode: 'translation-only',
       wordBreak: 'break-word', letterSpacing: 0, fontWidthScale: 1, textOpacity: 1, bold: false, italic: false, outlineWidthScale: 1,
-      sourceDetectionIds: [...region.sourceDetectionIds], regionId: region.regionId, regionType: region.kind,
     };
     return { ...block, workflowOrigin: {
       geometryKey: hashStableValue([page.imagePath, page.width, page.height, bbox, block.bboxSpace]),
@@ -42,7 +45,6 @@ export function applyDetection(page: Page, manifest: DetectionResult): Page {
     } };
   });
   const next = { ...page, blocks, blockOrder: blocks.map(block => block.id), analysisStatus: 'idle' as const,
-    pageWorkflow: { ...(page.pageWorkflow ?? {}), emptyDetectionKey: blocks.length ? undefined : emptyKey(page) },
     soundEffectReview: { contractVersion: 3, producer: 'hayai-regions-v1', regionOverrides: [], manualRegions: [], resolvedRegions: [],
       regions: manifest.effectRegions.map(region => ({ id: region.regionId, bbox: normalized(region.bbox, page),
         detectorConfidence: region.detectorConfidence, sourceDetectionIds: region.sourceDetectionIds })) },
@@ -53,12 +55,12 @@ export function applyDetection(page: Page, manifest: DetectionResult): Page {
 }
 
 export function detectionStage(detect: DetectPage, options: { overwrite?: boolean } = {}): Stage {
-  return { id: 'detect', reads: ['imagePath', 'width', 'height', 'blocks', 'pageWorkflow.emptyDetectionKey'],
-    writes: ['blocks', 'blockOrder', 'soundEffectReview', 'workflowOrigin', 'pageWorkflow.emptyDetectionKey', 'analysisStatus'],
+  return { id: 'detect', reads: ['imagePath', 'width', 'height', 'blocks'],
+    writes: ['blocks', 'blockOrder', 'soundEffectReview', 'workflowOrigin', 'analysisStatus'],
     resources: ['Koharu CPU session'],
     async execute(page) {
-      if (!options.overwrite && (page.blocks.length || page.pageWorkflow?.emptyDetectionKey === emptyKey(page)))
-        return { status: page.blocks.length ? 'completed' : 'empty', page };
+      if (!options.overwrite && page.blocks.length)
+        return { status: 'completed', page };
       const next = applyDetection(page, await detect(page));
       return { status: next.blocks.length ? 'completed' : 'empty', page: next };
     },

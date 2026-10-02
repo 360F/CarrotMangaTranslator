@@ -30,7 +30,7 @@ Item 목록:
 | [M1-PERSIST-001](#m1-persist-001--persistence와-data-contract-parity) | Persistence와 data contract parity | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
 | [M1-PERSIST-002](#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리) | Rover Output 이식(번역 JSON/CSV export, 출력 경로, 기본 입출력 디렉터리) | not started |
 | [M1-RUNTIME-001](#m1-runtime-001--linux-runtimemodel-의존성-교체적응) | Linux runtime/model 의존성 교체·적응 | in progress (Step 1 skeleton·Step 2 Detection 구현; 독립/전체 M1 검증 남음) |
-| [M1-DETECT-001](#m1-detect-001--koharu-layout-onnx-linux-runtime) | Koharu layout ONNX Linux runtime | in progress (IMPLEMENTED — 독립 검증·사용자 checkpoint 대기) |
+| [M1-DETECT-001](#m1-detect-001--koharu-layout-onnx-linux-runtime) | Koharu layout ONNX Linux runtime | in progress (IMPLEMENTED — 독립 재검증·사용자 checkpoint 대기) |
 | [M1-OCR-001](#m1-ocr-001--hayaiocr-linux-runtime) | HayaiOCR Linux runtime | not started |
 | [M1-TRANS-001](#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식) | OpenAI-compatible translation client와 prompt contract 이식 | not started |
 | [M1-INPAINT-001](#m1-inpaint-001--flux-klein-candle-runner-linux-runtime) | FLUX Klein Candle runner Linux runtime | not started |
@@ -265,7 +265,7 @@ Item 목록:
 ### M1-DETECT-001 — Koharu layout ONNX Linux runtime
 
 - **Status:** CURRENT
-- **Progress:** in progress (IMPLEMENTED — 독립 검증·사용자 checkpoint 대기)
+- **Progress:** in progress (IMPLEMENTED — 독립 재검증·사용자 checkpoint 대기)
 - **Summary:** Koharu layout ONNX detection과 Hayai region 후처리를 Linux에서 portable decoder + ONNX Runtime으로 재현한다.
 - **Why it matters:** 이후 OCR·erase·layout의 block geometry 원천이다. 현재 Windows는 DirectML provider를 쓴다.
 - **Related analysis:**
@@ -276,6 +276,7 @@ Item 목록:
 - **Related items:** [M4-DETECT-001](../M4_OPTIMIZATION/IDEAS.md#m4-detect-001--같은-원본-raster의-koharu-raw-inference-재사용)(반복 추론 감소는 M4).
 - **Dependencies:** M1-RUNTIME-001.
 - **Decision / validation needed:** DETECTION §25의 결정. smoke S0–S3로 기존 `hayai-regions.json`과 region 수·bbox·순서 비교.
+- **Independent-review correction (2026-10-02):** partial pageWorkflow/Rover-only block keys 제거, 실제 root strict schema reference·Step 1·fresh Step 2 PASS(기존 Step 2 FAIL 재현). config blank model, reference bbox normalization, validator order/provenance/Usage, scoped adm-zip override와 Electron evidence 표현 수정. 알고리즘·CPU graph `all` 보존; fresh S2–S4 manifest 이전 exact, 4페이지 strict PASS. test 44/smoke 15·model-less clean 검증 PASS. Dialogue artifact persistence는 후속 과제; 빈 검출 rerun marker는 full receipt 구현 시 후속 검토. 새 Claude 독립 재검증·사용자 checkpoint 대기. [전후 bbox 및 전체 근거](STEP2_VALIDATION.md#independent-review-correction-h1m1l1l2l4l5l6).
 - **History:** 2026-10-01 생성. 2026-10-02 Koharu CPU runtime/실제 Detection stage·persistence와 model 없는 내부 API smoke 구현, S0–S4 및 실제 4페이지 자체 검증 완료; 독립 검증 대기. [Step 2 검증·재현 기록](STEP2_VALIDATION.md).
 
 ### M1-OCR-001 — HayaiOCR Linux runtime
@@ -389,6 +390,6 @@ Item 목록:
 
 ## Suggested next step
 
-M1의 구현 순서와 다음 Step은 **[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)** 가 관리한다(2026-10-01부터). Step 1 사용자 checkpoint가 승인됐다(2026-10-02). [Step 2 — Detection / Koharu](IMPLEMENTATION_PLAN.md#step-2--detection--koharu)는 구현·자체 검증 완료 후 독립 검증·사용자 checkpoint를 기다린다. Step 3는 아직 시작하지 않는다.
+M1의 구현 순서와 다음 Step은 **[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)** 가 관리한다(2026-10-01부터). Step 1 사용자 checkpoint가 승인됐다(2026-10-02). [Step 2 — Detection / Koharu](IMPLEMENTATION_PLAN.md#step-2--detection--koharu)는 strict persistence 수정·재검증 후 새 Claude 독립 재검증·사용자 checkpoint를 기다린다. Step 3는 아직 시작하지 않는다.
 
 이전에 이 section에 있던 제안(Skia Linux 검증, Carrot loader 요구 조건 확인, runtime smoke, config/CLI/OBS 설계)은 IMPLEMENTATION_PLAN의 Step 1–8과 [Open decision / validation register](IMPLEMENTATION_PLAN.md#open-decision--validation-register)로 옮겼다.

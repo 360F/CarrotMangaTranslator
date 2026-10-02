@@ -27,7 +27,7 @@ test('TOML: tables map to the existing config meaning; template parses; errors a
   const unordered = parseConfigToml('version = 1\nmode = "smoke"\n[paths]\ninput = "/a"\noutput = "b"\n[pipeline]\nstages = ["render", "detect"]\n', '/w');
   assert.deepEqual([unordered.input, unordered.output, unordered.stages], ['/a', '/w/b', ['detect', 'render']]);
   assert.equal(parseConfigToml('version = 1\nmode = "smoke"\n[paths]\ninput = "a"\noutput = "b"\n', '/w').stages.length, 11);
-  const template = parseConfigToml(CONFIG_TEMPLATE.replace('koharu = ""', 'koharu = "/model.onnx"'), '/w');
+  const template = parseConfigToml(CONFIG_TEMPLATE, '/w');
   assert.deepEqual([template.input, template.output], ['/w/test-data/input/example', '/w/test-data/output/example-run']);
   assert.ok(CONFIG_TEMPLATE.split('\n').filter(line => line.startsWith('#')).length >= 8);
   for (const [text, message] of [
@@ -41,7 +41,7 @@ test('first run creates the single config file from the internal template and do
   const path = join(root, 'config', 'config.toml');
   assert.equal(await loadOrCreateConfig(path, root, {}), null);
   assert.equal(await readFile(path, 'utf8'), CONFIG_TEMPLATE);
-  await assert.rejects(loadOrCreateConfig(path, root, {}), /models.koharu/);
+  assert.equal((await loadOrCreateConfig(path, root, {})).models, undefined);
   const fresh = await tempRoot(t);
   const { code, out } = await cli({ root: fresh });
   assert.equal(code, 2);

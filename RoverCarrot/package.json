@@ -28,5 +28,10 @@
     "onnxruntime-node": "1.27.0",
     "sharp": "0.35.5",
     "smol-toml": "1.9.0"
+  },
+  "overrides": {
+    "onnxruntime-node": {
+      "adm-zip": "^0.6.0"
+    }
   }
 }

@@ -22,7 +22,7 @@ app.whenReady().then(() => {
     chw[c * pixels + p] = (bitmap[p * 4 + 2 - c] / 255 - mean[c]) / std[c];
   const bytes = Buffer.from(chw.buffer);
   writeFileSync(join(output, 'electron-chw.bin'), bytes);
-  writeFileSync(join(output, 'electron-preprocess.json'), JSON.stringify({ versions: process.versions,
+  writeFileSync(join(output, 'electron-preprocess.json'), JSON.stringify({ platform: process.platform, arch: process.arch, versions: process.versions,
     size: image.getSize(), resizedSize: resized.getSize(), tensorSha256: createHash('sha256').update(bytes).digest('hex') }, null, 2));
   app.quit();
 }).catch(error => { console.error(error); app.exit(1); });
