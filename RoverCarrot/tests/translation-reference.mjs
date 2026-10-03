@@ -16,7 +16,7 @@ const selections = {
   'src/main/pipeline/overlayItems.ts': ['filterRejectedOrUncertainSoundItems', 'normalizeConfidence', 'normalizeOverlayTextRole', 'REQUIRED_SOUND_CONFIDENCE'],
 };
 const imports = {
-  'src/main/runtime/simple-page-request-summary.cjs': 'const {readOcrCandidateText} = require("./simple-page-prompts.cjs"); const {truncateText} = require("./simple-page-runtime-common.cjs"); const {mimeFromPath} = require("./simple-page-image-utils.cjs");', 
+  'src/main/runtime/simple-page-request-summary.cjs': 'const {readOcrCandidateText} = require("./simple-page-prompts.cjs"); const {truncateText} = require("./simple-page-runtime-common.cjs"); const {mimeFromPath} = require("./simple-page-image-utils.cjs");',
   'src/shared/geometry.ts': 'export {clamp, clampBbox, pixelsToBbox, normalizeBboxTo1000} from "./bboxNormalization";',
   'src/main/pipeline/keepBlocksResult.ts': 'import {bboxToPixels} from "../../shared/geometry";',
   'src/main/linkedWorkspace/linkedWorkspaceTranslationJson.ts': 'import {resolvePageBlocksForReading} from "../../shared/blockReadingOrder"; import {escapeDelimitedCell} from "../../shared/reviewTable";',
