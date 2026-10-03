@@ -27,7 +27,7 @@ GUI 없이 Linux에서 독립 실행되는 Core로 옮기고, 이후 처리 시�
 | M2–M5 | 정의와 future scope만 있다. 아직 active가 아니다 |
 | Reference source | fork `fd461737`(upstream v2.8.2 `d20695df` + fork 커밋). "기존 Carrot"의 의미와 fork 전용 기능: [RoverCarrot/AGENTS.md](../../AGENTS.md#reference-implementation) |
 | RoverCMT production code | Step 1 승인 완료; Step 2 실제 Koharu CPU Detection DONE(2026-10-03 사용자 checkpoint 승인, 완료 commit `4e8059e4`). 다른 stage는 no-op. [실행/개발](../../README.md), [Step 1 Result](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-1--core-architecture-contracts--cli-adapter), [Step 2 Result](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-2--detection--koharu) |
-| 확정된 주요 결정 | 2026-10-01: M1 호환 = Windows Carrot에서 output open/use(interoperability), 기존 Translation ↔ Erase 병렬 경로는 M1에서 이식, M1 renderer = Skia Canvas primary / Playwright Chromium fallback. 상세: [M1 CURRENT](M1_LINUX_PORT/CURRENT.md) 상단 표 |
+| 확정된 주요 결정 | 2026-10-01: M1 호환 = Windows Carrot에서 output open/use(interoperability), M1 renderer = Skia Canvas primary / Playwright Chromium fallback. 상세: [M1 CURRENT](M1_LINUX_PORT/CURRENT.md) 상단 표. 2026-10-03: managed Gemma 4 26B, 순차 baseline; 병렬 실행·GPU scheduling·vLLM·5090 최적화는 Post-M1([대체 기록](M1_LINUX_PORT/CURRENT.md#m1-baseline-decision-2026-10-03)) |
 | 마지막 구조 갱신 | 2026-10-03 M1 agent handoff workflow: implementation/review role, handoff State·Next role, finding disposition, 반복 제한([agent workflow](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#how-to-use-this-plan-agent)), [Reference-driven validation](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#reference-driven-validation), [Step 4](M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-4--translation) 번역 검증 원칙. |
 | 이전 구조 갱신 | 2026-10-02 Carrot input/import source trace: [M1-INPUT-001](M1_LINUX_PORT/CURRENT.md#m1-input-001--carrot-inputimport-parity)(parity) / [M5-INPUT-001](M5_FEATURES/IDEAS.md#m5-input-001--carrot에-없던-input-형식import-방식)(신규 기능) 추가. |
 
@@ -35,7 +35,7 @@ GUI 없이 Linux에서 독립 실행되는 Core로 옮기고, 이후 처리 시�
 
 | ID | 이름 | 목표(한 줄) | 상태 | 문서 |
 |---|---|---|---|---|
-| M1 | Linux Port | Windows/Electron Carrot의 자동 번역 pipeline을 Linux CLI RoverCMT로 그대로 이식한다. 성능 최적화는 목표가 아니다 | **ACTIVE** | [README](M1_LINUX_PORT/README.md) · [CURRENT](M1_LINUX_PORT/CURRENT.md) · [IDEAS](M1_LINUX_PORT/IDEAS.md) · [REJECTED](M1_LINUX_PORT/REJECTED.md) |
+| M1 | Linux Port | Windows/Electron Carrot의 자동 번역 pipeline을 Linux CLI RoverCMT로 이식한다(managed Gemma 4 26B, 순차 baseline). 성능 최적화는 목표가 아니다 | **ACTIVE** | [README](M1_LINUX_PORT/README.md) · [CURRENT](M1_LINUX_PORT/CURRENT.md) · [IDEAS](M1_LINUX_PORT/IDEAS.md) · [REJECTED](M1_LINUX_PORT/REJECTED.md) |
 | M2 | Reviewed Test Set / Benchmark | 사용자가 검토·승인한 Golden Sample과 stage별/E2E benchmark를 만든다 | not active | [README](M2_TEST_SET/README.md) · [CURRENT](M2_TEST_SET/CURRENT.md) · [IDEAS](M2_TEST_SET/IDEAS.md) · [REJECTED](M2_TEST_SET/REJECTED.md) |
 | M3 | Pipelining | M1과 기능/품질 차이 없이 stage/page 병렬화로 전체 시간을 줄인다. 불가능하면 근거를 남기고 종료할 수 있다 | not active | [README](M3_PIPELINING/README.md) · [CURRENT](M3_PIPELINING/CURRENT.md) · [IDEAS](M3_PIPELINING/IDEAS.md) · [REJECTED](M3_PIPELINING/REJECTED.md) |
 | M4 | Optimization | stage 자체의 처리속도를 항목별로 실험·개선한다. 품질 trade-off는 사용자가 결정한다 | not active | [README](M4_OPTIMIZATION/README.md) · [CURRENT](M4_OPTIMIZATION/CURRENT.md) · [IDEAS](M4_OPTIMIZATION/IDEAS.md) · [REJECTED](M4_OPTIMIZATION/REJECTED.md) |
@@ -191,6 +191,7 @@ RoverCarrot/AGENTS.md
 | Detection(Koharu ONNX, region 후처리, 반복 추론) | [DETECTION_PIPELINE_MIGRATION_ANALYSIS.md](../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md) |
 | OCR(HayaiOCR runtime, Linux smoke 계획) | [OCR_RUNTIME_MIGRATION_ANALYSIS.md](../analysis/OCR_RUNTIME_MIGRATION_ANALYSIS.md) |
 | Translation pipeline(backend, prompt, parser, mapping) | [TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md](../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md) |
+| Translation managed llama-server backend source trace (M1 2026-10-03) | [TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md](../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md) |
 | Translation LLM 요청 내용, context/memory, token·timing 근거 | [TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md](../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md) |
 | Erase/Inpainting(FLUX Klein, mask, 장시간 실행) | [INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md](../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md) |
 | Renderer 후보와 기각 후보 | [RENDERER_CANDIDATE_ANALYSIS.md](../analysis/RENDERER_CANDIDATE_ANALYSIS.md) |

@@ -37,7 +37,7 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 
   | 기능 | 커밋 |
   |---|---|
-  | Translation ↔ Erase 병렬 경로 | `c5cef4cf` |
+  | Translation ↔ Erase 병렬 경로(M1 이식은 Deferred / Post-M1; [결정](docs/milestones/M1_LINUX_PORT/CURRENT.md#m1-baseline-decision-2026-10-03)) | `c5cef4cf` |
   | Hayai OCR `ocrSubdivision`/`ocrHealth` 복구 | `cd7a336a` |
   | batched Hayai OCR 복원 | `e8efcecf` |
   | page workflow performance profiling | `a4c7e2ab` |
@@ -51,7 +51,7 @@ RoverCMT 문서에서 "기존 Carrot", "Windows Carrot", "Carrot 현재 동작"�
 - Rover PC의 WSL2 Ubuntu 환경(GPU 접근 포함)이 실제로 준비됐는지는 M1 Step 1 시작 시 확인한다. 준비되지 않았으면 사용자에게 알리고 Step 1을 `BLOCKED`로 둔다. 확인 결과가 위 값과 달라도 사용자 확인 없이 문서의 환경 값을 바꾸지 않는다.
 - 모든 에이전트가 이 머신에서 실행된다고 가정하지 않는다. GPU가 없는 세션도 있다.
 - GPU가 필요한 검증(FLUX, Hayai CUDA 등)은 실행 시 GPU/runtime 가용성을 먼저 확인한다. 불가능하면 완료 처리하지 말고 Step Result에 "Rover PC에서 추가 검증 필요"로 남긴다.
-- 번역 endpoint는 환경마다 다를 수 있다(외부 번역기, 내장/로컬 서버 등). 확정된 방향은 "OpenAI-compatible endpoint를 설정으로 받는다"까지다. URL, model, API key, 환경변수 이름, live 호출 허용 여부는 M1 Step 4에서 정한다. credential은 repo에 넣지 않는다. 외부 서버 없이 local backend로 검증하는 M1 번역 검증 원칙은 [Step 4](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-4--translation)에 있다.
+- M1 번역 대상은 managed llama-server(`modelProvider="gemma"`), 기준 모델 Gemma 4 26B다. 내부 OpenAI-compatible client도 이식한다. 세부 구성·Linux binary/packaging/lifecycle은 Step 4 D32·D33에서 결정·검증하며 임의로 새 runtime을 선택하지 않는다. credential은 repo에 넣지 않는다. [2026-10-03 결정](docs/milestones/M1_LINUX_PORT/CURRENT.md#m1-baseline-decision-2026-10-03)과 [Step 4](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-4--translation)를 따른다.
 - analysis의 run evidence는 예전 구성(로컬 RTX 5070 Ti에서 OCR/FLUX, Rover 5090에서 llama.cpp Gemma 번역 서버)에서 나왔다. 수치를 인용할 때 이 환경 차이를 감안한다.
 
 ## 로컬 전용 데이터

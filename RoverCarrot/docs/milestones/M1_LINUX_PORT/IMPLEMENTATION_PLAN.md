@@ -41,7 +41,7 @@
 | 5 | [Typography / Layout](#step-5--typography--layout) | NOT_STARTED | 고정 입력의 font size·bubble layout이 reference와 일치 |
 | 6 | [Inpainting / Erase](#step-6--inpainting--erase) | NOT_STARTED | Linux FLUX runner로 기존 mask·erase 결과 재현 |
 | 7 | [Renderer (Skia primary)](#step-7--renderer-skia-primary) | NOT_STARTED | v3 fixture + Linux Skia smoke + font capability smoke |
-| 8 | [Full Integration & Interoperability](#step-8--full-integration--interoperability) | NOT_STARTED | Linux E2E + Translation ↔ Erase 병렬 경로 + Windows Carrot open/use |
+| 8 | [Full Integration & Interoperability](#step-8--full-integration--interoperability) | NOT_STARTED | Linux 순차 E2E + managed translation lifecycle + Windows Carrot open/use |
 
 ### 기본 8-Step에서 바꾼 점
 
@@ -195,7 +195,7 @@ Stages / runtime implementations
 Pipeline
   +-- Detection boundary    \-- Koharu implementation
   +-- OCR boundary          \-- Hayai implementation
-  +-- Translation boundary  \-- OpenAI-compatible implementation
+  +-- Translation boundary  \-- managed llama-server + OpenAI-compatible client
   +-- Inpainting boundary   \-- FLUX implementation
   \-- Renderer boundary     +-- Skia implementation
                             \-- Playwright fallback/reference
@@ -207,7 +207,7 @@ Pipeline
   - runtime/library 교체 가능성이 높은 곳
   - 실행 방식이 다른 곳(subprocess, Python, Rust, HTTP, GPU runtime)
   - M3에서 독립 실행 단위가 될 가능성이 높은 곳
-  - analysis에서 migration boundary가 이미 확인된 곳(예: [OCR §13](../../analysis/OCR_RUNTIME_MIGRATION_ANALYSIS.md#13-recommended-migration-boundary), [INPAINTING §12](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#12-linux-rovercmt-boundary), [TRANSLATION_PIPELINE §16](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#16-recommended-migration-boundary), [DETECTION §20](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#20-linux-rovercmt-boundary))
+  - analysis에서 migration boundary가 이미 확인된 곳(예: [OCR §13](../../analysis/OCR_RUNTIME_MIGRATION_ANALYSIS.md#13-recommended-migration-boundary), [INPAINTING §12](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#12-linux-rovercmt-boundary), [TRANSLATION_PIPELINE §16](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#16-recommended-migration-boundary), [DETECTION §20](../../analysis/DETECTION_PIPELINE_MIGRATION_ANALYSIS.md#20-linux-rovercmt-boundary)); Translation §16의 managed 제외 권고는 [현재 결정](CURRENT.md#m1-baseline-decision-2026-10-03)으로 대체됨
 
 ### A3. M1은 완전한 decoupling을 요구하지 않는다
 
@@ -233,9 +233,9 @@ shared object가 있는지가 문제가 아니라 **의존이 숨겨진 global s
 
 | Milestone | 이 방향에서의 역할 |
 |---|---|
-| M1 | Linux E2E 기능 이식, architecture boundary 형성, coupling 식별·명시, 기존 Translation ↔ Erase overlap 이식 |
+| M1 | Linux E2E 기능 이식, architecture boundary 형성, coupling 식별·명시, managed Gemma 4 26B + 순차 실행 baseline |
 | M2 | 사용자 검토 Golden Sample·benchmark로 현재 동작 고정 |
-| M3 | pipelining을 막는 shared mutable state·scheduling 의존 분리, page/stage concurrency, GPU/resource scheduling, 기존 overlap을 넘어선 concurrency |
+| M3 | pipelining을 막는 shared mutable state·scheduling 의존 분리, page/stage concurrency, GPU/resource scheduling, 기존 Translation ↔ Erase overlap과 추가 concurrency(Post-M1) |
 | M4 | runtime/provider 교체, stage별 성능 최적화, 필요한 추가 decoupling |
 
 장기 목표: 하위 Detection/OCR/Translation/Inpainting/Renderer implementation이 바뀌어도 상위 Core와 외부 caller가 영향을 적게 받는 구조. **이 목표를 위해 M1 scope를 키우지 않는다.**
@@ -245,7 +245,7 @@ shared object가 있는지가 문제가 아니라 **의존이 숨겨진 global s
 - **WHAT:** 각 stage가 어떤 input으로 어떤 result를 만드는가.
 - **WHEN/HOW:** 언제 실행하는가, page 간 overlap, 동시성 한도, GPU/resource 조정.
 - M1에서 완전한 scheduler abstraction을 만들 필요는 없다. 다만 stage implementation 안에 전체 pipeline scheduling 정책을 박아 넣어 M3에서 뜯어내기 어렵게 만들지 않는다.
-- 기존 Translation ↔ Erase 병렬 경로([M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식))는 M1에서 동작을 이식하되, scheduling 정책 쪽(orchestration)에 두어 M3에서 확장할 수 있게 한다.
+- M1은 기존 순차 stage 순서를 이식·검증한다. Translation ↔ Erase 병렬 경로는 [M1-CORE-002 이동 기록](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식)을 따라 Post-M1이다. scheduling 정책은 orchestration에 둔다.
 
 ### A7. 기존 규칙
 
@@ -339,29 +339,31 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 | D6 | progress/timing 출력 형식 | M1-OBS-001 | 1 | 해결 | 아니오 | — |
 | D7 | stage result/error 기본 contract, partial failure 표현(CORE §17 #4) | M1-CORE-001 | 1 | 기본 contract 해결. 기존 completed/failed 의미 보존 | 예(모든 stage의 전제) | 상태 세분화는 후속 가능 |
 | D8 | Core 구현 언어/runtime과 code hierarchy, dependency direction | Step 1 범위(이 계획) | 1 | 해결. 사용자 판단이 필요한 trade-off면 사용자에게 제시 | 예 | 아니오 |
-| D9 | 배포 형태(venv/container/system package), GPU 필수 여부 | M1-RUNTIME-001 | 1 기록 → 2·3·6·7에서 runtime별 결정 → 8 확정 | 단계적 | 아니오 | — |
+| D9 | 배포 형태(venv/container/system package), GPU 필수 여부 | M1-RUNTIME-001 | 1 기록 → 2·3·4·6·7에서 runtime별 결정 → 8 확정 | 단계적 | 아니오 | — |
 | D10 | 입력 materialization(zip/folder, webp→PNG 등 Carrot import 동작) 범위 | 누락 확인(CORE §1 import) | 1 기록 → 8 확인 | 최소 input contract 해결. Carrot parity 범위는 source trace로 확정해 [M1-INPUT-001](CURRENT.md#m1-input-001--carrot-inputimport-parity) 점검표로 추적(2026-10-02). 구현 Step 배정은 사용자 결정 | 아니오(Step별) | 아니오(M1 완료 전 parity 항목 구현·검증) |
 | D11 | 사용자 rule stage(source/translation/format rules)와 review stage를 M1에 포함할지 | 누락 확인([CORE §1](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#1-end-to-end-production-data-flow), [CORE §16](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#16-what-not-to-migrate-초기)) | 1 기록 → 8 결정 | 사용자 확인 필요 | 아니오(rule 없으면 no-op) | 아니오(M1 완료 전 결정) |
 | D12 | detection open decisions(DETECTION §25): raw mask 보존, cache 범위, SFX 범위, 재실행 semantics, ONNX 구현 언어, presentation 기본값 분리, source direction | M1-DETECT-001 | 2 | SFX 범위·재실행 semantics·ONNX 언어는 해결(현재 동작 보존 기본). raw mask 보존·cache는 기록 | 아니오 | raw mask/cache는 [M4-DETECT-001](../M4_OPTIMIZATION/IDEAS.md#m4-detect-001--같은-원본-raster의-koharu-raw-inference-재사용) |
 | D13 | raw OCR 보존과 sanitize 위치(CORE §17 #1) | M1-OCR-001 | 3 | 해결(현재 동작 보존 기본, 변경 시 사용자 결정) | 아니오 | — |
 | D14 | 번역 누락 block 처리(CORE §17 #2) | M1-CORE-001 | 4 | 기록(현재 동작 보존) | 아니오 | 변경은 별도 사용자 결정 |
 | D15 | AI glossary 자동 누적(CORE §17 #8) | M1-CORE-001 | 4 | 기록(현재 동작 보존) | 아니오 | [M4-TRANS-010](../M4_OPTIMIZATION/IDEAS.md#m4-trans-010--memory-correction과-provenance) |
-| D16 | 원격 server 설정 기록 방식, 요청별 work-context snapshot 저장, TR §16 미결정 목록 | M1-TRANS-001, M1-PERSIST-001 | 4 | 해결 | 아니오 | TR §16 중 동작 변경 항목은 M4 |
+| D16 | managed server launch/config provenance, 요청별 work-context snapshot 저장, TR §16의 다른 미결정 목록 | M1-TRANS-001, M1-PERSIST-001 | 4 | 해결 | 아니오 | TR §16 중 동작 변경 항목은 M4 |
 | D17 | 자동 font matching(autoFont) 지원 범위 | 누락 확인([INITIAL §7](../../analysis/INITIAL_MIGRATION_ANALYSIS.md#7-초기-rovercmt에서-제외-가능한-항목)) | 5 | 사용자 확인 필요. 현재 사용자 기본 설정은 autoFont=false | 아니오 | — |
 | D18 | Typography/Layout 전용 analysis 부재 | 누락 확인 | 5 | Step 5 시작 시 source trace로 보완 | 아니오 | — |
 | D19 | INPAINTING §17 UNDECIDED: bubble prepass 유지, 약한 변경 판정 품질 gate, GPU owner, `sourceEraseScale` 기본 사용 | M1-INPAINT-001 | 6 | prepass·`sourceEraseScale`는 현재 동작 보존으로 해결. gate는 기록 | 아니오 | GPU 정책 확장은 M3 |
-| D20 | 번역 누락 block의 erase 처리(CORE §17 #3, INPAINTING §17 #1) | M1-CORE-002, M1-INPAINT-001 | 6 기록 → 8 확인 | 현재 동작 보존(사용자 결정 2026-10-01) | 아니오 | 변경은 별도 사용자 결정 |
-| D21 | GPU ownership(CORE §17 #6) | M1-INPAINT-001, M1-CORE-002 | 6·8 | 기존 handoff 순서 보존 | 아니오 | [M3-RUNTIME-001](../M3_PIPELINING/IDEAS.md#m3-runtime-001--pipelining을-위한-gpu-resource-scheduling) |
+| D20 | 번역 누락 block의 erase 처리(CORE §17 #3, INPAINTING §17 #1) | M1-CORE-001, M1-INPAINT-001 | 6 기록 → 8 확인 | 현재 동작 보존(사용자 결정 2026-10-01) | 아니오 | 변경은 별도 사용자 결정 |
+| D21 | GPU ownership(CORE §17 #6) | M1-INPAINT-001, M1-TRANS-001 | 4·6·8 | 기존 handoff 순서 보존 | 아니오 | [M3-RUNTIME-001](../M3_PIPELINING/IDEAS.md#m3-runtime-001--pipelining을-위한-gpu-resource-scheduling) |
 | D22 | Skia Linux smoke, isolated-process memory, font capability, `_047` 등 source-match 차이 | M1-RENDER-001 | 7 | 해결 | Skia 방향에는 예, M1 전체에는 아니오(Playwright fallback 있음) | — |
 | D23 | 출력 형식(PNG/JPEG, source 형식 보존 등 export 동작) | 누락 확인([CORE §1](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#1-end-to-end-production-data-flow) Renderer/Export) | 7 | 해결 | 아니오 | — |
-| D24 | Translation ↔ Erase 병렬 경로의 Linux 기능적 동등성 | M1-CORE-002 | 8 | 해결(차이가 있으면 이유 기록) | 아니오 | 추가 concurrency는 M3 |
+| D24 | Translation ↔ Erase 병렬 경로의 Linux 기능적 동등성 | M1-CORE-002 | Post-M1 | **Superseded / Deferred** ([2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)) | 아니오 | [M3-SCHED-001](../M3_PIPELINING/IDEAS.md#m3-sched-001--기존-translation--erase-병렬을-넘어선-추가-stage-overlap) |
 | D25 | 실제 Windows Carrot에서 RoverCMT output open/use | M1-COMPAT-001 | 8 | 해결 | **예**(M1 완료 조건) | 아니오 |
 | D26 | 대표 실제 page로 최소 E2E | M1-CORE-001 | 8 | 해결 | 예(M1 완료 조건) | 아니오 |
 | D27 | reproducibility 수준(CORE §17 #10, CORE §10 L1–L3) | M1-PERSIST-001 | 1 기록 → 8 확인 | 기록 | 아니오 | — |
 | D28 | RENDERER_CANDIDATE_ANALYSIS §7 기각 후보를 사용자 REJECTED로 기록할지 | M1-RENDER-001 | 어느 Step과도 무관 | 사용자 확인 | **아니오** | 언제든 |
 | D29 | Rover Output 이식을 어느 Step에서 구현할지 | M1-PERSIST-002 | 4 구현 → 8 통합(기본안) | 기본안 유지. export는 번역 저장 상태에서 트리거되므로 translation persistence가 생기는 Step 4에서 export를 구현하고, 출력 경로·기본 입출력 디렉터리와 전체 output 흐름은 Step 8에서 통합 검증한다 | 아니오 | 아니오(M1 scope) |
-| D30 | 병렬 경로의 장치 전제: 번역 backend가 별도 장치에 있는 전제 vs 같은 GPU 공유 가능성 | M1-CORE-002 | 8 | 기록·검증(결정하지 않음) | 아니오 | GPU scheduling은 [M3-RUNTIME-001](../M3_PIPELINING/IDEAS.md#m3-runtime-001--pipelining을-위한-gpu-resource-scheduling) |
+| D30 | 병렬 경로의 별도 장치 vs 같은 GPU 공유 전제 | M1-CORE-002 | Post-M1 | **Superseded / Deferred** ([2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)) | 아니오 | [M3-RUNTIME-001](../M3_PIPELINING/IDEAS.md#m3-runtime-001--pipelining을-위한-gpu-resource-scheduling) |
 | D31 | 로컬 Carrot data root 위치(비교 기준 데이터) | Step 2–6 Validation | 2 시작 전 | Step 2에서 read-only filesystem/model/chapter-page-run binding으로 식별(2026-10-02); [ignored context와 재현](STEP2_VALIDATION.md#reference-binding-d31) | 예(Step 2–6 비교 검증의 전제) | 아니오 |
+| D32 | Gemma 4 26B 세부 구성: quantization, economy26b vs qat26b, QAT/MTP 여부, mainline/SPEED 및 CUDA12/13 profile | 2026-10-03 user decision; [source trace](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md#source-evidence) | 4 시작 전 | **OPEN** — backend=managed gemma, 모델 계열=26B만 확정. 변형을 임의 선택하지 않음 | 예(Step 4 exact configuration 검증) | 아니오 |
+| D33 | managed llama-server Linux binary·runtime packaging·preflight/ABI·process tree 종료·Windows 경로 적응 | M1-TRANS-001, M1-RUNTIME-001; [Windows coupling](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md#windows-coupling) | 4 | **OPEN** — catalog에 Linux 없음. Linux 대체 build/binary/배포·종료 방식은 사용자 결정과 실검증 필요; 후보 선택·구현 없음 | 예(managed Linux lifecycle 및 M1 완료) | 아니오 |
 
 ---
 
@@ -400,7 +402,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Architecture/coupling concerns:**
   - Carrot은 page 결과와 translation memory를 한 transaction으로 저장한다([TR-LLM §10.1](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#101-workflow의-저장-의미-fact)). persistence boundary는 이 commit 의미를 나중에 표현할 수 있어야 한다.
   - stage는 page/block state를 공유한다. Step 1의 stage contract는 shared state를 허용하되 read/write를 드러낼 수 있어야 한다([A4](#a4-없애지-못한-coupling은-명시적으로-보이게-한다)).
-  - 실행 순서는 stage-major다([TRANSLATION_PIPELINE §1.1](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#11-stage-진입)). orchestration은 이 순서를 표현하되 M1-CORE-002 병렬 경로를 나중에 넣을 수 있어야 한다.
+  - 실행 순서는 stage-major다([TRANSLATION_PIPELINE §1.1](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#11-stage-진입)). M1 orchestration은 기존 순차 순서를 표현한다. 병렬 경로는 Post-M1이다([2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)).
 - **Validation:**
   - Linux에서 CLI 실행
   - config load
@@ -434,7 +436,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - D11: skeleton은 source/translation/format rules 및 review 순서 표현 가능; 실제 포함 여부 사용자 결정 Step 8.
   - D27: config, page IDs, copied source, run event/timing 기록. exact model/request/runtime provenance는 실제 stage Step에서 확장; M2 Golden/benchmark 아님.
   - Known differences: no-op providers만 있음; 실제 번역/최종 raster 없음. partial input publication 실패 시 신규 디렉터리를 보존하고 자동 정리하지 않음. 기존 출력/링크는 거부. Linux → Windows interoperability는 source 분석과 최소 출력 smoke까지만 검증.
-  - Remaining coupling / follow-up: shared chapter/page state + chapter 전체 rewrite; 순차 stage-major 정책은 pipeline 소유. provider는 page copy 반환 및 reads/writes/resources 선언. translation memory 순서와 page/context transaction 구현은 Step 4; Translation↔Erase overlap/GPU handoff는 Step 8. [M3-STATE-001](../M3_PIPELINING/IDEAS.md#m3-state-001--공유-mutable-state-분리), [M3-TRANS-001](../M3_PIPELINING/IDEAS.md#m3-trans-001--translation-memory-순차-dependency-완화), [M4-PERSIST-001](../M4_OPTIMIZATION/IDEAS.md#m4-persist-001--chapter-전체-json-반복-rewrite-비용-개선) 기존 item과 연결; 신규 최적화 구현 없음.
+  - Remaining coupling / follow-up: shared chapter/page state + chapter 전체 rewrite; 순차 stage-major 정책은 pipeline 소유. provider는 page copy 반환 및 reads/writes/resources 선언. translation memory 순서와 page/context transaction 구현은 Step 4; Translation↔Erase overlap/GPU handoff는 Step 8이라는 당시 계획은 [2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)으로 superseded; Step 8은 순차 handoff 검증, overlap은 Post-M1. [M3-STATE-001](../M3_PIPELINING/IDEAS.md#m3-state-001--공유-mutable-state-분리), [M3-TRANS-001](../M3_PIPELINING/IDEAS.md#m3-trans-001--translation-memory-순차-dependency-완화), [M4-PERSIST-001](../M4_OPTIMIZATION/IDEAS.md#m4-persist-001--chapter-전체-json-반복-rewrite-비용-개선) 기존 item과 연결; 신규 최적화 구현 없음.
   - User review supplement (2026-10-02): 실제 JPG 4페이지가 `No PNG inputs`로 실패한 문제를 지원 형식 확대/실제 decode로 수정. 인자 없는 `npm run smoke` Usage error를 repository fixture 기반 CLI validation으로 수정. 손상된 기존 1×1 PNG test fixture를 유효한 합성 PNG로 교체. tracked 소형 fixture와 Git 제외 `test-data/input/`, `test-data/output/` 분리; README에 폴더 복사/config/신규 output 사용법 기록. 실제 사용자 만화는 commit하지 않음.
   - Supplement validation: `npm run check`(typecheck/lint/build, 21 tests), `npm run smoke`(12 tests), `npm run check:boundaries`; PNG/JPG/JPEG/WebP/JFIF/case-insensitive 단일 입력, mixed natural order, 크기/bytes 복사, malformed/truncated/mismatch/unsupported 처리 및 explicit CLI config 검증. `git check-ignore`로 임의 중첩·dotfile·내부 ignore의 unignore 시도도 제외됨을 확인. root reference source 무변경. 보완 commit은 `86749346` — `fix(rover): support image inputs and repository smoke validation`.
   - Follow-up history (git history 확인, 2026-10-02): 최초 구현 `4c63e463` 유지. `77561d35` 완료 checkpoint 기록 → `86749346` input/smoke remediation → `ebf7466a` Carrot input/import parity 범위 기록 → `2003514e` 내부 디렉터리 `RoverCarrot/` rename → `5aa082e4` 고정 config 경로와 `--input`/`--output` override → `e99c9c76` single TOML `config/config.toml`, `--config` 제거, 사람용 progress/PASS/FAIL과 `logs/` 분리 → `030b2df5` 상세 로그 `rovercmt.log` → `log_all.log` rename.
@@ -504,26 +506,27 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 
 - **Status:** NOT_STARTED
 - **Goal:** 현재 production translation semantics를 Linux Core로 이식한다.
-- **Scope:** OpenAI-compatible client, 현재 prompt/context 구성(원본 page 이미지 포함), OCR candidate/`sourceText` grounding, work context(glossary, characters, story memory, 이전 화 story pages), response parsing, block mapping/merge, retry/error 처리, 현재 memory commit semantics.
-- **Explicit non-goals:** [M4 Translation IDEAS](../M4_OPTIMIZATION/IDEAS.md#translation) 전부(prompt 축소, Previous pass 중복 제거, output schema 축소, page-context trailer 최적화, image resize/re-encode, cache-friendly ordering, VLM 단독 OCR, memory 재설계). managed llama-server, Codex provider, fixed-block/group review 경로([TRANSLATION_PIPELINE §16](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#16-recommended-migration-boundary)).
+- **Scope:** managed llama-server(`gemma`), Gemma 4 26B model/runtime 준비·launch/preflight/readiness/stop·page별 endpoint session, 내부 OpenAI-compatible client, 현재 prompt/context 구성(원본 page 이미지 포함), OCR candidate/`sourceText` grounding, work context(glossary, characters, story memory, 이전 화 story pages), response parsing, block mapping/merge, retry/error 처리, 현재 memory commit semantics.
+- **Explicit non-goals:** [M4 Translation IDEAS](../M4_OPTIMIZATION/IDEAS.md#translation) 전부(prompt 축소, Previous pass 중복 제거, output schema 축소, page-context trailer 최적화, image resize/re-encode, cache-friendly ordering, VLM 단독 OCR, memory 재설계). Translation ↔ Erase 병렬 실행·GPU scheduling·vLLM·단일 5090 최적화(Post-M1, [2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)). Codex provider, fixed-block/group review 경로([TRANSLATION_PIPELINE §16](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#16-recommended-migration-boundary)).
 - **Related M1 items:** [M1-TRANS-001](CURRENT.md#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식), [M1-PERSIST-001](CURRENT.md#m1-persist-001--persistence와-data-contract-parity), [M1-PERSIST-002](CURRENT.md#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리)(번역 JSON/CSV export 구현, D29)
 - **Prerequisites:** Step 3 DONE(또는 기존 artifact의 `sourceText`로 단독 검증 가능).
 - **Related analysis:**
   - [TR-LLM §2 Actual Production Call Path](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#2-actual-production-call-path), [§3 Exact Request Anatomy](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#3-exact-request-anatomy), [§16 Minimal Linux Rover Translation Contract](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#16-minimal-linux-rover-translation-contract), [§18 Milestone 1 Blockers](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#18-milestone-1-blockers-if-any)
   - [TR-LLM §8 Glossary](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#8-glossary-lifecycle), [§9 Character](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#9-character-memory-lifecycle), [§10 Story Memory Lifecycle](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#10-story-memory-lifecycle)
   - [TRANSLATION_PIPELINE §4 Input Contract](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#4-translation-input-contract), [§5 Output Contract](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#5-translation-output-contract), [§6 Retry / Failure / Recovery](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#6-retry--failure--recovery), [§7 Ordering and Block Identity](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#7-ordering-and-block-identity), [§15 Runtime Smoke Test Plan](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#15-runtime-smoke-test-plan-미실행)
-- **Source areas to inspect:** `src/main/pageWorkflow/pageWorkflowTranslation.ts`, `src/main/wholePagePipeline.ts`(translate에 필요한 분기만), `src/main/pipeline/`(request options, retry, parse, keep-block mapping, `pageContextPersistence.ts`, `cumulativePageContext.ts`), `src/main/runtime/prompts/`, `src/main/runtime/parsing/`, `src/main/runtime/transport/translation-request.cjs`, `src/main/previousChapterContext.ts`.
-- **Open decisions to resolve:** D16, D29(Rover Output export 구현). 번역 endpoint의 URL·model·API key·환경변수 이름·live 호출 허용 여부도 이 Step에서 정한다([실행 환경](../../../AGENTS.md#실행-환경)). 기록: D14, D15(현재 동작 보존).
+- **Source areas to inspect:** `src/main/pageWorkflow/pageWorkflowTranslation.ts`, `src/main/wholePagePipeline.ts`(translate에 필요한 분기만), `src/main/pipeline/`(request options, retry, parse, keep-block mapping, `pageContextPersistence.ts`, `cumulativePageContext.ts`), `src/main/runtime/prompts/`, `src/main/runtime/parsing/`, `src/main/runtime/transport/translation-request.cjs`, `src/main/previousChapterContext.ts`, managed 경로의 [source trace](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md#source-evidence).
+- **Open decisions to resolve:** D16, D29(Rover Output export 구현), D32(26B 세부 구성), D33(Linux binary·packaging·lifecycle). backend/model 계열은 확정이며 Linux 실행 설정·live 검증 조건은 이 Step에서 정한다([실행 환경](../../../AGENTS.md#실행-환경)). 기록: D14, D15(현재 동작 보존).
 - **Architecture/coupling concerns:**
   - **순서 의존(M3에 중요):** page N+1 요청은 page N의 memory commit 이후 memory를 읽는다([TR-LLM §10.1](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#101-workflow의-저장-의미-fact)). 이 의존을 stage contract나 Result에 명시하고 [M3-TRANS-001](../M3_PIPELINING/IDEAS.md#m3-trans-001--translation-memory-순차-dependency-완화)과 연결한다.
   - translation은 page/block state와 work 단위 `style-guide.json`, chapter 단위 `story-memory.json`을 쓴다.
-  - Carrot은 endpoint session을 page마다 열고 닫는다. 현재 `openai-api` 설정에서는 비용이 없다([TR-LLM §13.3](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#133-잠재-위험-fact-code--inference-영향)).
+  - Carrot은 endpoint session을 page마다 열고 닫는다. managed `gemma`는 실제 start/stop 비용이 있으며 M1은 이 lifecycle을 우선 보존한다. 과거 `openai-api` 실사용에서는 비용이 없었다([TR-LLM §13.3](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#133-잠재-위험-fact-code--inference-영향)).
 - **Validation:** 고정 OCR/page/context 입력으로 request construction(저장된 `result.json`의 prompt·system prompt와 비교), parsing, merge, memory 갱신을 검증한다. endpoint 실호출 smoke는 TRANSLATION_PIPELINE §15 S4를 따르되 아래 원칙대로 local backend를 쓸 수 있다. server 설정은 결과와 함께 기록한다.
 - **M1 translation correctness (2026-10-03 사용자 결정):**
   - 기준은 번역 문장의 exact parity가 아니라 observable contract다: request payload, prompt/context 구성, block/text grouping과 순서, API 호출 흐름, timeout/retry/error 처리, response parsing, persistence, empty/partial/error response 처리, downstream workflow 연결.
   - deterministic하게 비교할 수 있는 request/response 구조와 parsing 결과는 Carrot reference behavior로 검증한다. 번역 문장 자체의 reference exact-match test는 만들지 않는다.
   - 외부 개인 번역 서버의 availability는 M1 진행의 전제가 아니다. live 호출 검증에는 Rover PC(RTX 5090) 등에서 쓸 수 있는 local OpenAI-compatible LLM backend를 쓸 수 있다. 다른 LLM/backend 때문에 생긴 번역 문구 차이는 implementation regression이 아니다.
-- **Completion criteria:** translated block과 memory 갱신이 Rover persistence boundary를 통해 저장되고 다음 page 요청에 반영됨. [DONE 조건](#step-status와-done-조건) 충족.
+  - managed llama-server 경로가 M1 대상이므로([2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)) Step 4 완료에는 managed Gemma 4 26B Linux backend의 start/readiness/request/stop·abort/restart와 page별 session 검증이 추가로 필요하다. request/parse 등 contract 검증은 기존 원칙대로 다른 local OpenAI-compatible backend로도 할 수 있으나, 그것으로 managed lifecycle 검증을 대체해 완료 처리하지 않는다.
+- **Completion criteria:** D32·D33 해결과 managed Linux lifecycle smoke 완료. translated block과 memory 갱신이 Rover persistence boundary를 통해 저장되고 다음 page 요청에 반영됨. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
   - Status: —
   - Progress notes: —
@@ -565,8 +568,8 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Status:** NOT_STARTED
 - **Goal:** 기존 erase/inpainting 동작을 Linux RoverCMT로 이식한다.
 - **Scope:** mask 생성, crop 계획, bubble prepass 의존, 상주 FLUX runner(Rust/Candle, Linux CUDA), 결과 artifact와 block binding(`erasedWorkflowRegions`), 현재 erase semantics.
-- **Explicit non-goals:** Fast Erase, solid balloon fill, crop 수 감소 등 [M4 Inpainting IDEAS](../M4_OPTIMIZATION/IDEAS.md#inpainting). Koharu LaMa/AOT, Codex erase, Python Diffusers, ZLUDA/HIP([INPAINTING §17 DROP INITIALLY](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#17-recommended-migration-boundary)). Translation ↔ Erase 병렬 통합(Step 8).
-- **Related M1 items:** [M1-INPAINT-001](CURRENT.md#m1-inpaint-001--flux-klein-candle-runner-linux-runtime), [M1-RUNTIME-001](CURRENT.md#m1-runtime-001--linux-runtimemodel-의존성-교체적응), [M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식)(독립 호출 가능한 boundary 준비)
+- **Explicit non-goals:** Fast Erase, solid balloon fill, crop 수 감소 등 [M4 Inpainting IDEAS](../M4_OPTIMIZATION/IDEAS.md#inpainting). Koharu LaMa/AOT, Codex erase, Python Diffusers, ZLUDA/HIP([INPAINTING §17 DROP INITIALLY](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#17-recommended-migration-boundary)). Translation ↔ Erase 병렬 통합(Post-M1).
+- **Related M1 items:** [M1-INPAINT-001](CURRENT.md#m1-inpaint-001--flux-klein-candle-runner-linux-runtime), [M1-RUNTIME-001](CURRENT.md#m1-runtime-001--linux-runtimemodel-의존성-교체적응)
 - **Prerequisites:** Step 5 DONE(`fontSizePx`, bubble layout 코드). Linux CUDA GPU 환경.
 - **Related analysis:**
   - [INPAINTING §4 Input Contract](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#4-input-contract), [§5 Mask Generation](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#5-mask-generation), [§6 Runtime Lifecycle](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#6-inpainting-runtime-lifecycle), [§9 Output Contract](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#9-output-contract), [§12 Linux RoverCMT Boundary](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#12-linux-rovercmt-boundary), [§17 Recommended Migration Boundary](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#17-recommended-migration-boundary), [§18 Exact Next Step](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#18-exact-next-step)
@@ -576,7 +579,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - erase는 원본 또는 기존 inpainted raster, block bbox, `fontSizePx`, bubble prepass(Koharu)를 읽고 inpainted/mask artifact와 `erasedWorkflowRegions`를 쓴다.
   - erase 대상 선정은 `translatedText`를 보지 않는다([CORE §11](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#11-failure-semantics)).
   - FLUX와 Koharu, Hayai가 GPU를 공유한다. 기존 해제 순서를 이식하고 공유 resource를 Result에 기록한다([CORE §8](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#8-runtime--gpu-ownership-map)).
-  - Step 8의 병렬 경로가 erase를 translation과 독립적으로 호출할 수 있도록 boundary를 둔다([A6](#a6-stage-implementation과-execution-policy를-분리하는-방향)).
+  - Step 8은 기존 순차 stage 의미와 runtime 해제 순서를 검증한다. stage boundary는 execution policy와 분리한다([A6](#a6-stage-implementation과-execution-policy를-분리하는-방향)).
 - **Validation:** 고정 page/block/mask 입력으로 기존 `inpaintMaskPath`·`inpaintedImagePath`와 비교한다(INPAINTING §18 protocol smoke부터). model load 시간과 crop 시간은 기록만 한다.
 - **Completion criteria:** erase 결과가 Rover stage boundary로 저장되고 layout·renderer가 쓸 수 있음. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
@@ -615,16 +618,16 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 
 - **Status:** NOT_STARTED
 - **Goal:** 모든 M1 component를 실제 Linux pipeline으로 연결하고 M1 사용자 요구사항을 E2E로 검증한다.
-- **Scope:** full real pipeline 연결, stage 순서, persistence/output 통합, error 전파, progress/timing, 기존 Translation ↔ Erase 병렬 경로 이식([M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식)), 실제 output 생성, Windows Carrot interoperability.
-- **Explicit non-goals:** M3 수준의 새 pipelining(page N/N+1 overlap, 추가 stage overlap, page/stage concurrency). M2 Golden Sample/benchmark 구성. 성능 최적화.
-- **Related M1 items:** 모든 M1 CURRENT item. 특히 [M1-CORE-001](CURRENT.md#m1-core-001--linux-core-pipeline-port), [M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식), [M1-COMPAT-001](CURRENT.md#m1-compat-001--windows-carrot과의-output-interoperability), [M1-PERSIST-002](CURRENT.md#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리)(Rover Output 통합, D29)
+- **Scope:** full real pipeline 연결, stage 순서, persistence/output 통합, error 전파, progress/timing, 기존 순차 실행과 managed translation lifecycle 검증, 실제 output 생성, Windows Carrot interoperability.
+- **Explicit non-goals:** 기존 Translation ↔ Erase 병렬 경로 이식·검증(Post-M1), GPU scheduling·vLLM·5090 최적화. M3 수준의 새 pipelining(page N/N+1 overlap, 추가 stage overlap, page/stage concurrency). M2 Golden Sample/benchmark 구성. 성능 최적화.
+- **Related M1 items:** 모든 M1 CURRENT item. 특히 [M1-CORE-001](CURRENT.md#m1-core-001--linux-core-pipeline-port), [M1-TRANS-001](CURRENT.md#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식), [M1-COMPAT-001](CURRENT.md#m1-compat-001--windows-carrot과의-output-interoperability), [M1-PERSIST-002](CURRENT.md#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리)(Rover Output 통합, D29)
 - **Prerequisites:** Step 1–7 DONE. Windows Carrot 설치본(interoperability 검증용).
-- **Related analysis:** [INPAINTING §8 Experimental Translation / Erase Parallel Path](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#8-experimental-translation--erase-parallel-path), [CORE §11 Failure Semantics](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#11-failure-semantics), [CORE §15 Minimal E2E Contract](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#15-minimal-e2e-contract), Step 1의 Carrot loader analysis(D1 결과).
-- **Source areas to inspect:** `src/main/application/pageWorkflowExperimentalParallel.ts`, `src/main/application/pageWorkflowService.ts`, `src/main/pageWorkflow/pageWorkflowRuntime.ts`(pending memory commit, `shouldResetPending`).
-- **Open decisions to resolve:** D11, D24, D25, D26, D29(Rover Output 통합), D30(병렬 경로 장치 전제 검증). 확인: D5 확장, D9 최종 배포 형태, D10 import parity, D20, D27.
-- **Architecture/coupling concerns:** 병렬 경로의 deferred erase commit, Koharu session 교차 재생성, memory commit 순서를 보존하고 Result에 기록한다. 이 경로의 scheduling 정책은 stage implementation이 아니라 orchestration 쪽에 둔다([A6](#a6-stage-implementation과-execution-policy를-분리하는-방향)). 남은 coupling은 [M3 IDEAS](../M3_PIPELINING/IDEAS.md)와 연결한다.
+- **Related analysis:** [INPAINTING §8 Experimental Translation / Erase Parallel Path](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#8-experimental-translation--erase-parallel-path)(Post-M1 참고: 병렬 경로는 M1 검증 대상이 아님), [CORE §11 Failure Semantics](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#11-failure-semantics), [CORE §15 Minimal E2E Contract](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#15-minimal-e2e-contract), Step 1의 Carrot loader analysis(D1 결과).
+- **Source areas to inspect:** `src/main/application/pageWorkflowService.ts`(순차 경로), `src/main/pageWorkflow/pageWorkflowRuntime.ts`(pending memory commit, `shouldResetPending`).
+- **Open decisions to resolve:** D11, D25, D26, D29(Rover Output 통합). 확인: D32·D33(Step 4 해결 근거). D24·D30은 Post-M1로 이동. 확인: D5 확장, D9 최종 배포 형태, D10 import parity, D20, D27.
+- **Architecture/coupling concerns:** 순차 stage 순서, page별 managed translation start/stop, 기존 GPU handoff와 memory commit 순서를 검증하고 Result에 기록한다. execution policy는 stage implementation이 아니라 orchestration 쪽에 둔다([A6](#a6-stage-implementation과-execution-policy를-분리하는-방향)). 남은 coupling은 [M3 IDEAS](../M3_PIPELINING/IDEAS.md)와 연결한다.
 - **Validation:**
-  - 실제 chapter/page로 Linux E2E smoke(순차 경로와 병렬 경로 모두)
+  - 실제 chapter/page로 Linux E2E smoke(순차 baseline; 병렬 검증은 Post-M1)
   - RoverCMT가 만든 output/project를 실제 Windows Carrot에서 열어 load/open, 기본 데이터 사용, 사용자가 쓰는 기본 edit/export workflow가 깨지지 않는지 확인. byte/pixel identical은 요구하지 않는다
 - **Completion criteria:** M1 CURRENT item 각각의 `Progress`와 완료 근거가 CURRENT.md에 기록되어 M1 completion을 판단할 수 있음. [M1-INPUT-001](CURRENT.md#m1-input-001--carrot-inputimport-parity) parity 점검표의 모든 항목이 구현·검증되었거나 사용자 결정으로 처리됨(Carrot input 기능 누락 없음). [DONE 조건](#step-status와-done-조건) 충족. M1 완료 선언과 다음 active milestone 결정은 사용자가 한다.
 - **Result:**

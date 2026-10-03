@@ -242,6 +242,7 @@
 ### M4-RUNTIME-002 — GPU lifecycle 최적화
 
 - **Status:** IDEA
+- **Deferred / Post-M1 (2026-10-03 user decision):** vLLM 사용 여부, 단일 RTX 5090용 새 runtime 구성/최적화 검토는 이 기존 GPU lifecycle item에서 추적한다. M1 managed Gemma 4 26B 구성을 임의 교체하거나 page session 수명을 최적화하지 않는다([M1 2026-10-03 결정](../M1_LINUX_PORT/CURRENT.md#m1-baseline-decision-2026-10-03)). vLLM/5090 최적화 evidence: not yet analyzed; 채택 결정 없음.
 - **Summary:** 순차 실행에서 stage 전환 때 GPU runtime을 해제·재획득하는 순서를 줄이거나 명시적 owner/lease로 단순화한다.
 - **Why it matters:** 현재 handoff는 OCR 전 inpainting 해제, translation 시작마다 detector 해제, erase에서 Flux 획득과 Koharu 재생성 순서다.
 - **Related analysis:**
@@ -250,7 +251,7 @@
 - **Related items:** [M3-RUNTIME-001](../M3_PIPELINING/IDEAS.md#m3-runtime-001--pipelining을-위한-gpu-resource-scheduling)(병렬 scheduling은 M3).
 - **Dependencies:** Linux GPU 환경, M1 runtime item.
 - **Decision / validation needed:** CORE §17 #6 GPU ownership — 사용자.
-- **History:** 2026-10-01 생성.
+- **History:** 2026-10-01 생성. 2026-10-03 user decision: vLLM/단일 5090 runtime 선택을 Deferred/Post-M1 관련 검토로 연결(중복 item 없음).
 
 ## Persistence
 

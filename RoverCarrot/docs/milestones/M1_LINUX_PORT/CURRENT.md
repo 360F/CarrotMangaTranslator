@@ -6,21 +6,36 @@
 진행 상태는 `Progress`로 표시하며, 현재 값은 아래 Item 목록 표와 각 item의 `Progress` 필드를 따른다.
 "기존 Carrot"/"Windows Carrot"은 reference fork(`fd461737`)와 그 Windows 빌드를 뜻한다([RoverCarrot/AGENTS.md](../../../AGENTS.md#reference-implementation)).
 
-**2026-10-01 사용자 확정 결정** (자세한 내용은 각 item):
+**사용자 확정 결정** (자세한 내용은 각 item):
 
 | 결정 | 내용 | 기록 위치 |
 |---|---|---|
 | M1 호환의 의미 | RoverCMT output을 기존 Windows Carrot에서 정상적으로 open/use할 수 있으면 된다(interoperability). byte/pixel identical, 같은 구현·runtime·renderer는 요구하지 않는다 | [M1-COMPAT-001](#m1-compat-001--windows-carrot과의-output-interoperability) |
 | Rover Output | fork 기능(번역 JSON/CSV export, 출력 경로 분리, 기본 입출력 디렉터리)이지만 **M1에서 기존 기능으로 이식**한다 | [M1-PERSIST-002](#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리) |
-| Translation ↔ Erase 병렬 경로 | 기존 Carrot 기능이므로 **M1에서 이식**한다. M3는 이를 출발점으로 추가 pipelining을 검토한다 | [M1-CORE-002](#m1-core-002--기존-translation--erase-병렬-실행-경로-이식) |
+| Translation ↔ Erase 병렬 경로 | **Deferred / Post-M1**. M1은 순차 실행을 이식·검증한다. [대체 기록](#m1-baseline-decision-2026-10-03) | [M1-CORE-002](#m1-core-002--기존-translation--erase-병렬-실행-경로-이식) |
 | M1 renderer | **Skia Canvas primary, Playwright Chromium fallback/reference** | [M1-RENDER-001](#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback) |
+
+## M1 baseline decision 2026-10-03
+
+**Decided by: 사용자, 2026-10-03.** M1은 성능 최적화나 단일 RTX 5090용 새 runtime 구성을 선택하지 않고 Carrot의 기존 구성·stage 의미를 우선 Linux로 이식한다. Translation 대상은 **managed llama-server (`modelProvider="gemma"`), 기준 모델 Gemma 4 26B**다. Translation → typography → erase → layout의 기존 순차 stage 순서와 page별 memory/session 의미를 보존한다(rule/review 포함 여부는 기존 D11 유지). Skia primary / Playwright fallback 결정은 유지한다.
+
+| Superseded 결정 | 변경 사유 / 새 결정 |
+|---|---|
+| M1-TRANS-001 / Step 4의 OpenAI-compatible client만 이식, managed llama-server 제외 | 사용자 결정으로 managed lifecycle·model/runtime 준비까지 M1 범위에 포함. 내부 `/v1/chat/completions` client·prompt/parser 이식은 계속 유효 |
+| 2026-10-01 M1-CORE-002 병렬 경로 M1 이식, Step 8 병렬 검증, D24·D30 | M1은 순차 baseline 우선. 기존 병렬 기능은 폐기하지 않고 Post-M1의 M3-SCHED-001로 연결; GPU scheduling은 M3-RUNTIME-001 |
+
+기존 Step 4 번역 검증 원칙(2026-10-03)은 유지하며 managed lifecycle 검증 요구만 추가된다.
+
+실제 run 207건이 `openai-api` 외부 LAN 서버(Gemma 4 26B Q6_K)였다는 [analysis §2.1](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#21-local-evidence)는 그대로 유효하다. 이번 결정은 그 실사용 경로와 **다른 내장 managed 경로**를 M1 대상으로 택한 사용자 결정이며 managed 실사용 증거가 새로 발견됐다는 뜻이 아니다. analysis §16의 managed 제외 권고는 역사적 조사로 보존하고 현재 scope의 근거로 적용하지 않는다.
+
+소스 근거: [Source evidence](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md#source-evidence), [Windows coupling](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md#windows-coupling), [Existing Rover code impact](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md#existing-rover-code-impact). 미결정: [D32·D33](IMPLEMENTATION_PLAN.md#open-decision--validation-register)(26B 세부 구성, Linux binary/packaging/lifecycle). 병렬 실행·GPU scheduling·vLLM 여부·단일 5090 최적화는 Deferred / Post-M1이며 M3/M4 기존 item으로 추적한다. 현재 Step 3 scope/state와 handoff 기준 commit은 이번 결정으로 바꾸지 않는다.
 
 Item 목록:
 
 | ID | Title | Progress |
 |---|---|---|
 | [M1-CORE-001](#m1-core-001--linux-core-pipeline-port) | Linux core pipeline port | in progress (Step 1 skeleton·Step 2 Detection 완료; 나머지 stage/전체 M1 검증 남음) |
-| [M1-CORE-002](#m1-core-002--기존-translation--erase-병렬-실행-경로-이식) | 기존 Translation ↔ Erase 병렬 실행 경로 이식 | not started |
+| [M1-CORE-002](#m1-core-002--기존-translation--erase-병렬-실행-경로-이식) | 기존 Translation ↔ Erase 병렬 실행 경로 이식 | — (Moved to M3-SCHED-001; Deferred / Post-M1) |
 | [M1-CONFIG-001](#m1-config-001--configsettings-파일-기반-설정) | Config/settings 파일 기반 설정 | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
 | [M1-CONFIG-002](#m1-config-002--inputoutput-경로-config화) | Input/output 경로 config화 | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
 | [M1-INPUT-001](#m1-input-001--carrot-inputimport-parity) | Carrot input/import parity | in progress (Step 1 보완으로 PNG/JPG/JPEG/WebP 단일 파일·direct folder 일부 구현. 아래 차이와 나머지 parity 항목 남음) |
@@ -60,10 +75,11 @@ Item 목록:
 
 ### M1-CORE-002 — 기존 Translation ↔ Erase 병렬 실행 경로 이식
 
-- **Status:** CURRENT
-- **Progress:** not started
-- **Summary:** reference fork에 있는 Translation ↔ Erase overlap 경로(`experimentalParallelAcceleration`, fork 커밋 `c5cef4cf`. upstream v2.8.2에는 없다)를 기존 기능의 일부로 보고 Linux port에 포함한다. 가능한 한 그대로 이식하고, Linux runtime/resource 차이로 같은 구현이 불가능하면 **기능적 동등성을 우선**하고 그 이유를 이 item의 History에 기록한다.
-- **Why it matters:** M1의 목표는 기존 기능의 Linux 재현이다. 이 경로는 M3에서 처음 만드는 기능이 아니다. 사용자 full run 15개 중 9개가 이 경로로 실행됐다.
+- **Status:** Moved to M3-SCHED-001 (Deferred / Post-M1, 2026-10-03 user decision)
+- **Progress:** —
+- **Moved to:** [M3-SCHED-001](../M3_PIPELINING/IDEAS.md#m3-sched-001--기존-translation--erase-병렬을-넘어선-추가-stage-overlap). 원 ID와 기존 근거는 여기 보존한다.
+- **Summary:** 기존 fork의 Translation ↔ Erase overlap 이식·검증은 Deferred / Post-M1. M1은 순차 실행 baseline을 이식한다([대체 결정](#m1-baseline-decision-2026-10-03)).
+- **Why it matters (기존 근거):** reference fork에 이미 있는 기능이다. 사용자 full run 15개 중 9개가 이 경로로 실행됐다.
 - **Existing behavior (analysis 인용):**
   - 활성 조건: `modelProvider==="openai-api"`, `api.experimentalParallelAcceleration===true`, `erasureEngine==="local"`, plan에 translate와 erase가 모두 있고 `format-rules`가 없음. 조건이 맞지 않으면 순차 실행.
   - 구조: chapter 하나 안에서 translation lane 전체와 erase lane 전체를 `Promise.allSettled`로 겹친다. 각 lane은 page 순차, lane당 동시성 1.
@@ -75,10 +91,10 @@ Item 목록:
   - [TRANSLATION_PIPELINE §1.1 Stage 진입](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#11-stage-진입) — `executeExperimentalParallelChapter` 진입 조건과 translation 자체는 page 순차라는 점.
   - [CORE §8 Runtime / GPU Ownership Map](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#8-runtime--gpu-ownership-map) — 병렬 모드(openai-api 전용)의 runtime 동시 사용.
   - [CORE §17 Open Decisions #3](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#17-open-decisions-for-user) — erase와 번역의 관계(번역 누락 block 처리) 선택지.
-- **Related items:** M1-CORE-001, M1-TRANS-001, M1-INPAINT-001, [M3-SCHED-001](../M3_PIPELINING/IDEAS.md#m3-sched-001--기존-translation--erase-병렬을-넘어선-추가-stage-overlap)(이 경로를 넘어선 추가 pipelining).
+- **Related items:** M1-CORE-001, M1-TRANS-001, M1-INPAINT-001, [M3-SCHED-001](../M3_PIPELINING/IDEAS.md#m3-sched-001--기존-translation--erase-병렬을-넘어선-추가-stage-overlap)(이 경로 및 추가 pipelining의 Post-M1 owner).
 - **Dependencies:** M1-TRANS-001, M1-INPAINT-001, M1-DETECT-001(bubble prepass).
-- **Decision / validation needed:** Linux에서 같은 구현이 어려운 부분이 생기면 기능적 동등성 판단과 이유 기록. 번역 누락 block의 erase 처리(CORE §17 #3)는 기존 동작 보존이 기본이며, 변경하려면 별도 사용자 결정이 필요하다. **장치 전제(미결정):** 이 경로는 번역 backend가 별도 장치에서 실행되는 상황을 전제로 만들어졌다. M1 대상 환경(Rover PC 5090 WSL2, [실행 환경](../../../AGENTS.md#실행-환경))에서는 번역과 FLUX/OCR이 같은 GPU를 쓸 수도 있다. 이 차이가 동작·자원에 주는 영향을 Step 8에서 검증 항목으로 확인한다. 지금 결정하지 않는다.
-- **History:** 2026-10-01 생성. 사용자 결정: 기존 Translation ↔ Erase 병렬 경로는 기존 기능이므로 M1에서 이식하고, M3는 이를 출발점으로 추가 pipelining을 검토한다. 이전에 M3-SCHED-001의 "M1 이식 vs M3 재설계" 결정 항목이었던 부분이다. 2026-10-01 reference fork 기능(`c5cef4cf`)임을 명시하고 장치 전제(별도 장치 vs 같은 GPU 공유)를 검증 항목으로 추가(user decision).
+- **Decision / validation needed:** Post-M1에 병렬 경로와 장치 전제를 재검토한다. 기존 장치 전제는 번역 backend 별도 장치였고 Rover PC에서는 같은 GPU 공유 가능성도 있다(D30, M3-RUNTIME-001); 이제 Step 8 병렬 검증 요구가 아니다. 번역 누락 block의 erase 정책 변경은 이번 결정에 포함되지 않으며 D20의 현재 동작 보존을 유지한다.
+- **History:** 2026-10-03 user decision: M1 이식 결정 superseded, Deferred / Moved to M3-SCHED-001([대체 기록](#m1-baseline-decision-2026-10-03)). 2026-10-01 생성. 사용자 결정: 기존 Translation ↔ Erase 병렬 경로는 기존 기능이므로 M1에서 이식하고, M3는 이를 출발점으로 추가 pipelining을 검토한다. 이전에 M3-SCHED-001의 "M1 이식 vs M3 재설계" 결정 항목이었던 부분이다. 2026-10-01 reference fork 기능(`c5cef4cf`)임을 명시하고 장치 전제(별도 장치 vs 같은 GPU 공유)를 검증 항목으로 추가(user decision).
 
 ### M1-CONFIG-001 — Config/settings 파일 기반 설정
 
@@ -298,8 +314,8 @@ Item 목록:
 
 - **Status:** CURRENT
 - **Progress:** not started
-- **Summary:** 현재 prompt builder·parser·validation·block mapping과 작은 OpenAI-compatible HTTP client를 이식해 같은 vision 요청을 재현한다. memory(glossary/characters/story)와 page 순차 처리를 보존한다.
-- **Why it matters:** 실제 운영은 이미 외부 OpenAI-compatible endpoint를 쓴다. 분석은 "M1 blocker: 새 blocker는 없다"고 결론냈다.
+- **Summary:** managed llama-server(`gemma`)와 Gemma 4 26B의 model/runtime 준비·start/readiness/stop·page별 session을 포함해 이식한다. 현재 prompt builder·parser·validation·block mapping과 내부 OpenAI-compatible HTTP client로 vision 요청을 재현한다. memory(glossary/characters/story)와 page 순차 처리를 보존한다.
+- **Why it matters:** analysis의 실사용은 외부 OpenAI-compatible endpoint다. M1 대상은 사용자 결정으로 managed 경로이며, 그 Linux 준비 문제는 D32·D33으로 추적한다([대체 기록](#m1-baseline-decision-2026-10-03)).
 - **Related analysis:**
   - [TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS §16 Minimal Linux Rover Translation Contract](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#16-minimal-linux-rover-translation-contract) — 보존해야 할 입력·요청 형식·출력 처리·상태.
   - [TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS §18 Milestone 1 Blockers](../../analysis/TRANSLATION_LLM_REQUEST_CONTEXT_ANALYSIS.md#18-milestone-1-blockers-if-any) — blocker 없음과 M1 위험(원격 server 설정 미상, work-context snapshot 부재).
@@ -307,9 +323,9 @@ Item 목록:
   - [TRANSLATION_PIPELINE_MIGRATION_ANALYSIS §15 Runtime Smoke Test Plan](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#15-runtime-smoke-test-plan-미실행) — S4: 저장된 prompt로 같은 body 재전송.
 - **Related items:** M1-PERSIST-001, M1-OCR-001. 속도 개선 아이디어는 M4-TRANS-*.
 - **Dependencies:** M1-CONFIG-001.
-- **Decision / validation needed:** 원격 server 설정(이미지 token 수 등) 기록 방식. 요청별 work-context snapshot 저장. TR §16 "아직 결정하지 않을 것" 목록.
-- **M1 검증 원칙 (2026-10-03 user decision):** 외부 번역 서버는 전제가 아니고 local OpenAI-compatible backend로 contract를 검증할 수 있다. 번역 문장 exact parity는 기준이 아니다. 상세: [Step 4](IMPLEMENTATION_PLAN.md#step-4--translation).
-- **History:** 2026-10-01 생성. 2026-10-03 M1 번역 검증 원칙 링크 추가(user decision).
+- **Decision / validation needed:** D32(26B variant/quantization/QAT·MTP/runtime profile 확정), D33(Linux binary·packaging·process lifecycle). server launch/config provenance와 요청별 work-context snapshot 기록(D16). TR §16의 다른 동작 변경은 기존대로 별도 결정.
+- **M1 검증 원칙 (2026-10-03 user decision):** 외부 개인 번역 서버의 availability는 M1 진행의 전제가 아니다. live 호출 검증에는 Rover PC(RTX 5090) 등에서 쓸 수 있는 local OpenAI-compatible LLM backend를 쓸 수 있다. 다른 LLM/backend 때문에 생긴 번역 문구 차이는 implementation regression이 아니다. 번역 문장 exact parity는 기준이 아니다. [2026-10-03 baseline 결정](#m1-baseline-decision-2026-10-03)에 따라 Step 4 완료에는 managed Gemma 4 26B Linux backend의 start/readiness/request/stop·abort/restart와 page별 session 검증이 추가로 필요하다. request/parse 등 contract 검증은 다른 local OpenAI-compatible backend로도 할 수 있으나, 그것으로 managed lifecycle 검증을 대체해 완료 처리하지 않는다. 상세: [Step 4](IMPLEMENTATION_PLAN.md#step-4--translation).
+- **History:** 2026-10-01 생성. 2026-10-03 M1 번역 검증 원칙 링크 추가(user decision). 2026-10-03 managed Gemma 4 26B scope 반영([대체 기록](#m1-baseline-decision-2026-10-03)); client/prompt contract 유지.
 
 ### M1-INPAINT-001 — FLUX Klein Candle runner Linux runtime
 

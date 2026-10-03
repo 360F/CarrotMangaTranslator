@@ -20,7 +20,7 @@
 
 ## 원칙
 
-- M1은 **성능 최적화를 목표로 하지 않는다.** 먼저 기존 기능을 Linux에서 끝까지 재현한다.
+- M1은 **성능 최적화를 목표로 하지 않는다.** 먼저 기존 기능을 Linux에서 끝까지 재현한다. managed Gemma 4 26B translation과 순차 실행 baseline은 [2026-10-03 결정](CURRENT.md#m1-baseline-decision-2026-10-03)을 따른다.
 - 속도 개선 아이디어는 발견해도 M3(병렬화) 또는 M4(stage 최적화)의 IDEAS에 기록하고 M1에서 구현하지 않는다.
 - 동작을 바꿔야 하는 열린 결정(analysis의 "Open Decisions")은 사용자에게 묻는다. 묻기 전 기본값은 "Carrot 현재 동작 보존"을 제안할 수 있지만 확정하지 않는다.
 - 각 Step의 correctness oracle은 milestone 요구사항, 수정하지 않은 Carrot reference, 승인된 known difference다([Reference-driven validation](IMPLEMENTATION_PLAN.md#reference-driven-validation)).
@@ -46,12 +46,15 @@ M1이 요구하는 "Windows Carrot과의 호환"은 **output interoperability**�
 
 ## 2026-10-01 확정된 범위 결정
 
-- **Translation ↔ Erase 병렬 경로:** reference fork(`c5cef4cf`)에 이미 있는 기능이므로 M1에서 이식한다([M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식)). M3는 이를 출발점으로 더 넓은 pipelining을 검토한다.
+병렬 scope의 현재 적용은 [2026-10-03 대체 결정](CURRENT.md#m1-baseline-decision-2026-10-03)을 따른다.
+
+- **Translation ↔ Erase 병렬 경로:** reference fork(`c5cef4cf`)의 기능이지만 **Deferred / Post-M1**이다([M1-CORE-002](CURRENT.md#m1-core-002--기존-translation--erase-병렬-실행-경로-이식)). 기존 M1 이식 결정은 [2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)으로 superseded; M3-SCHED-001로 연결한다.
 - **Renderer:** Skia Canvas primary, Playwright Chromium fallback/reference([M1-RENDER-001](CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback)).
 
 ## 범위 밖 (M1에서 하지 않음 — REJECTED가 아님)
 
-- 기존 Carrot에 없던 새 pipelining/concurrency(page N/N+1 overlap, 추가 stage overlap 등) → [M3](../M3_PIPELINING/README.md). 기존 Translation ↔ Erase 병렬 경로는 M1 범위다.
+- 기존 Carrot에 없던 새 pipelining/concurrency(page N/N+1 overlap, 추가 stage overlap 등) → [M3](../M3_PIPELINING/README.md). 기존 Translation ↔ Erase 병렬 경로도 Post-M1이다.
+- vLLM 사용 여부와 단일 RTX 5090용 runtime 최적화 → [M4-RUNTIME-002](../M4_OPTIMIZATION/IDEAS.md#m4-runtime-002--gpu-lifecycle-최적화); GPU scheduling → [M3-RUNTIME-001](../M3_PIPELINING/IDEAS.md#m3-runtime-001--pipelining을-위한-gpu-resource-scheduling). M1에서 새 runtime을 고르지 않는다.
 - stage별 속도 최적화 → [M4](../M4_OPTIMIZATION/README.md)
 - multi-file queue 등 새 기능 → [M5](../M5_FEATURES/README.md)
 - Carrot의 editor, manual review, PSD export, Codex 연동 등 초기 Core에서 제외 가능한 항목은 [INITIAL_MIGRATION_ANALYSIS §7](../../analysis/INITIAL_MIGRATION_ANALYSIS.md#7-초기-rovercmt에서-제외-가능한-항목)과 [CORE §16](../../analysis/CORE_DATA_MODEL_PIPELINE_CONTRACT_ANALYSIS.md#16-what-not-to-migrate-초기)에 근거가 있다. 이를 제외할지는 사용자가 확인한다. M1-COMPAT-001 정의상 기준은 "RoverCMT 출력을 Windows Carrot에서 열어 사용할 수 있는가"다.
