@@ -318,6 +318,14 @@ M1은 기존 Carrot Windows implementation의 Linux port다. [M1 원칙](README.
 | 원인 분석이 먼저 | floating point, confidence, runtime-dependent geometry, image/model runtime 차이 |
 | Semantic contract | 자연어 번역, rendered image, inpainting output 같은 비결정적 생성 결과 |
 
+### GPU validation 운영 (2026-10-03 사용자 결정)
+
+M1 남은 Step 전체의 runtime/GPU validation에 적용한다.
+
+- 사용자가 따로 띄운 llama-server Docker container는 Rover production backend가 아니다. VRAM이 필요하면 orchestrator만 그 container를 일시 stop할 수 있다. stop 전에 ID·name·image·running 상태·restart policy·port를 기록해 같은 대상인지 확인하고, 허용 조작은 `docker stop <같은 container>`와 복구용 `docker start <같은 container>`뿐이다(rm·run·compose·설정 변경 금지). validation 성공 여부와 관계없이 trap/finally로 복구하고 running·port·health를 확인한다. 복구에 실패하면 즉시 멈추고 보고한다. 다른 container·사용자 process는 건드리지 않는다.
+- Rover validation이 시작한 llama-server·GPU worker·model process는 validation 후 정리한다. 다음 GPU validation 전 GPU process와 VRAM을 확인하고, 소유가 불확실한 process는 kill하지 않고 멈춘다.
+- implementation agent(Codex)는 Docker·system package·sudo·process kill 같은 운영 작업을 하지 않는다. 모델·binary·llama.cpp source/build·cache는 commit하지 않고 Git 제외 영역에 둔다.
+
 ## Step status와 DONE 조건
 
 Status: `NOT_STARTED` / `IMPLEMENT` / `REVIEW` / `FIX` / `CHECKPOINT_READY` / `BLOCKED` / `DONE`. 의미와 transition은 [State와 transition](#state와-transition)에 있다.
@@ -375,8 +383,8 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 | D29 | Rover Output 이식을 어느 Step에서 구현할지 | M1-PERSIST-002 | 4 구현 → 8 통합(기본안) | 기본안 유지. export는 번역 저장 상태에서 트리거되므로 translation persistence가 생기는 Step 4에서 export를 구현하고, 출력 경로·기본 입출력 디렉터리와 전체 output 흐름은 Step 8에서 통합 검증한다 | 아니오 | 아니오(M1 scope) |
 | D30 | 병렬 경로의 별도 장치 vs 같은 GPU 공유 전제 | M1-CORE-002 | Post-M1 | **Superseded / Deferred** ([2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)) | 아니오 | [M3-RUNTIME-001](../M3_PIPELINING/IDEAS.md#m3-runtime-001--pipelining을-위한-gpu-resource-scheduling) |
 | D31 | 로컬 Carrot data root 위치(비교 기준 데이터) | Step 2–6 Validation | 2 시작 전 | Step 2에서 read-only filesystem/model/chapter-page-run binding으로 식별(2026-10-02); [ignored context와 재현](STEP2_VALIDATION.md#reference-binding-d31) | 예(Step 2–6 비교 검증의 전제) | 아니오 |
-| D32 | Gemma 4 26B 세부 구성: quantization, economy26b vs qat26b, QAT/MTP 여부, mainline/SPEED 및 CUDA12/13 profile | 2026-10-03 user decision; [source trace](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md#source-evidence) | 4 시작 전 | **OPEN** — backend=managed gemma, 모델 계열=26B만 확정. 변형을 임의 선택하지 않음 | 예(Step 4 exact configuration 검증) | 아니오 |
-| D33 | managed llama-server Linux binary·runtime packaging·preflight/ABI·process tree 종료·Windows 경로 적응 | M1-TRANS-001, M1-RUNTIME-001; [Windows coupling](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md#windows-coupling) | 4 | **OPEN** — catalog에 Linux 없음. Linux 대체 build/binary/배포·종료 방식은 사용자 결정과 실검증 필요; 후보 선택·구현 없음 | 예(managed Linux lifecycle 및 M1 완료) | 아니오 |
+| D32 | Gemma 4 26B 세부 구성: quantization, economy26b vs qat26b, QAT/MTP 여부, mainline/SPEED 및 CUDA12/13 profile | 2026-10-03 user decision; [source trace](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md#source-evidence) | 4 시작 전 | **RESOLVED 2026-10-03(user decision)** — M1 기준은 사용자가 실제로 쓰는 heretic Gemma 4 26B **Q6_K**(`gemma-4-26B-A4B-it-ultra-uncensored-heretic.Q6_K.gguf` + `…mmproj-Q8_0.gguf`, managed local model source). runtime은 Carrot source가 정하는 대로: 파일명이 `isGemma26BModel`에 해당하고 QAT/MTP 패턴이 아니므로 mainline, 설치 앱 설정 `llamaRuntimeProfile="rtx50"` → `llama-b9553-cuda13.3`(`runtime-profile.cjs`, `simple-page-llama-runtimes.cjs`). economy26b IQ3_S·qat26b Q4_K_M+MTP로 바꾸지 않고 새 성능 최적화를 하지 않는다. 모델 파일은 repo에 넣지 않고 path·크기·SHA-256을 evidence에 기록한다 | 예(Step 4 exact configuration 검증) | 아니오 |
+| D33 | managed llama-server Linux binary·runtime packaging·preflight/ABI·process tree 종료·Windows 경로 적응 | M1-TRANS-001, M1-RUNTIME-001; [Windows coupling](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md#windows-coupling) | 4 | **RESOLVED 2026-10-03(user decision)** — Linux production managed backend는 Carrot 고정 llama.cpp revision(b9553)을 Linux CUDA로 source build한 binary다. RoverCarrot이 재현 가능한 provisioning/build recipe를 제공하고 binary lifecycle을 관리한다. build option은 그 revision의 release workflow(Windows CUDA 13.3)와 Linux/CUDA 차이에서 유도한 것만 쓰고 정확한 command·option·toolchain·binary SHA-256을 evidence에 남긴다. system package 설치 금지(필요한 toolchain은 repo/user-local). Docker는 production backend로 채택하지 않는다. Linux 종료는 Rover가 시작한 process만 graceful 종료 → SIGTERM → bounded wait → SIGKILL(Windows `taskkill /T /F`는 reference 동작으로만 보존). build/runtime 실패를 revision·runtime family·CUDA profile·GPU target·model 변경으로 우회하지 않고 USER_DECISION_REQUIRED로 멈춘다 | 예(managed Linux lifecycle 및 M1 완료) | 아니오 |
 
 ---
 

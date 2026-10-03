@@ -325,7 +325,7 @@ Item 목록:
 - **Dependencies:** M1-CONFIG-001.
 - **Decision / validation needed:** D32(26B variant/quantization/QAT·MTP/runtime profile 확정), D33(Linux binary·packaging·process lifecycle). server launch/config provenance와 요청별 work-context snapshot 기록(D16). TR §16의 다른 동작 변경은 기존대로 별도 결정.
 - **M1 검증 원칙 (2026-10-03 user decision):** 외부 개인 번역 서버의 availability는 M1 진행의 전제가 아니다. live 호출 검증에는 Rover PC(RTX 5090) 등에서 쓸 수 있는 local OpenAI-compatible LLM backend를 쓸 수 있다. 다른 LLM/backend 때문에 생긴 번역 문구 차이는 implementation regression이 아니다. 번역 문장 exact parity는 기준이 아니다. [2026-10-03 baseline 결정](#m1-baseline-decision-2026-10-03)에 따라 Step 4 완료에는 managed Gemma 4 26B Linux backend의 start/readiness/request/stop·abort/restart와 page별 session 검증이 추가로 필요하다. request/parse 등 contract 검증은 다른 local OpenAI-compatible backend로도 할 수 있으나, 그것으로 managed lifecycle 검증을 대체해 완료 처리하지 않는다. 상세: [Step 4](IMPLEMENTATION_PLAN.md#step-4--translation).
-- **History:** 2026-10-01 생성. 2026-10-03 M1 번역 검증 원칙 링크 추가(user decision). 2026-10-03 managed Gemma 4 26B scope 반영([대체 기록](#m1-baseline-decision-2026-10-03)); client/prompt contract 유지.
+- **History:** 2026-10-01 생성. 2026-10-03 M1 번역 검증 원칙 링크 추가(user decision). 2026-10-03 managed Gemma 4 26B scope 반영([대체 기록](#m1-baseline-decision-2026-10-03)); client/prompt contract 유지. 2026-10-03 D32·D33 resolved(user decision): heretic Q6_K + mainline b9553 cuda13.3, Linux CUDA source build([register](IMPLEMENTATION_PLAN.md#open-decision--validation-register)).
 
 ### M1-INPAINT-001 — FLUX Klein Candle runner Linux runtime
 
