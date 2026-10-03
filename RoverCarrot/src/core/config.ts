@@ -17,7 +17,7 @@ function pathValue(name: string, override: unknown, configured: unknown, base: s
 export function resolveConfig(raw: unknown, base: string = process.cwd(), overrides: PathOverrides = {}): Config {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('Config must be an object');
   const value = raw as Record<string, unknown>;
-  if (Object.keys(value).some(key => !['version', 'mode', 'input', 'output', 'stages', 'models'].includes(key)))
+  if (Object.keys(value).some(key => !['version', 'mode', 'input', 'output', 'stages', 'models', 'ocr'].includes(key)))
     throw new Error('Unknown config field');
   if (value.version !== 1 || value.mode !== 'smoke') throw new Error('Step 1 requires version=1, mode=smoke');
   const input = pathValue('input', overrides.input, value.input, base);
@@ -37,5 +37,20 @@ export function resolveConfig(raw: unknown, base: string = process.cwd(), overri
       models = { koharu: model.koharu };
     }
   }
-  return { ...(models ? { models } : {}), version: 1, mode: 'smoke', input, output, stages: STAGES.filter(id => (stages as StageId[]).includes(id)) };
+  let ocr: Config['ocr'];
+  if (value.ocr !== undefined) {
+    const o = value.ocr as Record<string, unknown>;
+    if (!o || typeof o !== 'object' || Array.isArray(o) || Object.keys(o).some(k => !['python', 'hfCache', 'device', 'sourceLanguage', 'timeoutMs'].includes(k))) throw new Error('Unknown OCR config field');
+    for (const k of ['python', 'hfCache', 'device', 'sourceLanguage'])
+      if (o[k] !== undefined && typeof o[k] !== 'string') throw new Error(`ocr.${k} must be a string`);
+    if (o.device !== undefined && !/^(cpu|gpu(?::[0-9]+)?)$/.test(String(o.device))) throw new Error('ocr.device must be cpu or gpu[:index]');
+    if (o.timeoutMs !== undefined && (!Number.isSafeInteger(o.timeoutMs) || Number(o.timeoutMs) <= 0)) throw new Error('ocr.timeoutMs must be positive integer');
+    if (o.python || o.hfCache) {
+      for (const k of ['python', 'hfCache']) if (typeof o[k] !== 'string' || !isAbsolute(o[k] as string)) throw new Error(`ocr.${k} must be an absolute path`);
+      if (typeof o.device !== 'string' || !/^(cpu|gpu(?::[0-9]+)?)$/.test(o.device)) throw new Error('ocr.device must be cpu or gpu[:index]');
+      if (typeof o.sourceLanguage !== 'string' || !o.sourceLanguage.trim()) throw new Error('ocr.sourceLanguage is required');
+      ocr = { python: o.python as string, hfCache: o.hfCache as string, device: o.device, sourceLanguage: o.sourceLanguage, ...(o.timeoutMs !== undefined ? { timeoutMs: Number(o.timeoutMs) } : {}) };
+    }
+  }
+  return { ...(ocr ? { ocr } : {}), ...(models ? { models } : {}), version: 1, mode: 'smoke', input, output, stages: STAGES.filter(id => (stages as StageId[]).includes(id)) };
 }

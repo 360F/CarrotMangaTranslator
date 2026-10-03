@@ -29,6 +29,13 @@ stages = ["detect", "ocr", "translate", "typography", "erase", "layout", "render
 [models]
 # Absolute path to the Koharu ONNX model (no automatic download).
 koharu = ""
+
+[ocr]
+# Preinstalled Python 3.12 venv executable and writable Hugging Face cache.
+python = ""
+hfCache = ""
+device = "cpu"
+sourceLanguage = "ja"
 `;
 
 export class ConfigError extends Error {}
@@ -50,13 +57,15 @@ export function parseConfigToml(text: string, cwd: string, overrides: PathOverri
     const first = (error instanceof Error ? error.message : String(error)).split('\n')[0];
     throw new ConfigError(`Invalid TOML: ${first}`, { cause: error });
   }
-  const top = table(doc, 'top level', ['version', 'mode', 'paths', 'pipeline', 'models']);
+  const top = table(doc, 'top level', ['version', 'mode', 'paths', 'pipeline', 'models', 'ocr']);
   const paths = table(top.paths, 'paths', ['input', 'output']);
   const pipeline = table(top.pipeline, 'pipeline', ['stages']);
   const models = table(top.models, 'models', ['koharu']);
+  const ocr = table(top.ocr, 'ocr', ['python', 'hfCache', 'device', 'sourceLanguage', 'timeoutMs']);
   const raw: Record<string, unknown> = { version: top.version, mode: top.mode };
   for (const [key, value] of [['input', paths.input], ['output', paths.output], ['stages', pipeline.stages]] as const)
     if (value !== undefined) raw[key] = value;
+  if (top.ocr !== undefined) raw.ocr = ocr;
   if (top.models !== undefined) raw.models = models;
   try {
     return resolveConfig(raw, cwd, overrides);

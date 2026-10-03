@@ -7,7 +7,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node tools/copy-ocr-assets.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src tests tools",
     "test": "npm run build && node --test tests/*.test.mjs",

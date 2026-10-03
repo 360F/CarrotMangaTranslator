@@ -120,7 +120,7 @@ test('portable resize keeps the exact Electron RGB/CHW reference tensor for synt
 });
 
 test('persisted chapter keeps strict-compatible blocks, defaults, subdivision and effect review', async t => {
-  const root = await tempRoot(t, await fixtureText('config.toml'));
+  const root = await tempRoot(t, (await fixtureText('config.toml')).replace(/stages = .*/, 'stages = ["detect"]'));
   const image = join(root, 'page.png'), output = join(root, 'output');
   await sharp({create:{width:1152,height:1152,channels:3,background:'white'}}).png().toFile(image);
   const result = await cli({root, argv:['--input', image, '--output', output]});

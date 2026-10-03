@@ -20,6 +20,7 @@ export type Config = {
   version: 1; mode: 'smoke'; input: string; output: string;
   stages: StageId[];
   models?: { koharu: string };
+  ocr?: { python: string; hfCache: string; device: string; sourceLanguage: string; timeoutMs?: number };
 };
 export type Issue = { pageId?: string; stage?: StageId; message: string; retryable: boolean };
 export type Event = {
@@ -33,6 +34,7 @@ export type Stage = {
   id: StageId;
   // Explicit shared-state and runtime dependencies, refined in each port step.
   reads: readonly string[]; writes: readonly string[]; resources: readonly string[];
+  prepare?: (pages: Page[]) => Promise<void>;
   execute: (page: Page) => Promise<StageResult>;
 };
 export type RunResult = {

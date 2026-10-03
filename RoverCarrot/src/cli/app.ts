@@ -1,3 +1,5 @@
+import { hayaiReader } from '../adapters/hayai.js';
+import { ocrStage, type ReadOcr } from '../ocr/stage.js';
 import { koharuRuntime, type KoharuRuntime } from '../adapters/koharu.js';
 import { koharuDetectionStage } from '../adapters/detection.js';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
@@ -24,6 +26,7 @@ export type CliOptions = {
   argv: string[]; projectRoot: string; cwd: string; write: (text: string) => void;
   isTTY: boolean; env?: Record<string, string | undefined>;
   runtime?: KoharuRuntime;
+  ocrRead?: ReadOcr; // internal model-free test injection
   stages?: Stage[]; // tests only: inject failing providers
 };
 
@@ -89,6 +92,14 @@ export async function runCli(options: CliOptions): Promise<number> {
       if (!options.runtime && !config.models?.koharu) throw new ConfigError('models.koharu must be a non-empty absolute path');
       runtime = options.runtime ?? koharuRuntime(config.models!.koharu, (type, fields) => log.info(type, fields));
       stages[stages.findIndex(stage => stage.id === 'detect')] = koharuDetectionStage(runtime, (type, fields) => log.info(type, fields));
+    }
+    if (!options.stages && config.stages.includes('ocr')) {
+      if (!config.ocr && !options.ocrRead) throw new ConfigError('ocr.python and ocr.hfCache must be configured');
+      const read = options.ocrRead ?? hayaiReader(config.ocr!, join(config.output, 'ocr-artifacts'), (type, fields) => log.info(type, fields));
+      const stage = ocrStage(read);
+      const prepare = stage.prepare!;
+      stage.prepare = async pages => { await runtime?.close?.(); runtime = undefined; await prepare(pages); };
+      stages[stages.findIndex(s => s.id === 'ocr')] = stage;
     }
     const result = await run(config, { persistence: observed, stages,
       onEvent: event => { log.info(event.type, { ...event }); progress.event(event); } });

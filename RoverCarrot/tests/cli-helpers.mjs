@@ -22,7 +22,7 @@ export async function tempRoot(t, configText) {
 
 export async function cli({ root, cwd = root, argv = [], tty = false, env = { LANG: 'C.UTF-8' }, stages, runtime = fakeRuntime }) {
   let out = '';
-  const code = await runCli({ argv, projectRoot: root, cwd, isTTY: tty, env, stages, runtime, write: text => { out += text; } });
+  const code = await runCli({ argv, projectRoot: root, cwd, isTTY: tty, env, stages, runtime, ocrRead: async inputs => inputs.map(input => input.targetBlockIds.map((_, i) => ({ id: i + 1, x1: 0, y1: 0, x2: 2, y2: 2, ocrText: '本文' }))), write: text => { out += text; } });
   return { code, out };
 }
 

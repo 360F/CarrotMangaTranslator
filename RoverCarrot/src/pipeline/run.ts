@@ -7,6 +7,12 @@ export async function executePipeline(chapter: Chapter, stages: Stage[], persist
   const failedPages = new Set<string>();
   const emit = (event: Event) => { result.events.push(event); onEvent(event); };
   for (const stage of stages) {
+    const eligibleCount = chapter.pages.filter(p => !failedPages.has(p.id)).length;
+    const preparationStarted = performance.now();
+    let preparationError: unknown;
+    try { await stage.prepare?.(structuredClone(chapter.pages.filter(p => !failedPages.has(p.id)))); }
+    catch (error) { preparationError = error; }
+    const preparationMsPerPage = stage.prepare ? (performance.now() - preparationStarted) / Math.max(1, eligibleCount) : 0;
     for (const [index, page] of chapter.pages.entries()) {
       if (failedPages.has(page.id)) continue;
       const started = performance.now();
@@ -14,6 +20,7 @@ export async function executePipeline(chapter: Chapter, stages: Stage[], persist
       let status: 'completed' | 'empty' | 'failed' = 'failed';
       let nextPage = page;
       try {
+        if (preparationError) throw preparationError;
         // Providers get a copy: mutations only become canonical through commit.
         const outcome = await stage.execute(structuredClone(page));
         if (outcome.page.id !== page.id || outcome.page.imagePath !== page.imagePath)
@@ -33,7 +40,7 @@ export async function executePipeline(chapter: Chapter, stages: Stage[], persist
       // Storage errors are infrastructure failures, not provider page issues.
       await persistence.commit(chapter);
       emit({ type: 'stage-end', runId: result.runId, pageId: page.id, stage: stage.id,
-        status, elapsedMs: Math.round(performance.now() - started) });
+        status, elapsedMs: Math.round(performance.now() - started + preparationMsPerPage) });
     }
   }
   // Carrot run semantics: page issues => partial, infrastructure issues => failed.

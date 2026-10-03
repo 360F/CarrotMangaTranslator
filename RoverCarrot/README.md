@@ -1,10 +1,9 @@
 # RoverCMT Linux Core
 
-Independent TypeScript Core with a CLI adapter. Detection now runs the pinned
-Koharu model on Linux CPU and persists dialogue blocks, OCR geometry and effect
-review regions. Other stages remain explicit no-ops; their PASS lines do not
-mean OCR, translation, erase or rendering ran. Step 2 validation and the next
-checkpoint are tracked in the [M1 plan](docs/milestones/M1_LINUX_PORT/IMPLEMENTATION_PLAN.md#step-2--detection--koharu).
+Independent TypeScript Core with a CLI adapter. Detection runs pinned Koharu
+on Linux CPU; OCR runs pinned Hayai v2 through a configured Python environment.
+Translation, typography, erase, layout and rendering remain explicit no-ops.
+Current validation is in [Step 3 validation](docs/milestones/M1_LINUX_PORT/STEP3_VALIDATION.md).
 
 Requires Node.js 24 or newer. From `RoverCarrot/`:
 
@@ -35,12 +34,67 @@ stages = ["detect", "ocr", "translate", "typography", "erase", "layout", "render
 [models]
 # Absolute path to the verified rfdetr-seg-2xlarge.onnx file.
 koharu = ""
+
+[ocr]
+# Absolute paths to a preinstalled Python 3.12 venv and writable HF cache.
+python = ""
+hfCache = ""
+device = "cpu"                 # or "gpu" / "gpu:0"; no CPU fallback
+sourceLanguage = "ja"
+# timeoutMs = 3600000          # default max(1 hour, 5 minutes * batch pages)
 ```
 
 Set `[models].koharu` to an existing absolute model path before running detect.
 Empty, relative, missing or wrong model files fail clearly. RoverCMT verifies the
 pinned filename, byte size and SHA-256 and never copies or downloads the model.
 The template deliberately contains no personal path.
+
+OCR requires `[ocr].python` and `[ocr].hfCache` when selected. Prepare a Linux
+Python 3.12 environment from the hash lock; Rover does not install Python or
+packages. Provision uv **0.12.22** from its PyPI Linux x86_64 wheel and
+CPython **3.12.15** via uv's python-build-standalone download, all under durable,
+Git-ignored `test-data/runtime/` (no `$HOME` writes). From `RoverCarrot/`:
+
+```bash
+mkdir -p test-data/runtime
+python3 - <<'PYTHON'
+import json, pathlib, urllib.request, zipfile
+root = pathlib.Path('test-data/runtime')
+meta = json.load(urllib.request.urlopen('https://pypi.org/pypi/uv/0.12.22/json'))
+wheel = next(f for f in meta['urls'] if f['filename'] ==
+    'uv-0.12.22-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl')
+path = root / wheel['filename']
+urllib.request.urlretrieve(wheel['url'], path)
+with zipfile.ZipFile(path) as archive:
+    archive.extractall(root / 'uv')
+(root / 'uv/uv-0.12.22.data/scripts/uv').chmod(0o755)
+PYTHON
+OCR_UV="$PWD/test-data/runtime/uv/uv-0.12.22.data/scripts/uv"
+export UV_CACHE_DIR="$PWD/test-data/runtime/uv-cache"
+export UV_PYTHON_INSTALL_DIR="$PWD/test-data/runtime/python"
+export UV_PYTHON_BIN_DIR="$PWD/test-data/runtime/bin"
+"$OCR_UV" python install 3.12.15
+OCR_PYTHON="$UV_PYTHON_INSTALL_DIR/cpython-3.12.15-linux-x86_64-gnu/bin/python3.12"
+"$OCR_UV" venv --python "$OCR_PYTHON" test-data/runtime/hayai-cpu
+"$OCR_UV" pip sync --python test-data/runtime/hayai-cpu/bin/python \
+  --require-hashes --index https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match \
+  runtime/hayai/requirements-cpu-linux.lock
+```
+
+For CUDA use `requirements-cu130-linux.lock`, the `cu130` index and a separate
+venv. Set config paths to their absolute locations. The worker fetches only the
+pinned Hayai/processor files into the configured cache and verifies all 11 sizes
+and SHA-256 values before loading. Offline use also needs cached Hub tree metadata
+and the processor `refs/main` pointing to its pinned revision; see Step 3 evidence.
+Never point a writable cache at the read-only Carrot reference cache.
+
+All selected pages are prepared in one OCR batch. The detector session closes
+before OCR; OCR process closure precedes the next stage. JSONL progress and raw
+outputs live under `<output>/ocr-artifacts/`, with process details in the run log.
+Storage preserves Carrot sanitize (Japanese noise/ruby rules, glossary omission,
+160-character prefix plus truncation notice) and the 80-hint cap. Failed reads
+persist empty `sourceText` and `workflowOrigin.ocrFailure`, fail that page and
+skip its later stages. `recognitionSegments` remain available to later ports.
 
 `[paths]` values are defaults. `--input`/`--output` override them for one run
 (CLI value first, else config value; a run fails before creating output if
@@ -90,7 +144,7 @@ import { libraryPersistence } from './dist/adapters/library.js';
 import { smokeStages } from './dist/adapters/smoke.js';
 import { koharuRuntime } from './dist/adapters/koharu.js';
 import { koharuDetectionStage } from './dist/adapters/detection.js';
-const config = resolveConfig({ version: 1, mode: 'smoke', input: 'pages', output: 'library',
+const config = resolveConfig({ version: 1, mode: 'smoke', input: 'pages', output: 'library', stages: ['detect'],
   models: { koharu: '/absolute/path/to/rfdetr-seg-2xlarge.onnx' } }, '/abs/base');
 const runtime = koharuRuntime(config.models.koharu);
 try {
@@ -129,7 +183,7 @@ CLI tests use a temporary project root, so they never read or write the real
 `config/config.toml` or `logs/`. They check exit codes, persisted run JSON,
 output files and logs, plus formats, ordering, copied bytes, overrides and
 failures. Fake raw inference is injected only through internal API arguments;
-the real parser, postprocessing, Detection stage and persistence still run.
+the real parser, postprocessing, Detection/OCR stages and persistence still run. OCR text is injected through the internal `ocrRead` test argument.
 The executable's config creation and failure paths remain subprocess tests.
 No real model or private data is required for `npm test` or `npm run smoke`.
 For your own data, use the CLI above.
@@ -157,5 +211,11 @@ cp -a /path/to/comic test-data/input/
 Point `input` in `config/config.toml` at that folder (for example
 `test-data/input/comic`), or pass `--input` for a one-off run. Inspect the library
 under the output path in `test-data/output/`. Existing outputs are refused, so
-use a new `--output` (or a new config default) for each run. Detection runs the actual model; other stages remain no-ops and produce no translated raster. Local data is user-owned and
+use a new `--output` (or a new config default) for each run. Detection and OCR run actual models; later stages remain no-ops and produce no translated raster. Local data is user-owned and
 must be preserved.
+
+Worker recovery/device tests (no Python packages or model required):
+
+```bash
+python3 -m unittest discover -s tests/python -v
+```

@@ -7,3 +7,6 @@ dist/
 # The single user config (config/config.toml: local paths/titles) and runtime logs.
 /config/
 /logs/
+
+# Python worker test bytecode (runtime environments/cache live under test-data).
+__pycache__/

@@ -184,7 +184,7 @@ test('entry dist/cli.js: config and logs fixed at project root, first run create
   assert.match(template, /^# RoverCMT configuration/); assert.match(template, /Relative paths resolve/);
   assert.deepEqual((await readdir(dir)).sort(), ['input']); // no pipeline, nothing written in CWD
 
-  await writeFile(join(root, 'config', 'config.toml'), template.replace('test-data/input/example', 'input').replace('test-data/output/example-run', 'output').replace('koharu = ""', 'koharu = "/unused/rfdetr-seg-2xlarge.onnx"'));
+  await writeFile(join(root, 'config', 'config.toml'), template.replace('test-data/input/example', 'input').replace('test-data/output/example-run', 'output').replace('koharu = ""', 'koharu = "/unused/rfdetr-seg-2xlarge.onnx"').replace('python = ""', 'python = "/unused/python"').replace('hfCache = ""', 'hfCache = "/unused/hf-cache"'));
   const pass = await cli({ root, cwd: dir });
   assert.equal(pass.code, 0, pass.out);
   assert.ok(pass.out.endsWith('\nResult: PASS\nOutput: output\n'), pass.out);
