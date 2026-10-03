@@ -1,4 +1,5 @@
 # RoverCMT Project Vision
+마지막 수정일: 2026-10-03
 
 ## 1. 프로젝트 목적
 
