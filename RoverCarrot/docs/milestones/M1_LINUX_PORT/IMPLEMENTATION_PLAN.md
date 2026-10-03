@@ -30,6 +30,19 @@
 | 진행 기록 | 2026-10-03 implementation: Hayai worker(reference byte-identical)·Linux CPU/cu130 lock·OCR stage/adapter 구현. 검증: check 54/54, smoke 15/15, boundaries, Python 11/11, CPU differential 3p/21, GPU differential 46p/261(reference worker·정규화·저장 결과 text 일치), 4-page CPU/GPU CLI, strict schema. 남은 것: 독립 review. 실제 subdivided/recovered/failed 사례는 reference corpus에 없음(deterministic test만). 다음 action: fresh review session |
 | 다음 transition | 독립 review 판정에 따라 FIX(cycle +1) / CHECKPOINT_READY / BLOCKED. review commit이 있으면 기준 commit = review commit |
 
+## Deferred Review Ledger
+
+**2026-10-03 사용자 결정:** 사용자가 지금 checkpoint review를 하기 어려우므로 fresh independent review를 **생략하지 않고 연기**하고, M1 implementation을 가능한 범위까지 먼저 진행한다. 이 표가 연기된 review의 source of truth다.
+
+- 여기 있는 Step은 implementation과 orchestrator 1차 검증만 끝난 **provisional implementation baseline**이다. Step Status는 [Progress](#progress)에서 REVIEW로 남고 DONE·CHECKPOINT_READY가 아니다. 새 State는 만들지 않는다.
+- 이 사용자 결정에 따라 ledger에 기록된 Step은 [사용자 checkpoint 승인](#사용자-checkpoint-승인) 전이라도 다음 Step을 IMPLEMENT로 열 수 있다. [현재 위치](#현재-위치)는 그 다음 implementation Step을 가리키고, 연기된 review는 이 표가 추적한다.
+- 후속 Step이 이 Step의 파일을 바꾸면 observable contract를 유지한 경우에만 허용하고, 그 commit과 이유를 비고에 남긴다. contract 변경이 필요하면 USER_DECISION_REQUIRED다.
+- 연기된 review는 사용자가 "Step N deferred review"처럼 지시할 때 별도 fresh session이 수행한다. 이때 reviewer는 handoff의 Next role 대신 이 표의 entry를 대상으로 [Independent review role](#independent-review-role)을 따르고, 검증 대상은 work commit과 비고에 적힌 후속 영향 commit이다. finding은 그 Step validation 문서에 기록하고, 결과 State는 기존 vocabulary(FIX·CHECKPOINT_READY·BLOCKED)로 이 표와 Progress에 반영한다. DONE은 지금처럼 사용자 승인으로만 정한다.
+
+| Step | Implementation work commit | Validation / evidence | Review | 후속 Step 의존 | 비고 |
+|---|---|---|---|---|---|
+| 3 — OCR / Hayai | `044c5743` | [STEP3_VALIDATION.md](STEP3_VALIDATION.md), Git 제외 `RoverCarrot/test-data/validation/m1-step3/` | **DEFERRED** — implementation + Claude orchestrator 1차 검증(GPU 포함) 완료, fresh independent review 미실행 | 예 — Step 4 이후 translation 입력이 OCR `sourceText`에 의존 | 2026-10-03 사용자가 review 연기와 후속 M1 implementation 진행을 명시적으로 허용. handoff commit `ae8c13cc`. 후속 영향 commit 없음 |
+
 ## Progress
 
 | Step | Name | Status | Main checkpoint |
@@ -69,7 +82,7 @@
 
 1. [Git 흐름](../../../AGENTS.md#git-흐름)의 session 시작 점검(branch, clean tree, fetch, remote 동기화)을 한다. 다른 agent의 미커밋 변경은 건드리지 않는다.
 2. [기준 commit과 Git 판정](#기준-commit과-git-판정)을 통과해야 한다. 실패하면 작업하지 않고 BLOCKED로 보고한다.
-3. Next role이 자기 role과 다르면 작업하지 않고 필요한 role을 보고한다. CHECKPOINT_READY·BLOCKED에서는 Next role이 user다.
+3. Next role이 자기 role과 다르면 작업하지 않고 필요한 role을 보고한다. CHECKPOINT_READY·BLOCKED에서는 Next role이 user다. 연기된 review는 [Deferred Review Ledger](#deferred-review-ledger)를 따른다.
 4. 사용자 메시지에 명시적인 Step 승인이 있으면 [사용자 checkpoint 승인](#사용자-checkpoint-승인)을 따른다.
 
 ### 기준 commit과 Git 판정
@@ -117,7 +130,7 @@ Step `Status`([Progress](#progress), 각 Step section)와 handoff State는 같�
 6. code·test와 Step validation 문서(변경 범위, requirement 위치, 실행한 command와 결과, evidence 위치)를 work commit으로 남긴다. 이 commit이 accepted HEAD다. 이어서 handoff-only commit에서 Step `Result`와 handoff를 REVIEW / review, 기준 commit = 그 work commit으로 갱신하고 둘 다 push한다. "reference와 완벽히 일치" 같은 결론을 oracle처럼 쓰지 않는다.
 7. FIX에서는 OPEN finding을 수정하거나 반박한다([반복 제한과 의견 불일치](#반복-제한과-의견-불일치)). finding Status를 FIXED 또는 DISPUTED로 바꾸고 같은 방식으로 REVIEW로 넘긴다.
 
-사용자 checkpoint 없이 다음 Step을 시작하지 않는다.
+사용자 checkpoint 없이 다음 Step을 시작하지 않는다 예외는 [Deferred Review Ledger](#deferred-review-ledger)에 기록된 사용자 결정뿐이다.
 
 ### Independent review role
 
