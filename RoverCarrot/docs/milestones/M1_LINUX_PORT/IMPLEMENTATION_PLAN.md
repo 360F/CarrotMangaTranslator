@@ -19,15 +19,15 @@
 | 항목 | 값 |
 |---|---|
 | Active milestone | **M1 — Linux Port** ([목표와 요구사항](README.md#목표)) |
-| 현재 Step | [Step 5 — Typography / Layout](#step-5--typography--layout). Step 3·4는 review DEFERRED([Deferred Review Ledger](#deferred-review-ledger)) |
-| State | **IMPLEMENT** — 2026-10-03 Step 4 provisional baseline(work `fb652920`) 이후 Deferred Review Ledger에 따라 열림. production implementation 미시작 |
-| Next role | **implementation** |
-| 기준 commit | `fb6529202bc376c3a87246ad382de522914b812f`(accepted HEAD: Step 4 work commit) |
-| Task | Step 5 Scope 구현과 [Reference-driven validation](#reference-driven-validation), [GPU validation 운영](#gpu-validation-운영-2026-10-03-사용자-결정). D18 source trace 보완. 시작할 때 `STEP5_VALIDATION.md`를 만든다 |
-| 기준 문서 | [Step 5](#step-5--typography--layout), [M1-CORE-001](CURRENT.md#m1-core-001--linux-core-pipeline-port), [M1-RENDER-001](CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback), D17·D18 |
-| Evidence / findings | 아직 없음. 위치: `STEP5_VALIDATION.md`(tracked), Git 제외 `RoverCarrot/test-data/validation/m1-step5/` |
+| 현재 Step | [Step 6 — Inpainting / Erase](#step-6--inpainting--erase). Step 3·4·5는 review DEFERRED([Deferred Review Ledger](#deferred-review-ledger)) |
+| State | **IMPLEMENT** — 2026-10-03 Step 5 provisional baseline(work `45797b19`) 이후 Deferred Review Ledger에 따라 열림. production implementation 미시작 |
+| Next role | **implementation** (이번 session은 사용자 결정으로 Claude가 구현; Codex 미사용) |
+| 기준 commit | `45797b19a364b2b9100699363f312e9e3afbeacb`(accepted HEAD: Step 5 work commit) |
+| Task | Step 6 Scope 구현과 [Reference-driven validation](#reference-driven-validation), [GPU validation 운영](#gpu-validation-운영-2026-10-03-사용자-결정). 시작할 때 `STEP6_VALIDATION.md`를 만든다 |
+| 기준 문서 | [Step 6](#step-6--inpainting--erase), [M1-INPAINT-001](CURRENT.md#m1-inpaint-001--flux-klein-candle-runner-linux-runtime), D9·D19·D20·D21 |
+| Evidence / findings | 아직 없음. 위치: `STEP6_VALIDATION.md`(tracked), Git 제외 `RoverCarrot/test-data/validation/m1-step6/` |
 | Open findings / cycle | 없음 / 0 of 3 |
-| 진행 기록 | 2026-10-03 Step 4 work `1f8d7fca`+`fb652920`, ledger DEFERRED. D17(autoFont 지원 범위)은 OPEN이지만 M1 blocker가 아니고 Step 5 non-goal이 "D17 결정 전 자동 font matching 새 구현 없음"이므로 현재 사용자 설정(autoFont=false) 경로로 진행 |
+| 진행 기록 | 2026-10-03 Step 5 work `45797b19`, ledger DEFERRED(known difference 5건 사용자 수용). 2026-10-03 사용자 결정: 남은 M1 implementation은 Codex 없이 Claude가 구현·검증하며, 이 검증은 "Claude implementation-session validation"이고 independent review가 아니다. 사전 확인(read-only): Carrot Windows FLUX runtime = prebuilt runner `mgt-flux-klein-sm120` + CUDA 12.9 libraries + cuDNN 9.21; 이 머신에는 Rust toolchain이 없어 repo-local로 준비해야 함 |
 | 다음 transition | 구현·자체 검증·evidence 후 work commit, ledger에 review DEFERRED로 기록하고 다음 Step을 연다 |
 
 ## Deferred Review Ledger
@@ -43,6 +43,7 @@
 |---|---|---|---|---|---|
 | 3 — OCR / Hayai | `044c5743` | [STEP3_VALIDATION.md](STEP3_VALIDATION.md), Git 제외 `RoverCarrot/test-data/validation/m1-step3/` | **DEFERRED** — implementation + Claude orchestrator 1차 검증(GPU 포함) 완료, fresh independent review 미실행 | 예 — Step 4 이후 translation 입력이 OCR `sourceText`에 의존 | 2026-10-03 사용자가 review 연기와 후속 M1 implementation 진행을 명시적으로 허용. handoff commit `ae8c13cc`. 후속 영향 commit: `1f8d7fca`(Step 4) — `src/cli/app.ts` composition, `core/contracts.ts`·`pipeline/run.ts`에 optional pendingMemory 추가. Step 3 observable contract 유지, GPU OCR regression 21/21 exact([STEP4 Claude verification](STEP4_VALIDATION.md#claude-orchestrator-verification)) |
 | 4 — Translation | `1f8d7fca` + `fb652920`(whitespace fix) | [STEP4_VALIDATION.md](STEP4_VALIDATION.md), Git 제외 `RoverCarrot/test-data/validation/m1-step4/` | **DEFERRED** — implementation + Claude orchestrator 1차 검증(실제 b9553 CUDA build, Q6_K GPU lifecycle·4-page E2E 포함), 재작업 1 cycle(F1 graceful shutdown), fresh independent review 미실행 | 예 — Step 5 layout eligibility가 `translatedText`, Step 6+가 전체 결과에 의존. Step 3(OCR `sourceText`)에 의존 | Step 1–3 파일 변경: `adapters/detection-resize.ts`(Step 2, optional height 인자 — 기본 동작 동일), `cli/app.ts`·`cli/config-file.ts`·`core/config.ts`·`core/contracts.ts`·`pipeline/run.ts`·`tests/boundaries.mjs`·`tools/copy-ocr-assets.mjs`(optional 확장). 이전 Step regression: check/smoke/boundaries/Python, Step 3 OCR CPU·GPU differential PASS |
+| 5 — Typography / Layout | `45797b19` | [STEP5_VALIDATION.md](STEP5_VALIDATION.md), [source trace](../../analysis/TYPOGRAPHY_LAYOUT_SOURCE_TRACE.md), Git 제외 `RoverCarrot/test-data/validation/m1-step5/` | **DEFERRED** — implementation Codex, validation Claude orchestrator(fresh reference 차분 260 block/248 estimate/21 layout patch exact, GPU 4-page E2E), fresh independent review 미실행 | 예 — Step 6 erase가 `fontSizePx`와 bubble layout 코드를, Step 7 renderer가 layout state를 사용. Step 4(`translatedText`)·Step 2(Koharu) 의존 | historical stored-output difference 5건을 2026-10-03 사용자가 항목 한정으로 수용(tolerance 없음, precedent 아님): [Known differences](STEP5_VALIDATION.md#known-differences-step-5-acceptance). D17 OPEN(autoFont=false 구현). Step 1–4 파일 변경: `cli/app.ts`·`cli/config-file.ts`·`core/config.ts`·`core/contracts.ts`·`tests/boundaries.mjs`·`tools/copy-ocr-assets.mjs`(optional 확장), regression PASS |
 
 ## Progress
 
@@ -52,8 +53,8 @@
 | 2 | [Detection / Koharu](#step-2--detection--koharu) | DONE | Linux detection 결과가 기존 `hayai-regions.json`과 region 수·bbox·순서 일치 |
 | 3 | [OCR / Hayai](#step-3--ocr--hayai) | REVIEW | Linux Hayai `sourceText`가 기존 결과와 일치 |
 | 4 | [Translation](#step-4--translation) | REVIEW | 같은 입력으로 같은 request·parse·merge·memory 갱신 |
-| 5 | [Typography / Layout](#step-5--typography--layout) | IMPLEMENT | 고정 입력의 font size·bubble layout이 reference와 일치 |
-| 6 | [Inpainting / Erase](#step-6--inpainting--erase) | NOT_STARTED | Linux FLUX runner로 기존 mask·erase 결과 재현 |
+| 5 | [Typography / Layout](#step-5--typography--layout) | REVIEW | 고정 입력의 font size·bubble layout이 reference와 일치 |
+| 6 | [Inpainting / Erase](#step-6--inpainting--erase) | IMPLEMENT | Linux FLUX runner로 기존 mask·erase 결과 재현 |
 | 7 | [Renderer (Skia primary)](#step-7--renderer-skia-primary) | NOT_STARTED | v3 fixture + Linux Skia smoke + font capability smoke |
 | 8 | [Full Integration & Interoperability](#step-8--full-integration--interoperability) | NOT_STARTED | Linux 순차 E2E + managed translation lifecycle + Windows Carrot open/use |
 
@@ -560,7 +561,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 
 ## Step 5 — Typography / Layout
 
-- **Status:** IMPLEMENT
+- **Status:** REVIEW
 - **Goal:** 현재 typography와 bubble layout 동작을 Linux Core로 이식한다. 구현 순서상 Step 6(erase)보다 먼저 한다([바꾼 이유](#기본-8-step에서-바꾼-점)).
 - **Scope:** raster 기반 글자 크기 추정과 source-match 입력(`fontSizePx`, `fontSizeIntent`, `sourceFontFacePx`, `sourceFontSizeConfidence`, `sourceFontSizeMethod`, `autoFitText`), typography merge, bubble layout(Koharu layout 재검출 + slot 계산, `bubbleLayout`, `renderBbox`), renderer에 전달할 layout state, 필요한 기존 formatting 기본값. 범위가 크면 5A Typography / 5B Layout으로 나눌 수 있다(M1 scope는 같다).
 - **Explicit non-goals:** 자동 font matching의 새 구현(D17 결정 전), work typography profile, bubble sculpt 등 고급 layout correction([INITIAL §7](../../analysis/INITIAL_MIGRATION_ANALYSIS.md#7-초기-rovercmt에서-제외-가능한-항목)), renderer backend 구현(Step 7).
@@ -577,17 +578,17 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Validation:** 고정 translated block 입력으로 font size·source-match 필드·bubble layout·`renderBbox`를 기존 Carrot 결과와 비교한다.
 - **Completion criteria:** renderer가 쓸 typography/layout state가 Rover stage boundary로 저장되고, Step 6이 쓸 `fontSizePx`와 bubble layout 코드가 준비됨. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
-  - Status: —
-  - Progress notes: —
-  - Commit: —
-  - Validation result: —
-  - Known differences: —
+  - Status: REVIEW — review DEFERRED([ledger](#deferred-review-ledger))
+  - Progress notes: implementation Codex, validation Claude orchestrator. Branch `main`
+  - Commit: work `45797b19`
+  - Validation result: [STEP5_VALIDATION.md](STEP5_VALIDATION.md). fresh reference 실행과 Rover가 260 block/248 estimate/21 layout patch에서 exact(동일 Linux CPU 환경); check 81/81, smoke 15/15, boundaries, Python 14/14; GPU 4-page E2E PASS, strict schema PASS
+  - Known differences: historical stored-output difference 5건(`sourceFontFacePx` 2, `bubbleLayout` 3) — 2026-10-03 사용자 수용, 항목 한정·tolerance 없음·원인 unresolved([표](STEP5_VALIDATION.md#known-differences-step-5-acceptance))
   - Remaining coupling / follow-up: —
   - Follow-up items: —
 
 ## Step 6 — Inpainting / Erase
 
-- **Status:** NOT_STARTED
+- **Status:** IMPLEMENT
 - **Goal:** 기존 erase/inpainting 동작을 Linux RoverCMT로 이식한다.
 - **Scope:** mask 생성, crop 계획, bubble prepass 의존, 상주 FLUX runner(Rust/Candle, Linux CUDA), 결과 artifact와 block binding(`erasedWorkflowRegions`), 현재 erase semantics.
 - **Explicit non-goals:** Fast Erase, solid balloon fill, crop 수 감소 등 [M4 Inpainting IDEAS](../M4_OPTIMIZATION/IDEAS.md#inpainting). Koharu LaMa/AOT, Codex erase, Python Diffusers, ZLUDA/HIP([INPAINTING §17 DROP INITIALLY](../../analysis/INPAINTING_PIPELINE_MIGRATION_ANALYSIS.md#17-recommended-migration-boundary)). Translation ↔ Erase 병렬 통합(Post-M1).
