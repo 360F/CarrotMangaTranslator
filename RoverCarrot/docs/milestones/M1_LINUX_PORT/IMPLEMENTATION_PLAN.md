@@ -19,16 +19,16 @@
 | 항목 | 값 |
 |---|---|
 | Active milestone | **M1 — Linux Port** ([목표와 요구사항](README.md#목표)) |
-| 현재 Step | [Step 4 — Translation](#step-4--translation). Step 3은 review DEFERRED([Deferred Review Ledger](#deferred-review-ledger)) |
-| State | **IMPLEMENT** — 2026-10-03 D32·D33 resolved(user decision)로 BLOCKED 해제. 착수 가능, production implementation 미시작 |
+| 현재 Step | [Step 5 — Typography / Layout](#step-5--typography--layout). Step 3·4는 review DEFERRED([Deferred Review Ledger](#deferred-review-ledger)) |
+| State | **IMPLEMENT** — 2026-10-03 Step 4 provisional baseline(work `fb652920`) 이후 Deferred Review Ledger에 따라 열림. production implementation 미시작 |
 | Next role | **implementation** |
-| 기준 commit | `048f9a57096ca3cb0654edfc5b3977097dcd5941`(accepted HEAD: D32·D33 resolution과 GPU validation 운영 규칙) |
-| Task | Step 4 Scope 구현(D32·D33 resolution 반영)과 [Reference-driven validation](#reference-driven-validation), [GPU validation 운영](#gpu-validation-운영-2026-10-03-사용자-결정). 시작할 때 `STEP4_VALIDATION.md`를 만든다 |
-| 기준 문서 | [Step 4](#step-4--translation), [M1-TRANS-001](CURRENT.md#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식), [D32·D33](#open-decision--validation-register), [managed backend source trace](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md) |
-| Evidence / findings | 아직 없음. 위치: `STEP4_VALIDATION.md`(tracked), Git 제외 `RoverCarrot/test-data/validation/m1-step4/` |
+| 기준 commit | `fb6529202bc376c3a87246ad382de522914b812f`(accepted HEAD: Step 4 work commit) |
+| Task | Step 5 Scope 구현과 [Reference-driven validation](#reference-driven-validation), [GPU validation 운영](#gpu-validation-운영-2026-10-03-사용자-결정). D18 source trace 보완. 시작할 때 `STEP5_VALIDATION.md`를 만든다 |
+| 기준 문서 | [Step 5](#step-5--typography--layout), [M1-CORE-001](CURRENT.md#m1-core-001--linux-core-pipeline-port), [M1-RENDER-001](CURRENT.md#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback), D17·D18 |
+| Evidence / findings | 아직 없음. 위치: `STEP5_VALIDATION.md`(tracked), Git 제외 `RoverCarrot/test-data/validation/m1-step5/` |
 | Open findings / cycle | 없음 / 0 of 3 |
-| 진행 기록 | 2026-10-03 D32·D33 resolved(commit `048f9a57`). 사전 확인(orchestrator, read-only): 시스템에 nvcc·cmake 없음 → recipe는 repo-local toolchain(NVIDIA CUDA 13.3 PyPI 구성요소, cmake/ninja wheel)으로 준비해야 함. Q6_K model/mmproj는 사용자 local model 디렉터리에 있음. 사용자 llama-server container는 Rover 소유가 아님 |
-| 다음 transition | 구현·자체 검증·evidence 후 work commit, ledger에 review DEFERRED로 기록하고 다음 Step을 연다([Deferred Review Ledger](#deferred-review-ledger)) |
+| 진행 기록 | 2026-10-03 Step 4 work `1f8d7fca`+`fb652920`, ledger DEFERRED. D17(autoFont 지원 범위)은 OPEN이지만 M1 blocker가 아니고 Step 5 non-goal이 "D17 결정 전 자동 font matching 새 구현 없음"이므로 현재 사용자 설정(autoFont=false) 경로로 진행 |
+| 다음 transition | 구현·자체 검증·evidence 후 work commit, ledger에 review DEFERRED로 기록하고 다음 Step을 연다 |
 
 ## Deferred Review Ledger
 
@@ -41,7 +41,8 @@
 
 | Step | Implementation work commit | Validation / evidence | Review | 후속 Step 의존 | 비고 |
 |---|---|---|---|---|---|
-| 3 — OCR / Hayai | `044c5743` | [STEP3_VALIDATION.md](STEP3_VALIDATION.md), Git 제외 `RoverCarrot/test-data/validation/m1-step3/` | **DEFERRED** — implementation + Claude orchestrator 1차 검증(GPU 포함) 완료, fresh independent review 미실행 | 예 — Step 4 이후 translation 입력이 OCR `sourceText`에 의존 | 2026-10-03 사용자가 review 연기와 후속 M1 implementation 진행을 명시적으로 허용. handoff commit `ae8c13cc`. 후속 영향 commit 없음 |
+| 3 — OCR / Hayai | `044c5743` | [STEP3_VALIDATION.md](STEP3_VALIDATION.md), Git 제외 `RoverCarrot/test-data/validation/m1-step3/` | **DEFERRED** — implementation + Claude orchestrator 1차 검증(GPU 포함) 완료, fresh independent review 미실행 | 예 — Step 4 이후 translation 입력이 OCR `sourceText`에 의존 | 2026-10-03 사용자가 review 연기와 후속 M1 implementation 진행을 명시적으로 허용. handoff commit `ae8c13cc`. 후속 영향 commit: `1f8d7fca`(Step 4) — `src/cli/app.ts` composition, `core/contracts.ts`·`pipeline/run.ts`에 optional pendingMemory 추가. Step 3 observable contract 유지, GPU OCR regression 21/21 exact([STEP4 Claude verification](STEP4_VALIDATION.md#claude-orchestrator-verification)) |
+| 4 — Translation | `1f8d7fca` + `fb652920`(whitespace fix) | [STEP4_VALIDATION.md](STEP4_VALIDATION.md), Git 제외 `RoverCarrot/test-data/validation/m1-step4/` | **DEFERRED** — implementation + Claude orchestrator 1차 검증(실제 b9553 CUDA build, Q6_K GPU lifecycle·4-page E2E 포함), 재작업 1 cycle(F1 graceful shutdown), fresh independent review 미실행 | 예 — Step 5 layout eligibility가 `translatedText`, Step 6+가 전체 결과에 의존. Step 3(OCR `sourceText`)에 의존 | Step 1–3 파일 변경: `adapters/detection-resize.ts`(Step 2, optional height 인자 — 기본 동작 동일), `cli/app.ts`·`cli/config-file.ts`·`core/config.ts`·`core/contracts.ts`·`pipeline/run.ts`·`tests/boundaries.mjs`·`tools/copy-ocr-assets.mjs`(optional 확장). 이전 Step regression: check/smoke/boundaries/Python, Step 3 OCR CPU·GPU differential PASS |
 
 ## Progress
 
@@ -50,8 +51,8 @@
 | 1 | [Core Architecture, Contracts & CLI Adapter](#step-1--core-architecture-contracts--cli-adapter) | DONE | Carrot loader contract 확인 + Core boundary + CLI로 minimal pipeline smoke. **사용자 검토 checkpoint** |
 | 2 | [Detection / Koharu](#step-2--detection--koharu) | DONE | Linux detection 결과가 기존 `hayai-regions.json`과 region 수·bbox·순서 일치 |
 | 3 | [OCR / Hayai](#step-3--ocr--hayai) | REVIEW | Linux Hayai `sourceText`가 기존 결과와 일치 |
-| 4 | [Translation](#step-4--translation) | IMPLEMENT | 같은 입력으로 같은 request·parse·merge·memory 갱신 |
-| 5 | [Typography / Layout](#step-5--typography--layout) | NOT_STARTED | 고정 입력의 font size·bubble layout이 reference와 일치 |
+| 4 | [Translation](#step-4--translation) | REVIEW | 같은 입력으로 같은 request·parse·merge·memory 갱신 |
+| 5 | [Typography / Layout](#step-5--typography--layout) | IMPLEMENT | 고정 입력의 font size·bubble layout이 reference와 일치 |
 | 6 | [Inpainting / Erase](#step-6--inpainting--erase) | NOT_STARTED | Linux FLUX runner로 기존 mask·erase 결과 재현 |
 | 7 | [Renderer (Skia primary)](#step-7--renderer-skia-primary) | NOT_STARTED | v3 fixture + Linux Skia smoke + font capability smoke |
 | 8 | [Full Integration & Interoperability](#step-8--full-integration--interoperability) | NOT_STARTED | Linux 순차 E2E + managed translation lifecycle + Windows Carrot open/use |
@@ -525,7 +526,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 
 ## Step 4 — Translation
 
-- **Status:** IMPLEMENT
+- **Status:** REVIEW
 - **Goal:** 현재 production translation semantics를 Linux Core로 이식한다.
 - **Scope:** managed llama-server(`gemma`), Gemma 4 26B model/runtime 준비·launch/preflight/readiness/stop·page별 endpoint session, 내부 OpenAI-compatible client, 현재 prompt/context 구성(원본 page 이미지 포함), OCR candidate/`sourceText` grounding, work context(glossary, characters, story memory, 이전 화 story pages), response parsing, block mapping/merge, retry/error 처리, 현재 memory commit semantics.
 - **Explicit non-goals:** [M4 Translation IDEAS](../M4_OPTIMIZATION/IDEAS.md#translation) 전부(prompt 축소, Previous pass 중복 제거, output schema 축소, page-context trailer 최적화, image resize/re-encode, cache-friendly ordering, VLM 단독 OCR, memory 재설계). Translation ↔ Erase 병렬 실행·GPU scheduling·vLLM·단일 5090 최적화(Post-M1, [2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)). Codex provider, fixed-block/group review 경로([TRANSLATION_PIPELINE §16](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#16-recommended-migration-boundary)).
@@ -549,17 +550,17 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - managed llama-server 경로가 M1 대상이므로([2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)) Step 4 완료에는 managed Gemma 4 26B Linux backend의 start/readiness/request/stop·abort/restart와 page별 session 검증이 추가로 필요하다. request/parse 등 contract 검증은 기존 원칙대로 다른 local OpenAI-compatible backend로도 할 수 있으나, 그것으로 managed lifecycle 검증을 대체해 완료 처리하지 않는다.
 - **Completion criteria:** D32·D33 해결과 managed Linux lifecycle smoke 완료. translated block과 memory 갱신이 Rover persistence boundary를 통해 저장되고 다음 page 요청에 반영됨. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
-  - Status: IMPLEMENT (2026-10-03 D32·D33 resolved)
-  - Progress notes: implementation 미시작
-  - Commit: —
-  - Validation result: —
-  - Known differences: —
+  - Status: REVIEW — review DEFERRED([ledger](#deferred-review-ledger))
+  - Progress notes: implementation(Codex 3 sessions) + Claude orchestrator 1차 검증·build·GPU 검증, 재작업 1 cycle(F1 graceful shutdown). Branch `main`
+  - Commit: work `1f8d7fca`, `fb652920`
+  - Validation result: [STEP4_VALIDATION.md](STEP4_VALIDATION.md). b9553 Linux CUDA build exit 0; Q6_K managed lifecycle(start/readiness/translation/SIGTERM→exit 0/restart/abort/failure cleanup) PASS; 4-page detect+GPU OCR+translation CLI PASS(41/42 translated, memory·export 저장, strict schema PASS); check 72/72, smoke 15/15, boundaries, Python 14/14
+  - Known differences: 자연어 번역 exact parity는 기준 아님. 모델이 누락한 block은 Carrot처럼 남김(D14). Electron vs sharp assist image pixel parity와 historical work-context 재구성은 미검증
   - Remaining coupling / follow-up: —
   - Follow-up items: —
 
 ## Step 5 — Typography / Layout
 
-- **Status:** NOT_STARTED
+- **Status:** IMPLEMENT
 - **Goal:** 현재 typography와 bubble layout 동작을 Linux Core로 이식한다. 구현 순서상 Step 6(erase)보다 먼저 한다([바꾼 이유](#기본-8-step에서-바꾼-점)).
 - **Scope:** raster 기반 글자 크기 추정과 source-match 입력(`fontSizePx`, `fontSizeIntent`, `sourceFontFacePx`, `sourceFontSizeConfidence`, `sourceFontSizeMethod`, `autoFitText`), typography merge, bubble layout(Koharu layout 재검출 + slot 계산, `bubbleLayout`, `renderBbox`), renderer에 전달할 layout state, 필요한 기존 formatting 기본값. 범위가 크면 5A Typography / 5B Layout으로 나눌 수 있다(M1 scope는 같다).
 - **Explicit non-goals:** 자동 font matching의 새 구현(D17 결정 전), work typography profile, bubble sculpt 등 고급 layout correction([INITIAL §7](../../analysis/INITIAL_MIGRATION_ANALYSIS.md#7-초기-rovercmt에서-제외-가능한-항목)), renderer backend 구현(Step 7).

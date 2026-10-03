@@ -43,11 +43,11 @@ Item 목록:
 | [M1-OBS-001](#m1-obs-001--stage-진행상황과-소요시간-실시간-표시) | Stage 진행상황과 소요시간 실시간 표시 | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
 | [M1-COMPAT-001](#m1-compat-001--windows-carrot과의-output-interoperability) | Windows Carrot과의 output interoperability | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
 | [M1-PERSIST-001](#m1-persist-001--persistence와-data-contract-parity) | Persistence와 data contract parity | in progress (Step 1 skeleton 완료; 실제 stage/전체 M1 검증 남음) |
-| [M1-PERSIST-002](#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리) | Rover Output 이식(번역 JSON/CSV export, 출력 경로, 기본 입출력 디렉터리) | not started |
+| [M1-PERSIST-002](#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리) | Rover Output 이식(번역 JSON/CSV export, 출력 경로, 기본 입출력 디렉터리) | in progress (Step 4 export 구현, Step 8 통합 남음) |
 | [M1-RUNTIME-001](#m1-runtime-001--linux-runtimemodel-의존성-교체적응) | Linux runtime/model 의존성 교체·적응 | in progress (Step 1 skeleton·Step 2 Detection 완료; 나머지 stage/전체 M1 검증 남음) |
 | [M1-DETECT-001](#m1-detect-001--koharu-layout-onnx-linux-runtime) | Koharu layout ONNX Linux runtime | in progress (Step 2 DONE — 2026-10-03 사용자 checkpoint 승인; Step 5·6 Koharu 재사용과 전체 M1 검증 남음) |
 | [M1-OCR-001](#m1-ocr-001--hayaiocr-linux-runtime) | HayaiOCR Linux runtime | in progress (Step 3 구현 완료, 독립 review 대기) |
-| [M1-TRANS-001](#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식) | OpenAI-compatible translation client와 prompt contract 이식 | not started |
+| [M1-TRANS-001](#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식) | OpenAI-compatible translation client와 prompt contract 이식 | in progress (Step 4 구현, review DEFERRED) |
 | [M1-INPAINT-001](#m1-inpaint-001--flux-klein-candle-runner-linux-runtime) | FLUX Klein Candle runner Linux runtime | not started |
 | [M1-RENDER-001](#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback) | Linux renderer: Skia Canvas primary, Playwright Chromium fallback | in progress — 분석·spike·contract-aligned v3 비교 완료, **방향 결정(2026-10-01)**, Skia production 구현·검증 전 |
 
@@ -245,7 +245,7 @@ Item 목록:
 ### M1-PERSIST-002 — Rover Output 이식(번역 JSON/CSV export, 출력 경로, 기본 입출력 디렉터리)
 
 - **Status:** CURRENT
-- **Progress:** not started
+- **Progress:** in progress (Step 4 export 구현, Step 8 통합 남음)
 - **Summary:** reference fork의 Rover Output 기능을 Linux Core로 이식한다: 번역 결과의 JSON/CSV export(`translation.csv` 등), 출력 경로 분리(Rover output root), 기본 입력/출력 디렉터리. Carrot GUI settings/dialog 부분은 이식하지 않고 [M1-CONFIG-001](#m1-config-001--configsettings-파일-기반-설정)·[M1-CONFIG-002](#m1-config-002--inputoutput-경로-config화)의 config/CLI 인자로 받는다.
 - **Why it matters:** 사용자 결정으로 fork 기능이지만 M1에서 이식할 기존 기능으로 취급한다. upstream v2.8.2에는 없는 기능이므로 upstream 기준으로 판단하면 빠진다.
 - **Existing behavior (source 근거, `fd461737` 기준):**
@@ -257,7 +257,7 @@ Item 목록:
 - **Related items:** M1-PERSIST-001, M1-CONFIG-002, M1-TRANS-001, M1-COMPAT-001.
 - **Dependencies:** M1-TRANS-001(번역 저장 상태에서 export가 트리거된다), M1-CONFIG-002(출력 경로).
 - **Decision / validation needed:** 구현 Step(기본안: Step 4 구현, Step 8 통합. [IMPLEMENTATION_PLAN D29](IMPLEMENTATION_PLAN.md#open-decision--validation-register)). export 트리거 시점과 파일 형식은 source trace로 확인해 기존 동작을 보존한다.
-- **History:** 2026-10-01 생성(user decision: fork 기능이지만 기존 기능으로 이식).
+- **History:** 2026-10-01 생성(user decision: fork 기능이지만 기존 기능으로 이식). 2026-10-03 Step 4에서 translation JSON/CSV export 구현(work `1f8d7fca`), Progress in progress.
 
 ### M1-RUNTIME-001 — Linux runtime/model 의존성 교체·적응
 
@@ -313,7 +313,7 @@ Item 목록:
 ### M1-TRANS-001 — OpenAI-compatible translation client와 prompt contract 이식
 
 - **Status:** CURRENT
-- **Progress:** not started
+- **Progress:** in progress (Step 4 구현, review DEFERRED)
 - **Summary:** managed llama-server(`gemma`)와 Gemma 4 26B의 model/runtime 준비·start/readiness/stop·page별 session을 포함해 이식한다. 현재 prompt builder·parser·validation·block mapping과 내부 OpenAI-compatible HTTP client로 vision 요청을 재현한다. memory(glossary/characters/story)와 page 순차 처리를 보존한다.
 - **Why it matters:** analysis의 실사용은 외부 OpenAI-compatible endpoint다. M1 대상은 사용자 결정으로 managed 경로이며, 그 Linux 준비 문제는 D32·D33으로 추적한다([대체 기록](#m1-baseline-decision-2026-10-03)).
 - **Related analysis:**
@@ -325,7 +325,7 @@ Item 목록:
 - **Dependencies:** M1-CONFIG-001.
 - **Decision / validation needed:** D32(26B variant/quantization/QAT·MTP/runtime profile 확정), D33(Linux binary·packaging·process lifecycle). server launch/config provenance와 요청별 work-context snapshot 기록(D16). TR §16의 다른 동작 변경은 기존대로 별도 결정.
 - **M1 검증 원칙 (2026-10-03 user decision):** 외부 개인 번역 서버의 availability는 M1 진행의 전제가 아니다. live 호출 검증에는 Rover PC(RTX 5090) 등에서 쓸 수 있는 local OpenAI-compatible LLM backend를 쓸 수 있다. 다른 LLM/backend 때문에 생긴 번역 문구 차이는 implementation regression이 아니다. 번역 문장 exact parity는 기준이 아니다. [2026-10-03 baseline 결정](#m1-baseline-decision-2026-10-03)에 따라 Step 4 완료에는 managed Gemma 4 26B Linux backend의 start/readiness/request/stop·abort/restart와 page별 session 검증이 추가로 필요하다. request/parse 등 contract 검증은 다른 local OpenAI-compatible backend로도 할 수 있으나, 그것으로 managed lifecycle 검증을 대체해 완료 처리하지 않는다. 상세: [Step 4](IMPLEMENTATION_PLAN.md#step-4--translation).
-- **History:** 2026-10-01 생성. 2026-10-03 M1 번역 검증 원칙 링크 추가(user decision). 2026-10-03 managed Gemma 4 26B scope 반영([대체 기록](#m1-baseline-decision-2026-10-03)); client/prompt contract 유지. 2026-10-03 D32·D33 resolved(user decision): heretic Q6_K + mainline b9553 cuda13.3, Linux CUDA source build([register](IMPLEMENTATION_PLAN.md#open-decision--validation-register)).
+- **History:** 2026-10-01 생성. 2026-10-03 M1 번역 검증 원칙 링크 추가(user decision). 2026-10-03 managed Gemma 4 26B scope 반영([대체 기록](#m1-baseline-decision-2026-10-03)); client/prompt contract 유지. 2026-10-03 D32·D33 resolved(user decision): heretic Q6_K + mainline b9553 cuda13.3, Linux CUDA source build([register](IMPLEMENTATION_PLAN.md#open-decision--validation-register)). 2026-10-03 Step 4 work `1f8d7fca`/`fb652920`, Progress in progress.
 
 ### M1-INPAINT-001 — FLUX Klein Candle runner Linux runtime
 
