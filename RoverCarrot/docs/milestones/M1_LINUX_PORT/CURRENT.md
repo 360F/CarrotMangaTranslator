@@ -46,7 +46,7 @@ Item 목록:
 | [M1-PERSIST-002](#m1-persist-002--rover-output-이식번역-jsoncsv-export-출력-경로-기본-입출력-디렉터리) | Rover Output 이식(번역 JSON/CSV export, 출력 경로, 기본 입출력 디렉터리) | not started |
 | [M1-RUNTIME-001](#m1-runtime-001--linux-runtimemodel-의존성-교체적응) | Linux runtime/model 의존성 교체·적응 | in progress (Step 1 skeleton·Step 2 Detection 완료; 나머지 stage/전체 M1 검증 남음) |
 | [M1-DETECT-001](#m1-detect-001--koharu-layout-onnx-linux-runtime) | Koharu layout ONNX Linux runtime | in progress (Step 2 DONE — 2026-10-03 사용자 checkpoint 승인; Step 5·6 Koharu 재사용과 전체 M1 검증 남음) |
-| [M1-OCR-001](#m1-ocr-001--hayaiocr-linux-runtime) | HayaiOCR Linux runtime | not started |
+| [M1-OCR-001](#m1-ocr-001--hayaiocr-linux-runtime) | HayaiOCR Linux runtime | in progress (Step 3 구현 완료, 독립 review 대기) |
 | [M1-TRANS-001](#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식) | OpenAI-compatible translation client와 prompt contract 이식 | not started |
 | [M1-INPAINT-001](#m1-inpaint-001--flux-klein-candle-runner-linux-runtime) | FLUX Klein Candle runner Linux runtime | not started |
 | [M1-RENDER-001](#m1-render-001--linux-renderer-skia-canvas-primary-playwright-chromium-fallback) | Linux renderer: Skia Canvas primary, Playwright Chromium fallback | in progress — 분석·spike·contract-aligned v3 비교 완료, **방향 결정(2026-10-01)**, Skia production 구현·검증 전 |
@@ -298,7 +298,7 @@ Item 목록:
 ### M1-OCR-001 — HayaiOCR Linux runtime
 
 - **Status:** CURRENT
-- **Progress:** not started
+- **Progress:** in progress (Step 3 구현·검증 evidence: [STEP3_VALIDATION.md](STEP3_VALIDATION.md); 독립 review 대기)
 - **Summary:** HayaiOCR Python worker를 Linux lock(venv/container)으로 실행하고, region manifest → OCR 결과 binding을 RoverCMT adapter로 이식한다.
 - **Why it matters:** 현재 translation contract는 OCR text를 구조적으로 필요로 한다(빈 `sourceText` block은 번역 대상에서 빠지고, memory grounding도 OCR text를 쓴다).
 - **Related analysis:**
@@ -308,7 +308,7 @@ Item 목록:
 - **Related items:** [M4-TRANS-001](../M4_OPTIMIZATION/IDEAS.md#m4-trans-001--hayai-ocr--vision-translation을-vision-llm-단독-ocrtranslation으로-통합)(OCR 제거 실험은 M4).
 - **Dependencies:** M1-DETECT-001(manifest 입력), 또는 기존 run artifact로 단독 smoke.
 - **Decision / validation needed:** raw OCR 보존과 sanitize 위치(CORE §17 #1).
-- **History:** 2026-10-01 생성.
+- **History:** 2026-10-01 생성. 2026-10-03 Step 3 구현(work commit `044c5743`), Progress in progress.
 
 ### M1-TRANS-001 — OpenAI-compatible translation client와 prompt contract 이식
 

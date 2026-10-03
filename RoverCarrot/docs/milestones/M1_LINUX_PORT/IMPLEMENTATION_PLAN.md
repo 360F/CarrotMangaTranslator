@@ -20,15 +20,15 @@
 |---|---|
 | Active milestone | **M1 — Linux Port** ([목표와 요구사항](README.md#목표)) |
 | 현재 Step | [Step 3 — OCR / Hayai](#step-3--ocr--hayai) |
-| State | **IMPLEMENT** — 2026-10-03 Step 2 사용자 승인으로 열림. 착수 가능, production implementation 미시작 |
-| Next role | **implementation** |
-| 기준 commit | `f71f3134afd7d918188f3a9c1d3d37b62abaf5a5`(accepted HEAD: 2026-10-03 managed Gemma 4 26B·순차 baseline 결정 반영) |
+| State | **REVIEW** — 2026-10-03 Step 3 구현·자체 검증 완료(work commit `044c5743`). 독립 review 대기 |
+| Next role | **review** |
+| 기준 commit | `044c5743ba3ea259ddcf0a6e80c4a49531bf01e0`(accepted HEAD: Step 3 HayaiOCR work commit = 검증 대상 commit) |
 | Task | Step 3 Scope 구현과 [Reference-driven validation](#reference-driven-validation). 시작할 때 `STEP3_VALIDATION.md`를 만든다 |
 | 기준 문서 | [Step 3](#step-3--ocr--hayai), [M1-OCR-001](CURRENT.md#m1-ocr-001--hayaiocr-linux-runtime), Step 3의 Related analysis·Source areas(Carrot reference) |
-| Evidence / findings | 아직 없음. 위치: `STEP3_VALIDATION.md`(tracked), Git 제외 `RoverCarrot/test-data/validation/m1-step3*/` |
+| Evidence / findings | [STEP3_VALIDATION.md](STEP3_VALIDATION.md)(tracked; Review findings 표 비어 있음), Git 제외 `RoverCarrot/test-data/validation/m1-step3/` |
 | Open findings / cycle | 없음 / 0 of 3 |
-| 진행 기록 | — |
-| 다음 transition | 구현·자체 검증·evidence 기록 후 State REVIEW, Next role review, 기준 commit = 검증 대상 commit |
+| 진행 기록 | 2026-10-03 implementation: Hayai worker(reference byte-identical)·Linux CPU/cu130 lock·OCR stage/adapter 구현. 검증: check 54/54, smoke 15/15, boundaries, Python 11/11, CPU differential 3p/21, GPU differential 46p/261(reference worker·정규화·저장 결과 text 일치), 4-page CPU/GPU CLI, strict schema. 남은 것: 독립 review. 실제 subdivided/recovered/failed 사례는 reference corpus에 없음(deterministic test만). 다음 action: fresh review session |
+| 다음 transition | 독립 review 판정에 따라 FIX(cycle +1) / CHECKPOINT_READY / BLOCKED. review commit이 있으면 기준 commit = review commit |
 
 ## Progress
 
@@ -36,7 +36,7 @@
 |---|---|---|---|
 | 1 | [Core Architecture, Contracts & CLI Adapter](#step-1--core-architecture-contracts--cli-adapter) | DONE | Carrot loader contract 확인 + Core boundary + CLI로 minimal pipeline smoke. **사용자 검토 checkpoint** |
 | 2 | [Detection / Koharu](#step-2--detection--koharu) | DONE | Linux detection 결과가 기존 `hayai-regions.json`과 region 수·bbox·순서 일치 |
-| 3 | [OCR / Hayai](#step-3--ocr--hayai) | IMPLEMENT | Linux Hayai `sourceText`가 기존 결과와 일치 |
+| 3 | [OCR / Hayai](#step-3--ocr--hayai) | REVIEW | Linux Hayai `sourceText`가 기존 결과와 일치 |
 | 4 | [Translation](#step-4--translation) | NOT_STARTED | 같은 입력으로 같은 request·parse·merge·memory 갱신 |
 | 5 | [Typography / Layout](#step-5--typography--layout) | NOT_STARTED | 고정 입력의 font size·bubble layout이 reference와 일치 |
 | 6 | [Inpainting / Erase](#step-6--inpainting--erase) | NOT_STARTED | Linux FLUX runner로 기존 mask·erase 결과 재현 |
@@ -479,7 +479,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 
 ## Step 3 — OCR / Hayai
 
-- **Status:** IMPLEMENT
+- **Status:** REVIEW
 - **Goal:** HayaiOCR Linux worker와 Rover adapter를 이식한다.
 - **Scope:** Linux Python worker, pinned model/runtime, region manifest 입력, OCR 실행, normalization/sanitize, OCR 결과 → block binding, `ocrSubdivision` 관련 기존 동작, `sourceText` 생성, stage/runtime boundary.
 - **Explicit non-goals:** VLM 단독 OCR+Translation 통합([M4-TRANS-001](../M4_OPTIMIZATION/IDEAS.md#m4-trans-001--hayai-ocr--vision-translation을-vision-llm-단독-ocrtranslation으로-통합)). PaddleOCR legacy, ROCm, Windows managed Python. 성능 최적화.
@@ -494,12 +494,12 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 - **Validation:** 고정 region manifest와 원본 raster로 기존 `ocr-bbox-hints.json`의 OCR text와 Rover normalized `sourceText`를 region별로 비교한다(OCR §12 S3–S4). 차이는 판정이 아니라 기록 대상이다.
 - **Completion criteria:** OCR 결과가 block에 binding되어 Step 4 translation 입력으로 쓸 수 있음. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
-  - Status: —
-  - Progress notes: —
-  - Commit: —
-  - Validation result: —
-  - Known differences: —
-  - Remaining coupling / follow-up: —
+  - Status: REVIEW (2026-10-03, 독립 review 대기)
+  - Progress notes: implementation(Codex) + orchestrator 1차 검증·GPU 검증(Claude) 완료, pre-review rework 1회(durable runtime, CPU-only thread env, comparator count/unbound 기록). D31은 설치 앱 data root로 재binding(2026-10-03 user decision). Branch `main`.
+  - Commit: work `044c5743`
+  - Validation result: [STEP3_VALIDATION.md](STEP3_VALIDATION.md). check 54/54, smoke 15/15, boundaries PASS, Python 11/11; CPU differential 3p/21 exact; GPU(cu130, RTX 5090) differential 46p/261: reference worker == Rover worker, 정규화 exact, 저장 Carrot hints text 261/261, sourceText 256/256(5 unbound); 4-page CPU/GPU CLI PASS(42 blocks); strict schema PASS
+  - Known differences: 관찰된 non-text/text 차이 없음. 승인 대기 known difference 없음
+  - Remaining coupling / follow-up: OCR은 page/block state와 `workflowOrigin`을 읽고 `sourceText`·`recognitionSegments`·`ocrFailure`를 쓴다. batch 결과를 stage 동안 메모리에 보관(Stage.prepare), detector release 후 실행, process close 후 다음 stage. 실제 subdivided/recovered/failed Hayai 사례 미검증(reference corpus에 없음). venv/HF cache는 Git 제외 `test-data/runtime/`에 provision(D9 기록)
   - Follow-up items: —
 
 ## Step 4 — Translation
