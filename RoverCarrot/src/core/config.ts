@@ -17,7 +17,7 @@ function pathValue(name: string, override: unknown, configured: unknown, base: s
 export function resolveConfig(raw: unknown, base: string = process.cwd(), overrides: PathOverrides = {}): Config {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('Config must be an object');
   const value = raw as Record<string, unknown>;
-  if (Object.keys(value).some(key => !['version', 'mode', 'input', 'output', 'stages', 'models', 'ocr', 'translation'].includes(key)))
+  if (Object.keys(value).some(key => !['version', 'mode', 'input', 'output', 'stages', 'models', 'ocr', 'translation', 'typography'].includes(key)))
     throw new Error('Unknown config field');
   if (value.version !== 1 || value.mode !== 'smoke') throw new Error('Step 1 requires version=1, mode=smoke');
   const input = pathValue('input', overrides.input, value.input, base);
@@ -26,6 +26,15 @@ export function resolveConfig(raw: unknown, base: string = process.cwd(), overri
   if (!Array.isArray(stages) || !stages.length ||
       stages.some(id => !STAGES.includes(id)) || new Set(stages).size !== stages.length)
     throw new Error('stages must contain unique known stage IDs');
+  let typography: Config['typography'];
+  if (value.typography !== undefined) {
+    const t = value.typography as Record<string, unknown>;
+    if (!t || typeof t !== 'object' || Array.isArray(t) || Object.keys(t).some(k => !['autoFont', 'autoSize', 'bubbleLayout', 'naturalLayout', 'overwrite'].includes(k))) throw new Error('Unknown typography config field');
+    if (t.autoFont !== undefined && t.autoFont !== false) throw new Error('autoFont=true awaits D17');
+    for (const key of ['autoSize', 'bubbleLayout', 'naturalLayout']) if (t[key] !== undefined && typeof t[key] !== 'boolean') throw new Error(`typography.${key} must be boolean`);
+    if (t.overwrite !== undefined && (!Array.isArray(t.overwrite) || t.overwrite.some(k => !['typography', 'layout'].includes(k)) || new Set(t.overwrite).size !== t.overwrite.length)) throw new Error('typography.overwrite must contain unique typography/layout IDs');
+    typography = t as Config['typography'];
+  }
   let models: Config['models'];
   if (value.models !== undefined) {
     const model = value.models as Record<string, unknown>;
@@ -73,5 +82,5 @@ export function resolveConfig(raw: unknown, base: string = process.cwd(), overri
       translation = t as Config['translation'];
     }
   }
-  return { ...(translation ? { translation } : {}), ...(ocr ? { ocr } : {}), ...(models ? { models } : {}), version: 1, mode: 'smoke', input, output, stages: STAGES.filter(id => (stages as StageId[]).includes(id)) };
+  return { ...(typography ? { typography } : {}), ...(translation ? { translation } : {}), ...(ocr ? { ocr } : {}), ...(models ? { models } : {}), version: 1, mode: 'smoke', input, output, stages: STAGES.filter(id => (stages as StageId[]).includes(id)) };
 }

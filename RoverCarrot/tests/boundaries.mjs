@@ -10,7 +10,7 @@ async function inspect(dir) {
     for (const match of source.matchAll(/(?:from\s*|import\s*\(|import\s*)['"]([^'"]+)['"]/g)) {
       const specifier = match[1];
       if (!specifier.startsWith('.')) {
-        const allowed = { sharp: ['src/adapters/input.ts', 'src/adapters/koharu.ts', 'src/adapters/translation-images.mjs'], 'smol-toml': ['src/cli/config-file.ts'], 'onnxruntime-node': ['src/adapters/koharu.ts'] };
+        const allowed = { sharp: ['src/adapters/input.ts', 'src/adapters/koharu.ts', 'src/adapters/translation-images.mjs', 'src/adapters/typography-raster.mjs'], 'smol-toml': ['src/cli/config-file.ts'], 'onnxruntime-node': ['src/adapters/koharu.ts'] };
         assert.ok(specifier.startsWith('node:') || (allowed[specifier] ?? []).some(file => path === resolve(file)), `Unexpected runtime dependency: ${specifier}`);
         continue;
       }

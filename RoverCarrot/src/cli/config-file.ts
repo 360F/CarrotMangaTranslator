@@ -51,6 +51,8 @@ targetLanguage = "ko"
 cumulative = true
 cumulativeDetail = "detailed"
 export = true
+# Typography uses autoFont=false, autoSize=true, bubbleLayout=true, naturalLayout=false.
+# Optional [typography] table overrides those values; autoFont=true awaits D17.
 # Optional: styleGuidePath, previousStoryPath + previousChapterPath, exportRoot (absolute paths).
 `;
 
@@ -73,16 +75,18 @@ export function parseConfigToml(text: string, cwd: string, overrides: PathOverri
     const first = (error instanceof Error ? error.message : String(error)).split('\n')[0];
     throw new ConfigError(`Invalid TOML: ${first}`, { cause: error });
   }
-  const top = table(doc, 'top level', ['version', 'mode', 'paths', 'pipeline', 'models', 'ocr', 'translation']);
+  const top = table(doc, 'top level', ['version', 'mode', 'paths', 'pipeline', 'models', 'ocr', 'translation', 'typography']);
   const paths = table(top.paths, 'paths', ['input', 'output']);
   const pipeline = table(top.pipeline, 'pipeline', ['stages']);
   const models = table(top.models, 'models', ['koharu']);
   const ocr = table(top.ocr, 'ocr', ['python', 'hfCache', 'device', 'sourceLanguage', 'timeoutMs']);
   const translation = table(top.translation, 'translation', ['backend', 'serverPath', 'modelPath', 'mmprojPath', 'modelIdentityPath',
     'runtimeProfile', 'port', 'sourceLanguage', 'targetLanguage', 'cumulative', 'cumulativeDetail', 'styleGuidePath', 'previousStoryPath', 'previousChapterPath', 'export', 'exportRoot', 'readingDirection']);
+  const typography = table(top.typography, 'typography', ['autoFont', 'autoSize', 'bubbleLayout', 'naturalLayout', 'overwrite']);
   const raw: Record<string, unknown> = { version: top.version, mode: top.mode };
   for (const [key, value] of [['input', paths.input], ['output', paths.output], ['stages', pipeline.stages]] as const)
     if (value !== undefined) raw[key] = value;
+  if (top.typography !== undefined) raw.typography = typography;
   if (top.translation !== undefined) raw.translation = translation;
   if (top.ocr !== undefined) raw.ocr = ocr;
   if (top.models !== undefined) raw.models = models;

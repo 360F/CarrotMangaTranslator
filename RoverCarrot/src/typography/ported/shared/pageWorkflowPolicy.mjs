@@ -1,0 +1,186 @@
+// Ported from read-only fork fd461737. See source-map.json.
+import { hashStableValue } from "./blockFingerprint.mjs";
+import { PAGE_WORKFLOW_STAGES, } from "./pageWorkflowStages.mjs";
+export function workflowRegionKey(page, block) {
+    return hashStableValue([
+        page.imagePath,
+        page.width,
+        page.height,
+        block.bbox,
+        block.bboxSpace,
+    ]);
+}
+export function workflowStageKey(page, stage) {
+    const geometry = page.blocks.map((block) => [
+        block.id,
+        workflowRegionKey(page, block),
+    ]);
+    if (stage === "detect")
+        return hashStableValue([page.imagePath, geometry]);
+    if (stage === "erase")
+        return hashStableValue([
+            geometry,
+            page.blocks.map((b) => b.inpaintExcluded),
+            page.inpaintedImagePath,
+            page.erasedWorkflowRegions,
+        ]);
+    if (stage === "ocr" || stage === "source-rules")
+        return hashStableValue([geometry, page.blocks.map((b) => b.sourceText)]);
+    if (stage === "translate" || stage === "translation-rules")
+        return hashStableValue([
+            geometry,
+            page.blockOrder,
+            page.blocks.map((b) => [b.sourceText, b.translatedText]),
+        ]);
+    return hashStableValue([
+        geometry,
+        page.blocks,
+        stage === "layout" ? page.inpaintedImagePath : undefined,
+    ]);
+}
+export function workflowTargetBlocks(page, stage, plan) {
+    const overwrite = plan.overwrite.includes(stage);
+    if (stage === "ocr")
+        return page.blocks.filter((block) => overwrite || !block.sourceText.trim());
+    if (stage === "translate")
+        return page.blocks.filter((block) => Boolean(block.sourceText.trim()) &&
+            (overwrite || !block.translatedText.trim()));
+    if (stage === "erase")
+        return page.blocks.filter((block) => !block.inpaintExcluded &&
+            (overwrite ||
+                !page.inpaintedImagePath ||
+                page.erasedWorkflowRegions?.[block.id] !==
+                    workflowRegionKey(page, block)));
+    if (stage === "layout")
+        return page.blocks.filter((block) => overwrite || !block.bubbleLayout);
+    if (stage === "typography")
+        return page.blocks.filter((block) => {
+            const fields = workflowTypographyFields(block, plan);
+            return fields.font || fields.size;
+        });
+    return page.blocks;
+}
+export function workflowTypographyFields(block, plan) {
+    const overwrite = plan.overwrite.includes("typography");
+    const origin = block.workflowOrigin;
+    return {
+        font: plan.autoFont &&
+            (overwrite ||
+                !block.fontFamily ||
+                Boolean(origin &&
+                    !origin.fontApplied &&
+                    block.fontFamily === origin.initialFontFamily)),
+        size: plan.autoSize &&
+            (overwrite ||
+                Boolean(origin &&
+                    !origin.sizeApplied &&
+                    block.fontSizeIntent !== "manual" &&
+                    block.fontSizePx === origin.initialFontSize)),
+    };
+}
+export function preflightPageWorkflow(request, chapters) {
+    const result = {
+        issues: [],
+        counts: [],
+        pageCount: 0,
+    };
+    const accelerationIssue = experimentalParallelAccelerationIssue(request.plan);
+    if (accelerationIssue)
+        result.issues.push({ chapterId: "", message: accelerationIssue });
+    const pages = collectWorkflowPages(request, chapters, result);
+    result.pageCount = pages.length;
+    for (const stage of PAGE_WORKFLOW_STAGES.filter((id) => request.plan.stages.includes(id))) {
+        const count = { stage, process: 0, preserve: 0, empty: 0 };
+        for (const target of pages) {
+            const issue = workflowPrerequisiteIssue(target.page, stage, request.plan);
+            if (issue)
+                result.issues.push({
+                    chapterId: target.chapterId,
+                    pageId: target.page.id,
+                    stage,
+                    message: issue,
+                });
+            count[workflowPageDisposition(target.page, stage, request.plan)] += 1;
+        }
+        result.counts.push(count);
+    }
+    return result;
+}
+export function experimentalParallelAccelerationIssue(plan) {
+    if (!plan.experimentalParallelAcceleration)
+        return undefined;
+    if (plan.erasureEngine !== "local")
+        return "병렬 가속은 로컬 Flux 지우기에서만 사용할 수 있습니다.";
+    if (!plan.stages.includes("translate") || !plan.stages.includes("erase"))
+        return "병렬 가속에는 번역과 글자 지우기 단계가 모두 필요합니다.";
+    if (plan.stages.includes("format-rules"))
+        return "서식 규칙이 선택된 작업에서는 병렬 가속을 사용할 수 없습니다.";
+    return undefined;
+}
+function workflowPrerequisiteIssue(page, stage, plan) {
+    if (stage === "detect")
+        return;
+    const willDetect = plan.stages.includes("detect");
+    if (!page.blocks.length &&
+        !plan.overwrite.includes("detect") &&
+        page.pageWorkflow?.emptyDetectionKey === workflowStageKey(page, "detect"))
+        return;
+    if (page.blocks.length === 0 && !willDetect)
+        return "블록이 없습니다. 블록 검출을 선택하거나 이 페이지를 제외하세요.";
+    return workflowTextPrerequisite(page, stage, plan, willDetect);
+}
+function missingWorkflowTranslation(page, plan, willDetect) {
+    return ((willDetect &&
+        (!page.blocks.length || plan.overwrite.includes("detect"))) ||
+        workflowTargetBlocks(page, "layout", plan).some((block) => !block.translatedText.trim()));
+}
+function collectWorkflowPages(request, chapters, result) {
+    const pages = [];
+    for (const selection of request.selection) {
+        const chapter = chapters.find((item) => item.id === selection.chapterId);
+        for (const pageId of new Set(selection.pageIds)) {
+            const page = chapter?.pages.find((item) => item.id === pageId);
+            if (page)
+                pages.push({ chapterId: selection.chapterId, page });
+            else
+                result.issues.push({
+                    chapterId: selection.chapterId,
+                    pageId,
+                    message: "페이지를 찾지 못했습니다.",
+                });
+        }
+    }
+    return pages;
+}
+function workflowPageDisposition(page, stage, plan) {
+    if (!page.blocks.length &&
+        page.pageWorkflow?.emptyDetectionKey === workflowStageKey(page, "detect") &&
+        !plan.overwrite.includes("detect"))
+        return "empty";
+    if (stage === "detect")
+        return page.blocks.length > 0 && !plan.overwrite.includes(stage)
+            ? "preserve"
+            : "process";
+    return page.blocks.length > 0 &&
+        workflowTargetBlocks(page, stage, plan).length === 0
+        ? "preserve"
+        : "process";
+}
+function missingWorkflowSource(page, plan, willDetect) {
+    if (willDetect && (!page.blocks.length || plan.overwrite.includes("detect")))
+        return true;
+    return page.blocks.some((block) => !block.sourceText.trim() &&
+        (plan.overwrite.includes("translate") || !block.translatedText.trim()));
+}
+function workflowTextPrerequisite(page, stage, plan, willDetect) {
+    if (stage === "layout" &&
+        !plan.stages.includes("translate") &&
+        missingWorkflowTranslation(page, plan, willDetect))
+        return "번역문이 없습니다. 번역 또는 번역문 입력이 필요합니다.";
+    if (stage !== "translate")
+        return;
+    if (plan.stages.includes("ocr"))
+        return;
+    if (missingWorkflowSource(page, plan, willDetect))
+        return "번역할 원문이 없습니다. 원문 읽기 또는 원문 입력이 필요합니다.";
+}

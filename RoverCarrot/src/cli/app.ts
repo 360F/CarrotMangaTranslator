@@ -1,3 +1,10 @@
+import { defaultPlan } from '../typography/typography.mjs';
+import { typographyStage } from '../typography/stage.js';
+import { layoutStage } from '../layout/stage.js';
+import { loadTypographyRaster } from '../adapters/typography-raster.mjs';
+import { bubbleLayoutRunner } from '../adapters/bubble-layout.mjs';
+import { prepareImage } from '../adapters/koharu.js';
+import { parseKoharuLayoutOutputs } from '../detection/outputs.js';
 import { preflight, startManaged } from '../adapters/llama.mjs';
 import { pageImages } from '../adapters/translation-images.mjs';
 import { translationStore } from '../adapters/translation-store.mjs';
@@ -121,6 +128,19 @@ export async function runCli(options: CliOptions): Promise<number> {
           return startManaged(translation, prepared, { signal, log: (type, fields) => log.info(type, fields) });
         },
       });
+    }
+    if (!options.stages && (config.translation || config.typography)) {
+      const plan = { ...defaultPlan, ...config.typography };
+      stages[stages.findIndex(s => s.id === 'typography')] = typographyStage(loadTypographyRaster, plan, (message, fields) => log.info('typography-warning', { message, ...fields }));
+      const runner = bubbleLayoutRunner(async page => {
+        if (!runtime) {
+          if (!config.models?.koharu && !options.runtime) throw new ConfigError('models.koharu must be configured for layout');
+          runtime = options.runtime ?? koharuRuntime(config.models!.koharu, (type, fields) => log.info(type, fields));
+        }
+        const image = await prepareImage(page.imagePath);
+        return { imageWidth: image.width, imageHeight: image.height, detections: parseKoharuLayoutOutputs(await runtime.infer(image), image) };
+      }, (type, fields) => log.info(type, fields));
+      stages[stages.findIndex(s => s.id === 'layout')] = layoutStage(runner, plan, config.translation?.targetLanguage);
     }
     const result = await run(config, { persistence: observed, stages,
       onEvent: event => { log.info(event.type, { ...event }); progress.event(event); } });

@@ -25,6 +25,7 @@ export type TranslationContext = PendingMemory & { previousStoryPages?: Record<s
 export type Config = {
   version: 1; mode: 'smoke'; input: string; output: string;
   stages: StageId[];
+  typography?: { autoFont?: false; autoSize?: boolean; bubbleLayout?: boolean; naturalLayout?: boolean; overwrite?: ('typography' | 'layout')[] };
   translation?: TranslationConfig;
   models?: { koharu: string };
   ocr?: { python: string; hfCache: string; device: string; sourceLanguage: string; timeoutMs?: number };

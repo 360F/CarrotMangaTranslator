@@ -1,0 +1,4 @@
+// Ported from read-only fork fd461737. See source-map.json.
+export const DEFAULT_BUBBLE_LAYOUT_PADDING_RATIO = 0.12;
+export const MIN_BUBBLE_LAYOUT_PADDING_RATIO = 0;
+export const MAX_BUBBLE_LAYOUT_PADDING_RATIO = 0.7;

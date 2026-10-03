@@ -1,0 +1,258 @@
+// Ported from read-only fork fd461737. See source-map.json.
+import { bboxContainmentRatio, expandNormalizedBbox, isPlausibleMergedModelExtent, } from "./overlayOcrGeometryMath.mjs";
+const MIN_SOURCE_LINE_CROSS_SHARE = 0.58;
+export function stripSourceFontLineGeometry(item) {
+    const { sourceFontLineGeometry: _untrusted, ...clean } = item;
+    void _untrusted;
+    return clean;
+}
+export function buildRecognitionSourceLines(hint, parent, page) {
+    const values = hint.recognitionSegments;
+    if (!Array.isArray(values) || values.length < 2 || values.length > 8) {
+        return undefined;
+    }
+    const left = Math.min(parent.x1, parent.x2) - 1;
+    const top = Math.min(parent.y1, parent.y2) - 1;
+    const right = Math.max(parent.x1, parent.x2) + 1;
+    const bottom = Math.max(parent.y1, parent.y2) + 1;
+    const lines = values.flatMap((segment) => {
+        const x1 = Number(segment.x1);
+        const y1 = Number(segment.y1);
+        const x2 = Number(segment.x2);
+        const y2 = Number(segment.y2);
+        if (![x1, y1, x2, y2].every(Number.isFinite) ||
+            x2 <= x1 ||
+            y2 <= y1 ||
+            x1 < left ||
+            y1 < top ||
+            x2 > right ||
+            y2 > bottom) {
+            return [];
+        }
+        return [
+            {
+                bbox: {
+                    x: (x1 / page.width) * 1000,
+                    y: (y1 / page.height) * 1000,
+                    w: ((x2 - x1) / page.width) * 1000,
+                    h: ((y2 - y1) / page.height) * 1000,
+                },
+                sourceText: String(segment.ocrText ?? ""),
+            },
+        ];
+    });
+    return lines.length === values.length ? lines : undefined;
+}
+export function attachSourceFontLineGeometry(item, hints) {
+    const sourceHints = selectSourceFontLineHints(item, hints);
+    if (sourceHints.length === 0) {
+        return item;
+    }
+    return {
+        ...item,
+        sourceFontLineGeometry: {
+            contractVersion: "source-font-line-geometry-v1",
+            source: "ocr-geometry-lock",
+            lines: sourceHints.flatMap((hint) => hint.sourceLines?.length
+                ? hint.sourceLines.map((line) => ({
+                    candidateId: hint.id,
+                    bbox: line.bbox,
+                    sourceText: line.sourceText,
+                }))
+                : [
+                    {
+                        candidateId: hint.id,
+                        bbox: hint.bbox,
+                        sourceText: String(hint.ocrText ?? ""),
+                    },
+                ]),
+        },
+    };
+}
+/**
+ * Legacy/direct model output identifies only a representative OCR id. The
+ * model bbox can still be the authoritative envelope for several OCR lines,
+ * including lines split across review groups or a detached leading glyph.
+ * Recover only exact, unclaimed source fragments that live inside that
+ * envelope, cover most of the model source text, and collectively make the
+ * model extent plausible. Exact candidateIds remain authoritative upstream.
+ */
+export function resolveModelEnvelopeTextHints(item, lockedHint, hintMap, claimedCandidateIds, page) {
+    const source = normalizeGlyphText(item.sourceText ?? item.jp);
+    const lockedText = normalizeGlyphText(lockedHint.ocrText);
+    if (!canSeedModelEnvelope(source, lockedText)) {
+        return [lockedHint];
+    }
+    const covered = new Uint8Array(source.length);
+    markBestDistinctSourceOccurrence(source, lockedText, covered);
+    const selected = [lockedHint];
+    for (const candidate of modelEnvelopeCandidates(item, lockedHint, hintMap, claimedCandidateIds, page)) {
+        const candidateText = normalizeGlyphText(candidate.ocrText);
+        const minimumGain = Math.max(1, Math.ceil(candidateText.length * 0.8));
+        const newlyCovered = markBestDistinctSourceOccurrence(source, candidateText, covered, minimumGain);
+        if (newlyCovered >= minimumGain)
+            selected.push(candidate);
+    }
+    if (!hasReliableEnvelopeCoverage(source, covered, selected)) {
+        return [lockedHint];
+    }
+    const hintUnion = unionBboxes(selected.map((candidate) => candidate.bbox));
+    return isPlausibleMergedModelExtent(item.bbox, hintUnion)
+        ? selected
+        : [lockedHint];
+}
+export function sourceContainsHintText(item, hint) {
+    const source = normalizeGlyphText(item.sourceText ?? item.jp);
+    const candidate = normalizeGlyphText(hint.ocrText);
+    return candidate.length > 0 && source.includes(candidate);
+}
+export function hintBelongsToModelEnvelope(item, hint, page) {
+    const fontSizePx = Number.isFinite(Number(item.fontSize)) && Number(item.fontSize) > 0
+        ? Number(item.fontSize)
+        : 12;
+    const envelope = expandNormalizedBbox(item.bbox, ((fontSizePx * 0.5) / Math.max(1, page.width)) * 1000, ((fontSizePx * 0.5) / Math.max(1, page.height)) * 1000);
+    return bboxContainmentRatio(hint.bbox, envelope) >= 0.72;
+}
+function selectSourceFontLineHints(item, hints) {
+    const source = normalizeGlyphText(item.sourceText ?? item.jp);
+    if (source.length < 2)
+        return [];
+    const covered = new Uint8Array(source.length);
+    const selected = [];
+    const candidates = [...hints].sort((left, right) => normalizeGlyphText(right.ocrText).length -
+        normalizeGlyphText(left.ocrText).length || left.id - right.id);
+    for (const candidate of candidates) {
+        const candidateText = normalizeGlyphText(candidate.ocrText);
+        if (!candidateText)
+            continue;
+        const minimumGain = Math.max(1, Math.ceil(candidateText.length * 0.8));
+        const exactGain = markBestDistinctSourceOccurrence(source, candidateText, covered, minimumGain);
+        const gain = exactGain
+            ? exactGain
+            : markBestApproximateSourceOccurrence(source, candidateText, covered, minimumGain);
+        if (gain >= minimumGain)
+            selected.push(candidate);
+    }
+    return excludeSmallCrossAxisAnnotations(item, selected);
+}
+function excludeSmallCrossAxisAnnotations(item, selected) {
+    if (selected.length < 2)
+        return selected;
+    const vertical = resolveItemDirection(item) === "vertical";
+    const crossExtent = (hint) => vertical ? hint.bbox.w : hint.bbox.h;
+    const maximumCross = Math.max(...selected.map(crossExtent));
+    return selected.filter((hint) => crossExtent(hint) >= maximumCross * MIN_SOURCE_LINE_CROSS_SHARE);
+}
+function canSeedModelEnvelope(source, lockedText) {
+    return (source.length >= 2 && lockedText.length > 0 && source.includes(lockedText));
+}
+function modelEnvelopeCandidates(item, lockedHint, hintMap, claimedCandidateIds, page) {
+    return [...hintMap.values()]
+        .filter((candidate) => candidate.id !== lockedHint.id &&
+        !claimedCandidateIds.has(candidate.id) &&
+        sourceContainsHintText(item, candidate) &&
+        hintBelongsToModelEnvelope(item, candidate, page))
+        .sort((left, right) => normalizeGlyphText(right.ocrText).length -
+        normalizeGlyphText(left.ocrText).length || left.id - right.id);
+}
+function hasReliableEnvelopeCoverage(source, covered, selected) {
+    if (selected.length < 2)
+        return false;
+    const coverage = covered.reduce((total, value) => total + value, 0) / source.length;
+    return coverage >= 0.72;
+}
+function markBestDistinctSourceOccurrence(source, candidate, covered, minimumGain = 1) {
+    if (!candidate)
+        return 0;
+    let bestStart = -1;
+    let bestGain = 0;
+    let searchFrom = 0;
+    while (searchFrom <= source.length - candidate.length) {
+        const start = source.indexOf(candidate, searchFrom);
+        if (start < 0)
+            break;
+        const gain = countUncovered(covered, start, candidate.length);
+        if (gain > bestGain) {
+            bestStart = start;
+            bestGain = gain;
+        }
+        searchFrom = start + 1;
+    }
+    if (bestStart < 0 || bestGain < minimumGain)
+        return 0;
+    markCovered(covered, bestStart, candidate.length);
+    return bestGain;
+}
+function markBestApproximateSourceOccurrence(source, candidate, covered, minimumGain) {
+    if (candidate.length < 3 || candidate.length > source.length)
+        return 0;
+    const allowedMismatches = Math.min(3, Math.max(1, Math.floor(candidate.length * 0.2)));
+    let best = null;
+    for (let start = 0; start <= source.length - candidate.length; start += 1) {
+        const occurrence = scoreApproximateOccurrence(source, candidate, covered, start);
+        if (isBetterApproximateOccurrence(occurrence, best, allowedMismatches, minimumGain)) {
+            best = occurrence;
+        }
+    }
+    if (!best)
+        return 0;
+    markCovered(covered, best.start, candidate.length);
+    return best.gain;
+}
+function scoreApproximateOccurrence(source, candidate, covered, start) {
+    let mismatches = 0;
+    let gain = 0;
+    for (let offset = 0; offset < candidate.length; offset += 1) {
+        if (source[start + offset] !== candidate[offset])
+            mismatches += 1;
+        if (covered[start + offset] === 0)
+            gain += 1;
+    }
+    return { start, gain, mismatches };
+}
+function isBetterApproximateOccurrence(candidate, best, allowedMismatches, minimumGain) {
+    if (candidate.mismatches > allowedMismatches ||
+        candidate.gain < minimumGain) {
+        return false;
+    }
+    if (!best || candidate.mismatches < best.mismatches)
+        return true;
+    return candidate.mismatches === best.mismatches && candidate.gain > best.gain;
+}
+function countUncovered(covered, start, length) {
+    let gain = 0;
+    for (let index = start; index < start + length; index += 1) {
+        if (covered[index] === 0)
+            gain += 1;
+    }
+    return gain;
+}
+function markCovered(covered, start, length) {
+    for (let index = start; index < start + length; index += 1) {
+        covered[index] = 1;
+    }
+}
+function unionBboxes(boxes) {
+    const left = Math.min(...boxes.map((box) => box.x));
+    const top = Math.min(...boxes.map((box) => box.y));
+    const right = Math.max(...boxes.map((box) => box.x + box.w));
+    const bottom = Math.max(...boxes.map((box) => box.y + box.h));
+    return {
+        x: left,
+        y: top,
+        w: right - left,
+        h: bottom - top,
+    };
+}
+function normalizeGlyphText(value) {
+    return String(value ?? "")
+        .normalize("NFKC")
+        .replace(/[^\p{L}\p{N}]+/gu, "")
+        .toLowerCase();
+}
+function resolveItemDirection(item) {
+    if (item.direction === "horizontal" || item.direction === "vertical") {
+        return item.direction;
+    }
+    return item.bbox.w >= item.bbox.h ? "horizontal" : "vertical";
+}

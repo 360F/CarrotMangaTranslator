@@ -2,8 +2,9 @@
 
 Independent TypeScript Core with a CLI adapter. Detection runs pinned Koharu
 on Linux CPU; OCR runs pinned Hayai v2 through a configured Python environment.
-Translation, typography, erase, layout and rendering remain explicit no-ops.
-Current validation is in [Step 3 validation](docs/milestones/M1_LINUX_PORT/STEP3_VALIDATION.md).
+Managed translation and CPU typography/bubble layout are implemented. Erase and
+render remain no-ops until Steps 6/7. Current implementation evidence is in
+[Step 5 validation](docs/milestones/M1_LINUX_PORT/STEP5_VALIDATION.md).
 
 Requires Node.js 24 or newer. From `RoverCarrot/`:
 
@@ -211,7 +212,9 @@ cp -a /path/to/comic test-data/input/
 Point `input` in `config/config.toml` at that folder (for example
 `test-data/input/comic`), or pass `--input` for a one-off run. Inspect the library
 under the output path in `test-data/output/`. Existing outputs are refused, so
-use a new `--output` (or a new config default) for each run. Detection and OCR run actual models. Managed translation runs when configured; typography/erase/layout/render remain smoke stages and produce no translated raster. Local data is user-owned and
+use a new `--output` (or a new config default) for each run. Detection and OCR run actual models. Managed translation runs when configured; Typography/layout run when managed translation is configured or an explicit
+`[typography]` table is supplied. Erase/render remain no-ops and produce no
+translated raster. Local data is user-owned and
 must be preserved.
 
 Worker recovery/device tests (no Python packages or model required):
@@ -297,3 +300,67 @@ an absolute root and reserves a fresh folder. Export failures are warnings.
 `previousChapterPath` imports a previous chapter's live story pages. These inputs
 are read-only and their work identity is rebound to the new isolated output.
 No full historical work-context snapshot is added to per-request artifacts.
+
+
+## Typography / layout (Step 5)
+
+Real managed runs use the configured Carrot path by default: autoFont=false,
+autoSize=true, bubbleLayout=true, naturalLayout=false. Select
+`["detect", "ocr", "translate", "typography", "erase", "layout"]` for the current
+pipeline. Typography runs before the no-op erase, then layout. Existing model-free
+smoke configs without managed translation or `[typography]` retain smoke behavior.
+
+Optional configuration:
+
+```toml
+[typography]
+autoFont = false       # true is refused until D17 is decided
+autoSize = true
+bubbleLayout = true
+naturalLayout = false
+# overwrite = ["typography", "layout"]  # programmatic existing-page application
+```
+
+The CLI still imports a new output; overwrite is not a resume feature. Layout
+uses `[models].koharu` even if detect was not selected. Missing model/runtime
+fails when a nonempty layout page needs detection. Original raster is always the
+detector input; `inpaintedImagePath` participates only in revision hashing until
+Step 6. Model/session/detection failures propagate through the stage boundary.
+Missing translated text makes a block ineligible for geometry, preserving Carrot's
+partial-translation behavior. Existing/manual layouts are preserved unless
+explicitly overwritten. Source bbox/text/formatting are protected by the reference
+render-patch allowlist.
+
+Source-size estimation uses the original BGRA raster and OCR geometry locks.
+A successful match writes `sourceFontFacePx`, confidence, `raster-core-v1`,
+`fontSizeIntent="source-match"`, and `autoFitText=false`. The existing `fontSizePx`
+remains unchanged in Carrot's keep-block path; Step 7 will use source-match inputs
+for actual glyph sizing. Estimation abstains on insufficient evidence; decode or
+measurement failure logs a warning and preserves reference fail-closed behavior.
+Formatting defaults already come from detection; typography does not replace user
+formatting. Automatic font matching and work profiles are not implemented.
+
+Programmatic callers compose `typographyStage(loadTypographyRaster, plan)` and
+`layoutStage(bubbleLayoutRunner(detect), plan, locale)` with Core `run()`. Raster
+loading and Koharu inference are injected adapters; Core/Pipeline import neither.
+The runner supports `sharedOwnershipGapPx=0`, `paddingRatio=0` and
+`includeTypographySegmentation=true` for Step 6's transient erase prepass. No erase
+prepass is executed by Step 5. Detection cache is runner/job-local and failed
+detection promises are removed for retry. Final layout is required; the prepass
+can request best-effort behavior.
+
+CPU differential validation (requires read-only reference source and local input):
+
+```bash
+npm run build
+node tools/validate-typography.mjs <OCR_CONTEXT_JSON> <KOHARU_MODEL> <NEW_EVIDENCE_DIR>
+```
+
+This executes unmodified reference functions against identical decoded raster and
+model outputs. It separately records every stored-chapter difference; stored
+results are not a fresh runtime oracle. Optional fourth argument is a new Electron
+reference directory produced by `tools/electron-typography-reference.mjs`; decoder
+and detector-input differences then fail exact comparison. The orchestrator's
+four-page GPU OCR/managed translation run is
+`node tools/typography-smoke.mjs <ISOLATED_STEP5_TOML>`. See the validation document
+for prepared commands and remaining acceptance requirements.
