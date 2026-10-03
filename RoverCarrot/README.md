@@ -211,7 +211,7 @@ cp -a /path/to/comic test-data/input/
 Point `input` in `config/config.toml` at that folder (for example
 `test-data/input/comic`), or pass `--input` for a one-off run. Inspect the library
 under the output path in `test-data/output/`. Existing outputs are refused, so
-use a new `--output` (or a new config default) for each run. Detection and OCR run actual models; later stages remain no-ops and produce no translated raster. Local data is user-owned and
+use a new `--output` (or a new config default) for each run. Detection and OCR run actual models. Managed translation runs when configured; typography/erase/layout/render remain smoke stages and produce no translated raster. Local data is user-owned and
 must be preserved.
 
 Worker recovery/device tests (no Python packages or model required):
@@ -219,3 +219,81 @@ Worker recovery/device tests (no Python packages or model required):
 ```bash
 python3 -m unittest discover -s tests/python -v
 ```
+
+
+## Managed translation (Step 4)
+
+The pinned Linux llama.cpp/CUDA recipe and production translation stage are implemented.
+Real GPU build/model-load validation is assigned to the orchestrator; see the validation
+record below. Without translation asset paths, the existing model-free smoke stage
+remains available. Configure the managed backend to perform actual translation.
+
+From `RoverCarrot/`, provision repository-local tools and configure both builds:
+
+```bash
+python3 runtime/llama/build.py
+```
+
+Compile the CUDA backend and the separate server/CPU backend build:
+
+```bash
+python3 runtime/llama/build.py --build --jobs 2
+```
+
+Large artifacts stay under ignored `test-data/runtime/llama-b9553/`.
+No sudo, system package installation or Windows runtime archive is used.
+The recipe verifies pinned archive/wheel sizes and SHA-256s. The output is
+`test-data/runtime/llama-b9553/bin/llama-server`, its shared libraries, and
+`binary-identity.json`. CUDA 13.3 is mandatory. Default b9553 CUDA architectures
+and the reference x64 CPU variants are retained. WSL's host driver library is
+used for linking when present. An archive build reports unknown Git build info;
+source identity must be verified against `runtime/llama/pins.json`, not inferred
+from that version string. See
+[Step 4 validation](docs/milestones/M1_LINUX_PORT/STEP4_VALIDATION.md) for actual
+validation status, deviations and GPU acceptance still pending.
+
+
+Add `[translation]` to `config/config.toml` and select `stages = ["detect", "ocr", "translate"]`:
+
+```toml
+[translation]
+backend = "managed"
+runtimeProfile = "rtx50"
+serverPath = "/absolute/repository/RoverCarrot/test-data/runtime/llama-b9553/bin/llama-server"
+modelPath = "/absolute/models/gemma-4-26B-A4B-it-ultra-uncensored-heretic.Q6_K.gguf"
+mmprojPath = "/absolute/models/gemma-4-26B-A4B-it-ultra-uncensored-heretic.mmproj-Q8_0.gguf"
+modelIdentityPath = "/absolute/model-identity.json"
+port = 18180
+sourceLanguage = "ja"
+targetLanguage = "ko"
+cumulative = true
+cumulativeDetail = "detailed"
+export = true
+```
+
+The identity receipt is an array of `{path, bytes, sha256, mtimeNs}` entries for
+model and mmproj, matching `runtime/llama/model-pins.json`. Keep `mtimeNs` as a
+string when producing a new receipt. Hash each user-owned model once; subsequent
+preflight binds its path, pinned hash, size and exact modification time without
+copying or repeatedly hashing it. Changed files require identity verification.
+Binary/shared-library inventories and the chat template are verified each page.
+Rover owns one localhost llama-server child per page, retries within that session,
+and closes it before the next page. Occupied ports are refused.
+
+Run `npm run build` then `node dist/cli.js --input /absolute/comic --output /absolute/new-output`.
+Public CLI flags and the default config location are unchanged. The orchestrator
+can use `node tools/translation-smoke.mjs e2e /absolute/validation-config.toml`
+to run the same production CLI with an isolated config.
+
+OCR `sourceText` and block geometry remain canonical. Accepted translations and
+memory are published through persistence before constructing the next page's
+request. Work `style-guide.json`, chapter `story-memory.json` and translation
+artifacts are under the new output. A durable `.transactions/` journal allows
+explicit roll-forward after interrupted publication (see the validation record);
+output directories are still never resumed or overwritten automatically.
+JSON/CSV exports are under `exports/<chapter>/`; `exportRoot` optionally selects
+an absolute root and reserves a fresh folder. Export failures are warnings.
+`styleGuidePath` imports a work guide; `previousStoryPath` plus
+`previousChapterPath` imports a previous chapter's live story pages. These inputs
+are read-only and their work identity is rebound to the new isolated output.
+No full historical work-context snapshot is added to per-request artifacts.

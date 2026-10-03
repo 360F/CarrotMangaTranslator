@@ -1,0 +1,262 @@
+[
+  {
+    "source": "src/main/pipeline/pageContextResponse.ts",
+    "target": "src/translation/ported/pageContextResponse.mjs"
+  },
+  {
+    "source": "src/main/pipeline/pageContextEvidence.ts",
+    "target": "src/translation/ported/pageContextEvidence.mjs"
+  },
+  {
+    "source": "src/main/pipeline/groundedPageContextCandidates.ts",
+    "target": "src/translation/ported/groundedPageContextCandidates.mjs"
+  },
+  {
+    "source": "src/main/pipeline/cumulativeContextDetailPolicy.ts",
+    "target": "src/translation/ported/cumulativeContextDetailPolicy.mjs"
+  },
+  {
+    "source": "src/main/pipeline/cumulativePageContext.ts",
+    "target": "src/translation/ported/cumulativePageContext.mjs"
+  },
+  {
+    "source": "src/main/pipeline/storyMemoryBuilder.ts",
+    "target": "src/translation/ported/storyMemoryBuilder.mjs"
+  },
+  {
+    "source": "src/main/pipeline/workContextPrompt.ts",
+    "target": "src/translation/ported/workContextPrompt.mjs"
+  },
+  {
+    "source": "src/main/pipeline/previousBlocksForPrompt.ts",
+    "target": "src/translation/ported/previousBlocksForPrompt.mjs"
+  },
+  {
+    "source": "src/main/pipeline/keepBlocksAssignment.ts",
+    "target": "src/translation/ported/keepBlocksAssignment.mjs"
+  },
+  {
+    "source": "src/main/pipeline/overlayItemReferences.ts",
+    "target": "src/translation/ported/overlayItemReferences.mjs"
+  },
+  {
+    "source": "src/main/pipeline/overlayBboxSpace.ts",
+    "target": "src/translation/ported/overlayBboxSpace.mjs"
+  },
+  {
+    "source": "src/main/pipeline/overlayCompletenessGap.ts",
+    "target": "src/translation/ported/overlayCompletenessGap.mjs"
+  },
+  {
+    "source": "src/main/pipeline/overlayOcrGeometryLocks.ts",
+    "target": "src/translation/ported/overlayOcrGeometryLocks.mjs"
+  },
+  {
+    "source": "src/main/pipeline/overlayOcrGeometryMath.ts",
+    "target": "src/translation/ported/overlayOcrGeometryMath.mjs"
+  },
+  {
+    "source": "src/main/pipeline/overlayOcrSourceLineGeometry.ts",
+    "target": "src/translation/ported/overlayOcrSourceLineGeometry.mjs"
+  },
+  {
+    "source": "src/main/pipeline/failure.ts",
+    "target": "src/translation/ported/failure.mjs"
+  },
+  {
+    "source": "src/shared/bboxNormalization.ts",
+    "target": "src/translation/ported/bboxNormalization.mjs"
+  },
+  {
+    "source": "src/shared/blockReadingOrder.ts",
+    "target": "src/translation/ported/blockReadingOrder.mjs"
+  },
+  {
+    "source": "src/shared/workContextBudget.ts",
+    "target": "src/translation/ported/workContextBudget.mjs"
+  },
+  {
+    "source": "src/shared/geometry.ts",
+    "target": "src/translation/ported/geometry.mjs"
+  },
+  {
+    "source": "src/shared/reviewTable.ts",
+    "target": "src/translation/ported/reviewTable.mjs"
+  },
+  {
+    "source": "src/main/pipeline/keepBlocksResult.ts",
+    "target": "src/translation/ported/keepBlocksOcr.mjs"
+  },
+  {
+    "source": "src/main/linkedWorkspace/linkedWorkspaceTranslationJson.ts",
+    "target": "src/translation/ported/export.mjs"
+  },
+  {
+    "source": "src/main/pipeline/overlayItems.ts",
+    "target": "src/translation/ported/sound-filter.mjs"
+  },
+  {
+    "source": "src/shared/ipcSchemaPrimitives.ts",
+    "target": "src/translation/ported/ipcSchemaPrimitives.mjs"
+  },
+  {
+    "source": "src/main/pipeline/localization.ts",
+    "target": "src/translation/ported/localization.mjs"
+  },
+  {
+    "source": "src/main/runtime/simple-page-language-profile.cjs",
+    "target": "src/translation/ported/runtime/simple-page-language-profile.mjs"
+  },
+  {
+    "source": "src/main/runtime/font-matching-intent.cjs",
+    "target": "src/translation/ported/runtime/font-matching-intent.mjs"
+  },
+  {
+    "source": "src/main/runtime/visual-cluster-id.cjs",
+    "target": "src/translation/ported/runtime/visual-cluster-id.mjs"
+  },
+  {
+    "source": "src/main/runtime/overlay-parser.cjs",
+    "target": "src/translation/ported/runtime/overlay-parser.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/common.cjs",
+    "target": "src/translation/ported/runtime/prompts/common.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/coordinates.cjs",
+    "target": "src/translation/ported/runtime/prompts/coordinates.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/font-matching-intent.cjs",
+    "target": "src/translation/ported/runtime/prompts/font-matching-intent.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/glossary-omission.cjs",
+    "target": "src/translation/ported/runtime/prompts/glossary-omission.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/localization.cjs",
+    "target": "src/translation/ported/runtime/prompts/localization.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/model-profile.cjs",
+    "target": "src/translation/ported/runtime/prompts/model-profile.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/ocr-bbox-section.cjs",
+    "target": "src/translation/ported/runtime/prompts/ocr-bbox-section.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/ocr-groups.cjs",
+    "target": "src/translation/ported/runtime/prompts/ocr-groups.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/ocr-semantic-slots.cjs",
+    "target": "src/translation/ported/runtime/prompts/ocr-semantic-slots.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/ocr-text.cjs",
+    "target": "src/translation/ported/runtime/prompts/ocr-text.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/overlay-prompt.cjs",
+    "target": "src/translation/ported/runtime/prompts/overlay-prompt.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/page-context.cjs",
+    "target": "src/translation/ported/runtime/prompts/page-context.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/previous-pass.cjs",
+    "target": "src/translation/ported/runtime/prompts/previous-pass.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/prompt-api.cjs",
+    "target": "src/translation/ported/runtime/prompts/prompt-api.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/region-ocr-hints.cjs",
+    "target": "src/translation/ported/runtime/prompts/region-ocr-hints.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/system-prompt.cjs",
+    "target": "src/translation/ported/runtime/prompts/system-prompt.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/task-sections.cjs",
+    "target": "src/translation/ported/runtime/prompts/task-sections.mjs"
+  },
+  {
+    "source": "src/main/runtime/prompts/work-context.cjs",
+    "target": "src/translation/ported/runtime/prompts/work-context.mjs"
+  },
+  {
+    "source": "src/main/runtime/parsing/loose-overlay-items.cjs",
+    "target": "src/translation/ported/runtime/parsing/loose-overlay-items.mjs"
+  },
+  {
+    "source": "src/main/runtime/parsing/overlay-geometry.cjs",
+    "target": "src/translation/ported/runtime/parsing/overlay-geometry.mjs"
+  },
+  {
+    "source": "src/main/runtime/parsing/overlay-items.cjs",
+    "target": "src/translation/ported/runtime/parsing/overlay-items.mjs"
+  },
+  {
+    "source": "src/main/runtime/parsing/overlay-json-recovery.cjs",
+    "target": "src/translation/ported/runtime/parsing/overlay-json-recovery.mjs"
+  },
+  {
+    "source": "src/main/runtime/parsing/overlay-values.cjs",
+    "target": "src/translation/ported/runtime/parsing/overlay-values.mjs"
+  },
+  {
+    "source": "src/main/runtime/ocr/engine-profile.cjs",
+    "target": "src/translation/ported/runtime/ocr/engine-profile.mjs"
+  },
+  {
+    "source": "src/main/runtime/simple-page-prompts.cjs",
+    "target": "src/translation/ported/runtime/simple-page-prompts.mjs"
+  },
+  {
+    "source": "src/main/runtime/transport/response-text.cjs",
+    "target": "src/translation/ported/runtime/transport/response-text.mjs"
+  },
+  {
+    "source": "src/main/runtime/transport/bounded-response-body.cjs",
+    "target": "src/translation/ported/runtime/transport/bounded-response-body.mjs"
+  },
+  {
+    "source": "src/main/runtime/transport/network-budgets.cjs",
+    "target": "src/translation/ported/runtime/transport/network-budgets.mjs"
+  },
+  {
+    "source": "src/shared/translationLanguages.ts",
+    "target": "src/translation/ported/translationLanguages.mjs"
+  },
+  {
+    "source": "src/main/runtime/simple-page-request-summary.cjs",
+    "target": "src/translation/ported/artifact-summary.mjs"
+  },
+  {
+    "source": "src/main/runtime/simple-page-request-builders.cjs",
+    "target": "src/translation/ported/messages.mjs"
+  },
+  {
+    "source": "src/main/runtime/simple-page-image-utils.cjs",
+    "target": "src/translation/ported/image-math.mjs"
+  },
+  {
+    "source": "src/shared/glossaryOmission.ts",
+    "target": "src/translation/ported/glossaryOmissionShared.mjs"
+  },
+  {
+    "source": "src/main/pipeline/glossaryOmission.ts",
+    "target": "src/translation/ported/glossaryOmission.mjs"
+  },
+  {
+    "source": "src/main/runtime/simple-page-logit-bias.cjs",
+    "target": "src/translation/ported/runtime/simple-page-logit-bias.mjs"
+  }
+]

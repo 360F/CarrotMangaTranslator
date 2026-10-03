@@ -16,9 +16,16 @@ export type Chapter = {
   status: 'idle' | 'running' | 'completed' | 'partial' | 'failed';
   pageOrder: string[]; pages: Page[]; createdAt: string; updatedAt: string;
 };
+export type TranslationConfig = { backend: 'managed'; serverPath: string; modelPath: string; mmprojPath: string;
+  modelIdentityPath: string; runtimeProfile: 'rtx50'; port?: number; sourceLanguage?: string; targetLanguage?: string;
+  cumulative?: boolean; cumulativeDetail?: 'detailed' | 'essential'; styleGuidePath?: string; previousStoryPath?: string; previousChapterPath?: string;
+  export?: boolean; exportRoot?: string; readingDirection?: 'rtl' | 'ltr' };
+export type PendingMemory = { styleGuide: Record<string, unknown>; storyMemory: Record<string, unknown> };
+export type TranslationContext = PendingMemory & { previousStoryPages?: Record<string, unknown>[]; pageIndexById?: Record<string, number> };
 export type Config = {
   version: 1; mode: 'smoke'; input: string; output: string;
   stages: StageId[];
+  translation?: TranslationConfig;
   models?: { koharu: string };
   ocr?: { python: string; hfCache: string; device: string; sourceLanguage: string; timeoutMs?: number };
 };
@@ -28,7 +35,7 @@ export type Event = {
   pageId?: string; stage?: StageId; status?: 'completed' | 'failed' | 'empty';
   elapsedMs?: number;
 };
-export type StageResult = { status: 'completed' | 'empty'; page: Page } |
+export type StageResult = { status: 'completed' | 'empty'; page: Page; pendingMemory?: PendingMemory } |
   { status: 'failed'; page: Page; message: string; retryable: boolean };
 export type Stage = {
   id: StageId;
@@ -43,8 +50,7 @@ export type RunResult = {
 };
 export type Persistence = {
   initialize: (config: Config) => Promise<Chapter>;
-  // Future translation adapter must commit page + pending memory together.
-  // This Step 1 port accepts page-only commits; context is not silently discarded.
-  commit: (chapter: Chapter) => Promise<void>;
+  // A translation commit includes its pending memory; no next page sees it before commit.
+  commit: (chapter: Chapter, pendingMemory?: PendingMemory) => Promise<void>;
   finish: (result: RunResult) => Promise<void>;
 };

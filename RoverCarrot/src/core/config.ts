@@ -17,7 +17,7 @@ function pathValue(name: string, override: unknown, configured: unknown, base: s
 export function resolveConfig(raw: unknown, base: string = process.cwd(), overrides: PathOverrides = {}): Config {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('Config must be an object');
   const value = raw as Record<string, unknown>;
-  if (Object.keys(value).some(key => !['version', 'mode', 'input', 'output', 'stages', 'models', 'ocr'].includes(key)))
+  if (Object.keys(value).some(key => !['version', 'mode', 'input', 'output', 'stages', 'models', 'ocr', 'translation'].includes(key)))
     throw new Error('Unknown config field');
   if (value.version !== 1 || value.mode !== 'smoke') throw new Error('Step 1 requires version=1, mode=smoke');
   const input = pathValue('input', overrides.input, value.input, base);
@@ -52,5 +52,26 @@ export function resolveConfig(raw: unknown, base: string = process.cwd(), overri
       ocr = { python: o.python as string, hfCache: o.hfCache as string, device: o.device, sourceLanguage: o.sourceLanguage, ...(o.timeoutMs !== undefined ? { timeoutMs: Number(o.timeoutMs) } : {}) };
     }
   }
-  return { ...(ocr ? { ocr } : {}), ...(models ? { models } : {}), version: 1, mode: 'smoke', input, output, stages: STAGES.filter(id => (stages as StageId[]).includes(id)) };
+  let translation: Config['translation'];
+  if (value.translation !== undefined) {
+    const t = value.translation as Record<string, unknown>;
+    const keys = ['backend', 'serverPath', 'modelPath', 'mmprojPath', 'modelIdentityPath', 'runtimeProfile', 'port',
+      'sourceLanguage', 'targetLanguage', 'cumulative', 'cumulativeDetail', 'styleGuidePath', 'previousStoryPath', 'previousChapterPath', 'export', 'exportRoot', 'readingDirection'];
+    if (!t || typeof t !== 'object' || Array.isArray(t) || Object.keys(t).some(k => !keys.includes(k))) throw new Error('Unknown translation config field');
+    if (t.serverPath || t.modelPath || t.mmprojPath) {
+      if (t.backend !== 'managed' || t.runtimeProfile !== 'rtx50') throw new Error('Translation requires managed backend and rtx50 runtime profile (D32/D33)');
+      for (const key of ['serverPath', 'modelPath', 'mmprojPath', 'modelIdentityPath'])
+        if (typeof t[key] !== 'string' || !isAbsolute(t[key] as string)) throw new Error(`translation.${key} must be an absolute path`);
+      for (const key of ['styleGuidePath', 'previousStoryPath', 'previousChapterPath', 'exportRoot'])
+        if (t[key] !== undefined && (typeof t[key] !== 'string' || !isAbsolute(t[key] as string))) throw new Error(`translation.${key} must be an absolute path`);
+      if (t.port !== undefined && (!Number.isInteger(t.port) || Number(t.port) < 1 || Number(t.port) > 65535)) throw new Error('translation.port must be 1..65535');
+      for (const key of ['sourceLanguage', 'targetLanguage'])
+        if (t[key] !== undefined && (typeof t[key] !== 'string' || !/^[a-z]{2,3}(-[a-zA-Z0-9]{1,16})*$/.test(t[key] as string))) throw new Error(`Invalid translation.${key}`);
+      for (const key of ['cumulative', 'export']) if (t[key] !== undefined && typeof t[key] !== 'boolean') throw new Error(`translation.${key} must be boolean`);
+      if (t.cumulativeDetail !== undefined && !['detailed', 'essential'].includes(String(t.cumulativeDetail))) throw new Error('Invalid cumulativeDetail');
+      if (t.readingDirection !== undefined && !['rtl', 'ltr'].includes(String(t.readingDirection))) throw new Error('Invalid readingDirection');
+      translation = t as Config['translation'];
+    }
+  }
+  return { ...(translation ? { translation } : {}), ...(ocr ? { ocr } : {}), ...(models ? { models } : {}), version: 1, mode: 'smoke', input, output, stages: STAGES.filter(id => (stages as StageId[]).includes(id)) };
 }

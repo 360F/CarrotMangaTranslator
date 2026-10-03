@@ -1,0 +1,264 @@
+// Ported from src/main/pipeline/overlayOcrGeometryLocks.ts, reference fd461737. Runtime independent of Carrot.
+import { bboxOverlapRatio, clamp, pixelsToBbox } from "./geometry.mjs";
+import { bboxContainmentRatio, expandBboxToMinimum, expandNormalizedBbox, inferPhysicalLineCount, isPlausibleMergedModelExtent, } from "./overlayOcrGeometryMath.mjs";
+import { attachSourceFontLineGeometry, buildRecognitionSourceLines, hintBelongsToModelEnvelope, resolveModelEnvelopeTextHints, sourceContainsHintText, stripSourceFontLineGeometry, } from "./overlayOcrSourceLineGeometry.mjs";
+export function applyOcrCandidateGeometryLocks(items, page, hints) {
+    const cleanItems = items.map(stripSourceFontLineGeometry);
+    if (hints.length === 0) {
+        return cleanItems;
+    }
+    const hintMap = buildOcrGeometryLockHintMap(hints, page);
+    if (hintMap.size === 0) {
+        return cleanItems;
+    }
+    const claimedCandidateIds = new Set(cleanItems.flatMap((item) => [item.id, ...(item.candidateIds ?? [])]));
+    return cleanItems.map((item) => {
+        const membershipLocked = lockCandidateMembershipGeometry(item, hintMap, page);
+        if (membershipLocked) {
+            return membershipLocked;
+        }
+        const lockedHint = hintMap.get(item.id);
+        if (!lockedHint || !isNearOcrHint(item.bbox, lockedHint.bbox, page)) {
+            return item;
+        }
+        if (lockedHint.geometryLocked) {
+            return {
+                ...attachSourceFontLineGeometry(item, [lockedHint]),
+                candidateIds: [lockedHint.id],
+                textRole: "ordinary",
+                bbox: lockedHint.bbox,
+            };
+        }
+        const mergedHints = resolveMergedOcrHints(item, lockedHint, hintMap, claimedCandidateIds, page);
+        const physicalLineCount = inferPhysicalLineCount(item.bbox, lockedHint.bbox, page, resolveItemDirection(item), typeof item.fontSize === "number" ? item.fontSize : undefined, sourceLineCount(item));
+        if (mergedHints.length > 1 || physicalLineCount > 1) {
+            return attachSourceFontLineGeometry({
+                ...item,
+                bbox: buildMergedGlyphBbox(item, mergedHints, page),
+            }, mergedHints);
+        }
+        return {
+            ...attachSourceFontLineGeometry(item, [lockedHint]),
+            bbox: lockedHint.bbox,
+        };
+    });
+}
+function lockCandidateMembershipGeometry(item, hintMap, page) {
+    if (!Array.isArray(item.candidateIds)) {
+        return null;
+    }
+    if (item.candidateIds.length === 0) {
+        return item;
+    }
+    const memberHints = item.candidateIds.map((id) => hintMap.get(id));
+    if (memberHints.some((hint) => !hint)) {
+        const error = new Error(`Semantic OCR item ${item.id} references an unknown candidate id.`);
+        Object.assign(error, {
+            code: "semantic-ocr-unknown-candidate",
+            itemId: item.id,
+            candidateIds: item.candidateIds,
+        });
+        throw error;
+    }
+    if (memberHints.length === 1) {
+        const memberHint = memberHints[0];
+        if (memberHint.geometryLocked) {
+            return {
+                ...attachSourceFontLineGeometry(item, [memberHint]),
+                candidateIds: [memberHint.id],
+                textRole: "ordinary",
+                bbox: memberHint.bbox,
+            };
+        }
+        const physicalLineCount = inferPhysicalLineCount(item.bbox, memberHint.bbox, page, resolveItemDirection(item), typeof item.fontSize === "number" ? item.fontSize : undefined, sourceLineCount(item));
+        if (physicalLineCount === 1) {
+            return {
+                ...attachSourceFontLineGeometry(item, [memberHint]),
+                bbox: memberHint.bbox,
+            };
+        }
+    }
+    return {
+        ...attachSourceFontLineGeometry(item, memberHints.map((hint) => hint)),
+        bbox: buildMergedGlyphBbox(item, memberHints.map((hint) => hint), page),
+    };
+}
+function buildOcrGeometryLockHintMap(hints, page) {
+    const hintMap = new Map();
+    for (const hint of hints) {
+        const id = Number(hint.id);
+        const x1 = Number(hint.x1);
+        const y1 = Number(hint.y1);
+        const x2 = Number(hint.x2);
+        const y2 = Number(hint.y2);
+        if (!Number.isInteger(id) ||
+            id <= 0 ||
+            ![x1, y1, x2, y2].every(Number.isFinite)) {
+            continue;
+        }
+        hintMap.set(id, {
+            id,
+            bbox: pixelsToBbox(pixelBox(x1, y1, x2, y2), page.width, page.height),
+            ocrText: String(hint.ocrText ?? ""),
+            sourceLines: buildRecognitionSourceLines(hint, { x1, y1, x2, y2 }, page),
+            groupId: normalizeReferenceText(hint.groupId),
+            containerType: normalizeReferenceText(hint.containerType),
+            geometryLocked: hint.geometryLocked === true,
+        });
+    }
+    return hintMap;
+}
+function pixelBox(x1, y1, x2, y2) {
+    return {
+        x: Math.min(x1, x2),
+        y: Math.min(y1, y2),
+        w: Math.abs(x2 - x1),
+        h: Math.abs(y2 - y1),
+    };
+}
+function resolveMergedOcrHints(item, lockedHint, hintMap, itemIds, page) {
+    const envelopeMembers = resolveModelEnvelopeTextHints(item, lockedHint, hintMap, itemIds, page);
+    if (envelopeMembers.length > 1) {
+        return envelopeMembers;
+    }
+    const grouped = resolveSameContainerOcrHints(item, lockedHint, hintMap);
+    if (grouped.length > 1) {
+        return grouped;
+    }
+    return resolveUngroupedLineHints(item, lockedHint, hintMap, itemIds, page);
+}
+function resolveSameContainerOcrHints(item, lockedHint, hintMap) {
+    if (!lockedHint.groupId ||
+        !isMergeableOcrContainerType(lockedHint.containerType)) {
+        return [lockedHint];
+    }
+    const groupHints = [...hintMap.values()].filter((candidate) => candidate.groupId === lockedHint.groupId &&
+        isMergeableOcrContainerType(candidate.containerType));
+    if (groupHints.length < 2) {
+        return [lockedHint];
+    }
+    const unionBbox = unionBboxes(groupHints.map((candidate) => candidate.bbox));
+    const itemCoversGroup = bboxContainmentRatio(unionBbox, item.bbox) > 0.72;
+    const itemIsWiderThanSingleHint = item.bbox.w * item.bbox.h > lockedHint.bbox.w * lockedHint.bbox.h * 1.2;
+    return itemCoversGroup && itemIsWiderThanSingleHint
+        ? groupHints
+        : [lockedHint];
+}
+function resolveUngroupedLineHints(item, lockedHint, hintMap, itemIds, page) {
+    const lineCount = inferPhysicalLineCount(item.bbox, lockedHint.bbox, page, resolveItemDirection(item), typeof item.fontSize === "number" ? item.fontSize : undefined, sourceLineCount(item));
+    if (lineCount < 2 || lockedHint.groupId) {
+        return [lockedHint];
+    }
+    const selected = [lockedHint];
+    const candidates = [...hintMap.values()].filter((candidate) => candidate.id !== lockedHint.id &&
+        !candidate.groupId &&
+        !itemIds.has(candidate.id) &&
+        sourceContainsHintText(item, candidate) &&
+        hintBelongsToModelEnvelope(item, candidate, page));
+    for (const candidate of candidates) {
+        if (selected.length >= lineCount)
+            break;
+        if (selected.some((member) => areCompatibleLineHints(item, member.bbox, candidate.bbox, page))) {
+            selected.push(candidate);
+        }
+    }
+    return selected;
+}
+function isMergeableOcrContainerType(value) {
+    return normalizeReferenceText(value) === "same_text_container";
+}
+function unionBboxes(boxes) {
+    const left = Math.min(...boxes.map((box) => box.x));
+    const top = Math.min(...boxes.map((box) => box.y));
+    const right = Math.max(...boxes.map((box) => box.x + box.w));
+    const bottom = Math.max(...boxes.map((box) => box.y + box.h));
+    return {
+        x: left,
+        y: top,
+        w: right - left,
+        h: bottom - top,
+    };
+}
+function buildMergedGlyphBbox(item, hints, page) {
+    const hintUnion = unionBboxes(hints.map((hint) => hint.bbox));
+    const merged = isPlausibleMergedModelExtent(item.bbox, hintUnion)
+        ? unionBboxes([item.bbox, hintUnion])
+        : hintUnion;
+    const fontSizePx = Number(item.fontSize);
+    if (!Number.isFinite(fontSizePx) || fontSizePx <= 0) {
+        return merged;
+    }
+    const lineCount = sourceLineCount(item);
+    const fontWidth = (fontSizePx / Math.max(1, page.width)) * 1000;
+    const fontHeight = (fontSizePx / Math.max(1, page.height)) * 1000;
+    const direction = resolveItemDirection(item);
+    const minimumWidth = direction === "vertical" ? fontWidth * lineCount * 1.05 : fontWidth;
+    const minimumHeight = direction === "horizontal" ? fontHeight * lineCount * 1.05 : fontHeight;
+    const minimum = expandBboxToMinimum(merged, minimumWidth, minimumHeight);
+    const paddingPx = clamp(Math.ceil(fontSizePx * 0.18), 2, 8);
+    return expandNormalizedBbox(minimum, (paddingPx / Math.max(1, page.width)) * 1000, (paddingPx / Math.max(1, page.height)) * 1000);
+}
+function sourceLineCount(item) {
+    const sourceText = String(item.sourceText ?? item.jp ?? "");
+    return Math.max(1, sourceText.split(/\r?\n/).filter((line) => line.trim().length > 0).length);
+}
+function areCompatibleLineHints(item, left, right, page) {
+    const horizontal = resolveItemDirection(item) === "horizontal";
+    const inlineStart = horizontal
+        ? Math.max(left.x, right.x)
+        : Math.max(left.y, right.y);
+    const inlineEnd = horizontal
+        ? Math.min(left.x + left.w, right.x + right.w)
+        : Math.min(left.y + left.h, right.y + right.h);
+    const inlineOverlap = Math.max(0, inlineEnd - inlineStart);
+    const inlineExtent = horizontal
+        ? Math.min(left.w, right.w)
+        : Math.min(left.h, right.h);
+    if (inlineOverlap / Math.max(1, inlineExtent) < 0.35) {
+        return false;
+    }
+    const blockStart = horizontal
+        ? Math.max(left.y, right.y)
+        : Math.max(left.x, right.x);
+    const blockEnd = horizontal
+        ? Math.min(left.y + left.h, right.y + right.h)
+        : Math.min(left.x + left.w, right.x + right.w);
+    const gap = Math.max(0, blockStart - blockEnd);
+    const fontSizePx = Number.isFinite(Number(item.fontSize)) && Number(item.fontSize) > 0
+        ? Number(item.fontSize)
+        : 20;
+    const fontExtent = ((fontSizePx * 1.75) / Math.max(1, horizontal ? page.height : page.width)) *
+        1000;
+    return gap <= fontExtent;
+}
+function resolveItemDirection(item) {
+    if (item.direction === "horizontal" || item.direction === "vertical") {
+        return item.direction;
+    }
+    return item.bbox.w >= item.bbox.h ? "horizontal" : "vertical";
+}
+function normalizeReferenceText(value) {
+    return String(value ?? "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]+/g, "_");
+}
+function isNearOcrHint(modelBbox, hintBbox, page) {
+    const modelPx = normalizedBboxToPixels(modelBbox, page);
+    const hintPx = normalizedBboxToPixels(hintBbox, page);
+    const modelCenterX = modelPx.x + modelPx.w / 2;
+    const modelCenterY = modelPx.y + modelPx.h / 2;
+    const hintCenterX = hintPx.x + hintPx.w / 2;
+    const hintCenterY = hintPx.y + hintPx.h / 2;
+    const distance = Math.hypot(modelCenterX - hintCenterX, modelCenterY - hintCenterY);
+    const tolerance = Math.max(150, Math.max(hintPx.w, hintPx.h) * 1.35);
+    return distance <= tolerance || bboxOverlapRatio(modelPx, hintPx) > 0.1;
+}
+function normalizedBboxToPixels(bbox, page) {
+    return {
+        x: (bbox.x / 1000) * page.width,
+        y: (bbox.y / 1000) * page.height,
+        w: (bbox.w / 1000) * page.width,
+        h: (bbox.h / 1000) * page.height,
+    };
+}

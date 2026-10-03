@@ -1,3 +1,7 @@
+import { preflight, startManaged } from '../adapters/llama.mjs';
+import { pageImages } from '../adapters/translation-images.mjs';
+import { translationStore } from '../adapters/translation-store.mjs';
+import { translationStage } from '../translation/stage.js';
 import { hayaiReader } from '../adapters/hayai.js';
 import { ocrStage, type ReadOcr } from '../ocr/stage.js';
 import { koharuRuntime, type KoharuRuntime } from '../adapters/koharu.js';
@@ -26,6 +30,7 @@ export type CliOptions = {
   argv: string[]; projectRoot: string; cwd: string; write: (text: string) => void;
   isTTY: boolean; env?: Record<string, string | undefined>;
   runtime?: KoharuRuntime;
+  configPath?: string; // internal isolated validation launcher; public flags unchanged
   ocrRead?: ReadOcr; // internal model-free test injection
   stages?: Stage[]; // tests only: inject failing providers
 };
@@ -53,7 +58,7 @@ export async function runCli(options: CliOptions): Promise<number> {
     const rel = relative(base, path);
     return rel && !rel.startsWith('..') && !isAbsolute(rel) ? rel : path;
   };
-  const configPath = join(projectRoot, 'config', 'config.toml');
+  const configPath = options.configPath ?? join(projectRoot, 'config', 'config.toml');
   const log = new RunLog(join(projectRoot, 'logs'));
   const details = show(join(log.dir, 'critical.log'), true);
   const fail = (lines: string[], afterTable = false) => {
@@ -79,13 +84,18 @@ export async function runCli(options: CliOptions): Promise<number> {
     log.info('run-start', { input: config.input, output: config.output, stages: config.stages });
     const progress = new StageProgress(config.stages, write, options.isTTY, supportsUnicode(options.env ?? process.env));
     const persistence = libraryPersistence();
+    const memory = translationStore((type, fields) => log.info(type, fields));
     let started = false;
     const observed: Persistence = { ...persistence, async initialize(checked) {
       const chapter = await persistence.initialize(checked);
+      await memory.initialize(chapter, checked);
       started = true;
       log.info('input-materialized', { pages: chapter.pages.length, output: checked.output });
       progress.start(chapter.pages.length);
       return chapter;
+    }, async commit(chapter, pendingMemory) {
+      if (pendingMemory) await memory.commit(chapter, pendingMemory);
+      else { await persistence.commit(chapter); await memory.commit(chapter); }
     } };
     const stages = options.stages ?? smokeStages();
     if (!options.stages && config.stages.includes('detect')) {
@@ -100,6 +110,17 @@ export async function runCli(options: CliOptions): Promise<number> {
       const prepare = stage.prepare!;
       stage.prepare = async pages => { await runtime?.close?.(); runtime = undefined; await prepare(pages); };
       stages[stages.findIndex(s => s.id === 'ocr')] = stage;
+    }
+    if (!options.stages && config.stages.includes('translate') && config.translation) {
+      const translation = config.translation;
+      stages[stages.findIndex(s => s.id === 'translate')] = translationStage(translation, memory.context, {
+        artifactRoot: join(config.output, 'translation-artifacts'), images: pageImages,
+        log: (type, fields) => log.info(type, fields),
+        async open(signal) {
+          const prepared = await preflight(translation, projectRoot, signal);
+          return startManaged(translation, prepared, { signal, log: (type, fields) => log.info(type, fields) });
+        },
+      });
     }
     const result = await run(config, { persistence: observed, stages,
       onEvent: event => { log.info(event.type, { ...event }); progress.event(event); } });

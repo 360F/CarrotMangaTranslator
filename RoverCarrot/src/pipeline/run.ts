@@ -1,5 +1,5 @@
 import { performance } from 'node:perf_hooks';
-import type { Chapter, Event, RunResult, Stage, Persistence } from '../core/contracts.js';
+import type { Chapter, Event, RunResult, Stage, Persistence, PendingMemory } from '../core/contracts.js';
 
 export async function executePipeline(chapter: Chapter, stages: Stage[], persistence: Persistence,
   result: RunResult, onEvent: (event: Event) => void): Promise<RunResult> {
@@ -19,6 +19,7 @@ export async function executePipeline(chapter: Chapter, stages: Stage[], persist
       emit({ type: 'stage-start', runId: result.runId, pageId: page.id, stage: stage.id });
       let status: 'completed' | 'empty' | 'failed' = 'failed';
       let nextPage = page;
+      let pendingMemory: PendingMemory | undefined;
       try {
         if (preparationError) throw preparationError;
         // Providers get a copy: mutations only become canonical through commit.
@@ -27,6 +28,7 @@ export async function executePipeline(chapter: Chapter, stages: Stage[], persist
           throw new Error('Stage changed page identity');
         nextPage = outcome.page;
         status = outcome.status;
+        if (outcome.status !== 'failed') pendingMemory = outcome.pendingMemory;
         if (outcome.status === 'failed') {
           failedPages.add(page.id);
           result.issues.push({ pageId: page.id, stage: stage.id, message: outcome.message, retryable: outcome.retryable });
@@ -38,7 +40,7 @@ export async function executePipeline(chapter: Chapter, stages: Stage[], persist
       }
       chapter.pages[index] = nextPage;
       // Storage errors are infrastructure failures, not provider page issues.
-      await persistence.commit(chapter);
+      await persistence.commit(chapter, pendingMemory);
       emit({ type: 'stage-end', runId: result.runId, pageId: page.id, stage: stage.id,
         status, elapsedMs: Math.round(performance.now() - started + preparationMsPerPage) });
     }

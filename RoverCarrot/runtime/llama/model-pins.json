@@ -1,0 +1,12 @@
+[
+  {
+    "file": "gemma-4-26B-A4B-it-ultra-uncensored-heretic.Q6_K.gguf",
+    "bytes": 22638395104,
+    "sha256": "e4c38e73b587b26271cd689e7c4ec7c4b8a29d45149b3f2c12755972a204e095"
+  },
+  {
+    "file": "gemma-4-26B-A4B-it-ultra-uncensored-heretic.mmproj-Q8_0.gguf",
+    "bytes": 806408544,
+    "sha256": "b9dd7e71eb78b44c4c9d3a0aa6173a1e022c2c4f58aa0fd03807be3f8cba4353"
+  }
+]

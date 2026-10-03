@@ -34,12 +34,12 @@ function filters(size: number, dest: number): Filter[] {
   });
 }
 
-export function resizeDetectorRgb(data: Uint8Array, width: number, height: number, dest = 1152): Uint8Array {
+export function resizeDetectorRgb(data: Uint8Array, width: number, height: number, dest = 1152, destHeight = dest): Uint8Array {
   if (!Number.isInteger(width) || !Number.isInteger(height) || width <= 0 || height <= 0 || data.length !== width * height * 3)
     throw new Error('Detection resize requires a complete RGB raster');
-  const xFilters = filters(width, dest), yFilters = filters(height, dest);
+  const xFilters = filters(width, dest), yFilters = filters(height, destHeight);
   const intermediate = new Uint8Array(dest * height * 3);
-  const result = new Uint8Array(dest * dest * 3);
+  const result = new Uint8Array(dest * destHeight * 3);
   const quantize = (sum: number) => Math.max(0, Math.min(255, sum >> 14));
   for (let y = 0; y < height; y++) for (let x = 0; x < dest; x++) for (let c = 0; c < 3; c++) {
     const filter = xFilters[x]!;
@@ -47,7 +47,7 @@ export function resizeDetectorRgb(data: Uint8Array, width: number, height: numbe
     for (let k = 0; k < filter.fixed.length; k++) sum += filter.fixed[k]! * data[(y * width + filter.begin + k) * 3 + c]!;
     intermediate[(y * dest + x) * 3 + c] = quantize(sum);
   }
-  for (let y = 0; y < dest; y++) for (let x = 0; x < dest; x++) for (let c = 0; c < 3; c++) {
+  for (let y = 0; y < destHeight; y++) for (let x = 0; x < dest; x++) for (let c = 0; c < 3; c++) {
     const filter = yFilters[y]!;
     let sum = 0;
     for (let k = 0; k < filter.fixed.length; k++) sum += filter.fixed[k]! * intermediate[((filter.begin + k) * dest + x) * 3 + c]!;

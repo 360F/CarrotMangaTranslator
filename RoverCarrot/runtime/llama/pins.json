@@ -1,0 +1,89 @@
+{
+  "revision": "9e3b928fd8c9d14dbf15a8768b9fdd7e5c721d66",
+  "tag": "b9553",
+  "wheels": [
+    {
+      "package": "nvidia-cuda-nvcc",
+      "version": "13.3.73",
+      "file": "nvidia_cuda_nvcc-13.3.73-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/83/19/e46ef3597ba47a9f8a91ab24533db42a600b659fc418dbe4af0b630bcb41/nvidia_cuda_nvcc-13.3.73-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "bytes": 44942138,
+      "sha256": "f483af83166c4fa356a21606076d553b0b4ceaebbd9912e537545080db695bdd"
+    },
+    {
+      "package": "nvidia-cuda-crt",
+      "version": "13.3.73",
+      "file": "nvidia_cuda_crt-13.3.73-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/7e/ce/16d76f4b5b3f7460f5ebd17516685495c149c66651ffdd381f90e4d4e65c/nvidia_cuda_crt-13.3.73-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "bytes": 157352,
+      "sha256": "df14a17ae1c5c3171265411212246654d780f89344ea85344466c6b955247543"
+    },
+    {
+      "package": "nvidia-nvvm",
+      "version": "13.3.73",
+      "file": "nvidia_nvvm-13.3.73-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/f3/e7/ff646aa6015c7e6d12aad234e68925c87b6681d8d18c3ac40535994a3b0d/nvidia_nvvm-13.3.73-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl",
+      "bytes": 69250424,
+      "sha256": "0e28e0858a3475e11ac67d35301cd5bf82666a1c0dc4ec4e80ceaf3a5fd1dea8"
+    },
+    {
+      "package": "nvidia-cuda-runtime",
+      "version": "13.3.29",
+      "file": "nvidia_cuda_runtime-13.3.29-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/97/be/5699b6e642b372f7d24c59c2f41383e2696825e20bab85f7399c7c6a56f7/nvidia_cuda_runtime-13.3.29-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "bytes": 2339786,
+      "sha256": "e04420616e72f563167a7733272992d7e6df6dc5cb54b2f94f9f1520ea9e30c1"
+    },
+    {
+      "package": "nvidia-cublas",
+      "version": "13.3.0.5",
+      "file": "nvidia_cublas-13.3.0.5-py3-none-manylinux_2_27_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/3c/7c/ae5d1751819acff18b0fac29c0a4e93d06d36cfabebe36365ddacc7c32a9/nvidia_cublas-13.3.0.5-py3-none-manylinux_2_27_x86_64.whl",
+      "bytes": 403287501,
+      "sha256": "366568e2dc59e6fe71ffd179f9f2a38b8b2772aed626320a64008651b1e72974"
+    },
+    {
+      "package": "nvidia-cuda-cccl",
+      "version": "13.3.3.4.1",
+      "file": "nvidia_cuda_cccl-13.3.3.4.1-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/f8/ab/049726d90147865a3ea53bae6cb7c35b98bf1fdf96cdb967101329625f83/nvidia_cuda_cccl-13.3.3.4.1-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "bytes": 3454034,
+      "sha256": "cc0adc188d570b09f4d606c7dc05a42aa3d8aa082e0d60f7bbfc5b6435f627c6"
+    },
+    {
+      "package": "cmake",
+      "version": "4.3.4",
+      "file": "cmake-4.3.4-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/cd/0c/050f6470163998205646dcce8b262612eeae49486320b106be1cc2175f8b/cmake-4.3.4-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "bytes": 29528910,
+      "sha256": "61a34a746853b3740c6ad494e51faf4d457b9ef82099e19974148808c31cc2eb"
+    },
+    {
+      "package": "ninja",
+      "version": "1.13.2",
+      "file": "ninja-1.13.2-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/6e/53/ebfed7b689c338dd8ebeec9c0730c8d56821292f14e2536e5f3ef1a05744/ninja-1.13.2-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "bytes": 183365,
+      "sha256": "65a24341b5ac09fcadcc37082660be40a94174e51a937fabf6e2cae26225fa2c"
+    }
+  ],
+  "source": {
+    "url": "https://codeload.github.com/ggml-org/llama.cpp/tar.gz/9e3b928fd8c9d14dbf15a8768b9fdd7e5c721d66",
+    "sha256": "600fb023d5958b46154b04aaa9a69fdae48623a0cbe97980d24c0b4eeac3b79e",
+    "bytes": 34088021
+  },
+  "dependencies": [
+    {
+      "name": "cccl",
+      "url": "https://codeload.github.com/NVIDIA/cccl/tar.gz/refs/tags/v3.2.0",
+      "bytes": 9817608,
+      "sha256": "5e69383b2f3355291c7ca66625448d87686360c84c347a37ad439bb48fbea8e8"
+    },
+    {
+      "name": "boringssl",
+      "url": "https://codeload.github.com/google/boringssl/tar.gz/refs/tags/0.20260526.0",
+      "bytes": 70389343,
+      "sha256": "6c94f115372978f4505df8280522111c03f2ec4efbdf2dcc713cb8cf1fa9aaab"
+    }
+  ]
+}
