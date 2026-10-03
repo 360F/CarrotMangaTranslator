@@ -19,16 +19,16 @@
 | 항목 | 값 |
 |---|---|
 | Active milestone | **M1 — Linux Port** ([목표와 요구사항](README.md#목표)) |
-| 현재 Step | [Step 3 — OCR / Hayai](#step-3--ocr--hayai) |
-| State | **REVIEW** — 2026-10-03 Step 3 구현·자체 검증 완료(work commit `044c5743`). 독립 review 대기 |
-| Next role | **review** |
-| 기준 commit | `044c5743ba3ea259ddcf0a6e80c4a49531bf01e0`(accepted HEAD: Step 3 HayaiOCR work commit = 검증 대상 commit) |
-| Task | Step 3 Scope 구현과 [Reference-driven validation](#reference-driven-validation). 시작할 때 `STEP3_VALIDATION.md`를 만든다 |
-| 기준 문서 | [Step 3](#step-3--ocr--hayai), [M1-OCR-001](CURRENT.md#m1-ocr-001--hayaiocr-linux-runtime), Step 3의 Related analysis·Source areas(Carrot reference) |
-| Evidence / findings | [STEP3_VALIDATION.md](STEP3_VALIDATION.md)(tracked; Review findings 표 비어 있음), Git 제외 `RoverCarrot/test-data/validation/m1-step3/` |
+| 현재 Step | [Step 4 — Translation](#step-4--translation). Step 3은 review DEFERRED([Deferred Review Ledger](#deferred-review-ledger)) |
+| State | **BLOCKED** — 2026-10-03 Deferred Review Ledger(사용자 결정)에 따라 Step 4를 열었으나, 착수 전 사용자 결정이 필요한 D32·D33이 OPEN이다(USER_DECISION_REQUIRED). implementation 미시작 |
+| Next role | **user** |
+| 기준 commit | `50a3f0311e6d6df3c7da4a1a5a5bdb7fcb327cf5`(accepted HEAD: Deferred Review Ledger 추가) |
+| Task | D32·D33 사용자 결정 후 Step 4 Scope 구현과 [Reference-driven validation](#reference-driven-validation). 시작할 때 `STEP4_VALIDATION.md`를 만든다 |
+| 기준 문서 | [Step 4](#step-4--translation), [M1-TRANS-001](CURRENT.md#m1-trans-001--openai-compatible-translation-client와-prompt-contract-이식), [D32·D33](#open-decision--validation-register), [managed backend source trace](../../analysis/TRANSLATION_MANAGED_BACKEND_SOURCE_TRACE.md) |
+| Evidence / findings | 아직 없음. 위치: `STEP4_VALIDATION.md`(tracked), Git 제외 `RoverCarrot/test-data/validation/m1-step4/` |
 | Open findings / cycle | 없음 / 0 of 3 |
-| 진행 기록 | 2026-10-03 implementation: Hayai worker(reference byte-identical)·Linux CPU/cu130 lock·OCR stage/adapter 구현. 검증: check 54/54, smoke 15/15, boundaries, Python 11/11, CPU differential 3p/21, GPU differential 46p/261(reference worker·정규화·저장 결과 text 일치), 4-page CPU/GPU CLI, strict schema. 남은 것: 독립 review. 실제 subdivided/recovered/failed 사례는 reference corpus에 없음(deterministic test만). 다음 action: fresh review session |
-| 다음 transition | 독립 review 판정에 따라 FIX(cycle +1) / CHECKPOINT_READY / BLOCKED. review commit이 있으면 기준 commit = review commit |
+| 진행 기록 | 2026-10-03 Step 4 recovery(orchestrator): D32(26B 변형: economy26b heretic IQ3_S + mainline b9553 vs qat26b HauhauCS QAT Q4_K_M + MTP + SPEED b10621, CUDA12/13 profile)와 D33(Linux llama-server binary·배포·종료)이 OPEN. read-only 관찰: ggml-org b9553·b10621 release에는 Linux CUDA binary가 없다(CPU·Vulkan·ROCm 등만). 이 머신에서 사용자가 띄운 Docker `ghcr.io/ggml-org/llama.cpp:server-cuda`(build 11176, `f805c57a2`)가 Gemma 4 26B heretic Q6_K로 실행 중이며(약 26.7 GiB VRAM), Rover가 만든 것이 아니어서 건드리지 않았다. Step 5–8은 Step 4에 의존하므로 진행하지 않았다. 다음 action: 사용자 D32·D33 결정 |
+| 다음 transition | 사용자 D32·D33 결정 시 Step 4 IMPLEMENT / implementation |
 
 ## Deferred Review Ledger
 
@@ -50,7 +50,7 @@
 | 1 | [Core Architecture, Contracts & CLI Adapter](#step-1--core-architecture-contracts--cli-adapter) | DONE | Carrot loader contract 확인 + Core boundary + CLI로 minimal pipeline smoke. **사용자 검토 checkpoint** |
 | 2 | [Detection / Koharu](#step-2--detection--koharu) | DONE | Linux detection 결과가 기존 `hayai-regions.json`과 region 수·bbox·순서 일치 |
 | 3 | [OCR / Hayai](#step-3--ocr--hayai) | REVIEW | Linux Hayai `sourceText`가 기존 결과와 일치 |
-| 4 | [Translation](#step-4--translation) | NOT_STARTED | 같은 입력으로 같은 request·parse·merge·memory 갱신 |
+| 4 | [Translation](#step-4--translation) | BLOCKED | 같은 입력으로 같은 request·parse·merge·memory 갱신 |
 | 5 | [Typography / Layout](#step-5--typography--layout) | NOT_STARTED | 고정 입력의 font size·bubble layout이 reference와 일치 |
 | 6 | [Inpainting / Erase](#step-6--inpainting--erase) | NOT_STARTED | Linux FLUX runner로 기존 mask·erase 결과 재현 |
 | 7 | [Renderer (Skia primary)](#step-7--renderer-skia-primary) | NOT_STARTED | v3 fixture + Linux Skia smoke + font capability smoke |
@@ -517,7 +517,7 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
 
 ## Step 4 — Translation
 
-- **Status:** NOT_STARTED
+- **Status:** BLOCKED
 - **Goal:** 현재 production translation semantics를 Linux Core로 이식한다.
 - **Scope:** managed llama-server(`gemma`), Gemma 4 26B model/runtime 준비·launch/preflight/readiness/stop·page별 endpoint session, 내부 OpenAI-compatible client, 현재 prompt/context 구성(원본 page 이미지 포함), OCR candidate/`sourceText` grounding, work context(glossary, characters, story memory, 이전 화 story pages), response parsing, block mapping/merge, retry/error 처리, 현재 memory commit semantics.
 - **Explicit non-goals:** [M4 Translation IDEAS](../M4_OPTIMIZATION/IDEAS.md#translation) 전부(prompt 축소, Previous pass 중복 제거, output schema 축소, page-context trailer 최적화, image resize/re-encode, cache-friendly ordering, VLM 단독 OCR, memory 재설계). Translation ↔ Erase 병렬 실행·GPU scheduling·vLLM·단일 5090 최적화(Post-M1, [2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)). Codex provider, fixed-block/group review 경로([TRANSLATION_PIPELINE §16](../../analysis/TRANSLATION_PIPELINE_MIGRATION_ANALYSIS.md#16-recommended-migration-boundary)).
@@ -541,8 +541,8 @@ CURRENT.md의 모든 `Decision / validation needed`와 이 계획 작성 중 확
   - managed llama-server 경로가 M1 대상이므로([2026-10-03 baseline 결정](CURRENT.md#m1-baseline-decision-2026-10-03)) Step 4 완료에는 managed Gemma 4 26B Linux backend의 start/readiness/request/stop·abort/restart와 page별 session 검증이 추가로 필요하다. request/parse 등 contract 검증은 기존 원칙대로 다른 local OpenAI-compatible backend로도 할 수 있으나, 그것으로 managed lifecycle 검증을 대체해 완료 처리하지 않는다.
 - **Completion criteria:** D32·D33 해결과 managed Linux lifecycle smoke 완료. translated block과 memory 갱신이 Rover persistence boundary를 통해 저장되고 다음 page 요청에 반영됨. [DONE 조건](#step-status와-done-조건) 충족.
 - **Result:**
-  - Status: —
-  - Progress notes: —
+  - Status: BLOCKED (2026-10-03, D32·D33 사용자 결정 대기)
+  - Progress notes: Deferred Review Ledger에 따라 열었으나 착수 전 결정 D32·D33이 OPEN. implementation과 Codex 위임은 시작하지 않았다. 상세는 [현재 위치](#현재-위치) 진행 기록
   - Commit: —
   - Validation result: —
   - Known differences: —
